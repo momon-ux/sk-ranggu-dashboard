@@ -91,7 +91,7 @@
       <!-- LOGO KPM (KIRI) -->
       <div class="flex items-center gap-3 shrink-0 order-1 text-center md:text-left">
         <div class="w-20 h-20 sm:w-24 sm:h-24 flex items-center justify-center p-1 transition-transform hover:scale-105 duration-300">
-          <img src="assets/kpm.png" alt="Logo Kementerian Pendidikan Malaysia" class="w-full h-full object-contain filter drop-shadow-[0_8px_16px_rgba(0,0,0,0.45)]">
+          <img src="assets/kpm.png" alt="Logo Kementerian Pendidikan Malaysia" class="kpm-logo-img w-full h-full object-contain filter drop-shadow-[0_8px_16px_rgba(0,0,0,0.45)]">
         </div>
         <div class="hidden lg:block text-left">
           <div class="text-[11px] font-bold text-amber-300 tracking-wider uppercase">KEMENTERIAN PENDIDIKAN MALAYSIA</div>
@@ -133,7 +133,7 @@
           <div class="text-[10px] text-emerald-400 font-semibold">Gred A Luar Bandar</div>
         </div>
         <div class="w-20 h-20 sm:w-24 sm:h-24 flex items-center justify-center p-1 transition-transform hover:scale-105 duration-300">
-          <img src="assets/skrg.png" alt="Lencana Rasmi SK Ranggu" class="w-full h-full object-contain filter drop-shadow-[0_8px_16px_rgba(0,0,0,0.45)]">
+          <img src="assets/skrg.png" alt="Lencana Rasmi SK Ranggu" class="school-logo-img w-full h-full object-contain filter drop-shadow-[0_8px_16px_rgba(0,0,0,0.45)]">
         </div>
       </div>
 
@@ -1118,188 +1118,597 @@
   <!-- =========================================================================
        MODAL PENTADBIR SISTEM (DENGAN BUTANG MUAT NAIK BAHAN)
        ========================================================================= -->
-  <div id="adminModal" class="fixed inset-0 z-50 bg-slate-900/80 backdrop-blur-sm flex items-center justify-center p-4 hidden">
-    <div class="bg-white rounded-3xl max-w-2xl w-full max-h-[90vh] overflow-y-auto shadow-2xl border border-slate-200">
+  <!-- =========================================================================
+       MODAL PENTADBIR SISTEM (ADMIN CONTROL CENTER)
+       ========================================================================= -->
+  <div id="adminModal" class="fixed inset-0 z-50 bg-slate-900/80 backdrop-blur-sm flex items-center justify-center p-3 sm:p-4 hidden">
+    <div class="bg-white rounded-3xl max-w-4xl w-full max-h-[92vh] overflow-y-auto shadow-2xl border border-slate-200">
       
-      <div class="p-6 bg-royal-950 text-white rounded-t-3xl flex items-center justify-between">
+      <!-- HEADER ADMIN -->
+      <div class="p-5 sm:p-6 bg-gradient-to-r from-royal-950 via-slate-900 to-blue-950 text-white rounded-t-3xl flex items-center justify-between sticky top-0 z-20 shadow-md">
         <div class="flex items-center gap-3">
-          <div class="w-10 h-10 rounded-xl bg-amber-400/20 text-amber-300 flex items-center justify-center text-xl font-bold border border-amber-400/30">
+          <div class="w-10 h-10 rounded-xl bg-amber-400/20 text-amber-300 flex items-center justify-center text-xl font-bold border border-amber-400/30 shrink-0">
             ⚙️
           </div>
           <div>
-            <h3 class="font-extrabold text-base text-white">Portal Pentadbir Sistem (Admin Settings)</h3>
-            <p class="text-xs text-slate-300">Unit Pengurusan Pentadbiran SK Ranggu</p>
+            <h3 class="font-extrabold text-base sm:text-lg text-white">Panel Kawalan Pentadbir Sistem (Admin)</h3>
+            <p class="text-xs text-slate-300">Pengurusan Bersepadu Warga Sekolah, Profil, Dokumen & Takwim</p>
           </div>
         </div>
-        <button id="btnCloseAdminModal" class="text-slate-400 hover:text-white text-2xl font-bold">&times;</button>
+        <button id="btnCloseAdminModal" class="text-slate-400 hover:text-white text-2xl font-bold p-1">&times;</button>
       </div>
 
-      <!-- KOTAK PIN -->
-      <div id="adminLoginBox" class="p-8 text-center space-y-4">
-        <div class="w-16 h-16 bg-blue-50 text-blue-800 rounded-full flex items-center justify-center text-2xl mx-auto border border-blue-200">
+      <!-- KOTAK LOG MASUK PIN / KOD AKSES -->
+      <div id="adminLoginBox" class="p-8 text-center space-y-4 max-w-md mx-auto my-6">
+        <div class="w-16 h-16 bg-blue-50 text-blue-800 rounded-full flex items-center justify-center text-2xl mx-auto border border-blue-200 shadow-sm">
           🔐
         </div>
         <div>
-          <h4 class="font-bold text-slate-900 text-lg">Pengesahan Pentadbir Diperlukan</h4>
-          <p class="text-xs text-slate-500 mt-1">Sila masukkan PIN keselamatan pentadbir untuk mengakses tetapan sistem.</p>
-          <p class="text-[11px] text-amber-700 bg-amber-50 py-1 px-3 rounded-full inline-block mt-2 font-mono">PIN Lalai: 1234</p>
+          <h4 class="font-extrabold text-slate-900 text-lg">Pengesahan Pentadbir Diperlukan</h4>
+          <p class="text-xs text-slate-500 mt-1">Sila masukkan Kod Akses Pentadbir untuk mengakses tetapan sistem dan memulakan pengubahsuaian.</p>
         </div>
 
-        <form id="adminLoginForm" class="max-w-xs mx-auto space-y-3">
-          <input type="password" id="adminPinInput" placeholder="Masukkan PIN" maxlength="8" class="w-full text-center text-lg tracking-widest py-3 border border-slate-300 rounded-xl font-mono focus:ring-2 focus:ring-blue-600 focus:outline-none" required autofocus>
-          <button type="submit" class="w-full py-2.5 bg-royal-900 hover:bg-royal-800 text-white font-bold rounded-xl text-xs shadow-md transition">
-            Sahkan & Buka Panel
+        <form id="adminLoginForm" class="space-y-3">
+          <div class="relative">
+            <input type="password" id="adminPinInput" placeholder="Masukkan Kod Akses" class="w-full text-center text-base tracking-wider py-3 border border-slate-300 rounded-xl font-mono focus:ring-2 focus:ring-blue-600 focus:outline-none bg-slate-50" required autofocus>
+            <button type="button" onclick="toggleAdminPinVisibility()" class="text-xs text-slate-500 hover:text-blue-700 font-medium mt-1.5 inline-block">
+              👁️ Papar / Sembunyi Kod
+            </button>
+          </div>
+          <button type="submit" class="w-full py-3 bg-royal-900 hover:bg-royal-800 text-white font-bold rounded-xl text-xs sm:text-sm shadow-md transition flex items-center justify-center gap-2">
+            <span>🔓</span> Sahkan & Buka Panel Kawalan
           </button>
         </form>
       </div>
 
-      <!-- PANEL KAWALAN PENTADBIR -->
-      <div id="adminPanelContent" class="p-6 space-y-6 hidden">
+      <!-- PANEL KAWALAN PENTADBIR SELEPAS LOG MASUK -->
+      <div id="adminPanelContent" class="p-4 sm:p-6 space-y-5 hidden">
         
-        <div class="p-3 bg-emerald-50 border border-emerald-200 rounded-xl flex items-center justify-between text-xs text-emerald-800 font-medium">
-          <span class="flex items-center gap-1.5">
-            <span class="w-2 h-2 rounded-full bg-emerald-500"></span> Log masuk sebagai Pentadbir Sistem (Mohammad Fikrey)
-          </span>
-          <button id="btnAdminLogout" class="text-red-600 hover:text-red-800 font-bold underline">
-            Log Keluar
+        <!-- STATUS BAR ADMIN -->
+        <div class="p-3 bg-emerald-50 border border-emerald-200 rounded-2xl flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs text-emerald-800 font-medium">
+          <div class="flex items-center gap-2">
+            <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
+            <span>Sesi Pentadbir Aktif: <strong>Mohammad Fikrey bin Abdul Gapar</strong> (Pentadbir Sistem)</span>
+          </div>
+          <button id="btnAdminLogout" class="text-red-600 hover:text-red-800 font-bold underline text-xs self-end sm:self-auto">
+            Log Keluar ➔
           </button>
         </div>
 
-        <div class="space-y-6">
-          
-          <!-- 1. MODUL MUAT NAIK BAHAN / DOKUMEN KURIKULUM (BARU!) -->
-          <div class="bg-blue-50/60 p-4 rounded-2xl border border-blue-200 space-y-3">
-            <h4 class="font-bold text-slate-900 text-sm flex items-center gap-1.5">
-              <span>📤</span> Muat Naik Bahan & Dokumen Kurikulum
-            </h4>
-            <p class="text-xs text-slate-600">
-              Muat naik fail DSKP, RPT, Minit Mesyuarat, Jadual Waktu atau masukkan pautan dokumen untuk dimuat turun oleh guru-guru.
-            </p>
+        <!-- TAB NAVIGASI PANEL ADMIN -->
+        <div class="flex items-center gap-1.5 p-1 bg-slate-100 rounded-2xl overflow-x-auto text-xs font-semibold no-scrollbar">
+          <button type="button" onclick="switchAdminTab('staff')" id="admTabBtn-staff" class="adm-subtab-btn px-3.5 py-2 rounded-xl transition whitespace-nowrap bg-white text-royal-900 shadow-sm font-bold">
+            👥 Warga Staf (60)
+          </button>
+          <button type="button" onclick="switchAdminTab('school')" id="admTabBtn-school" class="adm-subtab-btn px-3.5 py-2 rounded-xl transition whitespace-nowrap text-slate-600 hover:text-royal-900">
+            🏫 Profil & Logo
+          </button>
+          <button type="button" onclick="switchAdminTab('docs')" id="admTabBtn-docs" class="adm-subtab-btn px-3.5 py-2 rounded-xl transition whitespace-nowrap text-slate-600 hover:text-royal-900">
+            📤 Bahan & Dokumen
+          </button>
+          <button type="button" onclick="switchAdminTab('announce')" id="admTabBtn-announce" class="adm-subtab-btn px-3.5 py-2 rounded-xl transition whitespace-nowrap text-slate-600 hover:text-royal-900">
+            📢 Pengumuman
+          </button>
+          <button type="button" onclick="switchAdminTab('takwim')" id="admTabBtn-takwim" class="adm-subtab-btn px-3.5 py-2 rounded-xl transition whitespace-nowrap text-slate-600 hover:text-royal-900">
+            📅 Takwim & Bertugas
+          </button>
+          <button type="button" onclick="switchAdminTab('security')" id="admTabBtn-security" class="adm-subtab-btn px-3.5 py-2 rounded-xl transition whitespace-nowrap text-slate-600 hover:text-royal-900">
+            ⚙️ Keselamatan & Sandaran
+          </button>
+        </div>
 
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs bg-white p-3 rounded-xl border border-blue-200">
+        <!-- ===================================================================
+             SEKSYEN 1: PENGURUSAN WARGA STAF & GURU (EDIT GAMBAR, NAMA, JAWATAN)
+             =================================================================== -->
+        <div id="admSec-staff" class="adm-section-pane space-y-4">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-slate-100">
+            <div>
+              <h4 class="font-bold text-slate-900 text-sm sm:text-base flex items-center gap-2">
+                <span>👥</span> Pengurusan Direktori & Maklumat Warga Sekolah
+              </h4>
+              <p class="text-xs text-slate-500 mt-0.5">Sunting nama, jawatan, gred, foto/gambar profil dan bidang tugas bagi semua 60 staf.</p>
+            </div>
+            <button type="button" onclick="toggleAddNewStaffForm()" class="px-3.5 py-2 bg-royal-900 hover:bg-royal-800 text-white rounded-xl text-xs font-bold shadow-sm transition flex items-center gap-1.5 shrink-0 self-start sm:self-auto">
+              <span>+</span> Tambah Guru / Staf Baharu
+            </button>
+          </div>
+
+          <!-- BORANG TAMBAH STAF BAHARU (TERSEMBUNYI SECARA LALAI) -->
+          <div id="addNewStaffCollapse" class="p-4 bg-blue-50/60 rounded-2xl border border-blue-200 hidden space-y-3">
+            <div class="flex items-center justify-between">
+              <h5 class="font-bold text-royal-900 text-xs uppercase tracking-wider">Borang Pendaftaran Staf Baharu</h5>
+              <button type="button" onclick="toggleAddNewStaffForm()" class="text-xs text-slate-500 hover:text-slate-800">Tutup</button>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5 text-xs bg-white p-3.5 rounded-xl border border-blue-200">
               <div class="sm:col-span-2">
-                <label class="block text-slate-600 mb-0.5 font-semibold">Tajuk Bahan / Dokumen:</label>
-                <input type="text" id="newDocTitle" placeholder="Contoh: DSKP Sains Tahun 5 Semakan..." class="w-full p-2 border rounded-lg">
+                <label class="block text-slate-600 font-semibold mb-0.5">Nama Penuh Guru / AKP:</label>
+                <input type="text" id="newStaffName" placeholder="Contoh: AHMAD BIN ALI" class="w-full p-2 border rounded-lg uppercase">
               </div>
               <div>
-                <label class="block text-slate-600 mb-0.5 font-semibold">Kategori Bahan:</label>
-                <select id="newDocCategory" class="w-full p-2 border rounded-lg">
-                  <option value="DSKP & RPT">DSKP & RPT</option>
-                  <option value="Minit Mesyuarat">Minit Mesyuarat</option>
-                  <option value="Takwim & Jadual">Takwim & Jadual</option>
-                  <option value="PBD / Penilaian">PBD / Penilaian</option>
-                  <option value="Buku Panduan">Buku Panduan</option>
-                  <option value="Surat Siaran">Surat Siaran</option>
+                <label class="block text-slate-600 font-semibold mb-0.5">Gred:</label>
+                <input type="text" id="newStaffGrade" value="DG41" class="w-full p-2 border rounded-lg font-mono">
+              </div>
+              <div>
+                <label class="block text-slate-600 font-semibold mb-0.5">Jawatan / Portfolio:</label>
+                <input type="text" id="newStaffRole" placeholder="Jawatan..." class="w-full p-2 border rounded-lg">
+              </div>
+              <div>
+                <label class="block text-slate-600 font-semibold mb-0.5">Kategori:</label>
+                <select id="newStaffCategory" class="w-full p-2 border rounded-lg">
+                  <option value="Pengurusan Tertinggi">Pengurusan Tertinggi</option>
+                  <option value="Pentadbiran & Kurikulum">Pentadbiran & Kurikulum</option>
+                  <option value="Hal Ehwal Murid">Hal Ehwal Murid</option>
+                  <option value="Kokurikulum">Kokurikulum</option>
+                  <option value="Pengurusan Petang">Pengurusan Petang</option>
+                  <option value="Ketua Panitia">Ketua Panitia</option>
+                  <option value="Guru Akademik">Guru Akademik</option>
+                  <option value="Anggota Kumpulan Pelaksana (AKP)">AKP</option>
                 </select>
               </div>
               <div>
-                <label class="block text-slate-600 mb-0.5 font-semibold">Panitia / Unit Terlibat:</label>
-                <input type="text" id="newDocPanitia" placeholder="Contoh: Panitia Sains" class="w-full p-2 border rounded-lg">
+                <label class="block text-slate-600 font-semibold mb-0.5">Sesi:</label>
+                <select id="newStaffSession" class="w-full p-2 border rounded-lg">
+                  <option value="Pagi">Sesi Pagi</option>
+                  <option value="Petang">Sesi Petang</option>
+                </select>
               </div>
-              <div>
-                <label class="block text-slate-600 mb-0.5 font-semibold">Pilih Fail untuk Dimuat Naik:</label>
-                <input type="file" id="newDocFileInput" class="w-full p-1.5 border rounded-lg text-xs">
-              </div>
-              <div>
-                <label class="block text-slate-600 mb-0.5 font-semibold">Atau Pautan Dokumen (Google Drive / URL):</label>
-                <input type="text" id="newDocLinkUrl" placeholder="https://drive.google.com/..." class="w-full p-2 border rounded-lg font-mono">
-              </div>
-              <div class="sm:col-span-2 flex justify-end pt-1">
-                <button onclick="addNewDocumentFromAdmin()" class="px-4 py-2 bg-emerald-700 hover:bg-emerald-800 text-white rounded-xl text-xs font-semibold shadow">
-                  + Simpan & Muat Naik Bahan
+              <div class="sm:col-span-3 flex justify-end pt-1">
+                <button type="button" onclick="addNewStaffMemberFromAdmin()" class="px-4 py-2 bg-emerald-700 hover:bg-emerald-800 text-white rounded-xl text-xs font-semibold shadow">
+                  Simpan Staf Baharu
                 </button>
               </div>
             </div>
-
-            <!-- Senarai Bahan Semasa -->
-            <div class="max-h-44 overflow-y-auto space-y-1.5" id="admDocListWrapper"></div>
           </div>
 
-          <!-- 2. Maklumat Profil Sekolah -->
-          <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200 space-y-3">
-            <h4 class="font-bold text-slate-900 text-sm flex items-center gap-1.5">
-              <span>🏫</span> Maklumat Profil Sekolah & Alamat
+          <!-- BAR CARIAN STAF -->
+          <div class="flex items-center gap-2">
+            <input type="text" id="admStaffSearchInput" placeholder="🔍 Cari nama atau jawatan staf untuk disunting..." oninput="filterAdminStaffList()" class="w-full p-2.5 border border-slate-300 rounded-xl text-xs bg-slate-50 focus:bg-white focus:ring-2 focus:ring-blue-600 focus:outline-none">
+            <span id="admStaffCountBadge" class="text-xs font-semibold text-slate-500 whitespace-nowrap px-3 py-2 bg-slate-100 rounded-xl border border-slate-200">
+              60 Staf
+            </span>
+          </div>
+
+          <!-- SENARAI STAF UNTUK DISUNTING (DILENGKAPI BUTANG EDIT & FOTO) -->
+          <div class="max-h-96 overflow-y-auto space-y-2 pr-1" id="admStaffListWrapper">
+            <!-- Dimuatkan dari app.js -->
+          </div>
+        </div>
+
+        <!-- ===================================================================
+             SEKSYEN 2: PROFIL SEKOLAH & LOGO
+             =================================================================== -->
+        <div id="admSec-school" class="adm-section-pane hidden space-y-5">
+          <div class="pb-3 border-b border-slate-100">
+            <h4 class="font-bold text-slate-900 text-sm sm:text-base flex items-center gap-2">
+              <span>🏫</span> Maklumat Profil, Alamat & Logo Sekolah
             </h4>
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
-              <div>
-                <label class="block text-slate-600 mb-1 font-semibold">Nama Sekolah:</label>
-                <input type="text" id="admSchoolName" class="w-full p-2 border rounded-lg bg-white">
-              </div>
-              <div>
-                <label class="block text-slate-600 mb-1 font-semibold">Kod Sekolah:</label>
-                <input type="text" id="admSchoolCode" class="w-full p-2 border rounded-lg bg-white font-mono">
-              </div>
-              <div class="sm:col-span-2">
-                <label class="block text-slate-600 mb-1 font-semibold">Alamat Rasmi:</label>
-                <input type="text" id="admSchoolAddress" class="w-full p-2 border rounded-lg bg-white">
-              </div>
-              <div>
-                <label class="block text-slate-600 mb-1 font-semibold">No. Telefon:</label>
-                <input type="text" id="admSchoolPhone" class="w-full p-2 border rounded-lg bg-white">
-              </div>
-              <div>
-                <label class="block text-slate-600 mb-1 font-semibold">Emel Rasmi:</label>
-                <input type="text" id="admSchoolEmail" class="w-full p-2 border rounded-lg bg-white font-mono">
+            <p class="text-xs text-slate-500 mt-0.5">Kemaskini identiti rasmi, alamat surat-menyurat dan logo sekolah.</p>
+          </div>
+
+          <!-- LOGO SEKOLAH & KPM UPLOAD -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 p-4 bg-slate-50 rounded-2xl border border-slate-200">
+            <!-- LOGO SK RANGGU -->
+            <div class="space-y-2 text-xs">
+              <span class="font-bold text-slate-800 block">Lencana / Logo SK Ranggu:</span>
+              <div class="flex items-center gap-3">
+                <div class="w-16 h-16 rounded-xl bg-white p-1 border border-slate-200 flex items-center justify-center shrink-0 shadow-sm">
+                  <img id="admSchoolLogoPreview" src="assets/skrg.png" alt="Logo Sekolah" class="w-full h-full object-contain">
+                </div>
+                <div class="space-y-1.5 flex-1 min-w-0">
+                  <input type="file" id="admSchoolLogoFile" accept="image/*" class="text-[11px] p-1 border rounded-lg bg-white w-full" onchange="handleSchoolLogoUpload(event, 'school')">
+                  <input type="text" id="admSchoolLogoUrl" placeholder="Atau pautan URL logo (https://...)" class="w-full p-1.5 border rounded-lg bg-white text-[11px] font-mono" oninput="handleSchoolLogoUrlInput(event, 'school')">
+                </div>
               </div>
             </div>
-            <div class="flex justify-end pt-2">
-              <button onclick="saveSchoolProfileFromAdmin()" class="px-4 py-2 bg-blue-700 hover:bg-blue-800 text-white rounded-xl text-xs font-semibold shadow">
-                Simpan Profil Sekolah
+
+            <!-- LOGO KPM -->
+            <div class="space-y-2 text-xs">
+              <span class="font-bold text-slate-800 block">Logo Rasmi KPM:</span>
+              <div class="flex items-center gap-3">
+                <div class="w-16 h-16 rounded-xl bg-white p-1 border border-slate-200 flex items-center justify-center shrink-0 shadow-sm">
+                  <img id="admKpmLogoPreview" src="assets/kpm.png" alt="Logo KPM" class="w-full h-full object-contain">
+                </div>
+                <div class="space-y-1.5 flex-1 min-w-0">
+                  <input type="file" id="admKpmLogoFile" accept="image/*" class="text-[11px] p-1 border rounded-lg bg-white w-full" onchange="handleSchoolLogoUpload(event, 'kpm')">
+                  <input type="text" id="admKpmLogoUrl" placeholder="Atau pautan URL logo (https://...)" class="w-full p-1.5 border rounded-lg bg-white text-[11px] font-mono" oninput="handleSchoolLogoUrlInput(event, 'kpm')">
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- TEKS PROFIL SEKOLAH -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+            <div>
+              <label class="block text-slate-600 mb-1 font-semibold">Nama Sekolah:</label>
+              <input type="text" id="admSchoolName" class="w-full p-2.5 border rounded-xl bg-white font-bold text-slate-900">
+            </div>
+            <div>
+              <label class="block text-slate-600 mb-1 font-semibold">Kod Sekolah:</label>
+              <input type="text" id="admSchoolCode" class="w-full p-2.5 border rounded-xl bg-white font-mono font-bold">
+            </div>
+            <div class="sm:col-span-2">
+              <label class="block text-slate-600 mb-1 font-semibold">Alamat Rasmi:</label>
+              <input type="text" id="admSchoolAddress" class="w-full p-2.5 border rounded-xl bg-white">
+            </div>
+            <div>
+              <label class="block text-slate-600 mb-1 font-semibold">No. Telefon Pejabat:</label>
+              <input type="text" id="admSchoolPhone" class="w-full p-2.5 border rounded-xl bg-white">
+            </div>
+            <div>
+              <label class="block text-slate-600 mb-1 font-semibold">Emel Rasmi Sekolah:</label>
+              <input type="text" id="admSchoolEmail" class="w-full p-2.5 border rounded-xl bg-white font-mono">
+            </div>
+            <div>
+              <label class="block text-slate-600 mb-1 font-semibold">Moto Sekolah:</label>
+              <input type="text" id="admSchoolMotto" class="w-full p-2.5 border rounded-xl bg-white">
+            </div>
+            <div>
+              <label class="block text-slate-600 mb-1 font-semibold">Sesi Persekolahan Semasa:</label>
+              <input type="text" id="admSchoolSession" class="w-full p-2.5 border rounded-xl bg-white">
+            </div>
+          </div>
+
+          <div class="flex justify-end pt-2">
+            <button onclick="saveSchoolProfileFromAdmin()" class="px-5 py-2.5 bg-royal-900 hover:bg-royal-800 text-white rounded-xl text-xs font-bold shadow-md transition">
+              💾 Simpan Perubahan Profil Sekolah
+            </button>
+          </div>
+        </div>
+
+        <!-- ===================================================================
+             SEKSYEN 3: BAHAN & DOKUMEN (PUSAT SUMBER)
+             =================================================================== -->
+        <div id="admSec-docs" class="adm-section-pane hidden space-y-4">
+          <div class="pb-3 border-b border-slate-100">
+            <h4 class="font-bold text-slate-900 text-sm sm:text-base flex items-center gap-2">
+              <span>📤</span> Muat Naik Bahan & Pautan Google Drive
+            </h4>
+            <p class="text-xs text-slate-500 mt-0.5">Muat naik fail dokumen atau tambah pautan Google Drive untuk dimuat turun warga sekolah.</p>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs bg-slate-50 p-4 rounded-2xl border border-slate-200">
+            <div class="sm:col-span-2">
+              <label class="block text-slate-600 mb-0.5 font-semibold">Tajuk Bahan / Dokumen:</label>
+              <input type="text" id="newDocTitle" placeholder="Contoh: DSKP Sains Tahun 5 Semakan..." class="w-full p-2 border rounded-lg bg-white">
+            </div>
+            <div>
+              <label class="block text-slate-600 mb-0.5 font-semibold">Kategori Bahan:</label>
+              <select id="newDocCategory" class="w-full p-2 border rounded-lg bg-white">
+                <option value="Dasar Pendidikan">Dasar Pendidikan</option>
+                <option value="Inisiatif Negeri / Daerah">Inisiatif Negeri / Daerah</option>
+                <option value="DSKP & RPT">DSKP & RPT</option>
+                <option value="Minit Mesyuarat">Minit Mesyuarat</option>
+                <option value="Takwim & Jadual">Takwim & Jadual</option>
+                <option value="Pentaksiran & PBD">Pentaksiran & PBD</option>
+                <option value="Buku Pengurusan">Buku Pengurusan</option>
+                <option value="Data Murid">Data Murid</option>
+                <option value="Surat Siaran">Surat Siaran</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-slate-600 mb-0.5 font-semibold">Panitia / Unit Terlibat:</label>
+              <input type="text" id="newDocPanitia" placeholder="Contoh: Panitia Sains" class="w-full p-2 border rounded-lg bg-white">
+            </div>
+            <div>
+              <label class="block text-slate-600 mb-0.5 font-semibold">Pilih Fail untuk Dimuat Naik (Fizikal):</label>
+              <input type="file" id="newDocFileInput" class="w-full p-1.5 border rounded-lg text-xs bg-white">
+            </div>
+            <div>
+              <label class="block text-slate-600 mb-0.5 font-semibold">Atau Pautan Dokumen (Google Drive / URL):</label>
+              <input type="text" id="newDocLinkUrl" placeholder="https://drive.google.com/..." class="w-full p-2 border rounded-lg font-mono bg-white">
+            </div>
+            <div class="sm:col-span-2 flex justify-end pt-1">
+              <button onclick="addNewDocumentFromAdmin()" class="px-4 py-2 bg-emerald-700 hover:bg-emerald-800 text-white rounded-xl text-xs font-semibold shadow">
+                + Tambah & Terbitkan Bahan
               </button>
             </div>
           </div>
 
-          <!-- 3. Pengurusan Carta Organisasi -->
-          <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200 space-y-3">
-            <h4 class="font-bold text-slate-900 text-sm flex items-center gap-1.5">
-              <span>👥</span> Pengurusan Carta Organisasi
+          <div class="space-y-2">
+            <h5 class="text-xs font-bold text-slate-700">Senarai Bahan Semasa (${window.SKR_DATA.documents ? window.SKR_DATA.documents.length : 0})</h5>
+            <div class="max-h-60 overflow-y-auto space-y-1.5" id="admDocListWrapper"></div>
+          </div>
+        </div>
+
+        <!-- ===================================================================
+             SEKSYEN 4: PENGUMUMAN
+             =================================================================== -->
+        <div id="admSec-announce" class="adm-section-pane hidden space-y-4">
+          <div class="pb-3 border-b border-slate-100">
+            <h4 class="font-bold text-slate-900 text-sm sm:text-base flex items-center gap-2">
+              <span>📢</span> Pengurusan Pengumuman Pentadbiran
             </h4>
-            <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 text-xs bg-white p-3 rounded-xl border border-slate-200">
+            <p class="text-xs text-slate-500 mt-0.5">Hebahan rasmi aktiviti, takwim dan makluman penting warga sekolah.</p>
+          </div>
+
+          <div class="space-y-3 bg-slate-50 p-4 rounded-2xl border border-slate-200 text-xs">
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
               <div class="sm:col-span-2">
-                <label class="block text-slate-600 mb-0.5 font-semibold">Nama Guru:</label>
-                <input type="text" id="newStaffName" placeholder="Contoh: Yunus bin Patarai" class="w-full p-1.5 border rounded-lg">
+                <label class="block font-semibold text-slate-700 mb-0.5">Tajuk Pengumuman:</label>
+                <input type="text" id="newAnnTitle" placeholder="Tajuk notis..." class="w-full p-2 border rounded-lg bg-white">
               </div>
               <div>
-                <label class="block text-slate-600 mb-0.5 font-semibold">Gred:</label>
-                <input type="text" id="newStaffGrade" value="DG44" class="w-full p-1.5 border rounded-lg font-mono">
-              </div>
-              <div>
-                <label class="block text-slate-600 mb-0.5 font-semibold">Jawatan:</label>
-                <input type="text" id="newStaffRole" placeholder="Jawatan..." class="w-full p-1.5 border rounded-lg">
-              </div>
-              <div>
-                <label class="block text-slate-600 mb-0.5 font-semibold">Kategori:</label>
-                <select id="newStaffCategory" class="w-full p-1.5 border rounded-lg">
-                  <option value="Pengurusan Tertinggi">Pengurusan Tertinggi</option>
-                  <option value="Pentadbiran & Kurikulum">Pentadbiran</option>
-                  <option value="Hal Ehwal Murid">Hal Ehwal Murid</option>
-                  <option value="Kokurikulum">Kokurikulum</option>
-                  <option value="Ketua Panitia">Ketua Panitia</option>
-                  <option value="Guru Akademik">Guru Akademik</option>
+                <label class="block font-semibold text-slate-700 mb-0.5">Tahap Keutamaan:</label>
+                <select id="newAnnPriority" class="w-full p-2 border rounded-lg bg-white">
+                  <option value="Biasa">Biasa</option>
+                  <option value="Sederhana">Sederhana</option>
+                  <option value="Penting">Penting</option>
+                  <option value="Tinggi">Tinggi / Segera</option>
                 </select>
               </div>
               <div>
-                <label class="block text-slate-600 mb-0.5 font-semibold">Tier:</label>
-                <select id="newStaffTier" class="w-full p-1.5 border rounded-lg">
-                  <option value="4">Tier 4 (Ketua Panitia/Guru)</option>
-                  <option value="3">Tier 3 (Pegawai Khas/SU)</option>
-                  <option value="2">Tier 2 (Penolong Kanan)</option>
-                  <option value="1">Tier 1 (Guru Besar)</option>
-                </select>
+                <label class="block font-semibold text-slate-700 mb-0.5">Kategori:</label>
+                <input type="text" id="newAnnCategory" value="Kurikulum" class="w-full p-2 border rounded-lg bg-white">
               </div>
-              <div class="sm:col-span-3 flex justify-end pt-1">
-                <button onclick="addNewStaffMemberFromAdmin()" class="px-3 py-1.5 bg-emerald-700 hover:bg-emerald-800 text-white rounded-lg text-xs font-semibold">
-                  + Tambah Ahli
+              <div>
+                <label class="block font-semibold text-slate-700 mb-0.5">Penulis / Arahan:</label>
+                <input type="text" id="newAnnAuthor" value="Pentadbiran" class="w-full p-2 border rounded-lg bg-white">
+              </div>
+              <div>
+                <label class="block font-semibold text-slate-700 mb-0.5">Tarikh:</label>
+                <input type="date" id="newAnnDate" class="w-full p-2 border rounded-lg bg-white">
+              </div>
+              <div class="sm:col-span-3">
+                <label class="block font-semibold text-slate-700 mb-0.5">Kandungan Pengumuman:</label>
+                <textarea id="newAnnContent" rows="2" placeholder="Tulis butiran pengumuman..." class="w-full p-2 border rounded-lg bg-white"></textarea>
+              </div>
+            </div>
+            <div class="flex justify-end">
+              <button onclick="addNewAnnouncementFromAdmin()" class="px-4 py-2 bg-emerald-700 hover:bg-emerald-800 text-white rounded-xl text-xs font-semibold shadow">
+                + Siarkan Pengumuman
+              </button>
+            </div>
+          </div>
+
+          <div class="space-y-2">
+            <h5 class="text-xs font-bold text-slate-700">Senarai Pengumuman Semasa</h5>
+            <div class="max-h-60 overflow-y-auto space-y-1.5" id="admAnnounceListWrapper"></div>
+          </div>
+        </div>
+
+        <!-- ===================================================================
+             SEKSYEN 5: TAKWIM & GURU BERTUGAS
+             =================================================================== -->
+        <div id="admSec-takwim" class="adm-section-pane hidden space-y-5">
+          <div class="pb-3 border-b border-slate-100">
+            <h4 class="font-bold text-slate-900 text-sm sm:text-base flex items-center gap-2">
+              <span>📅</span> Takwim Acara & Guru Bertugas Mingguan
+            </h4>
+            <p class="text-xs text-slate-500 mt-0.5">Kemas kini takwim aktiviti dan senarai jawatankuasa guru bertugas harian.</p>
+          </div>
+
+          <!-- FORM GURU BERTUGAS MINGGUAN -->
+          <div class="bg-amber-50/60 p-4 rounded-2xl border border-amber-200 space-y-3 text-xs">
+            <h5 class="font-bold text-amber-900 text-xs uppercase tracking-wider flex items-center gap-1.5">
+              <span>⭐</span> Kemas Kini Guru Bertugas Mingguan
+            </h5>
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
+              <div>
+                <label class="block font-semibold text-slate-700 mb-0.5">Minggu Ke-:</label>
+                <input type="number" id="admDutyWeek" value="28" class="w-full p-2 border rounded-lg bg-white">
+              </div>
+              <div class="sm:col-span-2">
+                <label class="block font-semibold text-slate-700 mb-0.5">Julat Tarikh:</label>
+                <input type="text" id="admDutyDateRange" placeholder="Contoh: 06 Okt 2026 - 10 Okt 2026" class="w-full p-2 border rounded-lg bg-white">
+              </div>
+              <div class="sm:col-span-2">
+                <label class="block font-semibold text-slate-700 mb-0.5">Ketua Guru Bertugas:</label>
+                <input type="text" id="admDutyLeader" class="w-full p-2 border rounded-lg bg-white">
+              </div>
+              <div>
+                <label class="block font-semibold text-slate-700 mb-0.5">Tema Mingguan:</label>
+                <input type="text" id="admDutyTheme" class="w-full p-2 border rounded-lg bg-white">
+              </div>
+              <div class="sm:col-span-3">
+                <label class="block font-semibold text-slate-700 mb-0.5">Guru Ahli (pisahkan dengan koma):</label>
+                <input type="text" id="admDutyMembers" placeholder="Guru 1, Guru 2, Guru 3..." class="w-full p-2 border rounded-lg bg-white">
+              </div>
+            </div>
+            <div class="flex justify-end pt-1">
+              <button onclick="saveDutyTeachersFromAdmin()" class="px-4 py-2 bg-amber-700 hover:bg-amber-800 text-white rounded-xl text-xs font-semibold shadow">
+                Simpan Jadual Bertugas
+              </button>
+            </div>
+          </div>
+
+          <!-- FORM TAMBAH TAKWIM -->
+          <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200 space-y-3 text-xs">
+            <h5 class="font-bold text-slate-900 text-xs uppercase tracking-wider flex items-center gap-1.5">
+              <span>📌</span> Tambah Acara / Program Takwim Baharu
+            </h5>
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
+              <div class="sm:col-span-2">
+                <label class="block font-semibold text-slate-700 mb-0.5">Nama Acara / Program:</label>
+                <input type="text" id="newTakwimTitle" placeholder="Mesyuarat / Kursus..." class="w-full p-2 border rounded-lg bg-white">
+              </div>
+              <div>
+                <label class="block font-semibold text-slate-700 mb-0.5">Tarikh:</label>
+                <input type="date" id="newTakwimDate" class="w-full p-2 border rounded-lg bg-white">
+              </div>
+              <div>
+                <label class="block font-semibold text-slate-700 mb-0.5">Masa:</label>
+                <input type="text" id="newTakwimTime" value="08:00 AM" class="w-full p-2 border rounded-lg bg-white">
+              </div>
+              <div>
+                <label class="block font-semibold text-slate-700 mb-0.5">Lokasi / Tempat:</label>
+                <input type="text" id="newTakwimVenue" value="Bilik Mesyuarat" class="w-full p-2 border rounded-lg bg-white">
+              </div>
+              <div>
+                <label class="block font-semibold text-slate-700 mb-0.5">Tindakan / Penyelaras:</label>
+                <input type="text" id="newTakwimInCharge" placeholder="Unit Kurikulum" class="w-full p-2 border rounded-lg bg-white">
+              </div>
+            </div>
+            <div class="flex justify-end pt-1">
+              <button onclick="addNewTakwimFromAdmin()" class="px-4 py-2 bg-blue-700 hover:bg-blue-800 text-white rounded-xl text-xs font-semibold shadow">
+                + Tambah ke Takwim
+              </button>
+            </div>
+          </div>
+
+          <div class="space-y-2">
+            <h5 class="text-xs font-bold text-slate-700">Senarai Acara Takwim Semasa</h5>
+            <div class="max-h-60 overflow-y-auto space-y-1.5" id="admTakwimListWrapper"></div>
+          </div>
+        </div>
+
+        <!-- ===================================================================
+             SEKSYEN 6: KESELAMATAN, KOD AKSES & SANDARAN DATA
+             =================================================================== -->
+        <div id="admSec-security" class="adm-section-pane hidden space-y-5">
+          <div class="pb-3 border-b border-slate-100">
+            <h4 class="font-bold text-slate-900 text-sm sm:text-base flex items-center gap-2">
+              <span>🔒</span> Keselamatan, Kod Akses & Pengurusan Sandaran
+            </h4>
+            <p class="text-xs text-slate-500 mt-0.5">Tukar kod akses pentadbir dan muat turun fail sandaran pangkalan data sekolah.</p>
+          </div>
+
+          <!-- TUKAR KOD AKSES -->
+          <div class="p-4 bg-slate-50 rounded-2xl border border-slate-200 space-y-3 text-xs max-w-lg">
+            <h5 class="font-bold text-slate-900 text-xs uppercase tracking-wider flex items-center gap-1.5">
+              <span>🔑</span> Kemaskini Kod Akses Pentadbir
+            </h5>
+            <div class="space-y-2">
+              <div>
+                <label class="block font-semibold text-slate-700 mb-0.5">Kod Akses Semasa:</label>
+                <input type="password" id="admCurrentPin" placeholder="Masukkan kod semasa..." class="w-full p-2 border rounded-lg bg-white font-mono">
+              </div>
+              <div>
+                <label class="block font-semibold text-slate-700 mb-0.5">Kod Akses Baharu (Minima 4 aksara):</label>
+                <input type="text" id="admNewPin" placeholder="Contoh: Ts.FIKREY37..." class="w-full p-2 border rounded-lg bg-white font-mono">
+              </div>
+              <div class="pt-1 flex justify-end">
+                <button onclick="changeAdminPasscode()" class="px-4 py-2 bg-royal-900 hover:bg-royal-800 text-white rounded-xl font-bold shadow text-xs">
+                  Simpan Kod Akses Baharu
                 </button>
               </div>
             </div>
-            <div class="max-h-44 overflow-y-auto space-y-1.5" id="admStaffListWrapper"></div>
           </div>
 
+          <!-- SANDARAN & IMPORT DATA -->
+          <div class="p-4 bg-slate-50 rounded-2xl border border-slate-200 space-y-3 text-xs">
+            <h5 class="font-bold text-slate-900 text-xs uppercase tracking-wider flex items-center gap-1.5">
+              <span>💾</span> Sandaran Penuh Sistem (JSON)
+            </h5>
+            <p class="text-slate-600">Simpan salinan sandaran semua 60 staf, dokumen, takwim dan profil sekolah ke dalam komputer anda.</p>
+            <div class="flex flex-wrap gap-3 pt-1">
+              <button onclick="window.adminManager.exportFullBackup()" class="px-4 py-2.5 bg-blue-700 hover:bg-blue-800 text-white rounded-xl font-bold shadow flex items-center gap-1.5">
+                <span>📥</span> Muat Turun Sandaran (JSON)
+              </button>
+              <label class="px-4 py-2.5 bg-white border border-slate-300 hover:bg-slate-100 text-slate-800 rounded-xl font-bold cursor-pointer flex items-center gap-1.5 shadow-sm">
+                <span>📤</span> Pulihkan dari Fail Sandaran
+                <input type="file" id="admImportFileInput" accept=".json" class="hidden" onchange="handleImportBackup(event)">
+              </label>
+              <button onclick="handleResetSystemData()" class="px-4 py-2.5 bg-red-50 hover:bg-red-100 text-red-700 border border-red-200 rounded-xl font-bold ml-auto">
+                ⚠️ Tetapkan Semula Data Asal
+              </button>
+            </div>
+          </div>
         </div>
 
       </div>
 
+    </div>
+  </div>
+
+  <!-- =========================================================================
+       MODAL SUNTING STAF & FOTO (DEDICATED STAFF EDIT MODAL)
+       ========================================================================= -->
+  <div id="editStaffModal" class="fixed inset-0 z-[60] bg-slate-900/80 backdrop-blur-sm flex items-center justify-center p-3 sm:p-4 hidden">
+    <div class="bg-white rounded-3xl max-w-xl w-full max-h-[92vh] overflow-y-auto shadow-2xl border border-slate-200">
+      
+      <div class="p-5 bg-gradient-to-r from-royal-950 via-slate-900 to-blue-950 text-white rounded-t-3xl flex items-center justify-between sticky top-0 z-10 shadow">
+        <div class="flex items-center gap-3">
+          <div class="w-9 h-9 rounded-xl bg-amber-400/20 text-amber-300 flex items-center justify-center text-lg font-bold border border-amber-400/30 shrink-0">
+            ✏️
+          </div>
+          <div>
+            <h3 class="font-extrabold text-sm sm:text-base text-white">Sunting Profil Guru / Staf</h3>
+            <p class="text-[11px] text-slate-300">Kemaskini nama, jawatan, gred dan foto profil</p>
+          </div>
+        </div>
+        <button onclick="closeEditStaffModal()" class="text-slate-400 hover:text-white text-2xl font-bold">&times;</button>
+      </div>
+
+      <form id="editStaffForm" class="p-5 sm:p-6 space-y-4 text-xs" onsubmit="saveEditedStaff(event)">
+        <input type="hidden" id="editStaffId">
+
+        <!-- PREVIEW & MUAT NAIK FOTO GURU -->
+        <div class="p-4 bg-slate-50 rounded-2xl border border-slate-200 flex flex-col sm:flex-row items-center gap-4">
+          <div class="w-20 h-20 rounded-2xl bg-gradient-to-tr from-blue-700 to-indigo-900 text-white flex items-center justify-center font-bold text-2xl shadow overflow-hidden shrink-0 border-2 border-white relative" id="editStaffPhotoPreviewContainer">
+            <span id="editStaffPhotoFallback">📷</span>
+            <img id="editStaffPhotoImg" src="" alt="Foto Staf" class="w-full h-full object-cover hidden">
+          </div>
+          <div class="flex-1 space-y-2 w-full text-center sm:text-left">
+            <span class="font-bold text-slate-800 text-xs block">Foto / Gambar Staf:</span>
+            <div class="flex flex-col sm:flex-row gap-2">
+              <input type="file" id="editStaffPhotoFile" accept="image/*" class="text-[11px] p-1 border rounded-lg bg-white w-full" onchange="handleStaffPhotoUpload(event)">
+              <button type="button" onclick="removeStaffPhoto()" class="px-2.5 py-1 text-red-600 bg-red-50 hover:bg-red-100 rounded-lg border border-red-200 font-semibold shrink-0">
+                Buang Foto
+              </button>
+            </div>
+            <input type="text" id="editStaffPhotoUrl" placeholder="Atau masukkan pautan URL imej (https://...)" class="w-full p-2 border rounded-lg bg-white font-mono text-[11px]" oninput="handleStaffPhotoUrlInput(event)">
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div class="sm:col-span-2">
+            <label class="block font-semibold text-slate-700 mb-1">Nama Penuh Pegawai / Guru:</label>
+            <input type="text" id="editStaffName" required class="w-full p-2.5 border rounded-xl bg-white font-bold text-slate-900 text-sm uppercase">
+          </div>
+          <div>
+            <label class="block font-semibold text-slate-700 mb-1">Jawatan / Portfolio:</label>
+            <input type="text" id="editStaffRole" required class="w-full p-2 border rounded-lg bg-white font-medium">
+          </div>
+          <div>
+            <label class="block font-semibold text-slate-700 mb-1">Gred Perjawatan:</label>
+            <input type="text" id="editStaffGrade" class="w-full p-2 border rounded-lg bg-white font-mono">
+          </div>
+          <div>
+            <label class="block font-semibold text-slate-700 mb-1">Kategori Bahagian:</label>
+            <select id="editStaffCategory" class="w-full p-2 border rounded-lg bg-white">
+              <option value="Pengurusan Tertinggi">Pengurusan Tertinggi</option>
+              <option value="Pentadbiran & Kurikulum">Pentadbiran & Kurikulum</option>
+              <option value="Hal Ehwal Murid">Hal Ehwal Murid</option>
+              <option value="Kokurikulum">Kokurikulum</option>
+              <option value="Pengurusan Petang">Pengurusan Petang</option>
+              <option value="Ketua Panitia">Ketua Panitia</option>
+              <option value="Guru Akademik">Guru Akademik</option>
+              <option value="Bimbingan & Kaunseling">Bimbingan & Kaunseling</option>
+              <option value="Pusat Sumber Sekolah">Pusat Sumber Sekolah</option>
+              <option value="Program Khas">Program Khas (Pra/Pemulihan)</option>
+              <option value="Anggota Kumpulan Pelaksana (AKP)">AKP</option>
+            </select>
+          </div>
+          <div>
+            <label class="block font-semibold text-slate-700 mb-1">Sesi Persekolahan:</label>
+            <select id="editStaffSession" class="w-full p-2 border rounded-lg bg-white">
+              <option value="Pagi">Sesi Pagi</option>
+              <option value="Petang">Sesi Petang</option>
+            </select>
+          </div>
+          <div>
+            <label class="block font-semibold text-slate-700 mb-1">Emel DELIMa / Rasmi:</label>
+            <input type="email" id="editStaffEmail" class="w-full p-2 border rounded-lg bg-white font-mono">
+          </div>
+          <div>
+            <label class="block font-semibold text-slate-700 mb-1">No. Telefon Pejabat / Peribadi:</label>
+            <input type="text" id="editStaffPhone" class="w-full p-2 border rounded-lg bg-white">
+          </div>
+          <div class="sm:col-span-2">
+            <label class="block font-semibold text-slate-700 mb-1">Bidang Tugas & Tanggungjawab:</label>
+            <textarea id="editStaffDuties" rows="2" class="w-full p-2 border rounded-lg bg-white leading-relaxed"></textarea>
+          </div>
+        </div>
+
+        <div class="pt-3 border-t flex justify-end gap-2.5">
+          <button type="button" onclick="closeEditStaffModal()" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl font-semibold">
+            Batal
+          </button>
+          <button type="submit" class="px-5 py-2 bg-royal-900 hover:bg-royal-800 text-white rounded-xl font-bold shadow flex items-center gap-1.5">
+            <span>💾</span> Simpan Perubahan Staf
+          </button>
+        </div>
+      </form>
     </div>
   </div>
 

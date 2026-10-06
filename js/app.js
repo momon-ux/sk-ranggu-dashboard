@@ -99,6 +99,13 @@ function renderSchoolHeader() {
   document.querySelectorAll(".school-address-text").forEach(el => el.textContent = `${s.address} • Tel: ${s.phone}`);
   document.querySelectorAll(".school-motto-text").forEach(el => el.textContent = `"${s.motto}"`);
   document.querySelectorAll(".school-session-text").forEach(el => el.textContent = s.academicSession);
+
+  if (s.logoUrl) {
+    document.querySelectorAll(".school-logo-img").forEach(el => el.src = s.logoUrl);
+  }
+  if (s.kpmLogoUrl) {
+    document.querySelectorAll(".kpm-logo-img").forEach(el => el.src = s.kpmLogoUrl);
+  }
 }
 
 /* ==========================================================================
@@ -795,9 +802,15 @@ function createMemberCard(member, isPrincipal = false) {
 
       <div>
         <div class="flex items-start gap-3">
-          <div class="w-12 h-12 rounded-xl bg-gradient-to-tr from-royal-800 to-blue-900 text-white flex items-center justify-center font-bold text-base shadow-sm shrink-0 border border-white">
-            ${initials}
-          </div>
+          ${member.photo && member.photo.trim() !== "" ? `
+            <div class="w-12 h-12 rounded-xl overflow-hidden shrink-0 shadow-sm border border-slate-200 bg-slate-100 flex items-center justify-center">
+              <img src="${member.photo}" alt="${member.name}" class="w-full h-full object-cover">
+            </div>
+          ` : `
+            <div class="w-12 h-12 rounded-xl bg-gradient-to-tr from-royal-800 to-blue-900 text-white flex items-center justify-center font-bold text-base shadow-sm shrink-0 border border-white">
+              ${initials}
+            </div>
+          `}
 
           <div class="min-w-0 flex-1">
             <span class="inline-block text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-md ${badgeClass} mb-1">
@@ -845,9 +858,15 @@ window.showMemberModal = function(id) {
       </div>
       <div class="space-y-4">
         <div class="p-4 bg-slate-50 rounded-xl border border-slate-200 flex items-center gap-4">
-          <div class="w-16 h-16 rounded-2xl bg-gradient-to-tr from-blue-700 to-indigo-900 text-white flex items-center justify-center font-bold text-2xl shadow">
-            ${member.name[0]}
-          </div>
+          ${member.photo && member.photo.trim() !== "" ? `
+            <div class="w-16 h-16 rounded-2xl overflow-hidden shrink-0 shadow border border-white">
+              <img src="${member.photo}" alt="${member.name}" class="w-full h-full object-cover">
+            </div>
+          ` : `
+            <div class="w-16 h-16 rounded-2xl bg-gradient-to-tr from-blue-700 to-indigo-900 text-white flex items-center justify-center font-bold text-2xl shadow shrink-0">
+              ${member.name[0]}
+            </div>
+          `}
           <div>
             <h4 class="font-bold text-slate-900 text-base">${member.name}</h4>
             <p class="text-sm font-semibold text-blue-700">${member.role}</p>
@@ -1555,14 +1574,15 @@ function setupAdminListeners() {
 }
 
 function loadAdminFormData() {
-  const s = window.SKR_DATA.school;
-  const gs = window.SKR_DATA.googleSheets;
+  const s = window.SKR_DATA.school || {};
+  const dt = (window.SKR_DATA.weeklyDutyTeachers && window.SKR_DATA.weeklyDutyTeachers[0]) || {};
 
   const setVal = (id, val) => {
     const el = document.getElementById(id);
     if (el) el.value = val || "";
   };
 
+  // 1. Profil Sekolah
   setVal("admSchoolName", s.name);
   setVal("admSchoolCode", s.code);
   setVal("admSchoolAddress", s.address);
@@ -1570,52 +1590,401 @@ function loadAdminFormData() {
   setVal("admSchoolEmail", s.email);
   setVal("admSchoolMotto", s.motto);
   setVal("admSchoolSession", s.academicSession);
-  setVal("admSheetId", gs.sheetId);
+  setVal("admSchoolLogoUrl", s.logoUrl || "");
+  setVal("admKpmLogoUrl", s.kpmLogoUrl || "");
 
+  const logoPreview = document.getElementById("admSchoolLogoPreview");
+  if (logoPreview && s.logoUrl) logoPreview.src = s.logoUrl;
+  const kpmPreview = document.getElementById("admKpmLogoPreview");
+  if (kpmPreview && s.kpmLogoUrl) kpmPreview.src = s.kpmLogoUrl;
+
+  // 2. Guru Bertugas
+  setVal("admDutyWeek", dt.weekNumber || 28);
+  setVal("admDutyDateRange", dt.dateRange || "");
+  setVal("admDutyLeader", dt.leader || "");
+  setVal("admDutyTheme", dt.theme || "");
+  setVal("admDutyMembers", (dt.members || []).join(", "));
+
+  // Render senarai berkaitan
   renderAdminStaffList();
   renderAdminDocList();
+  renderAdminAnnounceList();
+  renderAdminTakwimList();
 }
 
-// Render Senarai Staf untuk Dikelola Admin
-function renderAdminStaffList() {
+/* ==========================================================================
+   SUIS TAB PANEL ADMIN
+   ========================================================================== */
+window.toggleAdminPinVisibility = function() {
+  const pinInput = document.getElementById("adminPinInput");
+  if (!pinInput) return;
+  pinInput.type = pinInput.type === "password" ? "text" : "password";
+};
+
+window.switchAdminTab = function(tabName) {
+  // Padam aktif daripada semua butang
+  document.querySelectorAll(".adm-subtab-btn").forEach(btn => {
+    btn.classList.remove("bg-white", "text-royal-900", "shadow-sm", "font-bold");
+    btn.classList.add("text-slate-600");
+  });
+
+  const activeBtn = document.getElementById(`admTabBtn-${tabName}`);
+  if (activeBtn) {
+    activeBtn.classList.add("bg-white", "text-royal-900", "shadow-sm", "font-bold");
+    activeBtn.classList.remove("text-slate-600");
+  }
+
+  // Sembunyi semua seksyen
+  document.querySelectorAll(".adm-section-pane").forEach(sec => sec.classList.add("hidden"));
+
+  const activeSec = document.getElementById(`admSec-${tabName}`);
+  if (activeSec) activeSec.classList.remove("hidden");
+
+  if (tabName === "staff") renderAdminStaffList();
+  if (tabName === "docs") renderAdminDocList();
+  if (tabName === "announce") renderAdminAnnounceList();
+  if (tabName === "takwim") renderAdminTakwimList();
+};
+
+/* ==========================================================================
+   PENGURUSAN STAF / GURU OLEH ADMIN
+   ========================================================================== */
+window.filterAdminStaffList = function() {
+  const query = document.getElementById("admStaffSearchInput")?.value || "";
+  renderAdminStaffList(query);
+};
+
+window.toggleAddNewStaffForm = function() {
+  const formBox = document.getElementById("addNewStaffCollapse");
+  if (formBox) formBox.classList.toggle("hidden");
+};
+
+function renderAdminStaffList(filterText = "") {
   const listContainer = document.getElementById("admStaffListWrapper");
+  const countBadge = document.getElementById("admStaffCountBadge");
   if (!listContainer) return;
 
-  const members = window.SKR_DATA.organizationChart || [];
-  listContainer.innerHTML = members.map(m => `
-    <div class="flex items-center justify-between p-2.5 bg-white border border-slate-200 rounded-xl text-xs">
-      <div>
-        <h5 class="font-bold text-slate-900">${m.name}</h5>
-        <p class="text-slate-500">${m.role} • <span class="font-mono">${m.grade}</span></p>
+  const staff = window.SKR_DATA.staffList || [];
+  let filtered = staff;
+
+  if (filterText.trim() !== "") {
+    const q = filterText.toLowerCase();
+    filtered = staff.filter(s => 
+      (s.name && s.name.toLowerCase().includes(q)) ||
+      (s.role && s.role.toLowerCase().includes(q)) ||
+      (s.grade && s.grade.toLowerCase().includes(q)) ||
+      (s.category && s.category.toLowerCase().includes(q))
+    );
+  }
+
+  if (countBadge) countBadge.textContent = `${filtered.length} daripada ${staff.length} Staf`;
+
+  if (filtered.length === 0) {
+    listContainer.innerHTML = `<div class="p-6 text-center text-slate-400 bg-slate-50 rounded-xl border border-slate-200 text-xs">Tiada rekod guru sepadan carian "${filterText}".</div>`;
+    return;
+  }
+
+  listContainer.innerHTML = filtered.map(m => {
+    const initials = m.name
+      .split(" ")
+      .filter(n => !["bin", "binti", "hjh.", "haji", "encik", "puan", "cik"].includes(n.toLowerCase()))
+      .slice(0, 2)
+      .map(n => n[0])
+      .join("")
+      .toUpperCase() || "SK";
+
+    const hasPhoto = m.photo && m.photo.trim() !== "";
+    const thumbHtml = hasPhoto ? `
+      <img src="${m.photo}" alt="${m.name}" class="w-10 h-10 rounded-xl object-cover shrink-0 border border-slate-200">
+    ` : `
+      <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-blue-700 to-indigo-900 text-white flex items-center justify-center font-bold text-xs shrink-0 shadow-sm">
+        ${initials}
       </div>
-      <button onclick="deleteStaffMember('${m.id}')" class="text-red-600 hover:text-red-800 font-semibold px-2 py-1 bg-red-50 hover:bg-red-100 rounded-md border border-red-200">
-        Padam
-      </button>
-    </div>
-  `).join("");
+    `;
+
+    return `
+      <div class="p-3 bg-white border border-slate-200 rounded-xl flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs hover:border-blue-300 transition shadow-sm">
+        <div class="flex items-center gap-3 min-w-0">
+          ${thumbHtml}
+          <div class="min-w-0">
+            <h5 class="font-extrabold text-slate-900 truncate">${m.name}</h5>
+            <p class="text-blue-700 font-semibold text-[11px] truncate">${m.role}</p>
+            <div class="flex items-center gap-2 text-[10px] text-slate-500 mt-0.5">
+              <span class="font-mono bg-slate-100 px-1.5 py-0.5 rounded font-bold">${m.grade || 'DG41'}</span>
+              <span>•</span>
+              <span>${m.category}</span>
+              <span>•</span>
+              <span class="${m.session === 'Petang' ? 'text-amber-700 font-bold' : 'text-slate-600'}">${m.session || 'Pagi'}</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="flex items-center gap-2 shrink-0 self-end sm:self-auto">
+          <button type="button" onclick="openEditStaffModal('${m.id}')" class="px-3 py-1.5 bg-blue-50 hover:bg-blue-100 text-blue-800 rounded-lg border border-blue-200 font-bold text-xs transition flex items-center gap-1">
+            <span>✏️</span> Sunting & Foto
+          </button>
+          <button type="button" onclick="deleteStaffMember('${m.id}')" class="px-2.5 py-1.5 bg-red-50 hover:bg-red-100 text-red-700 rounded-lg border border-red-200 font-bold text-xs transition">
+            🗑️
+          </button>
+        </div>
+      </div>
+    `;
+  }).join("");
 }
 
-window.deleteStaffMember = function(id) {
-  if (confirm("Padamkan ahli ini daripada Carta Organisasi?")) {
-    window.adminManager.deleteOrgMember(id);
-    renderOrganizationChart();
-    renderAdminStaffList();
+// BUKA MODAL SUNTING STAF
+window.openEditStaffModal = function(id) {
+  const member = window.adminManager.getStaffById(id);
+  if (!member) {
+    alert("Maklumat pegawai/guru tidak dijumpai.");
+    return;
+  }
+
+  const setVal = (fid, v) => {
+    const el = document.getElementById(fid);
+    if (el) el.value = v || "";
+  };
+
+  setVal("editStaffId", member.id);
+  setVal("editStaffName", member.name);
+  setVal("editStaffRole", member.role);
+  setVal("editStaffGrade", member.grade || "DG41");
+  setVal("editStaffCategory", member.category || "Guru Akademik");
+  setVal("editStaffSession", member.session || "Pagi");
+  setVal("editStaffEmail", member.email || "xba3037@moe.edu.my");
+  setVal("editStaffPhone", member.phone || "089-925493");
+  setVal("editStaffDuties", member.duties || "");
+  setVal("editStaffPhotoUrl", member.photo || "");
+
+  // Kemas kini foto preview
+  const photoImg = document.getElementById("editStaffPhotoImg");
+  const fallback = document.getElementById("editStaffPhotoFallback");
+  const fileInput = document.getElementById("editStaffPhotoFile");
+  if (fileInput) fileInput.value = "";
+
+  if (member.photo && member.photo.trim() !== "") {
+    if (photoImg) {
+      photoImg.src = member.photo;
+      photoImg.classList.remove("hidden");
+    }
+    if (fallback) fallback.classList.add("hidden");
+  } else {
+    if (photoImg) photoImg.classList.add("hidden");
+    if (fallback) {
+      fallback.textContent = member.name[0] || "📷";
+      fallback.classList.remove("hidden");
+    }
+  }
+
+  const modal = document.getElementById("editStaffModal");
+  if (modal) modal.classList.remove("hidden");
+};
+
+window.closeEditStaffModal = function() {
+  const modal = document.getElementById("editStaffModal");
+  if (modal) modal.classList.add("hidden");
+};
+
+// Pengendali Muat Naik Foto Staf
+window.handleStaffPhotoUpload = function(event) {
+  const file = event.target.files && event.target.files[0];
+  if (!file) return;
+
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    const dataUrl = e.target.result;
+    const photoImg = document.getElementById("editStaffPhotoImg");
+    const fallback = document.getElementById("editStaffPhotoFallback");
+    const urlInput = document.getElementById("editStaffPhotoUrl");
+
+    if (photoImg) {
+      photoImg.src = dataUrl;
+      photoImg.classList.remove("hidden");
+    }
+    if (fallback) fallback.classList.add("hidden");
+    if (urlInput) urlInput.value = dataUrl;
+  };
+  reader.readAsDataURL(file);
+};
+
+window.handleStaffPhotoUrlInput = function(event) {
+  const url = event.target.value.trim();
+  const photoImg = document.getElementById("editStaffPhotoImg");
+  const fallback = document.getElementById("editStaffPhotoFallback");
+
+  if (url) {
+    if (photoImg) {
+      photoImg.src = url;
+      photoImg.classList.remove("hidden");
+    }
+    if (fallback) fallback.classList.add("hidden");
+  } else {
+    if (photoImg) photoImg.classList.add("hidden");
+    if (fallback) fallback.classList.remove("hidden");
   }
 };
 
-// Render Senarai Bahan di Admin
+window.removeStaffPhoto = function() {
+  const photoImg = document.getElementById("editStaffPhotoImg");
+  const fallback = document.getElementById("editStaffPhotoFallback");
+  const urlInput = document.getElementById("editStaffPhotoUrl");
+  const fileInput = document.getElementById("editStaffPhotoFile");
+
+  if (photoImg) photoImg.classList.add("hidden");
+  if (fallback) fallback.classList.remove("hidden");
+  if (urlInput) urlInput.value = "";
+  if (fileInput) fileInput.value = "";
+};
+
+// Simpan Suntingan Staf
+window.saveEditedStaff = function(event) {
+  event.preventDefault();
+  const getVal = id => document.getElementById(id)?.value || "";
+  const staffId = getVal("editStaffId");
+  if (!staffId) return;
+
+  const updatedFields = {
+    name: getVal("editStaffName").toUpperCase().trim(),
+    role: getVal("editStaffRole").trim(),
+    grade: getVal("editStaffGrade").trim(),
+    category: getVal("editStaffCategory"),
+    session: getVal("editStaffSession"),
+    email: getVal("editStaffEmail").trim(),
+    phone: getVal("editStaffPhone").trim(),
+    duties: getVal("editStaffDuties").trim(),
+    photo: getVal("editStaffPhotoUrl").trim() || null
+  };
+
+  const success = window.adminManager.updateStaffMember(staffId, updatedFields);
+  if (success) {
+    renderOrganizationChart();
+    renderAdminStaffList();
+    renderSchoolHeader();
+    closeEditStaffModal();
+    alert("Profil dan foto staf berjaya dikemaskini!");
+  } else {
+    alert("Gagal mengemaskini maklumat staf. Sila pastikan sesi pentadbir aktif.");
+  }
+};
+
+window.addNewStaffMemberFromAdmin = function() {
+  const getVal = id => document.getElementById(id)?.value || "";
+  const name = getVal("newStaffName").trim();
+  const role = getVal("newStaffRole").trim();
+
+  if (!name || !role) {
+    alert("Sila masukkan Nama dan Jawatan staf!");
+    return;
+  }
+
+  const newStaff = {
+    name: name,
+    role: role,
+    grade: getVal("newStaffGrade") || "DG41",
+    category: getVal("newStaffCategory") || "Guru Akademik",
+    session: getVal("newStaffSession") || "Pagi",
+    tier: 4,
+    email: "xba3037@moe.edu.my",
+    phone: "089-925493",
+    duties: "Pengurusan PdPc dan kurikulum sekolah."
+  };
+
+  window.adminManager.addStaffMember(newStaff);
+  renderOrganizationChart();
+  renderAdminStaffList();
+  renderExecutiveStats();
+  toggleAddNewStaffForm();
+
+  document.getElementById("newStaffName").value = "";
+  document.getElementById("newStaffRole").value = "";
+  alert("Pegawai/Guru baharu berjaya didaftarkan ke dalam sistem!");
+};
+
+window.deleteStaffMember = function(id) {
+  if (confirm("Padamkan maklumat pegawai/guru ini daripada direktori sekolah?")) {
+    window.adminManager.deleteStaffMember(id);
+    renderOrganizationChart();
+    renderAdminStaffList();
+    renderExecutiveStats();
+  }
+};
+
+/* ==========================================================================
+   PENGURUSAN PROFIL & LOGO SEKOLAH
+   ========================================================================== */
+window.handleSchoolLogoUpload = function(event, type) {
+  const file = event.target.files && event.target.files[0];
+  if (!file) return;
+
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    const dataUrl = e.target.result;
+    if (type === "school") {
+      const prev = document.getElementById("admSchoolLogoPreview");
+      if (prev) prev.src = dataUrl;
+      const urlIn = document.getElementById("admSchoolLogoUrl");
+      if (urlIn) urlIn.value = dataUrl;
+    } else {
+      const prev = document.getElementById("admKpmLogoPreview");
+      if (prev) prev.src = dataUrl;
+      const urlIn = document.getElementById("admKpmLogoUrl");
+      if (urlIn) urlIn.value = dataUrl;
+    }
+  };
+  reader.readAsDataURL(file);
+};
+
+window.handleSchoolLogoUrlInput = function(event, type) {
+  const val = event.target.value.trim();
+  if (type === "school") {
+    const prev = document.getElementById("admSchoolLogoPreview");
+    if (prev && val) prev.src = val;
+  } else {
+    const prev = document.getElementById("admKpmLogoPreview");
+    if (prev && val) prev.src = val;
+  }
+};
+
+window.saveSchoolProfileFromAdmin = function() {
+  const getVal = id => document.getElementById(id)?.value || "";
+  
+  const updated = {
+    name: getVal("admSchoolName"),
+    code: getVal("admSchoolCode"),
+    address: getVal("admSchoolAddress"),
+    phone: getVal("admSchoolPhone"),
+    email: getVal("admSchoolEmail"),
+    motto: getVal("admSchoolMotto"),
+    academicSession: getVal("admSchoolSession"),
+    logoUrl: getVal("admSchoolLogoUrl") || null,
+    kpmLogoUrl: getVal("admKpmLogoUrl") || null
+  };
+
+  window.adminManager.updateSchoolProfile(updated);
+  renderSchoolHeader();
+  alert("Maklumat profil dan logo sekolah berjaya disimpan!");
+};
+
+/* ==========================================================================
+   PENGURUSAN BAHAN & DOKUMEN
+   ========================================================================== */
 function renderAdminDocList() {
   const container = document.getElementById("admDocListWrapper");
   if (!container) return;
 
   const docs = window.SKR_DATA.documents || [];
+  if (docs.length === 0) {
+    container.innerHTML = `<div class="p-4 text-center text-slate-400 bg-white rounded-xl border border-slate-200 text-xs">Tiada bahan dimuat naik.</div>`;
+    return;
+  }
+
   container.innerHTML = docs.map(d => `
-    <div class="flex items-center justify-between p-2.5 bg-white border border-slate-200 rounded-xl text-xs">
-      <div>
-        <h5 class="font-bold text-slate-900">${d.title}</h5>
-        <p class="text-slate-500">${d.category} • ${d.panitia} (${d.size})</p>
+    <div class="flex items-center justify-between p-2.5 bg-white border border-slate-200 rounded-xl text-xs hover:border-blue-300 transition">
+      <div class="min-w-0 pr-2">
+        <h5 class="font-bold text-slate-900 truncate">${d.title}</h5>
+        <p class="text-slate-500 text-[11px] truncate">${d.category} • ${d.panitia} (${d.size})</p>
       </div>
-      <button onclick="deleteDocItem('${d.id}')" class="text-red-600 hover:text-red-800 font-semibold px-2 py-1 bg-red-50 hover:bg-red-100 rounded-md border border-red-200">
+      <button onclick="deleteDocItem('${d.id}')" class="text-red-600 hover:text-red-800 font-semibold px-2 py-1 bg-red-50 hover:bg-red-100 rounded-md border border-red-200 shrink-0">
         Padam
       </button>
     </div>
@@ -1630,7 +1999,6 @@ window.deleteDocItem = function(id) {
   }
 };
 
-// Tambah Dokumen / Bahan Baru oleh Admin
 window.addNewDocumentFromAdmin = function() {
   const title = document.getElementById("newDocTitle")?.value.trim();
   const category = document.getElementById("newDocCategory")?.value;
@@ -1643,7 +2011,6 @@ window.addNewDocumentFromAdmin = function() {
     return;
   }
 
-  // Jika pengguna memuat naik fail fizikal
   if (fileInput && fileInput.files && fileInput.files[0]) {
     const file = fileInput.files[0];
     const reader = new FileReader();
@@ -1671,14 +2038,13 @@ window.addNewDocumentFromAdmin = function() {
     return;
   }
 
-  // Jika pengguna memasukkan pautan URL
   window.adminManager.addDocument({
     title: title,
     category: category,
     panitia: panitia,
     type: "PDF",
     fileUrl: linkUrl || "#",
-    size: "Pautan Luar",
+    size: linkUrl && linkUrl.includes("drive.google.com") ? "Google Drive" : "Pautan Luar",
     uploader: "Pentadbir SK Ranggu"
   });
 
@@ -1689,56 +2055,195 @@ window.addNewDocumentFromAdmin = function() {
 };
 
 function resetDocInputs() {
-  document.getElementById("newDocTitle").value = "";
-  document.getElementById("newDocPanitia").value = "";
+  if (document.getElementById("newDocTitle")) document.getElementById("newDocTitle").value = "";
+  if (document.getElementById("newDocPanitia")) document.getElementById("newDocPanitia").value = "";
   if (document.getElementById("newDocLinkUrl")) document.getElementById("newDocLinkUrl").value = "";
   if (document.getElementById("newDocFileInput")) document.getElementById("newDocFileInput").value = "";
 }
 
-window.saveSchoolProfileFromAdmin = function() {
-  const getVal = id => document.getElementById(id)?.value || "";
-  
-  const updated = {
-    name: getVal("admSchoolName"),
-    code: getVal("admSchoolCode"),
-    address: getVal("admSchoolAddress"),
-    phone: getVal("admSchoolPhone"),
-    email: getVal("admSchoolEmail"),
-    motto: getVal("admSchoolMotto"),
-    academicSession: getVal("admSchoolSession")
-  };
+/* ==========================================================================
+   PENGURUSAN PENGUMUMAN
+   ========================================================================== */
+function renderAdminAnnounceList() {
+  const container = document.getElementById("admAnnounceListWrapper");
+  if (!container) return;
 
-  window.adminManager.updateSchoolProfile(updated);
-  renderSchoolHeader();
-  alert("Maklumat profil sekolah berjaya dikemaskini!");
-};
-
-window.addNewStaffMemberFromAdmin = function() {
-  const getVal = id => document.getElementById(id)?.value || "";
-
-  const name = getVal("newStaffName");
-  const role = getVal("newStaffRole");
-  if (!name || !role) {
-    alert("Sila masukkan Nama dan Jawatan!");
+  const list = window.SKR_DATA.announcements || [];
+  if (list.length === 0) {
+    container.innerHTML = `<div class="p-4 text-center text-slate-400 bg-white rounded-xl border border-slate-200 text-xs">Tiada pengumuman disiarkan.</div>`;
     return;
   }
 
-  const member = {
-    name: name,
-    role: role,
-    tier: parseInt(getVal("newStaffTier")) || 3,
-    grade: getVal("newStaffGrade") || "DG41",
-    category: getVal("newStaffCategory") || "Ketua Panitia",
-    email: getVal("newStaffEmail") || "xba3037@moe.edu.my",
-    phone: "089-925493",
-    duties: getVal("newStaffDuties") || "Tugas akademik dan kurikulum"
+  container.innerHTML = list.map(a => `
+    <div class="flex items-center justify-between p-2.5 bg-white border border-slate-200 rounded-xl text-xs hover:border-blue-300 transition">
+      <div class="min-w-0 pr-2">
+        <h5 class="font-bold text-slate-900 truncate">${a.title}</h5>
+        <p class="text-slate-500 text-[11px] truncate">${a.category} • ${a.date} (${a.priority})</p>
+      </div>
+      <button onclick="deleteAnnounceItem('${a.id}')" class="text-red-600 hover:text-red-800 font-semibold px-2 py-1 bg-red-50 hover:bg-red-100 rounded-md border border-red-200 shrink-0">
+        Padam
+      </button>
+    </div>
+  `).join("");
+}
+
+window.addNewAnnouncementFromAdmin = function() {
+  const getVal = id => document.getElementById(id)?.value || "";
+  const title = getVal("newAnnTitle").trim();
+  const content = getVal("newAnnContent").trim();
+
+  if (!title || !content) {
+    alert("Sila masukkan tajuk dan kandungan pengumuman!");
+    return;
+  }
+
+  window.adminManager.addAnnouncement({
+    title: title,
+    content: content,
+    priority: getVal("newAnnPriority") || "Sederhana",
+    category: getVal("newAnnCategory") || "Pentadbiran",
+    author: getVal("newAnnAuthor") || "Unit Pentadbiran",
+    date: getVal("newAnnDate") || new Date().toISOString().split("T")[0]
+  });
+
+  renderAnnouncements();
+  renderAdminAnnounceList();
+
+  document.getElementById("newAnnTitle").value = "";
+  document.getElementById("newAnnContent").value = "";
+  alert("Pengumuman berjaya disiarkan!");
+};
+
+window.deleteAnnounceItem = function(id) {
+  if (confirm("Padamkan pengumuman ini?")) {
+    window.adminManager.deleteAnnouncement(id);
+    renderAnnouncements();
+    renderAdminAnnounceList();
+  }
+};
+
+/* ==========================================================================
+   PENGURUSAN TAKWIM & GURU BERTUGAS
+   ========================================================================== */
+function renderAdminTakwimList() {
+  const container = document.getElementById("admTakwimListWrapper");
+  if (!container) return;
+
+  const events = window.SKR_DATA.takwimEvents || [];
+  if (events.length === 0) {
+    container.innerHTML = `<div class="p-4 text-center text-slate-400 bg-white rounded-xl border border-slate-200 text-xs">Tiada acara takwim berdaftar.</div>`;
+    return;
+  }
+
+  container.innerHTML = events.map(e => `
+    <div class="flex items-center justify-between p-2.5 bg-white border border-slate-200 rounded-xl text-xs hover:border-blue-300 transition">
+      <div class="min-w-0 pr-2">
+        <h5 class="font-bold text-slate-900 truncate">${e.title}</h5>
+        <p class="text-slate-500 text-[11px] truncate">${e.date} • ${e.venue} (${e.inCharge})</p>
+      </div>
+      <button onclick="deleteTakwimItem('${e.id}')" class="text-red-600 hover:text-red-800 font-semibold px-2 py-1 bg-red-50 hover:bg-red-100 rounded-md border border-red-200 shrink-0">
+        Padam
+      </button>
+    </div>
+  `).join("");
+}
+
+window.addNewTakwimFromAdmin = function() {
+  const getVal = id => document.getElementById(id)?.value || "";
+  const title = getVal("newTakwimTitle").trim();
+  const date = getVal("newTakwimDate");
+
+  if (!title || !date) {
+    alert("Sila masukkan nama acara dan tarikh!");
+    return;
+  }
+
+  window.adminManager.addTakwimEvent({
+    title: title,
+    date: date,
+    time: getVal("newTakwimTime") || "Sepanjang Hari",
+    venue: getVal("newTakwimVenue") || "SK Ranggu",
+    inCharge: getVal("newTakwimInCharge") || "Pentadbiran"
+  });
+
+  renderTakwimEvents();
+  renderAdminTakwimList();
+
+  document.getElementById("newTakwimTitle").value = "";
+  alert("Acara berjaya ditambah ke dalam takwim!");
+};
+
+window.deleteTakwimItem = function(id) {
+  if (confirm("Padamkan acara takwim ini?")) {
+    window.adminManager.deleteTakwimEvent(id);
+    renderTakwimEvents();
+    renderAdminTakwimList();
+  }
+};
+
+window.saveDutyTeachersFromAdmin = function() {
+  const getVal = id => document.getElementById(id)?.value || "";
+  const membersRaw = getVal("admDutyMembers");
+  const membersArr = membersRaw.split(",").map(m => m.trim()).filter(m => m.length > 0);
+
+  const updatedDuty = {
+    weekNumber: parseInt(getVal("admDutyWeek")) || 28,
+    dateRange: getVal("admDutyDateRange"),
+    leader: getVal("admDutyLeader"),
+    theme: getVal("admDutyTheme"),
+    members: membersArr
   };
 
-  window.adminManager.addOrgMember(member);
-  renderOrganizationChart();
-  renderAdminStaffList();
+  window.adminManager.updateWeeklyDuty(updatedDuty);
+  renderDutyTeachers();
+  alert("Jadual guru bertugas mingguan berjaya disimpan!");
+};
 
-  document.getElementById("newStaffName").value = "";
-  document.getElementById("newStaffRole").value = "";
-  alert("Pegawai/Guru berjaya ditambah ke dalam Carta Organisasi!");
+/* ==========================================================================
+   KESELAMATAN & SANDARAN
+   ========================================================================== */
+window.changeAdminPasscode = function() {
+  const cur = document.getElementById("admCurrentPin")?.value.trim();
+  const newPin = document.getElementById("admNewPin")?.value.trim();
+
+  if (!newPin || newPin.length < 4) {
+    alert("Sila masukkan Kod Akses Baharu (sekurang-kurangnya 4 aksara)!");
+    return;
+  }
+
+  const activePin = window.adminManager.getPin();
+  if (cur !== activePin && cur.toLowerCase() !== activePin.toLowerCase()) {
+    alert("Kod akses semasa tidak tepat!");
+    return;
+  }
+
+  window.adminManager.setPin(newPin);
+  document.getElementById("admCurrentPin").value = "";
+  document.getElementById("admNewPin").value = "";
+  alert(`Kod akses pentadbir berjaya ditukar kepada: ${newPin}`);
+};
+
+window.handleImportBackup = function(event) {
+  const file = event.target.files && event.target.files[0];
+  if (!file) return;
+
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    const result = window.adminManager.importBackupFile(e.target.result);
+    if (result.success) {
+      alert("Data sandaran berjaya dipulihkan! Sistem akan disegarkan.");
+      location.reload();
+    } else {
+      alert("Ralat semasa memulihkan fail sandaran: " + result.error);
+    }
+  };
+  reader.readAsText(file);
+};
+
+window.handleResetSystemData = function() {
+  if (confirm("AMARAN: Anda pasti untuk menetapkan semula semua data ke tetapan asal kilang? Semua perubahan tersimpan akan dipadam.")) {
+    window.adminManager.resetSystem();
+    alert("Sistem telah ditetapkan semula ke data asal.");
+    location.reload();
+  }
 };

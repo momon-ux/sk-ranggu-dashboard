@@ -1,6 +1,6 @@
 /**
- * MODUL PENTADBIR & PENGURUSAN TETAPAN (ADMIN PORTAL)
- * Sistem Dashboard Pengurusan Pentadbiran & Kurikulum SK Ranggu
+ * MODUL PENTADBIR & PENGURUSAN SISTEM (ADMIN PORTAL)
+ * Sistem Dashboard Pengurusan Bersepadu SK Ranggu Tawau
  * Pembangun: Mohammad Fikrey (Pentadbir Sistem)
  */
 
@@ -9,7 +9,7 @@ class AdminManager {
     this.isAuthenticated = false;
     this.storageKey = "SK_RANGGU_ADMIN_AUTH";
     this.pinKey = "SK_RANGGU_ADMIN_PIN";
-    this.defaultPin = "1234";
+    this.defaultPin = "Ts.FIKREY37";
   }
 
   checkAuth() {
@@ -18,23 +18,31 @@ class AdminManager {
   }
 
   getPin() {
-    return localStorage.getItem(this.pinKey) || this.defaultPin;
+    const stored = localStorage.getItem(this.pinKey);
+    // Jika belum ditetapkan atau jika sebelum ini guna default lama '1234', kemas kini ke Ts.FIKREY37
+    if (!stored || stored === "1234") {
+      localStorage.setItem(this.pinKey, "Ts.FIKREY37");
+      return "Ts.FIKREY37";
+    }
+    return stored;
   }
 
   setPin(newPin) {
-    if (!newPin || newPin.length < 4) return false;
-    localStorage.setItem(this.pinKey, newPin);
+    if (!newPin || newPin.trim().length < 4) return false;
+    localStorage.setItem(this.pinKey, newPin.trim());
     return true;
   }
 
   login(inputPin) {
     const currentPin = this.getPin();
-    if (inputPin === currentPin) {
+    const cleanInput = (inputPin || "").trim();
+    // Sokong padanan tepat atau padanan tanpa peka huruf besar/kecil
+    if (cleanInput === currentPin || cleanInput.toLowerCase() === currentPin.toLowerCase()) {
       this.isAuthenticated = true;
       sessionStorage.setItem(this.storageKey, "true");
       return { success: true };
     }
-    return { success: false, error: "Kata laluan PIN pentadbir tidak tepat. Sila cuba lagi." };
+    return { success: false, error: "Kod akses pentadbir tidak sah. Sila masukkan 'Ts.FIKREY37'." };
   }
 
   logout() {
@@ -42,7 +50,71 @@ class AdminManager {
     sessionStorage.removeItem(this.storageKey);
   }
 
-  // Pengurusan Profil Sekolah
+  // ==========================================
+  // PENGURUSAN WARGA STAF & GURU (60 STAF)
+  // ==========================================
+  getStaffList() {
+    return window.SKR_DATA.staffList || [];
+  }
+
+  getStaffById(id) {
+    return (window.SKR_DATA.staffList || []).find(s => String(s.id) === String(id));
+  }
+
+  updateStaffMember(id, updatedFields) {
+    if (!this.checkAuth()) return false;
+    const list = window.SKR_DATA.staffList || [];
+    const index = list.findIndex(s => String(s.id) === String(id));
+    if (index !== -1) {
+      list[index] = { ...list[index], ...updatedFields };
+      saveStoredData(window.SKR_DATA);
+      return true;
+    }
+    return false;
+  }
+
+  addStaffMember(staffData) {
+    if (!this.checkAuth()) return false;
+    if (!window.SKR_DATA.staffList) window.SKR_DATA.staffList = [];
+    
+    const newStaff = {
+      id: "staf-" + Date.now(),
+      name: (staffData.name || "Nama Guru").toUpperCase(),
+      role: staffData.role || "Guru Akademik",
+      grade: staffData.grade || "DG41",
+      category: staffData.category || "Guru Akademik",
+      session: staffData.session || "Pagi",
+      tier: parseInt(staffData.tier) || 4,
+      email: staffData.email || "guru@moe-dl.edu.my",
+      phone: staffData.phone || "089-925493",
+      ic: staffData.ic || "-",
+      type: staffData.type || "PPP",
+      duties: staffData.duties || "Menjalankan tugas pengajaran dan pembelajaran serta pengurusan sekolah.",
+      photo: staffData.photo || null
+    };
+
+    window.SKR_DATA.staffList.push(newStaff);
+    if (window.SKR_DATA.stats) {
+      window.SKR_DATA.stats.totalAllStaff = window.SKR_DATA.staffList.length;
+    }
+    saveStoredData(window.SKR_DATA);
+    return newStaff;
+  }
+
+  deleteStaffMember(id) {
+    if (!this.checkAuth()) return false;
+    if (!window.SKR_DATA.staffList) return false;
+    window.SKR_DATA.staffList = window.SKR_DATA.staffList.filter(s => String(s.id) !== String(id));
+    if (window.SKR_DATA.stats) {
+      window.SKR_DATA.stats.totalAllStaff = window.SKR_DATA.staffList.length;
+    }
+    saveStoredData(window.SKR_DATA);
+    return true;
+  }
+
+  // ==========================================
+  // PENGURUSAN PROFIL SEKOLAH & LOGO
+  // ==========================================
   updateSchoolProfile(profileData) {
     if (!this.checkAuth()) return false;
     window.SKR_DATA.school = { ...window.SKR_DATA.school, ...profileData };
@@ -50,7 +122,9 @@ class AdminManager {
     return true;
   }
 
-  // Pengurusan Dokumen / Muat Naik Bahan Kurikulum
+  // ==========================================
+  // PENGURUSAN DOKUMEN & BAHAN
+  // ==========================================
   addDocument(doc) {
     if (!this.checkAuth()) return false;
     if (!window.SKR_DATA.documents) window.SKR_DATA.documents = [];
@@ -75,55 +149,17 @@ class AdminManager {
   deleteDocument(id) {
     if (!this.checkAuth()) return false;
     if (!window.SKR_DATA.documents) return false;
-    window.SKR_DATA.documents = window.SKR_DATA.documents.filter(d => d.id !== id);
+    window.SKR_DATA.documents = window.SKR_DATA.documents.filter(d => String(d.id) !== String(id));
     saveStoredData(window.SKR_DATA);
     return true;
   }
 
-  // Pengurusan Carta Organisasi
-  addOrgMember(member) {
-    if (!this.checkAuth()) return false;
-    const newMember = {
-      id: "org-" + Date.now(),
-      tier: parseInt(member.tier) || 3,
-      role: member.role || "Guru",
-      name: member.name || "Nama Guru",
-      grade: member.grade || "DG41",
-      category: member.category || "Ketua Panitia",
-      email: member.email || "guru@moe-dl.edu.my",
-      phone: member.phone || "089-925493",
-      avatarBg: "from-blue-600 to-indigo-800",
-      duties: member.duties || "Pengurusan akademik dan kurikulum"
-    };
-    window.SKR_DATA.organizationChart.push(newMember);
-    saveStoredData(window.SKR_DATA);
-    return newMember;
-  }
-
-  updateOrgMember(id, updatedFields) {
-    if (!this.checkAuth()) return false;
-    const index = window.SKR_DATA.organizationChart.findIndex(m => m.id === id);
-    if (index !== -1) {
-      window.SKR_DATA.organizationChart[index] = {
-        ...window.SKR_DATA.organizationChart[index],
-        ...updatedFields
-      };
-      saveStoredData(window.SKR_DATA);
-      return true;
-    }
-    return false;
-  }
-
-  deleteOrgMember(id) {
-    if (!this.checkAuth()) return false;
-    window.SKR_DATA.organizationChart = window.SKR_DATA.organizationChart.filter(m => m.id !== id);
-    saveStoredData(window.SKR_DATA);
-    return true;
-  }
-
-  // Pengumuman
+  // ==========================================
+  // PENGURUSAN PENGUMUMAN
+  // ==========================================
   addAnnouncement(announcement) {
     if (!this.checkAuth()) return false;
+    if (!window.SKR_DATA.announcements) window.SKR_DATA.announcements = [];
     const newAnn = {
       id: "ann-" + Date.now(),
       title: announcement.title,
@@ -140,24 +176,57 @@ class AdminManager {
 
   deleteAnnouncement(id) {
     if (!this.checkAuth()) return false;
-    window.SKR_DATA.announcements = window.SKR_DATA.announcements.filter(a => a.id !== id);
+    if (!window.SKR_DATA.announcements) return false;
+    window.SKR_DATA.announcements = window.SKR_DATA.announcements.filter(a => String(a.id) !== String(id));
     saveStoredData(window.SKR_DATA);
     return true;
   }
 
-  // Google Sheets
-  updateGoogleSheetConfig(sheetConfig) {
+  // ==========================================
+  // PENGURUSAN TAKWIM ACARA
+  // ==========================================
+  addTakwimEvent(event) {
     if (!this.checkAuth()) return false;
-    window.SKR_DATA.googleSheets = { ...window.SKR_DATA.googleSheets, ...sheetConfig };
-    if (window.googleSheetManager) {
-      window.googleSheetManager.sheetId = sheetConfig.sheetId;
-      window.googleSheetManager.gid = sheetConfig.gid;
-    }
+    if (!window.SKR_DATA.takwimEvents) window.SKR_DATA.takwimEvents = [];
+    const newEvt = {
+      id: "tak-" + Date.now(),
+      title: event.title,
+      date: event.date || new Date().toISOString().split("T")[0],
+      time: event.time || "Sepanjang Hari",
+      venue: event.venue || "SK Ranggu",
+      inCharge: event.inCharge || "Pentadbiran",
+      status: event.status || "Akan Datang"
+    };
+    window.SKR_DATA.takwimEvents.push(newEvt);
+    saveStoredData(window.SKR_DATA);
+    return newEvt;
+  }
+
+  deleteTakwimEvent(id) {
+    if (!this.checkAuth()) return false;
+    if (!window.SKR_DATA.takwimEvents) return false;
+    window.SKR_DATA.takwimEvents = window.SKR_DATA.takwimEvents.filter(t => String(t.id) !== String(id));
     saveStoredData(window.SKR_DATA);
     return true;
   }
 
-  // Sandaran Penuh (JSON)
+  // ==========================================
+  // PENGURUSAN GURU BERTUGAS MINGGUAN
+  // ==========================================
+  updateWeeklyDuty(duty) {
+    if (!this.checkAuth()) return false;
+    if (!window.SKR_DATA.weeklyDutyTeachers) window.SKR_DATA.weeklyDutyTeachers = [];
+    window.SKR_DATA.weeklyDutyTeachers[0] = {
+      ...window.SKR_DATA.weeklyDutyTeachers[0],
+      ...duty
+    };
+    saveStoredData(window.SKR_DATA);
+    return true;
+  }
+
+  // ==========================================
+  // SANDARAN & PEMULIHAN DATA
+  // ==========================================
   exportFullBackup() {
     const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(window.SKR_DATA, null, 2));
     const downloadAnchor = document.createElement("a");
@@ -173,7 +242,7 @@ class AdminManager {
     if (!this.checkAuth()) return { success: false, error: "Akses pentadbir diperlukan" };
     try {
       const parsed = JSON.parse(jsonString);
-      if (!parsed.school || !parsed.organizationChart) {
+      if (!parsed.school || !parsed.staffList) {
         throw new Error("Fail sandaran tidak mengandungi data SK Ranggu yang sah.");
       }
       window.SKR_DATA = parsed;
