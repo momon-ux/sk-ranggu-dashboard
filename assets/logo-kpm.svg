@@ -1,0 +1,98 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 400" width="100%" height="100%">
+  <defs>
+    <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FCEE21" />
+      <stop offset="50%" stop-color="#D4AF37" />
+      <stop offset="100%" stop-color="#AA771C" />
+    </linearGradient>
+    <linearGradient id="shieldGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#FFFFFF" />
+      <stop offset="100%" stop-color="#F1F5F9" />
+    </linearGradient>
+    <filter id="dropGlow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="3" stdDeviation="4" flood-color="#000000" flood-opacity="0.25"/>
+    </filter>
+  </defs>
+
+  <!-- Group Shield & Crest -->
+  <g filter="url(#dropGlow)" transform="translate(50, 10)">
+    <!-- Crown / Star & Crescent -->
+    <g transform="translate(200, 45)">
+      <!-- Crescent -->
+      <path d="M -15,-30 A 25 25 0 1 0 15 15 A 20 20 0 1 1 -15 -30 Z" fill="url(#goldGrad)" />
+      <!-- 14-point Star -->
+      <polygon points="0,-42 3,-32 12,-37 7,-28 17,-28 9,-21 16,-14 7,-14 9,-5 0,-10 -9,-5 -7,-14 -16,-14 -9,-21 -17,-28 -7,-28 -12,-37 -3,-32" fill="url(#goldGrad)" transform="translate(18, -12) scale(0.7)"/>
+    </g>
+
+    <!-- Main Shield Outline -->
+    <path d="M 120,80 Q 200,75 280,80 Q 285,160 280,210 Q 270,260 200,300 Q 130,260 120,210 Q 115,160 120,80 Z" fill="url(#shieldGrad)" stroke="#C59B27" stroke-width="6"/>
+
+    <!-- Top Kris Section (5 Krises on Red) -->
+    <path d="M 124,84 Q 200,80 276,84 L 276,140 L 124,140 Z" fill="#DC2626"/>
+    <!-- Krises representations -->
+    <g fill="url(#goldGrad)" transform="translate(140, 92)">
+      <path d="M 8,0 L 12,22 L 14,40 L 8,42 L 2,40 L 4,22 Z" />
+      <path d="M 32,0 L 36,22 L 38,40 L 32,42 L 26,40 L 28,22 Z" />
+      <path d="M 58,0 L 62,22 L 64,40 L 58,42 L 52,40 L 54,22 Z" />
+      <path d="M 84,0 L 88,22 L 90,40 L 84,42 L 78,40 L 80,22 Z" />
+      <path d="M 110,0 L 114,22 L 116,40 L 110,42 L 104,40 L 106,22 Z" />
+    </g>
+
+    <!-- Middle 4 Quarters: Red, Black, White, Yellow -->
+    <g transform="translate(124, 140)">
+      <!-- Top Left Red -->
+      <rect x="0" y="0" width="76" height="40" fill="#DC2626"/>
+      <!-- Top Right Black -->
+      <rect x="76" y="0" width="76" height="40" fill="#1E293B"/>
+      <!-- Bottom Left White -->
+      <rect x="0" y="40" width="76" height="40" fill="#F8FAFC" stroke="#CBD5E1"/>
+      <!-- Bottom Right Yellow -->
+      <rect x="76" y="40" width="76" height="40" fill="#FACC15"/>
+    </g>
+
+    <!-- Lower Section: Sabah, Sarawak, Melaka, Bunga Raya -->
+    <g transform="translate(124, 220)">
+      <!-- Left: Pinang/Melaka Tree representation -->
+      <rect x="0" y="0" width="50" height="40" fill="#0284C7"/>
+      <circle cx="25" cy="20" r="12" fill="#E0F2FE"/>
+
+      <!-- Center: Bunga Raya Hibiscus (National Flower) -->
+      <rect x="50" y="0" width="52" height="48" fill="#FFFFFF"/>
+      <circle cx="76" cy="22" r="14" fill="#EF4444"/>
+      <circle cx="76" cy="22" r="5" fill="#FDE047"/>
+
+      <!-- Right: Sabah & Sarawak arms -->
+      <rect x="102" y="0" width="50" height="40" fill="#EAB308"/>
+      <path d="M 110,15 L 142,15 L 126,30 Z" fill="#DC2626"/>
+    </g>
+
+    <!-- Tigers (Left and Right Supporters) -->
+    <!-- Left Tiger -->
+    <g transform="translate(45, 95)">
+      <path d="M 65,30 Q 50,20 35,45 Q 20,70 30,110 Q 40,150 70,170 Q 75,120 70,80 Z" fill="#EA580C" stroke="#9A3412" stroke-width="2"/>
+      <!-- Stripes -->
+      <path d="M 40,55 Q 52,65 58,60 M 35,80 Q 50,90 62,80 M 36,110 Q 52,118 64,112" stroke="#1E293B" stroke-width="3" stroke-linecap="round"/>
+      <!-- Paw touching shield -->
+      <path d="M 68,90 Q 82,90 85,100" stroke="#EA580C" stroke-width="8" stroke-linecap="round"/>
+    </g>
+
+    <!-- Right Tiger -->
+    <g transform="translate(285, 95) scale(-1, 1) translate(-75, 0)">
+      <path d="M 65,30 Q 50,20 35,45 Q 20,70 30,110 Q 40,150 70,170 Q 75,120 70,80 Z" fill="#EA580C" stroke="#9A3412" stroke-width="2"/>
+      <!-- Stripes -->
+      <path d="M 40,55 Q 52,65 58,60 M 35,80 Q 50,90 62,80 M 36,110 Q 52,118 64,112" stroke="#1E293B" stroke-width="3" stroke-linecap="round"/>
+      <!-- Paw touching shield -->
+      <path d="M 68,90 Q 82,90 85,100" stroke="#EA580C" stroke-width="8" stroke-linecap="round"/>
+    </g>
+
+    <!-- Banner (BERSEKUTU BERTAMBAH MUTU) -->
+    <g transform="translate(85, 290)">
+      <path d="M 10,15 Q 115,-5 220,15 L 210,32 Q 115,14 20,32 Z" fill="url(#goldGrad)" stroke="#B45309" stroke-width="1.5"/>
+      <text x="115" y="24" font-family="'Plus Jakarta Sans', Arial, sans-serif" font-size="11" font-weight="900" fill="#1E293B" text-anchor="middle" letter-spacing="1.5">BERSEKUTU BERTAMBAH MUTU</text>
+    </g>
+  </g>
+
+  <!-- Text KPM -->
+  <text x="250" y="360" font-family="'Plus Jakarta Sans', Arial, sans-serif" font-size="19" font-weight="800" fill="#1E3A8A" text-anchor="middle" letter-spacing="1.5">KEMENTERIAN PENDIDIKAN MALAYSIA</text>
+  <text x="250" y="382" font-family="'Plus Jakarta Sans', Arial, sans-serif" font-size="11" font-weight="700" fill="#64748B" text-anchor="middle" letter-spacing="2">JABATAN PENDIDIKAN NEGERI SABAH</text>
+</svg>

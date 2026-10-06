@@ -1,0 +1,127 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="100%" height="100%">
+  <defs>
+    <!-- Royal Navy Gradient -->
+    <linearGradient id="skrNavy" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0F2B59" />
+      <stop offset="50%" stop-color="#091E3A" />
+      <stop offset="100%" stop-color="#040D1A" />
+    </linearGradient>
+
+    <!-- Royal Gold Gradient -->
+    <linearGradient id="skrGold" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFE885" />
+      <stop offset="40%" stop-color="#E5B834" />
+      <stop offset="80%" stop-color="#C28F1B" />
+      <stop offset="100%" stop-color="#8C5E09" />
+    </linearGradient>
+
+    <!-- Flame Red/Orange Gradient -->
+    <linearGradient id="flameGrad" x1="0%" y1="100%" x2="0%" y2="0%">
+      <stop offset="0%" stop-color="#DC2626" />
+      <stop offset="50%" stop-color="#EA580C" />
+      <stop offset="100%" stop-color="#FACC15" />
+    </linearGradient>
+
+    <!-- Shield Inner Gradient -->
+    <linearGradient id="innerShieldGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#1E3A8A" />
+      <stop offset="100%" stop-color="#0F172A" />
+    </linearGradient>
+
+    <!-- Drop Shadow Filter -->
+    <filter id="skrShadow" x="-15%" y="-15%" width="130%" height="130%">
+      <feDropShadow dx="0" dy="8" stdDeviation="8" flood-color="#000000" flood-opacity="0.35"/>
+    </filter>
+  </defs>
+
+  <g filter="url(#skrShadow)">
+    <!-- Outer Decorative Gold Laurel Wreath Rings -->
+    <circle cx="250" cy="235" r="215" fill="none" stroke="url(#skrGold)" stroke-width="4" stroke-dasharray="14 6"/>
+    <circle cx="250" cy="235" r="202" fill="none" stroke="url(#skrGold)" stroke-width="2"/>
+
+    <!-- Main Heraldic Shield Outer Frame -->
+    <path d="M 110,95 Q 250,75 390,95 Q 405,225 390,305 Q 365,395 250,445 Q 135,395 110,305 Q 95,225 110,95 Z" 
+          fill="url(#skrGold)" stroke="#684204" stroke-width="3"/>
+
+    <!-- Inner Shield Frame -->
+    <path d="M 125,110 Q 250,92 375,110 Q 388,225 375,295 Q 352,375 250,422 Q 148,375 125,295 Q 112,225 125,110 Z" 
+          fill="url(#innerShieldGrad)" stroke="url(#skrGold)" stroke-width="5"/>
+
+    <!-- Top Ribbon / School Code Badge -->
+    <g transform="translate(180, 52)">
+      <rect x="0" y="0" width="140" height="30" rx="15" fill="url(#skrGold)" stroke="#8C5E09" stroke-width="2" />
+      <text x="70" y="20" font-family="'Plus Jakarta Sans', Arial, sans-serif" font-size="13" font-weight="900" fill="#091E3A" text-anchor="middle" letter-spacing="1.5">KOD: XBA3037</text>
+    </g>
+
+    <!-- Central Graphics: Rays of Knowledge -->
+    <g opacity="0.15" stroke="#FFFFFF" stroke-width="2">
+      <line x1="250" y1="230" x2="160" y2="130"/>
+      <line x1="250" y1="230" x2="200" y2="115"/>
+      <line x1="250" y1="230" x2="250" y2="110"/>
+      <line x1="250" y1="230" x2="300" y2="115"/>
+      <line x1="250" y1="230" x2="340" y2="130"/>
+    </g>
+
+    <!-- Gear Wheel of Technology / Progress -->
+    <g transform="translate(250, 205)" stroke="url(#skrGold)" stroke-width="2">
+      <circle cx="0" cy="0" r="48" fill="#091E3A" opacity="0.9"/>
+      <!-- Gear Teeth -->
+      <path d="M -10,-55 L 10,-55 L 8,-48 L -8,-48 Z" fill="url(#skrGold)"/>
+      <path d="M -10,-55 L 10,-55 L 8,-48 L -8,-48 Z" fill="url(#skrGold)" transform="rotate(45)"/>
+      <path d="M -10,-55 L 10,-55 L 8,-48 L -8,-48 Z" fill="url(#skrGold)" transform="rotate(90)"/>
+      <path d="M -10,-55 L 10,-55 L 8,-48 L -8,-48 Z" fill="url(#skrGold)" transform="rotate(135)"/>
+      <path d="M -10,-55 L 10,-55 L 8,-48 L -8,-48 Z" fill="url(#skrGold)" transform="rotate(180)"/>
+      <path d="M -10,-55 L 10,-55 L 8,-48 L -8,-48 Z" fill="url(#skrGold)" transform="rotate(225)"/>
+      <path d="M -10,-55 L 10,-55 L 8,-48 L -8,-48 Z" fill="url(#skrGold)" transform="rotate(270)"/>
+      <path d="M -10,-55 L 10,-55 L 8,-48 L -8,-48 Z" fill="url(#skrGold)" transform="rotate(315)"/>
+      <circle cx="0" cy="0" r="32" fill="#0F2B59" stroke="url(#skrGold)" stroke-width="3"/>
+    </g>
+
+    <!-- Torch of Wisdom (Obor Ilmu) -->
+    <g transform="translate(250, 195)">
+      <!-- Torch Handle -->
+      <path d="M -9,30 L 9,30 L 6,70 L -6,70 Z" fill="url(#skrGold)" stroke="#684204" stroke-width="1.5"/>
+      <path d="M -15,22 L 15,22 L 11,32 L -11,32 Z" fill="url(#skrGold)" stroke="#684204" stroke-width="1.5"/>
+      <!-- Torch Bowl -->
+      <path d="M -22,12 Q 0,22 22,12 L 15,22 L -15,22 Z" fill="#DC2626"/>
+      <!-- Flame Layers -->
+      <path d="M 0,-48 C -24,-16 -16,6 0,12 C 16,6 24,-16 0,-48 Z" fill="url(#flameGrad)" />
+      <path d="M 0,-34 C -12,-12 -8,2 0,6 C 8,2 12,-12 0,-34 Z" fill="#FEF08A" />
+    </g>
+
+    <!-- Open Book of Knowledge (Buku Terbuka) -->
+    <g transform="translate(250, 290)">
+      <!-- Book Pages Outer -->
+      <path d="M 0,10 Q -65,-12 -110,-5 Q -105,45 0,55 Q 105,45 110,-5 Q 65,-12 0,10 Z" fill="#F8FAFC" stroke="url(#skrGold)" stroke-width="3"/>
+      <!-- Spine -->
+      <line x1="0" y1="10" x2="0" y2="55" stroke="#94A3B8" stroke-width="3"/>
+      <!-- Page Lines Left -->
+      <line x1="-95" y1="12" x2="-20" y2="20" stroke="#CBD5E1" stroke-width="2"/>
+      <line x1="-90" y1="24" x2="-20" y2="30" stroke="#CBD5E1" stroke-width="2"/>
+      <line x1="-85" y1="36" x2="-20" y2="40" stroke="#CBD5E1" stroke-width="2"/>
+      <!-- Page Lines Right -->
+      <line x1="20" y1="20" x2="95" y2="12" stroke="#CBD5E1" stroke-width="2"/>
+      <line x1="20" y1="30" x2="90" y2="24" stroke="#CBD5E1" stroke-width="2"/>
+      <line x1="20" y1="40" x2="85" y2="36" stroke="#CBD5E1" stroke-width="2"/>
+    </g>
+
+    <!-- Established Year (EST. 1973) -->
+    <g transform="translate(250, 370)">
+      <rect x="-65" y="-12" width="130" height="24" rx="12" fill="#091E3A" stroke="url(#skrGold)" stroke-width="1.5"/>
+      <text x="0" y="5" font-family="'Plus Jakarta Sans', Arial, sans-serif" font-size="12" font-weight="900" fill="url(#skrGold)" text-anchor="middle" letter-spacing="2">DITUBUHKAN 1973</text>
+    </g>
+
+    <!-- Bottom Golden Banner with School Motto -->
+    <g transform="translate(250, 435)">
+      <!-- Ribbon Tails -->
+      <path d="M -195,15 L -225,-5 L -195,-25 L -180,-2 Z" fill="#A16207" stroke="#713F12" stroke-width="1.5"/>
+      <path d="M 195,15 L 225,-5 L 195,-25 L 180,-2 Z" fill="#A16207" stroke="#713F12" stroke-width="1.5"/>
+      <!-- Main Ribbon Body -->
+      <path d="M -190,0 Q 0,-30 190,0 L 175,34 Q 0,4 0,4 Q 0,4 -175,34 Z" fill="url(#skrGold)" stroke="#854D0E" stroke-width="2.5"/>
+      <text x="0" y="16" font-family="'Plus Jakarta Sans', Arial, sans-serif" font-size="16" font-weight="900" fill="#091E3A" text-anchor="middle" letter-spacing="3.5">CITA • USAHA • JAYA</text>
+    </g>
+  </g>
+
+  <!-- School Name Arch/Header -->
+  <text x="250" y="488" font-family="'Plus Jakarta Sans', Arial, sans-serif" font-size="16" font-weight="800" fill="#0F2B59" text-anchor="middle" letter-spacing="2">SK RANGGU, TAWAU</text>
+</svg>

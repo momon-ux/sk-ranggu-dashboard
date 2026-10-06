@@ -1,0 +1,950 @@
+<!DOCTYPE html>
+<html lang="ms" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+  <title>Sistem Dashboard Pengurusan Pentadbiran & Kurikulum | SK Ranggu Tawau</title>
+  
+  <!-- Meta SEO & Identiti Rasmi -->
+  <meta name="description" content="Sistem Dashboard Bersepadu Bahagian Unit Pengurusan Pentadbiran & Kurikulum Sekolah Kebangsaan Ranggu, Peti Surat 842, 91008 Tawau, Sabah (XBA3037). Dibangunkan oleh Momon.">
+  <meta name="theme-color" content="#081b33">
+  <link rel="icon" type="image/svg+xml" href="assets/logo-sk-ranggu.svg">
+  <link rel="manifest" href="manifest.json">
+
+  <!-- Fon Eksekutif Google Fonts (Plus Jakarta Sans & Inter) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+            mono: ['"JetBrains Mono"', 'monospace'],
+          },
+          colors: {
+            royal: {
+              950: '#040d1a',
+              900: '#081b33',
+              800: '#0f2b59',
+              700: '#153a75',
+              600: '#1e3a8a',
+            },
+            gold: {
+              400: '#fbbf24',
+              500: '#f59e0b',
+              600: '#d97706',
+              700: '#b45309',
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Chart.js CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+
+  <!-- Gaya Tersuai Prestij -->
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans antialiased min-h-screen flex flex-col selection:bg-blue-600 selection:text-white">
+
+  <!-- =========================================================================
+       BAR MAKLUMAT ATAS RASMI KPM & JAM MASA NYATA
+       ========================================================================= -->
+  <div class="bg-royal-950 text-slate-300 text-xs py-2 px-4 border-b border-royal-900 no-print">
+    <div class="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-2">
+      <!-- Pengenalan Rasmi -->
+      <div class="flex items-center gap-3">
+        <span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 font-mono text-[11px] border border-emerald-500/20">
+          <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span> SISTEM DALAM TALIAN RASMI
+        </span>
+        <span class="text-slate-400 hidden md:inline">|</span>
+        <span class="text-slate-300 hidden md:inline">Kementerian Pendidikan Malaysia • PPD Tawau (Zon Balung)</span>
+      </div>
+
+      <!-- Jam & Tarikh Live -->
+      <div class="flex items-center gap-4 text-[11px]">
+        <div class="flex items-center gap-1.5 text-amber-300 font-medium">
+          <span>📅</span>
+          <span id="liveDate">Memuatkan tarikh...</span>
+        </div>
+        <span class="text-slate-600">|</span>
+        <div class="flex items-center gap-1.5 text-white font-mono font-bold">
+          <span>⏰</span>
+          <span id="liveClock">00:00:00 AM</span>
+        </div>
+        <span class="text-slate-600">|</span>
+        <!-- Pautan Pantas Admin -->
+        <button id="btnOpenAdminModal" class="text-amber-400 hover:text-amber-300 font-semibold flex items-center gap-1 bg-amber-400/10 hover:bg-amber-400/20 px-2.5 py-0.5 rounded border border-amber-400/30 transition">
+          ⚙️ Pentadbir Sistem
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- =========================================================================
+       KEPALA UTAMA BERPRESTIJ TINGGI (ROYAL HERO HEADER)
+       Susunan Betul: Logo KPM (Kiri) | Butiran Sekolah (Tengah) | Logo SK Ranggu (Kanan)
+       ========================================================================= -->
+  <header class="bg-prestige-hero text-white py-6 md:py-8 px-4 border-b-2 border-gold-500/40 shadow-xl relative">
+    <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6 relative z-10">
+      
+      <!-- LOGO KPM (KIRI) -->
+      <div class="flex items-center gap-3 shrink-0 order-1 md:order-1 text-center md:text-left">
+        <div class="w-20 h-20 md:w-24 md:h-24 bg-white/10 backdrop-blur-md p-2 rounded-2xl border border-white/20 shadow-lg flex items-center justify-center hover:scale-105 transition-transform">
+          <img src="assets/logo-kpm.svg" alt="Logo KPM & Jata Negara" class="w-full h-full object-contain filter drop-shadow">
+        </div>
+        <div class="hidden lg:block text-left">
+          <div class="text-[11px] font-bold text-amber-300 tracking-wider uppercase">KEMENTERIAN PENDIDIKAN MALAYSIA</div>
+          <div class="text-[10px] text-slate-300">Jabatan Pendidikan Negeri Sabah</div>
+          <div class="text-[10px] text-slate-400">Pejabat Pendidikan Daerah Tawau</div>
+        </div>
+      </div>
+
+      <!-- MAKLUMAT SEKOLAH & BAHAGIAN PENTADBIRAN (TENGAH) -->
+      <div class="text-center order-3 md:order-2 flex-1 max-w-2xl px-2">
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 border border-white/20 text-xs font-semibold text-amber-300 mb-2 shadow-sm">
+          <span class="w-2 h-2 rounded-full bg-amber-400"></span>
+          BAHAGIAN UNIT PENGURUSAN PENTADBIRAN & KURIKULUM
+        </div>
+        
+        <h1 class="text-2xl sm:text-3xl lg:text-4xl font-extrabold tracking-tight school-name-text text-white drop-shadow-md">
+          SEKOLAH KEBANGSAAN RANGGU
+        </h1>
+
+        <!-- Alamat Rasmi Mengikut Keperluan Pengguna -->
+        <p class="text-xs sm:text-sm text-slate-200 mt-1 font-medium school-address-text">
+          Peti Surat 842, 91008 Tawau, Sabah • Kod Sekolah: <span class="font-mono text-amber-300 font-bold school-code-text">XBA3037</span>
+        </p>
+
+        <!-- Moto & Sesi Persekolahan -->
+        <div class="mt-3 flex items-center justify-center gap-3 flex-wrap text-xs">
+          <span class="px-3 py-1 rounded-full bg-amber-500/20 text-amber-200 border border-amber-400/40 font-bold tracking-wide school-motto-text">
+            "CITA • USAHA • JAYA"
+          </span>
+          <span class="px-3 py-1 rounded-full bg-blue-500/20 text-blue-200 border border-blue-400/30 school-session-text">
+            Sesi Persekolahan 2025 / 2026
+          </span>
+        </div>
+      </div>
+
+      <!-- LOGO RASMI SK RANGGU (KANAN) -->
+      <div class="flex items-center gap-3 shrink-0 order-2 md:order-3 text-center md:text-right">
+        <div class="hidden lg:block text-right">
+          <div class="text-[11px] font-bold text-amber-300 tracking-wider uppercase">LENCANA RASMI SEKOLAH</div>
+          <div class="text-[10px] text-slate-300">Sekolah Gred A Luar Bandar</div>
+          <div class="text-[10px] text-emerald-400 font-semibold">Ditubuhkan Tahun 1973</div>
+        </div>
+        <div class="w-20 h-20 md:w-24 md:h-24 bg-white/10 backdrop-blur-md p-2 rounded-2xl border border-white/20 shadow-lg flex items-center justify-center hover:scale-105 transition-transform">
+          <img src="assets/logo-sk-ranggu.svg" alt="Lencana Rasmi SK Ranggu" class="w-full h-full object-contain filter drop-shadow">
+        </div>
+      </div>
+
+    </div>
+  </header>
+
+  <!-- =========================================================================
+       BAR NAVIGASI TAB UTAMA (RESPONSIF KACA MEWAH)
+       ========================================================================= -->
+  <nav class="nav-glass sticky top-0 z-40 shadow-sm no-print">
+    <div class="max-w-7xl mx-auto px-4 flex items-center justify-between">
+      
+      <!-- Navigasi Desktop (Pills Tabs) -->
+      <div class="hidden md:flex items-center gap-1.5 py-2.5 overflow-x-auto w-full">
+        <button data-tab-target="tab-utama" class="px-4 py-2 rounded-xl text-xs font-bold transition flex items-center gap-2 bg-blue-900 text-white shadow-sm">
+          <span>🏛️</span> Ringkasan Eksekutif
+        </button>
+        <button data-tab-target="tab-carta" class="px-4 py-2 rounded-xl text-xs font-medium text-slate-600 hover:bg-slate-100 transition flex items-center gap-2">
+          <span>👥</span> Carta Organisasi
+        </button>
+        <button data-tab-target="tab-kurikulum" class="px-4 py-2 rounded-xl text-xs font-medium text-slate-600 hover:bg-slate-100 transition flex items-center gap-2">
+          <span>📚</span> Pengurusan Kurikulum
+        </button>
+        <button data-tab-target="tab-pbd" class="px-4 py-2 rounded-xl text-xs font-medium text-slate-600 hover:bg-slate-100 transition flex items-center gap-2">
+          <span>📊</span> Analisis PBD & Data
+        </button>
+        <button data-tab-target="tab-takwim" class="px-4 py-2 rounded-xl text-xs font-medium text-slate-600 hover:bg-slate-100 transition flex items-center gap-2">
+          <span>📅</span> Takwim & Acara
+        </button>
+        <button data-tab-target="tab-sheets" class="px-4 py-2 rounded-xl text-xs font-medium text-slate-600 hover:bg-slate-100 transition flex items-center gap-2">
+          <span>🔗</span> Penyelarasan Google Sheets
+        </button>
+      </div>
+
+      <!-- Butang Hamburger Mobile -->
+      <div class="md:hidden flex items-center justify-between w-full py-3">
+        <span class="text-xs font-bold text-royal-900 flex items-center gap-1.5">
+          <span class="w-2 h-2 rounded-full bg-blue-600"></span> MENU PENGURUSAN
+        </span>
+        <button id="mobileMenuToggle" class="p-2 rounded-lg bg-slate-100 text-slate-700 hover:bg-slate-200">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+          </svg>
+        </button>
+      </div>
+
+      <!-- Butang Cetak Rasmi -->
+      <div class="hidden lg:flex items-center gap-2 shrink-0">
+        <button id="btnPrintPage" class="px-3 py-1.5 rounded-lg border border-slate-300 hover:bg-slate-100 text-slate-700 text-xs font-semibold flex items-center gap-1.5 transition">
+          🖨️ Cetak / PDF
+        </button>
+      </div>
+
+    </div>
+
+    <!-- Mobile Drawer Dropdown -->
+    <div id="mobileNavDrawer" class="hidden md:hidden border-t border-slate-200 bg-white px-4 py-3 space-y-1.5 shadow-lg">
+      <button data-tab-target="tab-utama" class="w-full text-left px-3 py-2 rounded-lg text-xs font-bold bg-blue-900 text-white flex items-center gap-2">
+        <span>🏛️</span> Ringkasan Eksekutif
+      </button>
+      <button data-tab-target="tab-carta" class="w-full text-left px-3 py-2 rounded-lg text-xs font-medium text-slate-700 hover:bg-slate-100 flex items-center gap-2">
+        <span>👥</span> Carta Organisasi Pentadbiran
+      </button>
+      <button data-tab-target="tab-kurikulum" class="w-full text-left px-3 py-2 rounded-lg text-xs font-medium text-slate-700 hover:bg-slate-100 flex items-center gap-2">
+        <span>📚</span> Pengurusan Kurikulum & Panitia
+      </button>
+      <button data-tab-target="tab-pbd" class="w-full text-left px-3 py-2 rounded-lg text-xs font-medium text-slate-700 hover:bg-slate-100 flex items-center gap-2">
+        <span>📊</span> Analisis PBD & Data Murid
+      </button>
+      <button data-tab-target="tab-takwim" class="w-full text-left px-3 py-2 rounded-lg text-xs font-medium text-slate-700 hover:bg-slate-100 flex items-center gap-2">
+        <span>📅</span> Takwim & Kalendar Aktiviti
+      </button>
+      <button data-tab-target="tab-sheets" class="w-full text-left px-3 py-2 rounded-lg text-xs font-medium text-slate-700 hover:bg-slate-100 flex items-center gap-2">
+        <span>🔗</span> Penyelarasan Google Sheets
+      </button>
+    </div>
+  </nav>
+
+  <!-- =========================================================================
+       KANDUNGAN UTAMA (TAB SECTIONS)
+       ========================================================================= -->
+  <main class="flex-1 max-w-7xl w-full mx-auto p-4 sm:p-6 lg:p-8 space-y-8 bg-watermark">
+
+    <!-- -----------------------------------------------------------------------
+         TAB 1: RINGKASAN EKSEKUTIF (DASHBOARD UTAMA)
+         ----------------------------------------------------------------------- -->
+    <section id="tab-utama" class="tab-content-section space-y-8">
+      
+      <!-- KAD STATISTIK UTAMA (EXECUTIVE KPI COUNTERS) -->
+      <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 sm:gap-4">
+        
+        <!-- Kad 1: Guru -->
+        <div class="bg-white p-4 rounded-2xl border border-slate-200/80 executive-card">
+          <div class="flex items-center justify-between text-slate-400 mb-2">
+            <span class="text-[11px] font-bold uppercase tracking-wider text-slate-500">Jumlah Guru</span>
+            <span class="text-base">👨‍🏫</span>
+          </div>
+          <div class="text-2xl sm:text-3xl font-extrabold text-royal-900" id="statTotalTeachers">42</div>
+          <div class="text-[11px] text-emerald-600 font-semibold mt-1">100% Terlatih</div>
+        </div>
+
+        <!-- Kad 2: Enrolmen Murid -->
+        <div class="bg-white p-4 rounded-2xl border border-slate-200/80 executive-card">
+          <div class="flex items-center justify-between text-slate-400 mb-2">
+            <span class="text-[11px] font-bold uppercase tracking-wider text-slate-500">Murid Berdaftar</span>
+            <span class="text-base">🎒</span>
+          </div>
+          <div class="text-2xl sm:text-3xl font-extrabold text-blue-700" id="statTotalStudents">586</div>
+          <div class="text-[11px] text-slate-500 font-medium mt-1">Tahap 1, 2 & Pra</div>
+        </div>
+
+        <!-- Kad 3: Kelas -->
+        <div class="bg-white p-4 rounded-2xl border border-slate-200/80 executive-card">
+          <div class="flex items-center justify-between text-slate-400 mb-2">
+            <span class="text-[11px] font-bold uppercase tracking-wider text-slate-500">Bil. Kelas</span>
+            <span class="text-base">🏫</span>
+          </div>
+          <div class="text-lg sm:text-xl font-extrabold text-indigo-900" id="statTotalClasses">18 (+2 Pra)</div>
+          <div class="text-[11px] text-slate-500 font-medium mt-1">Sesi Pagi & Petang</div>
+        </div>
+
+        <!-- Kad 4: Panitia -->
+        <div class="bg-white p-4 rounded-2xl border border-slate-200/80 executive-card">
+          <div class="flex items-center justify-between text-slate-400 mb-2">
+            <span class="text-[11px] font-bold uppercase tracking-wider text-slate-500">Unit Panitia</span>
+            <span class="text-base">📖</span>
+          </div>
+          <div class="text-2xl sm:text-3xl font-extrabold text-emerald-700" id="statTotalCommittees">12</div>
+          <div class="text-[11px] text-emerald-600 font-semibold mt-1">Semua Aktif</div>
+        </div>
+
+        <!-- Kad 5: Penguasaan PBD -->
+        <div class="bg-white p-4 rounded-2xl border border-slate-200/80 executive-card">
+          <div class="flex items-center justify-between text-slate-400 mb-2">
+            <span class="text-[11px] font-bold uppercase tracking-wider text-slate-500">Capaian PBD</span>
+            <span class="text-base">🎯</span>
+          </div>
+          <div class="text-2xl sm:text-3xl font-extrabold text-amber-600" id="statPbdPercent">94.8%</div>
+          <div class="text-[11px] text-amber-700 font-semibold mt-1">TP3 Hingga TP6</div>
+        </div>
+
+        <!-- Kad 6: Minggu Semasa -->
+        <div class="bg-white p-4 rounded-2xl border border-slate-200/80 executive-card">
+          <div class="flex items-center justify-between text-slate-400 mb-2">
+            <span class="text-[11px] font-bold uppercase tracking-wider text-slate-500">Kalendar Sesi</span>
+            <span class="text-base">🗓️</span>
+          </div>
+          <div class="text-xl sm:text-2xl font-extrabold text-purple-700" id="statActiveWeek">Minggu 28</div>
+          <div class="text-[11px] text-purple-600 font-semibold mt-1">Penggal 2</div>
+        </div>
+
+      </div>
+
+      <!-- SEKSYEN PENGUMUMAN PENTADBIRAN & GURU BERTUGAS MINGGUAN -->
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        
+        <!-- Ruangan Pengumuman Pentadbiran (2 Kolum) -->
+        <div class="lg:col-span-2 space-y-4">
+          <div class="flex items-center justify-between">
+            <h3 class="text-base sm:text-lg font-bold text-royal-900 flex items-center gap-2">
+              <span class="w-2.5 h-2.5 rounded-full bg-blue-700"></span>
+              Pemberitahuan Pentadbiran & Taklimat Semasa
+            </h3>
+            <span class="text-xs text-slate-500">Kemas kini langsung</span>
+          </div>
+          <div id="announcementsContainer" class="space-y-3">
+            <!-- Dimuatkan secara dinamik melalui app.js -->
+          </div>
+        </div>
+
+        <!-- Ruangan Guru Bertugas Mingguan (1 Kolum) -->
+        <div class="space-y-4">
+          <div class="flex items-center justify-between">
+            <h3 class="text-base sm:text-lg font-bold text-royal-900 flex items-center gap-2">
+              <span class="w-2.5 h-2.5 rounded-full bg-amber-500"></span>
+              Guru Bertugas Mingguan
+            </h3>
+            <span class="text-xs text-slate-500 font-mono">XBA3037</span>
+          </div>
+          <div id="dutyTeachersContainer">
+            <!-- Dimuatkan secara dinamik melalui app.js -->
+          </div>
+        </div>
+
+      </div>
+
+      <!-- VISI & MISI SEKOLAH KEBANGSAAN RANGGU -->
+      <div class="bg-gradient-to-r from-royal-900 via-royal-800 to-blue-900 rounded-3xl p-6 sm:p-8 text-white shadow-xl relative overflow-hidden">
+        <div class="relative z-10 grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
+          <div class="border-l-4 border-gold-400 pl-4">
+            <span class="text-xs font-bold uppercase tracking-widest text-amber-300">Visi Sekolah Kebangsaan Ranggu</span>
+            <h3 class="text-lg sm:text-xl font-extrabold mt-1 text-white">
+              "Kecemerlangan Dalam Semua Aspek Pendidikan"
+            </h3>
+            <p class="text-xs text-slate-300 mt-2 leading-relaxed">
+              Memacu potensi setiap murid ke tahap optimum merangkumi aspek sahsiah, kurikulum, kokurikulum dan jati diri selaras aspirasi Falsafah Pendidikan Kebangsaan.
+            </p>
+          </div>
+
+          <div class="border-l-4 border-emerald-400 pl-4">
+            <span class="text-xs font-bold uppercase tracking-widest text-emerald-300">Misi KPM & SK Ranggu</span>
+            <h3 class="text-sm sm:text-base font-bold mt-1 text-white">
+              "Melestarikan Sistem Pendidikan Yang Berkualiti Untuk Membangunkan Potensi Individu Bagi Memenuhi Aspirasi Negara"
+            </h3>
+            <p class="text-xs text-slate-300 mt-2 leading-relaxed">
+              Memastikan pengurusan pentadbiran yang berintegriti, pengajaran pembelajaran berkualiti tinggi dan penglibatan aktif komuniti serta ibu bapa.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- PAUTAN PORTAL SISTEM UTAMA KPM (SINGLE SIGN ON HUB) -->
+      <div class="space-y-4">
+        <div class="flex items-center justify-between">
+          <h3 class="text-base sm:text-lg font-bold text-royal-900 flex items-center gap-2">
+            <span class="w-2.5 h-2.5 rounded-full bg-emerald-600"></span>
+            Hab Pautan Pantas Sistem Aplikasi Rasmi KPM
+          </h3>
+          <span class="text-xs text-slate-500">Pautan Terus ke Portal Kementerian</span>
+        </div>
+        <div id="portalLinksContainer" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
+          <!-- Dimuatkan secara dinamik -->
+        </div>
+      </div>
+
+    </section>
+
+    <!-- -----------------------------------------------------------------------
+         TAB 2: CARTA ORGANISASI PENTADBIRAN & KURIKULUM
+         ----------------------------------------------------------------------- -->
+    <section id="tab-carta" class="tab-content-section hidden space-y-6">
+      
+      <!-- Bar Carian & Penapis Carta Organisasi -->
+      <div class="bg-white p-4 sm:p-5 rounded-2xl border border-slate-200/80 shadow-sm flex flex-col md:flex-row items-center justify-between gap-4">
+        <div>
+          <h2 class="text-lg font-extrabold text-royal-900">Carta Organisasi Pengurusan Pentadbiran & Kurikulum</h2>
+          <p class="text-xs text-slate-500 mt-0.5">Struktur kepimpinan instruksional SK Ranggu Sesi 2025/2026</p>
+        </div>
+
+        <div class="flex items-center gap-3 w-full md:w-auto">
+          <!-- Kotak Carian Guru -->
+          <div class="relative flex-1 md:w-64">
+            <input type="text" id="orgSearchInput" placeholder="Cari nama guru / jawatan..." class="w-full text-xs py-2 pl-8 pr-3 border border-slate-300 rounded-xl focus:ring-2 focus:ring-blue-600 focus:outline-none">
+            <span class="absolute left-2.5 top-2.5 text-slate-400 text-xs">🔍</span>
+          </div>
+
+          <!-- Penapis Kategori -->
+          <select id="orgFilterSelect" class="text-xs py-2 px-3 border border-slate-300 rounded-xl focus:ring-2 focus:ring-blue-600 focus:outline-none bg-white text-slate-700">
+            <option value="Semua">Semua Unit</option>
+            <option value="Pengurusan Tertinggi">Pengurusan Tertinggi</option>
+            <option value="Pentadbiran & Kurikulum">Pentadbiran & Kurikulum</option>
+            <option value="Hal Ehwal Murid">Hal Ehwal Murid</option>
+            <option value="Kokurikulum">Kokurikulum</option>
+            <option value="Jawatankuasa Kurikulum">Pegawai Khas Kurikulum</option>
+            <option value="Ketua Panitia">Ketua-Ketua Panitia</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Bekas Carta Organisasi Hierarki -->
+      <div id="orgChartContainer" class="space-y-8">
+        <!-- Dimuatkan secara hierarki dinamik melalui app.js -->
+      </div>
+
+    </section>
+
+    <!-- -----------------------------------------------------------------------
+         TAB 3: PENGURUSAN KURIKULUM & PANITIA
+         ----------------------------------------------------------------------- -->
+    <section id="tab-kurikulum" class="tab-content-section hidden space-y-6">
+      
+      <!-- Tajuk Seksyen Kurikulum -->
+      <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+        <div>
+          <span class="text-xs font-bold uppercase tracking-wider text-blue-700 bg-blue-50 px-2.5 py-1 rounded-md border border-blue-200">
+            Unit Kurikulum SK Ranggu
+          </span>
+          <h2 class="text-xl font-extrabold text-royal-900 mt-2">Senarai Jawatankuasa & Panitia Mata Pelajaran</h2>
+          <p class="text-xs text-slate-500 mt-0.5">Pemantauan KPI, pelaksanaan DSKP, dan pengurusan mesyuarat panitia.</p>
+        </div>
+        <div class="flex items-center gap-2">
+          <a href="#tab-sheets" onclick="document.querySelector('[data-tab-target=\'tab-sheets\']').click()" class="px-4 py-2 bg-royal-800 hover:bg-royal-900 text-white rounded-xl text-xs font-semibold shadow-sm transition flex items-center gap-2">
+            <span>🔗</span> Buka Rujukan Google Sheet
+          </a>
+        </div>
+      </div>
+
+      <!-- Grid Panitia Mata Pelajaran -->
+      <div id="committeesContainer" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+        <!-- Dimuatkan secara dinamik -->
+      </div>
+
+      <!-- Maklumat Tambahan Pengurusan Kurikulum -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        
+        <!-- Kad 1: Jadual Waktu & MMI -->
+        <div class="bg-white p-5 rounded-2xl border border-slate-200 executive-card">
+          <div class="w-10 h-10 rounded-xl bg-blue-100 text-blue-800 flex items-center justify-center font-bold text-lg mb-3">
+            ⏰
+          </div>
+          <h4 class="font-bold text-slate-900 text-base">Jadual Waktu & MMI</h4>
+          <p class="text-xs text-slate-600 mt-1 leading-relaxed">
+            Memastikan dasar <em>Melindungi Masa Instruksional (MMI)</em> dipatuhi 100%. Penyediaan jadual guru ganti (relief) dilakukan secara sistematik setiap pagi sebelum jam 7.00 pagi.
+          </p>
+          <div class="mt-4 pt-3 border-t text-xs text-blue-700 font-semibold">
+            SU Jadual Waktu: Encik Mohd Nazri bin Bakar
+          </div>
+        </div>
+
+        <!-- Kad 2: Pencerapan PdPc SKPM Standard 4 -->
+        <div class="bg-white p-5 rounded-2xl border border-slate-200 executive-card">
+          <div class="w-10 h-10 rounded-xl bg-emerald-100 text-emerald-800 flex items-center justify-center font-bold text-lg mb-3">
+            📋
+          </div>
+          <h4 class="font-bold text-slate-900 text-base">Pencerapan PdPc (SKPM Kualiti)</h4>
+          <p class="text-xs text-slate-600 mt-1 leading-relaxed">
+            Pencerapan kendiri dan pencerapan rasmi oleh barisan pentadbir dilaksanakan 2 kali setahun bagi memastikan kualiti penyampaian guru sentiasa cemerlang.
+          </p>
+          <div class="mt-4 pt-3 border-t text-xs text-emerald-700 font-semibold">
+            Fasa 1: Mac - Julai | Fasa 2: Ogos - Disember
+          </div>
+        </div>
+
+        <!-- Kad 3: Pusat Sumber Sekolah & NILAM -->
+        <div class="bg-white p-5 rounded-2xl border border-slate-200 executive-card">
+          <div class="w-10 h-10 rounded-xl bg-purple-100 text-purple-800 flex items-center justify-center font-bold text-lg mb-3">
+            📚
+          </div>
+          <h4 class="font-bold text-slate-900 text-base">Pusat Sumber & Program NILAM</h4>
+          <p class="text-xs text-slate-600 mt-1 leading-relaxed">
+            Pembudayaan amalan membaca buku fizikal dan digital melalui ID DELIMa. Sasaran 30 buah buku setahun bagi setiap murid SK Ranggu.
+          </p>
+          <div class="mt-4 pt-3 border-t text-xs text-purple-700 font-semibold">
+            Guru Perpustakaan & Media: Puan Salmah binti Ariffin
+          </div>
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- -----------------------------------------------------------------------
+         TAB 4: ANALISIS PBD & DATA MURID
+         ----------------------------------------------------------------------- -->
+    <section id="tab-pbd" class="tab-content-section hidden space-y-6">
+      
+      <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+        <div>
+          <span class="text-xs font-bold uppercase tracking-wider text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-md border border-emerald-200">
+            Pentaksiran Bilik Darjah (PBD)
+          </span>
+          <h2 class="text-xl font-extrabold text-royal-900 mt-2">Analisis Tahap Penguasaan Murid (TP1 - TP6)</h2>
+          <p class="text-xs text-slate-500 mt-0.5">Penilaian berterusan berlandaskan Dokumen Standard Kurikulum & Pentaksiran (DSKP).</p>
+        </div>
+        <div class="text-right">
+          <span class="text-2xl font-extrabold text-emerald-600">96.6%</span>
+          <span class="text-xs text-slate-500 block">Menguasai Tahap Minimum (TP3-TP6)</span>
+        </div>
+      </div>
+
+      <!-- Carta Analisis PBD Bersepadu -->
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        
+        <!-- Graf Donut PBD Keseluruhan -->
+        <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm executive-card">
+          <h4 class="font-bold text-slate-900 text-sm mb-4 flex items-center gap-2">
+            <span>🍩</span> Taburan Keseluruhan Tahap Penguasaan Murid
+          </h4>
+          <div class="h-64 relative">
+            <canvas id="pbdDonutChart"></canvas>
+          </div>
+          <div class="mt-4 pt-3 border-t text-xs text-slate-500 flex justify-between">
+            <span>Intervensi (TP1-TP2): <strong class="text-red-600">3.4%</strong></span>
+            <span>Cemerlang (TP5-TP6): <strong class="text-purple-600">36.5%</strong></span>
+          </div>
+        </div>
+
+        <!-- Graf Bar Mengikut Mata Pelajaran Utama -->
+        <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm executive-card">
+          <h4 class="font-bold text-slate-900 text-sm mb-4 flex items-center gap-2">
+            <span>📊</span> Prestasi Penguasaan Mengikut Subjek Teras
+          </h4>
+          <div class="h-64 relative">
+            <canvas id="pbdSubjectBarChart"></canvas>
+          </div>
+          <div class="mt-4 pt-3 border-t text-xs text-slate-500 flex justify-between">
+            <span>Subjek Teras: BM, BI, Matematik, Sains, P.Islam, Sejarah</span>
+            <span class="text-emerald-700 font-semibold">Status: Melepasi Sasaran</span>
+          </div>
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- -----------------------------------------------------------------------
+         TAB 5: TAKWIM & PERISTIWA KURIKULUM
+         ----------------------------------------------------------------------- -->
+    <section id="tab-takwim" class="tab-content-section hidden space-y-6">
+      
+      <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+        <div>
+          <span class="text-xs font-bold uppercase tracking-wider text-purple-700 bg-purple-50 px-2.5 py-1 rounded-md border border-purple-200">
+            Takwim Pengurusan & Akademik
+          </span>
+          <h2 class="text-xl font-extrabold text-royal-900 mt-2">Kalendar Aktiviti Kurikulum SK Ranggu</h2>
+          <p class="text-xs text-slate-500 mt-0.5">Jadual mesyuarat, peperiksaan dalaman, pentaksiran PBD, dan program akademik sekolah.</p>
+        </div>
+      </div>
+
+      <!-- Senarai Peristiwa Takwim -->
+      <div id="takwimEventsContainer" class="space-y-3">
+        <!-- Dimuatkan secara dinamik -->
+      </div>
+
+    </section>
+
+    <!-- -----------------------------------------------------------------------
+         TAB 6: PENYELARASAN GOOGLE SHEETS RASMI
+         ----------------------------------------------------------------------- -->
+    <section id="tab-sheets" class="tab-content-section hidden space-y-6">
+      
+      <!-- Panel Pengepala Google Sheets -->
+      <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div>
+          <div class="flex items-center gap-2">
+            <span class="text-xs font-bold uppercase tracking-wider text-emerald-800 bg-emerald-100 px-2.5 py-0.5 rounded-full border border-emerald-300">
+              Integrasi Google Sheets
+            </span>
+            <div id="sheetSyncStatus">
+              <span class="text-xs text-slate-400">Menyemak sambungan...</span>
+            </div>
+          </div>
+          <h2 class="text-xl font-extrabold text-royal-900 mt-1">Penyelarasan Data Kurikulum Google Sheets</h2>
+          <p class="text-xs text-slate-500 mt-0.5 font-mono">
+            ID Dokumen: <span id="displaySheetId" class="text-blue-700 font-bold">19BgxY06KSHSizUsnreZXnXNoUbf-ivhaVj9YVQ8hVdU</span> (GID: 2057996103)
+          </p>
+        </div>
+
+        <div class="flex items-center gap-2 flex-wrap">
+          <button id="btnSyncSheet" class="px-4 py-2 bg-blue-700 hover:bg-blue-800 text-white rounded-xl text-xs font-semibold shadow-sm transition flex items-center gap-1.5">
+            🔄 Segerak Sekarang
+          </button>
+          <a href="https://docs.google.com/spreadsheets/d/19BgxY06KSHSizUsnreZXnXNoUbf-ivhaVj9YVQ8hVdU/edit?gid=2057996103#gid=2057996103" target="_blank" rel="noopener noreferrer" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-xs font-semibold transition flex items-center gap-1.5 border border-slate-300">
+            ↗ Buka di Google Drive
+          </a>
+          <button onclick="window.googleSheetManager.exportToCsv()" class="px-3 py-2 bg-slate-50 hover:bg-slate-100 text-slate-700 rounded-xl text-xs font-semibold transition border border-slate-200">
+            📥 Eksport CSV
+          </button>
+        </div>
+      </div>
+
+      <!-- Kotak Paparan Kandungan Spreadsheet -->
+      <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm space-y-4">
+        <div class="flex items-center justify-between">
+          <h3 class="text-sm font-bold text-slate-800 flex items-center gap-2">
+            <span>📑</span> Paparan Data Terkini
+          </h3>
+          <span id="sheetRowCount" class="text-xs text-slate-500 font-mono">Memuatkan baris data...</span>
+        </div>
+
+        <!-- Bekas Jadual Spreadsheet Interaktif -->
+        <div id="sheetTableWrapper">
+          <!-- Kandungan table akan di-render di sini oleh app.js -->
+        </div>
+      </div>
+
+    </section>
+
+  </main>
+
+  <!-- =========================================================================
+       FOOTER RASMI DENGAN KREDIT PEMBANGUN SISTEM (MOMON)
+       ========================================================================= -->
+  <footer class="bg-royal-950 text-slate-300 pt-10 pb-6 border-t-2 border-gold-500/40 no-print mt-auto">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
+      
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8 pb-8 border-b border-royal-900">
+        
+        <!-- Kolum 1: Profil Sekolah SK Ranggu -->
+        <div>
+          <div class="flex items-center gap-3 mb-3">
+            <img src="assets/logo-sk-ranggu.svg" alt="SK Ranggu" class="w-10 h-10 object-contain">
+            <div>
+              <h4 class="font-extrabold text-white text-sm school-name-text">SEKOLAH KEBANGSAAN RANGGU</h4>
+              <p class="text-xs text-amber-400 font-mono school-code-text">KOD: XBA3037 • Gred A Luar Bandar</p>
+            </div>
+          </div>
+          <p class="text-xs text-slate-400 leading-relaxed school-address-text">
+            Peti Surat 842, 91008 Tawau, Sabah. Terletak di KM16 Jalan Apas, Tawau.
+          </p>
+          <p class="text-xs text-slate-400 mt-1">
+            Zon Balung • Pejabat Pendidikan Daerah Tawau.
+          </p>
+        </div>
+
+        <!-- Kolum 2: Visi & Aspirasi -->
+        <div>
+          <h4 class="font-bold text-white text-sm mb-3 text-amber-300">Moto & Slogan Rasmi</h4>
+          <blockquote class="text-xs italic text-slate-300 border-l-2 border-gold-400 pl-3 py-1 school-motto-text">
+            "Cita • Usaha • Jaya"
+          </blockquote>
+          <p class="text-xs text-slate-400 mt-3 leading-relaxed">
+            Sistem pengurusan maklumat digital berpusat ini dioptimumkan untuk kemudahan capaian pantas pihak pentadbir, guru, serta pemegang taruh pendidikan pada semua peranti mudah alih dan komputer.
+          </p>
+        </div>
+
+        <!-- Kolum 3: KREDIT PEMBANGUN & ARKITEK SISTEM (MOMON) -->
+        <div class="bg-royal-900/80 p-4 rounded-2xl border border-royal-800">
+          <div class="flex items-center gap-2 mb-2">
+            <span class="w-2.5 h-2.5 rounded-full bg-gold-400"></span>
+            <h4 class="font-extrabold text-amber-300 text-sm">Arkitek & Pembangun Sistem</h4>
+          </div>
+          
+          <div class="space-y-1.5 text-xs">
+            <p class="text-white font-bold text-sm flex items-center gap-1.5">
+              <span>💻</span> <span class="developer-name-text">Momon</span>
+            </p>
+            <p class="text-slate-300 text-[11px] developer-role-text">
+              Lead System Architect & Senior Developer
+            </p>
+            <p class="text-slate-400 text-[10px] developer-unit-text">
+              Bahagian Unit Pengurusan Pentadbiran & ICT SK Ranggu
+            </p>
+          </div>
+
+          <div class="mt-3 pt-2.5 border-t border-royal-800 flex items-center justify-between text-[11px]">
+            <span class="text-amber-400 font-mono text-[10px] developer-version-text">v2.5.0 Prestige Edition</span>
+            <a href="https://github.com/momon/sk-ranggu-dashboard" target="_blank" rel="noopener noreferrer" class="developer-repo-link text-blue-400 hover:text-blue-300 font-semibold underline text-[11px]">
+              GitHub Repo ↗
+            </a>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Hak Cipta Bawah -->
+      <div class="flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-500">
+        <div>
+          © 2025/2026 Unit Pengurusan Pentadbiran SK Ranggu Tawau, Sabah. Hak Cipta Terpelihara.
+        </div>
+        <div class="flex items-center gap-3">
+          <span class="text-[11px]">Sistem Responsif Penuh • Semua Peranti & Awam</span>
+          <span>•</span>
+          <button onclick="document.getElementById('btnOpenAdminModal').click()" class="text-amber-400 hover:underline">
+            Tetapan Pentadbir
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </footer>
+
+  <!-- =========================================================================
+       MODAL PENTADBIR SISTEM (ADMIN PORTAL & SETTINGS)
+       Kata Laluan Lalai: 1234
+       ========================================================================= -->
+  <div id="adminModal" class="fixed inset-0 z-50 bg-slate-900/80 backdrop-blur-sm flex items-center justify-center p-4 hidden">
+    <div class="bg-white rounded-3xl max-w-2xl w-full max-h-[90vh] overflow-y-auto shadow-2xl border border-slate-200">
+      
+      <!-- Pengepala Modal -->
+      <div class="p-6 bg-royal-950 text-white rounded-t-3xl flex items-center justify-between">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-xl bg-amber-400/20 text-amber-300 flex items-center justify-center text-xl font-bold border border-amber-400/30">
+            ⚙️
+          </div>
+          <div>
+            <h3 class="font-extrabold text-base text-white">Portal Pentadbir Sistem (Admin Settings)</h3>
+            <p class="text-xs text-slate-300">Unit Pengurusan Pentadbiran SK Ranggu Tawau</p>
+          </div>
+        </div>
+        <button id="btnCloseAdminModal" class="text-slate-400 hover:text-white text-2xl font-bold">&times;</button>
+      </div>
+
+      <!-- KOTAK LOG MASUK PIN PENTADBIR -->
+      <div id="adminLoginBox" class="p-8 text-center space-y-4">
+        <div class="w-16 h-16 bg-blue-50 text-blue-800 rounded-full flex items-center justify-center text-2xl mx-auto border border-blue-200">
+          🔐
+        </div>
+        <div>
+          <h4 class="font-bold text-slate-900 text-lg">Pengesahan Pentadbir Diperlukan</h4>
+          <p class="text-xs text-slate-500 mt-1">Sila masukkan PIN keselamatan pentadbir untuk mengakses tetapan sistem.</p>
+          <p class="text-[11px] text-amber-700 bg-amber-50 py-1 px-3 rounded-full inline-block mt-2 font-mono">PIN Lalai: 1234</p>
+        </div>
+
+        <form id="adminLoginForm" class="max-w-xs mx-auto space-y-3">
+          <input type="password" id="adminPinInput" placeholder="Masukkan PIN 4-digit" maxlength="8" class="w-full text-center text-lg tracking-widest py-3 border border-slate-300 rounded-xl font-mono focus:ring-2 focus:ring-blue-600 focus:outline-none" required autofocus>
+          <button type="submit" class="w-full py-2.5 bg-royal-900 hover:bg-royal-800 text-white font-bold rounded-xl text-xs shadow-md transition">
+            Sahkan & Buka Panel
+          </button>
+        </form>
+      </div>
+
+      <!-- KANDUNGAN PANEL PENTADBIR (BILA TELAH SAH) -->
+      <div id="adminPanelContent" class="p-6 space-y-6 hidden">
+        
+        <!-- Status Bar Admin -->
+        <div class="p-3 bg-emerald-50 border border-emerald-200 rounded-xl flex items-center justify-between text-xs text-emerald-800 font-medium">
+          <span class="flex items-center gap-1.5">
+            <span class="w-2 h-2 rounded-full bg-emerald-500"></span> Anda kini log masuk sebagai Pentadbir Sistem (Momon)
+          </span>
+          <button id="btnAdminLogout" class="text-red-600 hover:text-red-800 font-bold underline">
+            Log Keluar
+          </button>
+        </div>
+
+        <!-- TAB KECIL TETAPAN -->
+        <div class="space-y-6">
+          
+          <!-- 1. Maklumat Profil Sekolah -->
+          <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200 space-y-3">
+            <h4 class="font-bold text-slate-900 text-sm flex items-center gap-1.5">
+              <span>🏫</span> Maklumat Profil Sekolah & Alamat
+            </h4>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+              <div>
+                <label class="block text-slate-600 mb-1 font-semibold">Nama Sekolah:</label>
+                <input type="text" id="admSchoolName" class="w-full p-2 border rounded-lg bg-white">
+              </div>
+              <div>
+                <label class="block text-slate-600 mb-1 font-semibold">Kod Sekolah:</label>
+                <input type="text" id="admSchoolCode" class="w-full p-2 border rounded-lg bg-white font-mono">
+              </div>
+              <div class="sm:col-span-2">
+                <label class="block text-slate-600 mb-1 font-semibold">Alamat Rasmi:</label>
+                <input type="text" id="admSchoolAddress" class="w-full p-2 border rounded-lg bg-white">
+              </div>
+              <div>
+                <label class="block text-slate-600 mb-1 font-semibold">No. Telefon:</label>
+                <input type="text" id="admSchoolPhone" class="w-full p-2 border rounded-lg bg-white">
+              </div>
+              <div>
+                <label class="block text-slate-600 mb-1 font-semibold">Emel Rasmi:</label>
+                <input type="text" id="admSchoolEmail" class="w-full p-2 border rounded-lg bg-white font-mono">
+              </div>
+              <div>
+                <label class="block text-slate-600 mb-1 font-semibold">Moto Sekolah:</label>
+                <input type="text" id="admSchoolMotto" class="w-full p-2 border rounded-lg bg-white">
+              </div>
+              <div>
+                <label class="block text-slate-600 mb-1 font-semibold">Sesi Persekolahan:</label>
+                <input type="text" id="admSchoolSession" class="w-full p-2 border rounded-lg bg-white">
+              </div>
+            </div>
+            <div class="flex justify-end pt-2">
+              <button onclick="saveSchoolProfileFromAdmin()" class="px-4 py-2 bg-blue-700 hover:bg-blue-800 text-white rounded-xl text-xs font-semibold shadow">
+                Simpan Profil Sekolah
+              </button>
+            </div>
+          </div>
+
+          <!-- 2. Tambah Ahli Staf / Carta Organisasi -->
+          <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200 space-y-3">
+            <h4 class="font-bold text-slate-900 text-sm flex items-center gap-1.5">
+              <span>👥</span> Pengurusan Carta Organisasi
+            </h4>
+            
+            <!-- Borang Tambah Ahli Baru -->
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 text-xs bg-white p-3 rounded-xl border border-slate-200">
+              <div class="sm:col-span-2">
+                <label class="block text-slate-600 mb-0.5 font-semibold">Nama Pegawai/Guru:</label>
+                <input type="text" id="newStaffName" placeholder="Contoh: Cikgu Ahmad bin Razak" class="w-full p-1.5 border rounded-lg">
+              </div>
+              <div>
+                <label class="block text-slate-600 mb-0.5 font-semibold">Gred:</label>
+                <input type="text" id="newStaffGrade" value="DG41" class="w-full p-1.5 border rounded-lg font-mono">
+              </div>
+              <div>
+                <label class="block text-slate-600 mb-0.5 font-semibold">Jawatan / Peranan:</label>
+                <input type="text" id="newStaffRole" placeholder="Contoh: Ketua Panitia..." class="w-full p-1.5 border rounded-lg">
+              </div>
+              <div>
+                <label class="block text-slate-600 mb-0.5 font-semibold">Kategori:</label>
+                <select id="newStaffCategory" class="w-full p-1.5 border rounded-lg">
+                  <option value="Jawatankuasa Kurikulum">Jawatankuasa Kurikulum</option>
+                  <option value="Ketua Panitia">Ketua Panitia</option>
+                  <option value="Pentadbiran & Kurikulum">Pentadbiran</option>
+                  <option value="Hal Ehwal Murid">Hal Ehwal Murid</option>
+                  <option value="Kokurikulum">Kokurikulum</option>
+                </select>
+              </div>
+              <div>
+                <label class="block text-slate-600 mb-0.5 font-semibold">Tier Hierarki:</label>
+                <select id="newStaffTier" class="w-full p-1.5 border rounded-lg">
+                  <option value="3">Tier 3 (Pegawai Khas)</option>
+                  <option value="4">Tier 4 (Ketua Panitia)</option>
+                  <option value="2">Tier 2 (Penolong Kanan)</option>
+                  <option value="1">Tier 1 (Guru Besar)</option>
+                </select>
+              </div>
+              <div class="sm:col-span-3 flex justify-end pt-1">
+                <button onclick="addNewStaffMemberFromAdmin()" class="px-3 py-1.5 bg-emerald-700 hover:bg-emerald-800 text-white rounded-lg text-xs font-semibold">
+                  + Tambah Ahli
+                </button>
+              </div>
+            </div>
+
+            <!-- Senarai Ringkas Ahli dengan butang Padam -->
+            <div class="max-h-48 overflow-y-auto space-y-2" id="admStaffListWrapper">
+              <!-- Dimuatkan melalui JS -->
+            </div>
+          </div>
+
+          <!-- 3. Konfigurasi Google Sheets -->
+          <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200 space-y-3">
+            <h4 class="font-bold text-slate-900 text-sm flex items-center gap-1.5">
+              <span>📊</span> Konfigurasi Pautan Google Sheets
+            </h4>
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
+              <div class="sm:col-span-2">
+                <label class="block text-slate-600 mb-1 font-semibold">Google Sheet ID:</label>
+                <input type="text" id="admSheetId" class="w-full p-2 border rounded-lg bg-white font-mono">
+              </div>
+              <div>
+                <label class="block text-slate-600 mb-1 font-semibold">Sheet GID:</label>
+                <input type="text" id="admSheetGid" class="w-full p-2 border rounded-lg bg-white font-mono">
+              </div>
+            </div>
+            <div class="flex justify-end pt-1">
+              <button onclick="saveSheetConfigFromAdmin()" class="px-4 py-2 bg-blue-700 hover:bg-blue-800 text-white rounded-xl text-xs font-semibold shadow">
+                Simpan & Segerak Spreadsheet
+              </button>
+            </div>
+          </div>
+
+          <!-- 4. Kredit & Identiti Pembangun Sistem (Momon) -->
+          <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200 space-y-3">
+            <h4 class="font-bold text-slate-900 text-sm flex items-center gap-1.5">
+              <span>💻</span> Tetapan Kredit Pembangun Sistem (Momon)
+            </h4>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+              <div>
+                <label class="block text-slate-600 mb-1 font-semibold">Nama Pembangun:</label>
+                <input type="text" id="admDevName" class="w-full p-2 border rounded-lg bg-white">
+              </div>
+              <div>
+                <label class="block text-slate-600 mb-1 font-semibold">Jawatan / Gelaran:</label>
+                <input type="text" id="admDevRole" class="w-full p-2 border rounded-lg bg-white">
+              </div>
+              <div>
+                <label class="block text-slate-600 mb-1 font-semibold">Unit Bertugas:</label>
+                <input type="text" id="admDevUnit" class="w-full p-2 border rounded-lg bg-white">
+              </div>
+              <div>
+                <label class="block text-slate-600 mb-1 font-semibold">Pautan Repositori GitHub:</label>
+                <input type="text" id="admDevRepo" class="w-full p-2 border rounded-lg bg-white font-mono">
+              </div>
+              <div class="sm:col-span-2">
+                <label class="block text-slate-600 mb-1 font-semibold">Pernyataan Dedikasi:</label>
+                <textarea id="admDevStatement" rows="2" class="w-full p-2 border rounded-lg bg-white"></textarea>
+              </div>
+            </div>
+            <div class="flex justify-end pt-1">
+              <button onclick="saveDevCreditsFromAdmin()" class="px-4 py-2 bg-blue-700 hover:bg-blue-800 text-white rounded-xl text-xs font-semibold shadow">
+                Kemas Kini Kredit Pembangun
+              </button>
+            </div>
+          </div>
+
+          <!-- 5. Sandaran & Pemulihan Sistem (Backup & Restore) -->
+          <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200 space-y-3">
+            <h4 class="font-bold text-slate-900 text-sm flex items-center gap-1.5">
+              <span>💾</span> Sandaran & Pemulihan Data (JSON Backup)
+            </h4>
+            <p class="text-xs text-slate-500">
+              Anda boleh memuat turun fail sandaran penuh sistem untuk disimpan atau dipindahkan ke peranti lain.
+            </p>
+            <div class="flex flex-wrap items-center gap-3 pt-1">
+              <button onclick="exportSystemBackup()" class="px-4 py-2 bg-emerald-700 hover:bg-emerald-800 text-white rounded-xl text-xs font-semibold shadow transition">
+                📥 Muat Turun Sandaran (JSON)
+              </button>
+              <label class="px-4 py-2 bg-slate-200 hover:bg-slate-300 text-slate-700 rounded-xl text-xs font-semibold cursor-pointer transition">
+                📤 Pulihkan Sandaran
+                <input type="file" accept=".json" onchange="importSystemBackup(event)" class="hidden">
+              </label>
+              <button onclick="if(confirm('Adakah anda pasti ingin menetapkan semula sistem ke tetapan lalai?')) { window.adminManager.resetSystem(); location.reload(); }" class="px-3 py-2 text-red-600 hover:text-red-800 text-xs font-semibold">
+                Set Semula ke Lalai
+              </button>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+
+  <!-- =========================================================================
+       MODAL GENERIK BUTIRAN (PROFIL AHLI / IMPORT CSV MANUAL)
+       ========================================================================= -->
+  <div id="genericDetailModal" class="fixed inset-0 z-50 bg-slate-900/80 backdrop-blur-sm flex items-center justify-center p-4 hidden">
+    <div class="bg-white rounded-3xl max-w-lg w-full overflow-hidden shadow-2xl border border-slate-200" id="genericDetailModalContent">
+      <!-- Diisi secara dinamik -->
+    </div>
+  </div>
+
+  <!-- Skrip Pengaturcara Sistem -->
+  <script src="js/data.js"></script>
+  <script src="js/sheets.js"></script>
+  <script src="js/admin.js"></script>
+  <script src="js/app.js"></script>
+
+</body>
+</html>
