@@ -4,9 +4,19 @@
  * Pembangun: MOHAMMAD FIKREY BIN ABDUL GAPAR (Pentadbir Sistem)
  */
 
-document.addEventListener("DOMContentLoaded", () => {
-  initSystem();
-});
+function startApplication() {
+  try {
+    initSystem();
+  } catch (err) {
+    console.error("Ralat memulakan aplikasi:", err);
+  }
+}
+
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", startApplication);
+} else {
+  startApplication();
+}
 
 let pbdChartInstance = null;
 let pbdSubjectChartInstance = null;
@@ -133,7 +143,7 @@ function renderGateways() {
           </div>
         </div>
 
-        <button onclick="document.querySelector('[data-tab-target=\\'${item.targetTab}\\']').click()" class="mt-5 w-full py-2.5 px-3 rounded-xl ${theme.btn} text-white font-bold text-xs flex items-center justify-center gap-2 shadow-sm transition">
+        <button onclick="window.switchToTab('${item.targetTab}')" class="mt-5 w-full py-2.5 px-3 rounded-xl ${theme.btn} text-white font-bold text-xs flex items-center justify-center gap-2 shadow-sm transition">
           <span>Buka Papan ${item.title.replace('Pengurusan ', '')}</span>
           <span>→</span>
         </button>
@@ -144,49 +154,52 @@ function renderGateways() {
 window.renderGateways = renderGateways;
 
 function initSystem() {
-  updateLiveClock();
-  setInterval(updateLiveClock, 1000);
+  console.log("Memulakan Sistem Dashboard SK Ranggu...");
 
-  // Render komponen utama
-  renderSchoolHeader();
-  renderGateways();
-  renderExecutiveStats();
-  renderAnnouncements();
-  renderOrganizationChart();
-  renderStudentDemographics();
-  renderCommittees();
-  renderTakwimEvents();
-  renderDutyTeachers();
-  renderDocumentsList();
-  renderDeveloperCredits();
-  renderPortalLinks();
+  // 1. DAHULUKAN NAVIGASI & PENDENGAR PERISTIWA (PASTIKAN SEMUA BUTANG AKTIF SERTA-MERTA)
+  try { setupNavigation(); } catch(e) { console.warn("Ralat setupNavigation:", e); }
+  try { setupSearchAndFilters(); } catch(e) { console.warn("Ralat setupSearchAndFilters:", e); }
+  try { setupAdminListeners(); } catch(e) { console.warn("Ralat setupAdminListeners:", e); }
+  try { setupPwaInstallHandlers(); } catch(e) { console.warn("Ralat setupPwaInstallHandlers:", e); }
 
-  // Render Induk Besar & Prototaip
-  renderHemHierarchy();
-  renderKokoHierarchy();
-  renderSportsyncSection();
-  renderPetangHierarchy();
-  renderPortalAndSocial();
+  // 2. JAM & STATUS SISTEM
+  try {
+    updateLiveClock();
+    setInterval(updateLiveClock, 1000);
+    updateAdminUIState();
+  } catch(e) {
+    console.warn("Ralat jam/status:", e);
+  }
 
-  // Inisialisasi Google Sheets
-  initGoogleSheetsViewer();
+  // 3. RENDER KOMPONEN UTAMA DASHBOARD
+  try { renderSchoolHeader(); } catch(e) { console.warn("Ralat renderSchoolHeader:", e); }
+  try { renderGateways(); } catch(e) { console.warn("Ralat renderGateways:", e); }
+  try { renderExecutiveStats(); } catch(e) { console.warn("Ralat renderExecutiveStats:", e); }
+  try { renderAnnouncements(); } catch(e) { console.warn("Ralat renderAnnouncements:", e); }
+  try { renderOrganizationChart(); } catch(e) { console.warn("Ralat renderOrganizationChart:", e); }
+  try { renderStudentDemographics(); } catch(e) { console.warn("Ralat renderStudentDemographics:", e); }
+  try { renderCommittees(); } catch(e) { console.warn("Ralat renderCommittees:", e); }
+  try { renderTakwimEvents(); } catch(e) { console.warn("Ralat renderTakwimEvents:", e); }
+  try { renderDutyTeachers(); } catch(e) { console.warn("Ralat renderDutyTeachers:", e); }
+  try { renderDocumentsList(); } catch(e) { console.warn("Ralat renderDocumentsList:", e); }
+  try { renderDeveloperCredits(); } catch(e) { console.warn("Ralat renderDeveloperCredits:", e); }
+  try { renderPortalLinks(); } catch(e) { console.warn("Ralat renderPortalLinks:", e); }
 
-  // Inisialisasi Carta PBD
-  initPbdCharts();
+  // 4. RENDER INDUK BESAR & PROTOTYPE
+  try { renderHemHierarchy(); } catch(e) { console.warn("Ralat renderHemHierarchy:", e); }
+  try { renderKokoHierarchy(); } catch(e) { console.warn("Ralat renderKokoHierarchy:", e); }
+  try { renderSportsyncSection(); } catch(e) { console.warn("Ralat renderSportsyncSection:", e); }
+  try { renderPetangHierarchy(); } catch(e) { console.warn("Ralat renderPetangHierarchy:", e); }
+  try { renderPortalAndSocial(); } catch(e) { console.warn("Ralat renderPortalAndSocial:", e); }
 
-  // Navigasi & Pendengar Peristiwa
-  setupNavigation();
-  setupSearchAndFilters();
-  setupAdminListeners();
+  // 5. INISIALISASI PBD & SPREADSHEET
+  try { initGoogleSheetsViewer(); } catch(e) { console.warn("Ralat initGoogleSheetsViewer:", e); }
+  try { initPbdCharts(); } catch(e) { console.warn("Ralat initPbdCharts:", e); }
 
-  // Kemas kini paparan status admin (Ts.FIKREY37)
-  updateAdminUIState();
+  // 6. SERVICE WORKER PWA
+  try { initPwaServiceWorker(); } catch(e) { console.warn("Ralat initPwaServiceWorker:", e); }
 
-  // Inisialisasi Progressive Web App (PWA) & Service Worker
-  initPwaServiceWorker();
-  setupPwaInstallHandlers();
-
-  console.log("Sistem Dashboard SK Ranggu dimuatkan.");
+  console.log("Sistem Dashboard SK Ranggu sedia sepenuhnya & semua butang interaktif.");
 }
 
 /* ==========================================================================
@@ -1845,12 +1858,20 @@ function renderSportsyncSection() {
 
 function openKotPreviewModal() {
   const modal = document.getElementById("kotPreviewModal");
-  if (modal) modal.classList.remove("hidden");
+  if (modal) {
+    modal.classList.remove("hidden");
+    modal.style.display = "flex";
+    document.body.classList.add("overflow-hidden");
+  }
 }
 
 function closeKotPreviewModal() {
   const modal = document.getElementById("kotPreviewModal");
-  if (modal) modal.classList.add("hidden");
+  if (modal) {
+    modal.classList.add("hidden");
+    modal.style.display = "none";
+    document.body.classList.remove("overflow-hidden");
+  }
 }
 
 window.openKotPreviewModal = openKotPreviewModal;
@@ -2127,40 +2148,55 @@ function renderSheetPermissionGuide(errorMessage) {
 }
 
 /* ==========================================================================
-   NAVIGASI TAB
+   NAVIGASI TAB & PENUKARAN PAPARAN
    ========================================================================== */
-function setupNavigation() {
+function switchToTab(targetId) {
+  if (!targetId) return;
   const tabButtons = document.querySelectorAll("[data-tab-target]");
   const tabSections = document.querySelectorAll(".tab-content-section");
+
+  tabButtons.forEach(b => {
+    if (b.getAttribute("data-tab-target") === targetId) {
+      b.classList.add("bg-blue-900", "text-white", "font-bold", "shadow-sm");
+      b.classList.remove("text-slate-600", "hover:bg-slate-100", "font-medium");
+    } else {
+      b.classList.remove("bg-blue-900", "text-white", "font-bold", "shadow-sm");
+      b.classList.add("text-slate-600", "hover:bg-slate-100", "font-medium");
+    }
+  });
+
+  tabSections.forEach(sec => {
+    if (sec.id === targetId) {
+      sec.classList.remove("hidden");
+      sec.style.display = "block";
+      try {
+        if (targetId === "tab-murid") renderStudentDemographics();
+        if (targetId === "tab-carta") renderOrganizationChart();
+        if (targetId === "tab-hem") renderHemHierarchy();
+        if (targetId === "tab-kokurikulum") renderKokoHierarchy();
+        if (targetId === "tab-petang") renderPetangHierarchy();
+        if (targetId === "tab-portal") renderPortalAndSocial();
+        if (targetId === "tab-bahan") renderDocumentsList();
+      } catch (err) {
+        console.warn("Ralat lazy render tab:", err);
+      }
+    } else {
+      sec.classList.add("hidden");
+      sec.style.display = "none";
+    }
+  });
+
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+window.switchToTab = switchToTab;
+
+function setupNavigation() {
+  const tabButtons = document.querySelectorAll("[data-tab-target]");
 
   tabButtons.forEach(btn => {
     btn.addEventListener("click", () => {
       const targetId = btn.getAttribute("data-tab-target");
-
-      tabButtons.forEach(b => {
-        b.classList.remove("bg-blue-900", "text-white", "font-bold", "shadow-sm");
-        b.classList.add("text-slate-600", "hover:bg-slate-100", "font-medium");
-      });
-
-      btn.classList.add("bg-blue-900", "text-white", "font-bold", "shadow-sm");
-      btn.classList.remove("text-slate-600", "hover:bg-slate-100", "font-medium");
-
-      tabSections.forEach(sec => {
-        if (sec.id === targetId) {
-          sec.classList.remove("hidden");
-          if (targetId === "tab-murid") renderStudentDemographics();
-          if (targetId === "tab-carta") renderOrganizationChart();
-          if (targetId === "tab-hem") renderHemHierarchy();
-          if (targetId === "tab-kokurikulum") renderKokoHierarchy();
-          if (targetId === "tab-petang") renderPetangHierarchy();
-          if (targetId === "tab-portal") renderPortalAndSocial();
-          if (targetId === "tab-bahan") renderDocumentsList();
-        } else {
-          sec.classList.add("hidden");
-        }
-      });
-
-      window.scrollTo({ top: 0, behavior: "smooth" });
+      switchToTab(targetId);
     });
   });
 
@@ -2211,6 +2247,8 @@ function setupAdminListeners() {
   if (adminOpenBtn && adminModal) {
     adminOpenBtn.addEventListener("click", () => {
       adminModal.classList.remove("hidden");
+      adminModal.style.display = "flex";
+      document.body.classList.add("overflow-hidden");
       if (window.adminManager.checkAuth()) {
         showAdminControlPanel();
       } else {
@@ -2221,7 +2259,11 @@ function setupAdminListeners() {
 
   const closeAdminBtn = document.getElementById("btnCloseAdminModal");
   if (closeAdminBtn && adminModal) {
-    closeAdminBtn.addEventListener("click", () => adminModal.classList.add("hidden"));
+    closeAdminBtn.addEventListener("click", () => {
+      adminModal.classList.add("hidden");
+      adminModal.style.display = "none";
+      document.body.classList.remove("overflow-hidden");
+    });
   }
 
   if (adminLoginForm) {
@@ -2469,12 +2511,20 @@ window.openEditStaffModal = function(id) {
   }
 
   const modal = document.getElementById("editStaffModal");
-  if (modal) modal.classList.remove("hidden");
+  if (modal) {
+    modal.classList.remove("hidden");
+    modal.style.display = "flex";
+    document.body.classList.add("overflow-hidden");
+  }
 };
 
 window.closeEditStaffModal = function() {
   const modal = document.getElementById("editStaffModal");
-  if (modal) modal.classList.add("hidden");
+  if (modal) {
+    modal.classList.add("hidden");
+    modal.style.display = "none";
+    document.body.classList.remove("overflow-hidden");
+  }
 };
 
 // Pengendali Muat Naik Foto Staf
@@ -3010,13 +3060,19 @@ function openLiveEditModal(config) {
   }
 
   modal.classList.remove("hidden");
+  modal.style.display = "flex";
+  document.body.classList.add("overflow-hidden");
 }
 window.openLiveEditModal = openLiveEditModal;
 
 // 2. Tutup Modal Suntingan
 function closeLiveEditModal() {
   const modal = document.getElementById("universalLiveEditModal");
-  if (modal) modal.classList.add("hidden");
+  if (modal) {
+    modal.classList.add("hidden");
+    modal.style.display = "none";
+    document.body.classList.remove("overflow-hidden");
+  }
 }
 window.closeLiveEditModal = closeLiveEditModal;
 
@@ -3377,6 +3433,7 @@ function openPwaInstallModal() {
   const modal = document.getElementById("pwaInstallModal");
   if (modal) {
     modal.classList.remove("hidden");
+    modal.style.display = "flex";
     document.body.classList.add("overflow-hidden");
   }
 }
@@ -3386,6 +3443,7 @@ function closePwaInstallModal() {
   const modal = document.getElementById("pwaInstallModal");
   if (modal) {
     modal.classList.add("hidden");
+    modal.style.display = "none";
     document.body.classList.remove("overflow-hidden");
   }
 }

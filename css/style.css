@@ -17,6 +17,11 @@
   --card-border: #e2e8f0;
 }
 
+/* Jaminan Keselamatan: Elemen hidden tidak boleh sesekali menghalang klik */
+.hidden {
+  display: none !important;
+}
+
 /* Custom Scrollbars */
 ::-webkit-scrollbar {
   width: 8px;
