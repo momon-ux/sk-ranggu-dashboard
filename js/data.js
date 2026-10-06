@@ -67,8 +67,8 @@ const DEFAULT_SYSTEM_DATA = {
       photo: "assets/photos/komala-binti-joseph.jpg",
       stat1Label: "Enrolmen Murid:",
       stat1Val: "890 Murid (APDM)",
-      stat2Label: "Jawatankuasa HEM:",
-      stat2Val: "15 Portfolio Unit",
+      stat2Label: "Sistem Digital:",
+      stat2Val: "HEM SMARTTRACK",
       targetTab: "tab-hem"
     },
     koko: {
@@ -838,14 +838,14 @@ const DEFAULT_SYSTEM_DATA = {
       desc: "Portal papan markah rasmi 4 rumah sukan (Merah, Ungu, Biru, Kuning) dan keputusan atlet terbaik." 
     },
     { 
-      id: "soc-kehadiran", 
-      platform: "Sistem Pentadbiran", 
-      name: "Sistem Kehadiran Bersepadu SKRG (v20)", 
-      url: "https://fikreyxcode.github.io/sistemkehadiranskrg/?v=20#utama", 
-      icon: "📱", 
-      badge: "Ts.FIKREY37", 
+      id: "soc-hemsmarttrack", 
+      platform: "Sistem Pentadbiran & HEM", 
+      name: "HEM SMARTTRACK (SK Ranggu)", 
+      url: "https://fikreyxcode.github.io/sistemkehadiranskrg/", 
+      icon: "🛡️", 
+      badge: "HEM SMARTTRACK", 
       color: "blue", 
-      desc: "Sistem rekod kehadiran harian murid bersepadu berasaskan web dengan kawalan akses admin." 
+      desc: "Sistem e-JKM Kehadiran Murid, Keberadaan Guru & AKP, Guru Bertugas Harian, SmartDisiplin dan RMT Bersepadu." 
     },
     { 
       id: "soc-sites", 
@@ -2203,13 +2203,14 @@ const DEFAULT_SYSTEM_DATA = {
     },
     {
       id: "portal-kehadiran",
-      name: "Sistem Kehadiran Bersepadu SKRG",
-      description: "Portal sistem rekod kehadiran harian murid bersepadu dengan kawalan pentadbir Ts.FIKREY37.",
-      badge: "Sistem Khas",
-      badgeColor: "bg-amber-500/20 text-amber-300 border-amber-400/30",
-      icon: "📱",
-      url: "https://fikreyxcode.github.io/sistemkehadiranskrg/?v=20#utama",
-      type: "Sekolah"
+      name: "HEM SMARTTRACK (SK Ranggu)",
+      description: "Portal sistem rekod e-JKM kehadiran murid, keberadaan guru & AKP, guru bertugas harian dan disiplin bersepadu.",
+      badge: "HEM RASMI",
+      badgeColor: "bg-emerald-500/20 text-emerald-300 border-emerald-400/30",
+      icon: "🛡️",
+      url: "https://fikreyxcode.github.io/sistemkehadiranskrg/",
+      type: "Sekolah (Rasmi)",
+      cat: "Sistem Sekolah"
     },
     {
       id: "portal-sites",
@@ -2219,7 +2220,66 @@ const DEFAULT_SYSTEM_DATA = {
       badgeColor: "bg-indigo-500/20 text-indigo-300 border-indigo-400/30",
       icon: "🌐",
       url: "https://sites.google.com/view/skranggutawau/utama",
-      type: "Google Sites"
+      type: "Google Sites",
+      cat: "Arkib Dokumen"
+    }
+  ],
+
+  // PAUTAN PANTAS PORTAL (PORTAL LINKS UNTUK PAPAN INDUK & HAB DIGITAL)
+  portalLinks: [
+    {
+      id: "pl-delima",
+      name: "DELIMa 2.0 KPM",
+      desc: "Platform pembelajaran digital, Google Classroom & Canva.",
+      badge: "DELIMa",
+      cat: "KPM",
+      icon: "🌐",
+      url: "https://d2.delima.edu.my"
+    },
+    {
+      id: "pl-moeis",
+      name: "MOEIS / APDM",
+      desc: "Pangkalan data profil murid, e-Kehadiran dan pendaftaran.",
+      badge: "APDM",
+      cat: "KPM",
+      icon: "📊",
+      url: "https://moeis.moe.gov.my"
+    },
+    {
+      id: "pl-idme",
+      name: "IDME KPM",
+      desc: "Sistem Pengurusan Identiti & log masuk modul guru tunggal.",
+      badge: "IDME",
+      cat: "KPM",
+      icon: "🔑",
+      url: "https://idme.moe.gov.my"
+    },
+    {
+      id: "pl-hemsmarttrack",
+      name: "HEM SMARTTRACK",
+      desc: "Sistem e-JKM kehadiran murid, guru bertugas & SmartDisiplin.",
+      badge: "HEM RASMI",
+      cat: "Sekolah",
+      icon: "🛡️",
+      url: "https://fikreyxcode.github.io/sistemkehadiranskrg/"
+    },
+    {
+      id: "pl-sportsync",
+      name: "Sportsync KOT 26",
+      desc: "Portal papan markah langsung Kejohanan Olahraga SK Ranggu.",
+      badge: "SUKAN",
+      cat: "Sekolah",
+      icon: "🏆",
+      url: "https://fikreyxcode.github.io/kejohanan-olahraga-skrg/index.html?tahun=2026"
+    },
+    {
+      id: "pl-splkpm",
+      name: "SPLKPM",
+      desc: "Perekodan mata kredit latihan dalam perkhidmatan guru & AKP.",
+      badge: "SPLKPM",
+      cat: "KPM",
+      icon: "🎓",
+      url: "https://splkpm.moe.gov.my"
     }
   ],
 

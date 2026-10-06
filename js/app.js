@@ -143,10 +143,23 @@ function renderGateways() {
           </div>
         </div>
 
-        <button onclick="window.switchToTab('${item.targetTab}')" class="mt-5 w-full py-2.5 px-3 rounded-xl ${theme.btn} text-white font-bold text-xs flex items-center justify-center gap-2 shadow-sm transition">
-          <span>Buka Papan ${item.title.replace('Pengurusan ', '')}</span>
-          <span>→</span>
-        </button>
+        <div class="mt-5 space-y-2">
+          <button onclick="window.switchToTab('${item.targetTab}')" class="w-full py-2.5 px-3 rounded-xl ${theme.btn} text-white font-bold text-xs flex items-center justify-center gap-2 shadow-sm transition">
+            <span>Buka Papan ${item.title.replace('Pengurusan ', '')}</span>
+            <span>→</span>
+          </button>
+          ${k === 'hem' ? `
+            <button type="button" onclick="event.stopPropagation(); window.openHemSmartTrackModal()" class="w-full py-2 px-3 rounded-xl bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border border-emerald-300 font-extrabold text-xs flex items-center justify-center gap-1.5 transition">
+              <span>🛡️</span>
+              <span>Buka HEM SmartTrack ↗</span>
+            </button>
+          ` : k === 'koko' ? `
+            <button type="button" onclick="event.stopPropagation(); window.openKotPreviewModal()" class="w-full py-2 px-3 rounded-xl bg-rose-50 hover:bg-rose-100 text-rose-800 border border-rose-300 font-extrabold text-xs flex items-center justify-center gap-1.5 transition">
+              <span>🏆</span>
+              <span>Pratonton KOT 26 ↗</span>
+            </button>
+          ` : ''}
+        </div>
       </div>
     `;
   }).join("");
@@ -1343,8 +1356,14 @@ function renderDutyTeachers() {
           </span>
           <h4 class="font-extrabold text-slate-900 text-base mt-2">${activeDuty.dateRange || '06 Okt 2026 - 10 Okt 2026'}</h4>
         </div>
-        <div class="text-xs text-slate-500 sm:text-right">
-          Tema: <strong class="text-amber-800 bg-amber-50 px-2.5 py-1 rounded-md border border-amber-200 inline-block mt-1 sm:mt-0">${activeDuty.theme || 'Kebersihan Diri & Persekitaran Sekolah'}</strong>
+        <div class="flex items-center gap-2.5 flex-wrap sm:justify-end">
+          <div class="text-xs text-slate-500">
+            Tema: <strong class="text-amber-800 bg-amber-50 px-2.5 py-1 rounded-md border border-amber-200 inline-block">${activeDuty.theme || 'Kebersihan Diri & Persekitaran Sekolah'}</strong>
+          </div>
+          <button type="button" onclick="window.openHemSmartTrackModal()" class="px-3 py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs flex items-center gap-1.5 shadow-sm transition" title="Buka e-JKM & Rekod Kehadiran Harian">
+            <span>🛡️</span>
+            <span>HEM SmartTrack (e-JKM) ↗</span>
+          </button>
         </div>
       </div>
 
@@ -1392,19 +1411,22 @@ function renderPortalLinks() {
   const container = document.getElementById("portalLinksContainer");
   if (!container) return;
 
-  const links = window.SKR_DATA.portalLinks || [];
-  container.innerHTML = links.map(l => `
-    <a href="${l.url}" target="_blank" rel="noopener noreferrer" class="p-4 bg-white rounded-xl border border-slate-200 executive-card flex items-start justify-between group">
-      <div>
-        <div class="flex items-center gap-2 mb-1">
-          <span class="text-[10px] font-bold px-2 py-0.5 rounded bg-blue-100 text-blue-800">${l.badge}</span>
-          <h4 class="font-bold text-slate-900 group-hover:text-blue-700 transition">${l.name}</h4>
+  const links = window.SKR_DATA.portalLinks || window.SKR_DATA.externalPortals || [];
+  container.innerHTML = links.map(l => {
+    const isHem = (l.id && l.id.includes("hemsmarttrack")) || (l.url && l.url.includes("sistemkehadiranskrg")) || (l.name && l.name.includes("HEM SMARTTRACK"));
+    return `
+      <a href="${l.url}" ${isHem ? 'onclick="if(!event.ctrlKey&&!event.metaKey){event.preventDefault();window.openHemSmartTrackModal();}"' : ''} target="_blank" rel="noopener noreferrer" class="p-4 bg-white rounded-xl border ${isHem ? 'border-emerald-400 ring-2 ring-emerald-500/20' : 'border-slate-200'} executive-card flex items-start justify-between group hover:border-blue-400 transition">
+        <div>
+          <div class="flex items-center gap-2 mb-1">
+            <span class="text-[10px] font-bold px-2 py-0.5 rounded ${isHem ? 'bg-emerald-100 text-emerald-800' : 'bg-blue-100 text-blue-800'}">${l.badge || 'Portal'}</span>
+            <h4 class="font-bold text-slate-900 group-hover:text-blue-700 transition">${l.name}</h4>
+          </div>
+          <p class="text-xs text-slate-500 leading-snug">${l.desc || l.description || ''}</p>
         </div>
-        <p class="text-xs text-slate-500 leading-snug">${l.desc}</p>
-      </div>
-      <span class="text-slate-400 group-hover:text-blue-600 transition text-sm">↗</span>
-    </a>
-  `).join("");
+        <span class="text-slate-400 group-hover:text-blue-600 transition text-sm">↗</span>
+      </a>
+    `;
+  }).join("");
 }
 
 /* ==========================================================================
@@ -1877,6 +1899,31 @@ function closeKotPreviewModal() {
 window.openKotPreviewModal = openKotPreviewModal;
 window.closeKotPreviewModal = closeKotPreviewModal;
 
+function openHemSmartTrackModal() {
+  const modal = document.getElementById("hemSmartTrackModal");
+  if (modal) {
+    modal.classList.remove("hidden");
+    modal.style.display = "flex";
+    document.body.classList.add("overflow-hidden");
+    const iframe = document.getElementById("hemSmartTrackIframe");
+    if (iframe && (!iframe.src || iframe.src === "about:blank")) {
+      iframe.src = "https://fikreyxcode.github.io/sistemkehadiranskrg/";
+    }
+  }
+}
+
+function closeHemSmartTrackModal() {
+  const modal = document.getElementById("hemSmartTrackModal");
+  if (modal) {
+    modal.classList.add("hidden");
+    modal.style.display = "none";
+    document.body.classList.remove("overflow-hidden");
+  }
+}
+
+window.openHemSmartTrackModal = openHemSmartTrackModal;
+window.closeHemSmartTrackModal = closeHemSmartTrackModal;
+
 /* ==========================================================================
    RENDER INDUK BESAR SIDANG PETANG 2026 (JADUAL & PENYELARAS)
    ========================================================================== */
@@ -1944,47 +1991,67 @@ function renderPetangHierarchy() {
 function renderPortalAndSocial() {
   const portalsContainer = document.getElementById("portalsGridContainer");
   if (portalsContainer) {
-    const portals = window.SKR_DATA.portalLinks || [];
-    portalsContainer.innerHTML = portals.map(p => `
-      <a href="${p.url}" target="_blank" rel="noopener noreferrer" class="p-4 bg-slate-50 hover:bg-blue-50/50 rounded-2xl border border-slate-200 hover:border-blue-300 transition shadow-sm executive-card flex flex-col justify-between group">
-        <div>
-          <div class="flex items-center justify-between mb-2">
-            <span class="text-[10px] font-extrabold uppercase px-2 py-0.5 rounded bg-blue-100 text-blue-800">${p.cat}</span>
-            <span class="text-xl">${p.icon || '🌐'}</span>
+    const portals = window.SKR_DATA.externalPortals || window.SKR_DATA.portalLinks || [];
+    portalsContainer.innerHTML = portals.map(p => {
+      const isHem = (p.id && (p.id.includes("kehadiran") || p.id.includes("hemsmarttrack"))) || (p.name && p.name.includes("HEM SMARTTRACK"));
+      return `
+        <div class="p-4 bg-slate-50 hover:bg-blue-50/50 rounded-2xl border ${isHem ? 'border-emerald-400 ring-2 ring-emerald-500/20 bg-emerald-50/30' : 'border-slate-200'} hover:border-blue-300 transition shadow-sm executive-card flex flex-col justify-between group">
+          <div>
+            <div class="flex items-center justify-between mb-2">
+              <span class="text-[10px] font-extrabold uppercase px-2 py-0.5 rounded ${isHem ? 'bg-emerald-100 text-emerald-800 border border-emerald-300' : 'bg-blue-100 text-blue-800'}">${p.badge || p.cat || 'Portal'}</span>
+              <span class="text-xl">${p.icon || '🌐'}</span>
+            </div>
+            <h4 class="font-extrabold text-slate-900 group-hover:text-blue-700 transition text-sm">${p.name}</h4>
+            <p class="text-xs text-slate-500 mt-1 leading-snug">${p.desc || p.description || ''}</p>
           </div>
-          <h4 class="font-extrabold text-slate-900 group-hover:text-blue-700 transition text-sm">${p.name}</h4>
-          <p class="text-xs text-slate-500 mt-1 leading-snug">${p.desc}</p>
+          <div class="mt-3 pt-2 border-t border-slate-200/80 flex items-center justify-between gap-2">
+            <a href="${p.url}" target="_blank" rel="noopener noreferrer" class="text-xs ${isHem ? 'text-emerald-700 font-extrabold' : 'text-blue-700 font-semibold'} hover:underline flex items-center gap-1">
+              <span>Buka Portal</span>
+              <span class="text-sm">↗</span>
+            </a>
+            ${isHem ? `
+              <button type="button" onclick="window.openHemSmartTrackModal()" class="px-2.5 py-1 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-[11px] shadow-sm transition">
+                Pratonton
+              </button>
+            ` : ''}
+          </div>
         </div>
-        <div class="mt-3 pt-2 border-t border-slate-200/80 flex items-center justify-between text-xs text-blue-700 font-semibold group-hover:underline">
-          <span>Buka Portal</span>
-          <span class="text-sm">↗</span>
-        </div>
-      </a>
-    `).join("");
+      `;
+    }).join("");
   }
 
   const socialContainer = document.getElementById("socialLinksGrid");
   if (socialContainer) {
     const socials = window.SKR_DATA.socialLinks || [];
-    socialContainer.innerHTML = socials.map(s => `
-      <a href="${s.url}" target="_blank" rel="noopener noreferrer" class="p-5 rounded-2xl border border-slate-200 hover:border-blue-400 bg-slate-50 hover:bg-white transition shadow-sm executive-card flex items-start gap-4 group">
-        <div class="w-12 h-12 rounded-2xl ${s.color === 'blue' ? 'bg-blue-600 text-white' : 'bg-slate-900 text-white'} flex items-center justify-center text-2xl shrink-0 shadow-md">
-          ${s.icon}
-        </div>
-        <div class="flex-1 min-w-0">
-          <div class="flex items-center gap-2 mb-1">
-            <span class="text-[10px] font-bold px-2 py-0.5 rounded bg-slate-200 text-slate-700 uppercase">${s.badge}</span>
-            <span class="text-xs text-slate-400 font-medium">${s.platform}</span>
+    socialContainer.innerHTML = socials.map(s => {
+      const isHem = s.id && (s.id.includes("kehadiran") || s.id.includes("hemsmarttrack"));
+      return `
+        <div class="p-5 rounded-2xl border ${isHem ? 'border-emerald-400 bg-emerald-50/40' : 'border-slate-200 bg-slate-50'} hover:border-blue-400 hover:bg-white transition shadow-sm executive-card flex items-start gap-4 group">
+          <div class="w-12 h-12 rounded-2xl ${isHem ? 'bg-emerald-600 text-white' : s.color === 'blue' ? 'bg-blue-600 text-white' : 'bg-slate-900 text-white'} flex items-center justify-center text-2xl shrink-0 shadow-md">
+            ${s.icon}
           </div>
-          <h4 class="font-extrabold text-slate-900 group-hover:text-blue-700 transition text-base">${s.name}</h4>
-          <p class="text-xs text-slate-500 mt-1 leading-relaxed">${s.desc}</p>
-          <div class="mt-2.5 inline-flex items-center gap-1.5 text-xs font-bold text-blue-600 group-hover:underline">
-            <span>Layari Saluran</span>
-            <span>↗</span>
+          <div class="flex-1 min-w-0">
+            <div class="flex items-center gap-2 mb-1">
+              <span class="text-[10px] font-bold px-2 py-0.5 rounded ${isHem ? 'bg-emerald-100 text-emerald-800' : 'bg-slate-200 text-slate-700'} uppercase">${s.badge}</span>
+              <span class="text-xs text-slate-400 font-medium">${s.platform}</span>
+            </div>
+            <h4 class="font-extrabold text-slate-900 group-hover:text-blue-700 transition text-base">${s.name}</h4>
+            <p class="text-xs text-slate-500 mt-1 leading-relaxed">${s.desc}</p>
+            <div class="mt-3 flex items-center gap-3">
+              <a href="${s.url}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1.5 text-xs font-bold ${isHem ? 'text-emerald-700' : 'text-blue-600'} hover:underline">
+                <span>Layari Saluran</span>
+                <span>↗</span>
+              </a>
+              ${isHem ? `
+                <button type="button" onclick="window.openHemSmartTrackModal()" class="px-2.5 py-1 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs shadow-sm transition">
+                  Pratonton Sistem
+                </button>
+              ` : ''}
+            </div>
           </div>
         </div>
-      </a>
-    `).join("");
+      `;
+    }).join("");
   }
 }
 

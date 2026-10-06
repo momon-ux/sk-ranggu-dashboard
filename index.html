@@ -98,6 +98,12 @@
           <span id="liveClock">00:00:00 AM</span>
         </div>
         <span class="text-slate-600">|</span>
+        <button id="btnOpenHemSmartTrack" onclick="window.openHemSmartTrackModal()" class="text-emerald-300 hover:text-white font-bold flex items-center gap-1 bg-emerald-500/10 hover:bg-emerald-500/20 px-2 sm:px-2.5 py-0.5 sm:py-1 rounded-full border border-emerald-400/30 transition text-[10px] sm:text-xs" title="Buka Sistem HEM SmartTrack SK Ranggu (e-JKM & Kehadiran)">
+          <span>🛡️</span>
+          <span class="hidden sm:inline">HEM SmartTrack</span>
+          <span class="sm:hidden">HEM</span>
+        </button>
+        <span class="text-slate-600">|</span>
         <button id="btnPwaInstall" onclick="window.openPwaInstallModal()" class="text-sky-300 hover:text-white font-bold flex items-center gap-1 bg-sky-500/10 hover:bg-sky-500/20 px-2 sm:px-2.5 py-0.5 sm:py-1 rounded-full border border-sky-400/30 transition text-[10px] sm:text-xs" title="Pasang Aplikasi PWA pada Telefon atau Komputer">
           <span>📱</span>
           <span class="hidden sm:inline">Pasang PWA</span>
@@ -289,6 +295,13 @@
       <button data-tab-target="tab-sheets" class="w-full text-left px-3 py-2 rounded-lg text-xs font-medium text-slate-700 hover:bg-slate-100 flex items-center gap-2">
         <span>🔗</span> Pangkalan Data Spreadsheet
       </button>
+
+      <div class="pt-2 border-t border-slate-200">
+        <button type="button" onclick="window.openHemSmartTrackModal()" class="w-full text-center px-3 py-2.5 rounded-xl text-xs font-extrabold bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white flex items-center justify-center gap-2 shadow-md transition">
+          <span>🛡️</span>
+          <span>Buka HEM SmartTrack (e-JKM & Kehadiran) ↗</span>
+        </button>
+      </div>
     </div>
   </nav>
 
@@ -877,6 +890,55 @@
             <span class="text-xs text-slate-300 block font-medium">Murid Layak RMT & Susu</span>
             <div class="text-xl sm:text-2xl font-extrabold text-purple-300 mt-0.5">184 Murid</div>
             <span class="text-[10px] text-slate-300">Bantuan Pemakanan KPM</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- =========================================================================
+           SEKSYEN KHAS: HEM SMARTTRACK • SISTEM PENGURUSAN & KEHADIRAN RASMI SK RANGGU
+           Rujukan Rasmi: fikreyxcode.github.io/sistemkehadiranskrg
+           ========================================================================= -->
+      <div class="bg-gradient-to-r from-royal-950 via-emerald-950 to-slate-900 rounded-3xl p-6 sm:p-8 text-white shadow-xl border-2 border-emerald-500/40 relative overflow-hidden">
+        <div class="relative z-10 flex flex-col lg:flex-row lg:items-center justify-between gap-6">
+          <div>
+            <div class="flex items-center gap-2 flex-wrap mb-2">
+              <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/20 border border-emerald-400/40 text-xs font-bold text-emerald-300">
+                <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                HEM SMARTTRACK
+              </span>
+              <span class="px-3 py-1 rounded-full bg-teal-500/20 border border-teal-400/30 text-xs font-bold text-teal-200">
+                SISTEM KEHADIRAN BERSEPADU
+              </span>
+              <span class="px-3 py-1 rounded-full bg-amber-500/20 border border-amber-400/30 text-xs font-bold text-amber-300">
+                SESI 2026
+              </span>
+            </div>
+
+            <h2 class="text-2xl sm:text-3xl font-extrabold tracking-tight text-white drop-shadow">
+              HEM SmartTrack SK Ranggu
+            </h2>
+            <p class="text-sm text-slate-300 mt-1 max-w-2xl font-medium">
+              Sistem Pengurusan e-JKM Kehadiran Murid, Keberadaan Guru & AKP, Guru Bertugas Harian, HEM SmartDisiplin, Rekod RMT, dan Pemantauan Bersepadu Sekolah.
+            </p>
+
+            <div class="mt-4 flex items-center gap-3 flex-wrap text-xs text-slate-300">
+              <span>Penaung: <strong class="text-white">Yunus bin Patarai</strong> (Guru Besar)</span>
+              <span>•</span>
+              <span>Pengerusi: <strong class="text-white">Komala binti Joseph</strong> (PK HEM)</span>
+              <span>•</span>
+              <span>Pembangun Sistem: <strong class="text-emerald-300">Mohammad Fikrey bin Abdul Gapar</strong></span>
+            </div>
+          </div>
+
+          <div class="flex items-center gap-3 shrink-0 flex-wrap">
+            <a href="https://fikreyxcode.github.io/sistemkehadiranskrg/" target="_blank" rel="noopener noreferrer" class="px-4 py-2.5 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-400 hover:to-teal-400 text-slate-950 font-extrabold text-xs flex items-center gap-2 shadow-lg transition transform hover:-translate-y-0.5">
+              <span>🌐</span>
+              <span>Buka HEM SmartTrack (Tab Baharu) ↗</span>
+            </a>
+            <button type="button" onclick="window.openHemSmartTrackModal()" class="px-3.5 py-2.5 rounded-xl bg-white/10 hover:bg-white/20 text-white font-bold text-xs border border-white/20 flex items-center gap-2 transition">
+              <span>👁️</span>
+              <span>Pratonton Dalam Halaman</span>
+            </button>
           </div>
         </div>
       </div>
@@ -2058,6 +2120,41 @@
 
   <div id="genericDetailModal" class="fixed inset-0 z-50 bg-slate-900/80 backdrop-blur-sm hidden items-center justify-center p-4" style="display: none;">
     <div class="bg-white rounded-3xl max-w-lg w-full overflow-hidden shadow-2xl border border-slate-200" id="genericDetailModalContent"></div>
+  </div>
+
+  <!-- =========================================================================
+       MODAL PRATONTON INTERAKTIF HEM SMARTTRACK (SK RANGGU)
+       Rujukan Rasmi: fikreyxcode.github.io/sistemkehadiranskrg
+       ========================================================================= -->
+  <div id="hemSmartTrackModal" class="fixed inset-0 z-50 bg-slate-900/80 backdrop-blur-sm hidden items-center justify-center p-2 sm:p-4" style="display: none;">
+    <div class="bg-white rounded-3xl max-w-5xl w-full h-[92vh] flex flex-col overflow-hidden shadow-2xl border border-emerald-500/40">
+      <div class="bg-gradient-to-r from-royal-950 via-emerald-950 to-slate-950 text-white p-4 flex items-center justify-between border-b border-emerald-900/50">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-xl bg-emerald-500/20 border border-emerald-400/30 flex items-center justify-center text-xl shadow-inner">
+            <span>🛡️</span>
+          </div>
+          <div>
+            <div class="flex items-center gap-2">
+              <h3 class="font-extrabold text-sm sm:text-base text-white">HEM SMARTTRACK • SK Ranggu</h3>
+              <span class="px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-400/30 text-[10px] font-bold">RASMI 2026</span>
+            </div>
+            <p class="text-xs text-emerald-300 font-mono">fikreyxcode.github.io/sistemkehadiranskrg</p>
+          </div>
+        </div>
+        <div class="flex items-center gap-2">
+          <a href="https://fikreyxcode.github.io/sistemkehadiranskrg/" target="_blank" rel="noopener noreferrer" class="px-3.5 py-1.5 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-400 hover:to-teal-400 text-slate-950 text-xs font-extrabold shadow-sm transition flex items-center gap-1.5">
+            <span>Buka Tab Baharu</span>
+            <span>↗</span>
+          </a>
+          <button type="button" onclick="window.closeHemSmartTrackModal()" class="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center text-lg transition">
+            ✕
+          </button>
+        </div>
+      </div>
+      <div class="flex-1 bg-slate-100 relative">
+        <iframe id="hemSmartTrackIframe" src="https://fikreyxcode.github.io/sistemkehadiranskrg/" class="w-full h-full border-0" title="HEM SMARTTRACK SK Ranggu" loading="lazy"></iframe>
+      </div>
+    </div>
   </div>
 
   <!-- =========================================================================
