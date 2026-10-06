@@ -29,7 +29,7 @@ const DEFAULT_SYSTEM_DATA = {
     vision: "Kecemerlangan Dalam Semua Aspek Pendidikan",
     mission: "Melestarikan Sistem Pendidikan Yang Berkualiti Untuk Membangunkan Potensi Individu Bagi Memenuhi Aspirasi Negara",
     establishedYear: 1973,
-    academicSession: "Sesi Persekolahan 2025 / 2026",
+    academicSession: "Sesi Persekolahan 2026",
     logoKpm: "assets/logo-kpm.svg?v=20261006_v16",
     logoSchool: "assets/skrg.png?v=20261006_v16",
     posterCarta: "assets/carta-organisasi-2026.png",
@@ -915,11 +915,11 @@ const DEFAULT_SYSTEM_DATA = {
       uploader: "Pejabat Pendidikan Daerah Tawau"
     },
     {
-      id: "doc-pbs-2025",
-      title: "Panduan Pengurusan Pentaksiran Berasaskan Sekolah (PBS) Edisi 1 2025",
+      id: "doc-pbs-2026",
+      title: "Panduan Pengurusan Pentaksiran Berasaskan Sekolah (PBS) 2026",
       category: "Pentaksiran",
       panitia: "Lembaga Peperiksaan",
-      date: "2025-01-01",
+      date: "2026-01-01",
       type: "PDF",
       fileUrl: "https://drive.google.com/file/d/1VCeuW3fex25n-nB5suHCcjeIwmrUiC8d/view?usp=drivesdk",
       size: "Google Drive PDF",
@@ -2056,7 +2056,7 @@ const DEFAULT_SYSTEM_DATA = {
   takwim: [
     {
       id: "tak-1",
-      title: "Ujian Akhir Sesi Akademik (UASA) 2025/2026",
+      title: "Ujian Akhir Sesi Akademik (UASA) 2026",
       startDate: "2026-11-10",
       endDate: "2026-11-14",
       category: "Kurikulum",
@@ -2111,7 +2111,7 @@ const DEFAULT_SYSTEM_DATA = {
     }
   ],
 
-  // DATA PBD SK RANGGU 2025/2026
+  // DATA PBD SK RANGGU 2026
   pbdSummary: {
     overallMastery: 96.6,
     totalAssessed: 816,
@@ -2273,12 +2273,12 @@ window.getStaffPhoto = function(name) {
 // ==========================================================================
 // PENYIMPANAN LOCALSTORAGE & PEMBERSIHAN CACHE VERSI LAMA
 // ==========================================================================
-const CURRENT_STORAGE_KEY = "SK_RANGGU_DASHBOARD_DATA_V17";
+const CURRENT_STORAGE_KEY = "SK_RANGGU_DASHBOARD_DATA_V18";
 
 function getStoredData() {
   try {
-    // Purge semua cache versi lapuk (V1 sehingga V16)
-    for (let i = 1; i <= 16; i++) {
+    // Purge semua cache versi lapuk (V1 sehingga V17)
+    for (let i = 1; i <= 17; i++) {
       try { localStorage.removeItem(`SK_RANGGU_DASHBOARD_DATA_V${i}`); } catch(e){}
     }
     try { localStorage.removeItem("SK_RANGGU_DASHBOARD_DATA"); } catch(e){}
@@ -2290,6 +2290,7 @@ function getStoredData() {
         parsed.school.name = DEFAULT_SYSTEM_DATA.school.name;
         parsed.school.address = DEFAULT_SYSTEM_DATA.school.address;
         parsed.school.motto = DEFAULT_SYSTEM_DATA.school.motto;
+        parsed.school.academicSession = "Sesi Persekolahan 2026";
         parsed.school.infografikEnrolmen = DEFAULT_SYSTEM_DATA.school.infografikEnrolmen;
         parsed.school.logoSchool = DEFAULT_SYSTEM_DATA.school.logoSchool;
         parsed.school.logoKpm = DEFAULT_SYSTEM_DATA.school.logoKpm;

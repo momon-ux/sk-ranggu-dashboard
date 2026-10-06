@@ -111,10 +111,10 @@ Ikon lencana SK Ranggu akan muncul di skrin telefon seperti aplikasi rasmi!
 ## 🔑 Maklumat Akses Pentadbir
 
 - **Butang Akses:** Klik teks **"⚙️ Pentadbir Sistem"** di bahagian atas kanan laman web.
-- **PIN Keselamatan Lalai:** `1234`
+- **PIN Keselamatan Pentadbir:** `Ts.FIKREY37`
 - Di dalam panel pentadbir, anda boleh menukar maklumat sekolah, menyusun carta organisasi, menyegerak spreadsheet dan memuat turun sandaran.
 
 ---
 
-*Hak Cipta © 2025/2026 Unit Pengurusan Pentadbiran SK Ranggu Tawau, Sabah.*  
+*Hak Cipta © 2026 Unit Pengurusan Pentadbiran SK Ranggu Tawau, Sabah.*  
 *Dicipta dengan dedikasi oleh Momon.*
