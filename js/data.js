@@ -27,7 +27,8 @@ const DEFAULT_SYSTEM_DATA = {
     academicSession: "Sesi Persekolahan 2025 / 2026",
     logoKpm: "assets/kpm.png",
     logoSchool: "assets/skrg.png",
-    posterCarta: "assets/carta-organisasi-2026.png"
+    posterCarta: "assets/carta-organisasi-2026.png",
+    infografikEnrolmen: "assets/infografik-enrolmen-5okt2026.png"
   },
 
   // KREDIT PEMBANGUN
@@ -37,7 +38,7 @@ const DEFAULT_SYSTEM_DATA = {
     unit: "Unit Pengurusan Pentadbiran SK Ranggu"
   },
 
-  // STATISTIK RASMI KESELURUHAN (DATA APDM / MOEIS 2026)
+  // STATISTIK RASMI KESELURUHAN (DATA APDM / MOEIS & TELEGRAM 5 OKT 2026)
   stats: {
     totalTeachers: 54,
     totalStaff: 6,
@@ -45,8 +46,21 @@ const DEFAULT_SYSTEM_DATA = {
     morningSession: 30,
     afternoonSession: 24,
     totalStudents: 890,
+    muridPerdana: 816,
+    muridPrasekolah: 74,
     maleStudents: 466,
     femaleStudents: 424,
+    perdanaLelaki: 423,
+    perdanaPerempuan: 393,
+    muridIslam: 801,
+    muridBukanIslam: 15,
+    muridWarganegara: 799,
+    muridBukanWarganegara: 17,
+    sukuKaumMelayu: 84,
+    sukuKaumCina: 1,
+    sukuKaumBumiSabah: 307,
+    sukuKaumLain: 424,
+    tarikhKemaskiniEnrolmen: "5 Oktober 2026",
     totalClasses: 27,
     perdanaClasses: 24,
     preschoolClasses: 3,
@@ -58,11 +72,30 @@ const DEFAULT_SYSTEM_DATA = {
     currentTerm: "Penggal 2"
   },
 
-  // DATA DEMOGRAFI & 27 KELAS RASMI SK RANGGU 2026 (APDM / MOEIS)
+  // DATA DEMOGRAFI & 27 KELAS RASMI SK RANGGU 2026 (APDM / MOEIS & TELEGRAM RASMI)
   studentDemographics: {
+    tarikhKemaskini: "5 Oktober 2026",
+    sumberData: "APDM / MOEIS & Hebahan Rasmi Telerasmi SKRG",
+    infografikPoster: "assets/infografik-enrolmen-5okt2026.png",
     totalStudents: 890,
+    perdanaTotal: 816,
+    praTotal: 74,
     maleStudents: 466,
     femaleStudents: 424,
+    perdanaLelaki: 423,
+    perdanaPerempuan: 393,
+    praLelaki: 43,
+    praPerempuan: 31,
+    agamaIslam: 801,
+    agamaBukanIslam: 15,
+    warganegara: 799,
+    bukanWarganegara: 17,
+    sukuKaum: {
+      melayu: 84,
+      cina: 1,
+      bumiputeraSabah: 307,
+      lainLain: 424
+    },
     totalClasses: 27,
     praClasses: 3,
     perdanaClasses: 24,
@@ -498,11 +531,99 @@ const DEFAULT_SYSTEM_DATA = {
   },
 
   // =========================================================================
-  // SALURAN MEDIA SOSIAL RASMI
+  // SALURAN MEDIA SOSIAL, TELEGRAM & KOMUNITI DIGITAL RASMI
   // =========================================================================
   socialLinks: [
-    { id: "soc-fb", platform: "Facebook", name: "SK Ranggu Tawau", url: "https://www.facebook.com/profile.php?id=61590002833471", icon: "📘", badge: "Laman Rasmi", color: "blue", desc: "Saluran media sosial rasmi hebahan aktiviti, takwim dan pencapaian sekolah." },
-    { id: "soc-tt", platform: "TikTok", name: "@rangguathleticsclub", url: "https://www.tiktok.com/@rangguathleticsclub", icon: "🎵", badge: "Kelab Sukan", color: "slate", desc: "Kompilasi video aktiviti kokurikulum, latihan dan kejohanan olahraga murid." }
+    { 
+      id: "soc-telegram", 
+      platform: "Telegram Rasmi", 
+      name: "Telerasmi SKRG (64 Ahli)", 
+      url: "https://web.telegram.org/k/#-317568302", 
+      icon: "📢", 
+      badge: "Saluran Utama", 
+      color: "blue", 
+      desc: "Saluran hebahan rasmi Telegram 64 warga pendidik & staf SK Ranggu bagi makluman pantas pentadbiran, dokumen dan takwim sekolah." 
+    },
+    { 
+      id: "soc-fb", 
+      platform: "Facebook", 
+      name: "SK Ranggu Tawau", 
+      url: "https://www.facebook.com/profile.php?id=61590002833471", 
+      icon: "📘", 
+      badge: "Laman Rasmi", 
+      color: "blue", 
+      desc: "Saluran media sosial rasmi hebahan aktiviti, takwim dan pencapaian sekolah." 
+    },
+    { 
+      id: "soc-tt", 
+      platform: "TikTok", 
+      name: "@rangguathleticsclub", 
+      url: "https://www.tiktok.com/@rangguathleticsclub", 
+      icon: "🎵", 
+      badge: "Kelab Sukan", 
+      color: "slate", 
+      desc: "Kompilasi video aktiviti kokurikulum, latihan dan kejohanan olahraga murid SK Ranggu." 
+    },
+    { 
+      id: "soc-gallery", 
+      platform: "Telegram Arkib", 
+      name: "Gallery SK Ranggu", 
+      url: "https://web.telegram.org/k/#-317568302", 
+      icon: "📸", 
+      badge: "Arkib Foto", 
+      color: "blue", 
+      desc: "Arkib visual dan album foto dokumentasi rasmi pelbagai program, sambutan dan aktiviti murid." 
+    },
+    { 
+      id: "soc-ipad", 
+      platform: "Digital Inovasi", 
+      name: "iPad Creative Challenge & Apple Teacher", 
+      url: "https://web.telegram.org/k/#-317568302", 
+      icon: "🍎", 
+      badge: "Inovasi Pembelajaran", 
+      color: "blue", 
+      desc: "Inisiatif pemerkasaan murid dan guru celik digital menggunakan peranti iPad dan ekosistem Apple Education." 
+    },
+    { 
+      id: "soc-canva", 
+      platform: "Digital Inovasi", 
+      name: "Canva Education & STEM Hub (MY-Future)", 
+      url: "https://web.telegram.org/k/#-317568302", 
+      icon: "🚀", 
+      badge: "STEM Hub", 
+      color: "blue", 
+      desc: "Pusat kolaborasi reka bentuk grafik, modul STEM dan penyertaan pertandingan reka cipta sains digital." 
+    },
+    { 
+      id: "soc-sportsync", 
+      platform: "Sistem Sukan", 
+      name: "Portal Kejohanan Olahraga SK Ranggu (KOT 26)", 
+      url: "https://fikreyxcode.github.io/kejohanan-olahraga-skrg/index.html?tahun=2026", 
+      icon: "🏃‍♂️", 
+      badge: "KOT 2026", 
+      color: "blue", 
+      desc: "Portal papan markah rasmi 4 rumah sukan (Merah, Ungu, Biru, Kuning) dan keputusan atlet terbaik." 
+    },
+    { 
+      id: "soc-kehadiran", 
+      platform: "Sistem Pentadbiran", 
+      name: "Sistem Kehadiran Bersepadu SKRG (v20)", 
+      url: "https://fikreyxcode.github.io/sistemkehadiranskrg/?v=20#utama", 
+      icon: "📱", 
+      badge: "Ts.FIKREY37", 
+      color: "blue", 
+      desc: "Sistem rekod kehadiran harian murid bersepadu berasaskan web dengan kawalan akses admin." 
+    },
+    { 
+      id: "soc-sites", 
+      platform: "Google Sites", 
+      name: "Prototaip Portal Pengurusan SK Ranggu", 
+      url: "https://sites.google.com/view/skranggutawau/utama", 
+      icon: "🌐", 
+      badge: "Prototaip Asal", 
+      color: "slate", 
+      desc: "Rujukan bersejarah prototaip portal pengurusan sekolah yang mengandungi asas struktur maklumat induk." 
+    }
   ],
 
   // PENGUMUMAN PENTADBIRAN
@@ -658,6 +779,39 @@ const DEFAULT_SYSTEM_DATA = {
       fileUrl: "assets/carta-organisasi-2026.png",
       size: "388 KB",
       uploader: "Unit Media / Digital (MOHAMMAD FIKREY BIN ABDUL GAPAR)"
+    },
+    {
+      id: "doc-peg-teknikal-mdesa-26",
+      title: "Senarai Pegawai Teknikal Kejohanan Merentas Desa 2026 (PEG.TEKNIKAL M.DESA '26)",
+      category: "Kokurikulum & Sukan",
+      panitia: "Unit Sukan & Kokurikulum",
+      date: "2026-10-05",
+      type: "PDF",
+      fileUrl: "https://web.telegram.org/k/#-317568302",
+      size: "412 KB",
+      uploader: "HJ. ROSIDIAN BIN HJ. IDRIS (Setiausaha Sukan)"
+    },
+    {
+      id: "doc-prestasi-kerja-pptx",
+      title: "Slaid Pembentangan Prestasi Kerja Staf & SKT SK Ranggu (6.Prestasi kerja.pptx)",
+      category: "Buku Pengurusan & Pentadbiran",
+      panitia: "Pengurusan Pentadbiran",
+      date: "2026-10-05",
+      type: "PPTX",
+      fileUrl: "https://web.telegram.org/k/#-317568302",
+      size: "Mesej Disematkan (Pinned)",
+      uploader: "Pentadbir Sistem SK Ranggu"
+    },
+    {
+      id: "doc-apdm-keseluruhan-5okt",
+      title: "Data Keseluruhan Murid SK Ranggu APDM Kemaskini 5 Oktober 2026 (XBA3037 Keseluruhan Murid 2026-10-05.xlsx)",
+      category: "Data Murid APDM",
+      panitia: "Pengurusan Hal Ehwal Murid & Data",
+      date: "2026-10-05",
+      type: "XLSX",
+      fileUrl: "assets/senarai-murid-2026.xlsx",
+      size: "217 KB",
+      uploader: "Penyelaras Data & APDM"
     }
   ],
 
@@ -799,6 +953,87 @@ const DEFAULT_SYSTEM_DATA = {
     { id: "p11", name: "SSDM", cat: "DISIPLIN", desc: "Sistem Sahsiah Diri Murid & Amalan Baik KPM", url: "https://ssdm.moe.gov.my", badge: "Sahsiah", icon: "🛡️" }
   ],
 
+  // SALURAN TELEGRAM & INOVASI DIGITAL WARGA SK RANGGU
+  communityChannels: [
+    {
+      id: "ch-telegram",
+      title: "Telerasmi SKRG (Saluran Hebahan Rasmi)",
+      desc: "Saluran hebahan rasmi Telegram 64 warga pendidik dan staf SK Ranggu untuk makluman pentadbiran pantas, pekeliling, dan takwim terkini.",
+      members: "64 Ahli",
+      badge: "Saluran Utama",
+      badgeColor: "bg-sky-500/20 text-sky-300 border-sky-400/30",
+      icon: "📢",
+      url: "https://web.telegram.org/k/#-317568302",
+      type: "Telegram"
+    },
+    {
+      id: "ch-gallery",
+      title: "Gallery SK Ranggu (Arkib Foto & Aktiviti)",
+      desc: "Arkib album bergambar rasmi, dokumentasi acara sekolah, sambutan hari guru, kejohanan sukan dan aktiviti kokurikulum murid.",
+      members: "Dokumentasi HD",
+      badge: "Arkib Visual",
+      badgeColor: "bg-emerald-500/20 text-emerald-300 border-emerald-400/30",
+      icon: "📸",
+      url: "https://web.telegram.org/k/#-317568302",
+      type: "Telegram"
+    },
+    {
+      id: "ch-ipad",
+      title: "iPad Creative Challenge SK Ranggu & Apple Teacher",
+      desc: "Pusat inisiatif pembelajaran digital berasaskan peranti iPad, animasi murid, penerokaan Keynote, Pages & pemerkasaan komuniti Apple Teacher.",
+      members: "Inovasi Pembelajaran",
+      badge: "Apple Teacher",
+      badgeColor: "bg-purple-500/20 text-purple-300 border-purple-400/30",
+      icon: "🍎",
+      url: "https://web.telegram.org/k/#-317568302",
+      type: "Komuniti Digital"
+    },
+    {
+      id: "ch-canva-stem",
+      title: "Canva & STEM Hub SK Ranggu (MY-Future STEM)",
+      desc: "Hab perkongsian templat Canva for Education, modul pertandingan MY-Future STEM, projek reka cipta sains dan literasi digital.",
+      members: "STEM & Rekabentuk",
+      badge: "Canva & STEM",
+      badgeColor: "bg-amber-500/20 text-amber-300 border-amber-400/30",
+      icon: "🚀",
+      url: "https://web.telegram.org/k/#-317568302",
+      type: "Komuniti Digital"
+    },
+    {
+      id: "ch-sportsync",
+      title: "Portal Kejohanan Olahraga SK Ranggu (KOT 26)",
+      desc: "Portal rasmi pemarkahan masa nyata Kejohanan Olahraga Tahunan SK Ranggu merangkumi Rumah Merah, Ungu, Biru & Kuning.",
+      members: "Sukan & Olahraga",
+      badge: "KOT 26",
+      badgeColor: "bg-red-500/20 text-red-300 border-red-400/30",
+      icon: "🏃‍♂️",
+      url: "https://fikreyxcode.github.io/kejohanan-olahraga-skrg/index.html?tahun=2026",
+      type: "Sistem Sukan"
+    },
+    {
+      id: "ch-kehadiran",
+      title: "Sistem Kehadiran Bersepadu SKRG (v20)",
+      desc: "Sistem pengurusan kehadiran murid dan warga sekolah SK Ranggu berasaskan web dengan kawalan keselamatan Ts.FIKREY37.",
+      members: "Kehadiran Murid",
+      badge: "v20",
+      badgeColor: "bg-blue-500/20 text-blue-300 border-blue-400/30",
+      icon: "📱",
+      url: "https://fikreyxcode.github.io/sistemkehadiranskrg/?v=20#utama",
+      type: "Sistem Kehadiran"
+    },
+    {
+      id: "ch-google-sites",
+      title: "Prototaip Portal Pengurusan SK Ranggu (Google Sites)",
+      desc: "Rujukan asas portal pengurusan sekolah SK Ranggu terdahulu yang mengandungi maklumat awal sejarah, organisasi dan kurikulum.",
+      members: "Arkib Rujukan",
+      badge: "Prototaip",
+      badgeColor: "bg-indigo-500/20 text-indigo-300 border-indigo-400/30",
+      icon: "🌐",
+      url: "https://sites.google.com/view/skranggutawau/utama",
+      type: "Google Sites"
+    }
+  ],
+
   googleSheets: {
     sheetId: "19BgxY06KSHSizUsnreZXnXNoUbf-ivhaVj9YVQ8hVdU",
     gid: "2057996103",
@@ -806,10 +1041,24 @@ const DEFAULT_SYSTEM_DATA = {
   }
 };
 
+const CURRENT_STORAGE_KEY = "SK_RANGGU_DASHBOARD_DATA_V10";
+
 function getStoredData() {
   try {
-    const stored = localStorage.getItem("SK_RANGGU_DASHBOARD_DATA_V9");
-    if (stored) return JSON.parse(stored);
+    // Purge legacy caches
+    ["SK_RANGGU_DASHBOARD_DATA", "SK_RANGGU_DASHBOARD_DATA_V2", "SK_RANGGU_DASHBOARD_DATA_V9"].forEach(k => {
+      try { localStorage.removeItem(k); } catch(e){}
+    });
+    const stored = localStorage.getItem(CURRENT_STORAGE_KEY);
+    if (stored) {
+      const parsed = JSON.parse(stored);
+      if (parsed && parsed.school) {
+        parsed.school.name = DEFAULT_SYSTEM_DATA.school.name;
+        parsed.school.address = DEFAULT_SYSTEM_DATA.school.address;
+        parsed.school.infografikEnrolmen = DEFAULT_SYSTEM_DATA.school.infografikEnrolmen;
+      }
+      return parsed;
+    }
   } catch (err) {
     console.warn("Gagal membaca LocalStorage:", err);
   }
@@ -818,7 +1067,7 @@ function getStoredData() {
 
 function saveStoredData(data) {
   try {
-    localStorage.setItem("SK_RANGGU_DASHBOARD_DATA_V9", JSON.stringify(data));
+    localStorage.setItem(CURRENT_STORAGE_KEY, JSON.stringify(data));
     return true;
   } catch (err) {
     console.error("Gagal simpan LocalStorage:", err);
@@ -827,7 +1076,7 @@ function saveStoredData(data) {
 }
 
 function resetToDefaultData() {
-  localStorage.removeItem("SK_RANGGU_DASHBOARD_DATA_V9");
+  localStorage.removeItem(CURRENT_STORAGE_KEY);
   return DEFAULT_SYSTEM_DATA;
 }
 

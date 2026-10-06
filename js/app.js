@@ -95,6 +95,12 @@ function updateLiveClock() {
 function renderSchoolHeader() {
   const s = window.SKR_DATA.school;
 
+  // Pastikan penjenamaan rasmi Papan Induk Utama terpelihara
+  if (!s.name || !s.name.includes("PAPAN INDUK UTAMA")) {
+    s.name = "PAPAN INDUK UTAMA SEKOLAH KEBANGSAAN RANGGU";
+  }
+  document.title = "PAPAN INDUK UTAMA SEKOLAH KEBANGSAAN RANGGU PETI SURAT 842, 91008 TAWAU SABAH";
+
   document.querySelectorAll(".school-name-text").forEach(el => el.textContent = s.name);
   document.querySelectorAll(".school-code-text").forEach(el => el.textContent = s.code);
   document.querySelectorAll(".school-address-text").forEach(el => el.textContent = `${s.address} • Tel: ${s.phone}`);
