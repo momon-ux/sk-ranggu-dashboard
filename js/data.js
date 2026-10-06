@@ -232,6 +232,142 @@ const DEFAULT_SYSTEM_DATA = {
     ]
   },
 
+  // =========================================================================
+  // PENGURUSAN UNIT HAL EHWAL MURID (HEM) 2026
+  // =========================================================================
+  hemHierarchy2026: {
+    title: "CARTA ORGANISASI UNIT HAL EHWAL MURID (HEM) 2026",
+    penasihat: "YUNUS BIN PATARAI (Guru Besar)",
+    pengerusi: "KOMALA BINTI JOSEPH (Penolong Kanan HEM)",
+    timbPengerusi1: "RAHMATIAH BINTI MOHD JUDA (PK Pentadbiran)",
+    timbPengerusi2: "WARNAH BINTI SIRA (PK Kokurikulum)",
+    timbPengerusi3: "EMRAN BIN HJ SELAMAT (PK Petang)",
+    setiausaha: "NORLINA BINTI BAGWAS",
+    penolongSetiausaha: "DARMAWATI BTE LOKKONG",
+    motto: "Sahsiah Terpuji, Murid Berkualiti, Sekolah Harmoni",
+    kpi: [
+      { label: "Sasaran Kehadiran Murid", value: "95%+", icon: "📈" },
+      { label: "Kadar Salah Laku Disiplin", value: "< 0.5%", icon: "🛡️" },
+      { label: "Penerima Buku Teks (SPBT)", value: "100% (890 Murid)", icon: "📖" },
+      { label: "Murid Layak RMT & Susu", value: "184 Murid", icon: "🥛" }
+    ],
+    units: [
+      { id: "hem-disiplin", name: "Lembaga Disiplin & Pengawas Sekolah", head: "ASMADI BIN LAJJAKASI", icon: "🛡️", badge: "Sahsiah", desc: "Pengurusan peraturan sekolah, pembentukan watak pemimpin murid & perekodan amalan baik serta salah laku dalam SSDM." },
+      { id: "hem-spbt", name: "Skim Pinjaman Buku Teks (SPBT)", head: "FARIDAH BINTI SUNU", icon: "📖", badge: "Buku Teks", desc: "Pengurusan Bilik Operasi SPBT (BOSS), penerimaan bekalan, pengagihan 100% dan pemulangan buku teks murid." },
+      { id: "hem-ubk", name: "Bimbingan & Kaunseling (UBK) / Minda Sihat", head: "SITI NAURIN FADZILAH BINTI JALAL", icon: "🤝", badge: "Kaunseling", desc: "Program Guru Penyayang, Minda Sihat KPM, Pembimbing Rakan Sebaya (PRS) dan intervensi psikososial emosi murid." },
+      { id: "hem-rmt", name: "Rancangan Makanan Tambahan (RMT) & PSS", head: "SITI JAWARA BINTI LUKMAN", icon: "🥛", badge: "Pemakanan", desc: "Penyeliaan menu seimbang murid RMT, pematuhan SOP kebersihan dan pengagihan bekalan Program Susu Sekolah." },
+      { id: "hem-kebajikan", name: "Kebajikan Murid, BAP & KWAPM", head: "DARMAWATI BTE LOKKONG", icon: "❤️", badge: "Bantuan", desc: "Penyelarasan Bantuan Awal Persekolahan (BAP), KWAPM, bantuan pakaian seragam serta santunan murid yatim & asnaf." },
+      { id: "hem-kesihatan", name: "Kesihatan, Rawatan & Pergigian", head: "WAFA FARHANA BINTI ABD KADIR", icon: "🩺", badge: "Kesihatan", desc: "Pemeriksaan berkala kesihatan, rekod imunisasi KKM, rawatan klinik pergigian bergerak dan pengurusan bilik isolasi." },
+      { id: "hem-3k", name: "Program 3K (Keselamatan, Kebersihan, Kesihatan)", head: "WAN MUHAMAD YUSUF BIN WAN ABDUL AZIZ", icon: "🦺", badge: "3K", desc: "Pelan kecemasan kebakaran (fire drill), penarafan tandas bersih bertaraf bintang dan kawalan keselamatan zon sekolah." },
+      { id: "hem-kantin", name: "Jawatankuasa Kantin Sekolah", head: "YUSNI BINTI WAHJUDIN", icon: "🍽️", badge: "Kantin", desc: "Pemantauan gred kebersihan premis kantin, sampel makanan harian dan penetapan tanda harga berpatutan." },
+      { id: "hem-apdm", name: "Kehadiran Murid & Sifar Cicir (APDM)", head: "MOHD ALFAIZAL BIN DAUD", icon: "📋", badge: "e-Kehadiran", desc: "Pengesahan harian e-Kehadiran sistem APDM sebelum 9.00 pagi, analisis bulanan dan tindakan murid berisiko cicir." },
+      { id: "hem-pendaftaran", name: "Pendaftaran & Pertukaran Murid (MOEIS)", head: "MARIANA BINTI KASSIM", icon: "📝", badge: "Data Murid", desc: "Pengurusan kemasukan murid Prasekolah dan Tahun 1, rekod pertukaran sekolah dalam/luar negeri melalui MOEIS." }
+    ]
+  },
+
+  // =========================================================================
+  // PENGURUSAN UNIT KOKURIKULUM 2026
+  // =========================================================================
+  kokoHierarchy2026: {
+    title: "CARTA ORGANISASI UNIT KOKURIKULUM 2026",
+    penasihat: "YUNUS BIN PATARAI (Guru Besar)",
+    pengerusi: "WARNAH BINTI SIRA (Penolong Kanan Kokurikulum)",
+    timbPengerusi1: "RAHMATIAH BINTI MOHD JUDA (PK Pentadbiran)",
+    timbPengerusi2: "KOMALA BINTI JOSEPH (PK HEM)",
+    timbPengerusi3: "EMRAN BIN HJ SELAMAT (PK Petang)",
+    setiausaha: "EVALORENNA BINTI LAMINSIN",
+    penolongSetiausaha: "MOHAMMAD IKHWAN BIN ABDURAIS",
+    penyelarasPajsk: "ROSIDIAN BIN IDRIS",
+    motto: "Kecergasan Fizikal, Ketahanan Mental, Kecemerlangan Modal Insan",
+    uniformUnits: [
+      { name: "Persekutuan Pengakap Kanak-Kanak", head: "ASMADI BIN LAJJAKASI", icon: "🏕️", members: "Tahap 2 (Tahun 4, 5, 6)", badge: "Beruniform" },
+      { name: "Tunas Kadet Remaja Sekolah (TKRS)", head: "JUNAID BIN NURDIN", icon: "🎖️", members: "Tahap 2 (Tahun 4, 5, 6)", badge: "Beruniform" },
+      { name: "Bulan Sabit Merah Malaysia (BSMM)", head: "HAMSIAH BINTI HAMID", icon: "🚑", members: "Tahap 2 (Tahun 4, 5, 6)", badge: "Beruniform" },
+      { name: "Pergerakan Puteri Islam Malaysia (PPIM)", head: "BAJAM BINTI LADUNG", icon: "🌸", members: "Tahap 2 (Tahun 4, 5, 6)", badge: "Beruniform" },
+      { name: "Pandu Puteri Tunas", head: "RINI BINTI DAUD", icon: "🍀", members: "Tahap 2 (Tahun 4, 5, 6)", badge: "Beruniform" }
+    ],
+    clubUnits: [
+      { name: "Persatuan Bahasa Melayu", head: "SABRIAH @ HABIBAH BINTI ABDUL SABAR", icon: "📚", field: "Bahasa & Sastera", badge: "Akademik" },
+      { name: "English Club", head: "JAINAH BINTI SULAIMAN", icon: "🔤", field: "Language & HIP", badge: "Akademik" },
+      { name: "Kelab STEM & Inovasi Sains", head: "RONI BIN BACHO", icon: "🔬", field: "Sains & RBT", badge: "Inovasi" },
+      { name: "Persatuan Pendidikan Islam & J-QAF", head: "HASNAN BIN MAT ZIN", icon: "🕌", field: "Kerohanian & Dakwah", badge: "Agama" },
+      { name: "Kelab Komputer & Media Digital", head: "MOHAMMAD FIKREY BIN ABDUL GAPAR", icon: "💻", field: "Literasi Digital & AI", badge: "Teknologi" },
+      { name: "Kelab Seni Visual & Muzik Kebudayaan", head: "TANJANG BIN TURE", icon: "🎨", field: "Kesenian & Warisan", badge: "Kesenian" },
+      { name: "Kelab Rukun Negara & Doktor Muda", head: "NOZE BINTI TUKIJAN", icon: "🇲🇾", field: "Patriotisme & Kesihatan", badge: "Sosial" }
+    ],
+    sportsUnits: [
+      { name: "Kelab Bola Sepak", head: "WAN MUHAMAD YUSUF BIN WAN ABDUL AZIZ", icon: "⚽", field: "Padang", badge: "1M1S" },
+      { name: "Kelab Bola Jaring", head: "WAFA FARHANA BINTI ABD KADIR", icon: "🏐", field: "Gelanggang", badge: "1M1S" },
+      { name: "Kelab Badminton", head: "MASTURAH BINTI TUDA", icon: "🏸", field: "Dewan / Raket", badge: "1M1S" },
+      { name: "Kelab Sepak Takraw", head: "MOHAMMADIAN BIN SUAIBU", icon: "🥏", field: "Gelanggang", badge: "1M1S" },
+      { name: "Kelab Olahraga & Balapan", head: "ROSIDIAN BIN IDRIS", icon: "🏃", field: "Balapan", badge: "1M1S" }
+    ],
+    sportHouses: [
+      { name: "Rumah Satria (Biru)", color: "blue", head: "HASNAN BIN MAT ZIN", motto: "Kecemerlangan Tanpa Batas" },
+      { name: "Rumah Waja (Merah)", color: "red", head: "JUNAID BIN NURDIN", motto: "Semangat Membara Waja" },
+      { name: "Rumah Suria (Kuning)", color: "amber", head: "ASMADI BIN LAJJAKASI", motto: "Menyinari Arena Sukan" },
+      { name: "Rumah Perdana (Hijau)", color: "emerald", head: "RONI BIN BACHO", motto: "Gagah Menuju Juara" }
+    ],
+    achievements: [
+      { title: "Kejohanan TASCAR 3.0 Peringkat Kebangsaan", badge: "Kebangsaan 🥇", level: "Kebangsaan", date: "2026", desc: "Penyampaian pingat dan sijil pencapaian cemerlang peringkat kebangsaan, dibimbing dan dilatih oleh Cikgu Mohammad Fikrey bin Abdul Gapar." },
+      { title: "White Bridge Unichamp", badge: "Daerah / Negeri 🥈", level: "Daerah / Negeri", date: "2026", desc: "Pengiktirafan dan penganugerahan kepada barisan murid dan guru pembimbing peserta kejohanan White Bridge Unichamp." },
+      { title: "Minggu Kokurikulum Unit Beruniform (Pengakap)", badge: "Peringkat Sekolah", level: "Sekolah", date: "September 2026", desc: "Aktiviti kemahiran ikatan, perkhemahan, dan disiplin baris yang dikendalikan oleh Persekutuan Pengakap Kanak-Kanak SK Ranggu." }
+    ]
+  },
+
+  // =========================================================================
+  // PENGURUSAN UNIT SIDANG PETANG 2026
+  // =========================================================================
+  petangHierarchy2026: {
+    title: "CARTA PENGURUSAN SESI PERSEKOLAHAN PETANG 2026",
+    penasihat: "YUNUS BIN PATARAI (Guru Besar)",
+    pengerusi: "EMRAN BIN HJ SELAMAT (Penolong Kanan Petang)",
+    penyelarasTahap1: "RASMAWATI BINTI TAUSE (Penyelaras Tahap 1)",
+    penyelarasJadual: "AINATUN NADHIRAH BINTI DHARMAWI (Jadual Waktu Petang)",
+    penyelarasDisiplin: "MOHAMMAD IKHWAN BIN ABDURAIS (Disiplin & Keselamatan)",
+    penyelarasTransisi: "MARIANA BINTI KASSIM & YUSNI BINTI WAHJUDIN (Transisi Tahun 1)",
+    totalClasses: 12,
+    totalPupils: 412,
+    totalTeachers: 24,
+    cohorts: [
+      { level: "Tahun 1", classes: 4, pupils: 148, session: "Petang", icon: "🌱" },
+      { level: "Tahun 2", classes: 4, pupils: 132, session: "Petang", icon: "🌿" },
+      { level: "Tahun 3", classes: 4, pupils: 132, session: "Petang", icon: "🌳" }
+    ],
+    operatingHours: [
+      { item: "Waktu Kehadiran & Perhimpunan Awal", time: "12.30 tengah hari – 1.00 petang", notes: "Murid berkumpul di Dewan Terbuka / Laman Menunggu" },
+      { item: "PdP Sesi Petang Bermula", time: "1.00 petang", notes: "PdP mengikut jadual waktu kelas masing-masing" },
+      { item: "Waktu Rehat Tahun 1", time: "2.30 petang – 2.50 petang", notes: "Kantin sekolah dengan pemantauan guru bertugas" },
+      { item: "Waktu Rehat Tahun 2 & Tahun 3", time: "3.00 petang – 3.20 petang", notes: "Kantin sekolah dengan pemantauan guru bertugas" },
+      { item: "Waktu Tamat PdP (Isnin – Khamis)", time: "5.30 petang", notes: "Kawalan pintu pagar A & B bersama pengawal keselamatan" },
+      { item: "Waktu Tamat PdP (Jumaat)", time: "5.00 petang", notes: "Pelepasan murid secara teratur mengikut zon laluan" }
+    ],
+    sopSafety: [
+      "Kawalan pintu pagar utama semasa pertukaran sesi pagi dan petang (12.30 – 1.00 petang) bagi mengelak kesesakan lalulintas.",
+      "Program Guru Penyayang: Menyambut kehadiran murid petang dengan senyuman dan sapaan mesra di pintu pagar sekolah.",
+      "Pemeriksaan kebersihan bilik darjah dan pematuhan penjimatan elektrik sebelum murid dibenarkan bersurai."
+    ]
+  },
+
+  // =========================================================================
+  // PILAR INSPIRASI & KERANGKA STRATEGIK (DARIPADA PROTOTAIP)
+  // =========================================================================
+  inspiration: {
+    tawauLeads: "TAWAU LEADS : IKHLAS MEMACU KECEMERLANGAN",
+    digitalForward: "SK RANGGU MELANGKAH BERSAMA, MEMACU MASA DEPAN",
+    quoteHeader: "INSPIRASI WARGA PENDIDIK",
+    quoteText: "Teknologi Membuka Peluang. Guru Memberi Arah. Pendidikan Membentuk Masa Depan.",
+    quoteFooter: "SK RANGGU • BERUSAHA • BERILMU • BERBAKTI"
+  },
+
+  // =========================================================================
+  // SALURAN MEDIA SOSIAL RASMI
+  // =========================================================================
+  socialLinks: [
+    { id: "soc-fb", platform: "Facebook", name: "SK Ranggu Tawau", url: "https://www.facebook.com/profile.php?id=61590002833471", icon: "📘", badge: "Laman Rasmi", color: "blue", desc: "Saluran media sosial rasmi hebahan aktiviti, takwim dan pencapaian sekolah." },
+    { id: "soc-tt", platform: "TikTok", name: "@rangguathleticsclub", url: "https://www.tiktok.com/@rangguathleticsclub", icon: "🎵", badge: "Kelab Sukan", color: "slate", desc: "Kompilasi video aktiviti kokurikulum, latihan dan kejohanan olahraga murid." }
+  ],
+
   // PENGUMUMAN PENTADBIRAN
   announcements: [
     {
@@ -266,81 +402,125 @@ const DEFAULT_SYSTEM_DATA = {
   // DOKUMEN & BAHAN KURIKULUM (BOLEH DIMUAT NAIK OLEH ADMIN)
   documents: [
     {
+      id: "doc-rpm-2035",
+      title: "Rancangan Pendidikan Malaysia 2026–2035",
+      category: "Dasar Pendidikan",
+      panitia: "KPM",
+      date: "2026-01-01",
+      type: "PDF",
+      fileUrl: "https://drive.google.com/file/d/1XttuaxCwlewzxdMtNxm8ZhpYKvKpp3NO/view?usp=drivesdk",
+      size: "Google Drive PDF",
+      uploader: "Kementerian Pendidikan Malaysia"
+    },
+    {
+      id: "doc-jpn-sabah",
+      title: "Prakarsa Impak Segera JPN Sabah 2026–2027",
+      category: "Inisiatif Negeri",
+      panitia: "JPN Sabah",
+      date: "2026-01-01",
+      type: "PDF",
+      fileUrl: "https://drive.google.com/file/d/1Oyn1Chlbu1wzznwkV4ijYiPtCeiSANPB/view?usp=drivesdk",
+      size: "Google Drive PDF",
+      uploader: "Jabatan Pendidikan Negeri Sabah"
+    },
+    {
+      id: "doc-ppd-tawau",
+      title: "Prakarsa Impak Segera PPD Tawau 2026 (Tawau Leads)",
+      category: "Inisiatif Daerah",
+      panitia: "PPD Tawau",
+      date: "2026-01-01",
+      type: "PDF",
+      fileUrl: "https://drive.google.com/file/d/10bXZC4ft-V3xspNcTAubdETfVC0z9FGg/view?usp=drivesdk",
+      size: "Google Drive PDF",
+      uploader: "Pejabat Pendidikan Daerah Tawau"
+    },
+    {
+      id: "doc-pbs-2025",
+      title: "Panduan Pengurusan Pentaksiran Berasaskan Sekolah (PBS) Edisi 1 2025",
+      category: "Pentaksiran",
+      panitia: "Lembaga Peperiksaan",
+      date: "2025-01-01",
+      type: "PDF",
+      fileUrl: "https://drive.google.com/file/d/1VCeuW3fex25n-nB5suHCcjeIwmrUiC8d/view?usp=drivesdk",
+      size: "Google Drive PDF",
+      uploader: "Kementerian Pendidikan Malaysia"
+    },
+    {
+      id: "doc-pelan-strategik",
+      title: "Pelan Strategik KPM 2024–2030",
+      category: "Pelan Strategik",
+      panitia: "KPM",
+      date: "2024-01-01",
+      type: "PDF",
+      fileUrl: "https://drive.google.com/file/d/1O_Q8U9vS7pl_Y3kZsVsBFFisLJWrwPPH/view?usp=drivesdk",
+      size: "Google Drive PDF",
+      uploader: "Kementerian Pendidikan Malaysia"
+    },
+    {
+      id: "doc-sgm-20",
+      title: "Standard Guru Malaysia 2.0 (SGM 2.0)",
+      category: "Kompetensi",
+      panitia: "BPG KPM",
+      date: "2024-01-01",
+      type: "PDF",
+      fileUrl: "https://drive.google.com/file/d/19HqqtL0u5FGdUb1FDug4_Jex0xDy68G7/view?usp=drivesdk",
+      size: "Google Drive PDF",
+      uploader: "Bahagian Profesionalisme Guru KPM"
+    },
+    {
+      id: "doc-buku-pengurusan",
+      title: "Dokumen Rujukan Pengurusan Pendidikan SK Ranggu Tawau",
+      category: "Buku Pengurusan",
+      panitia: "Pentadbiran",
+      date: "2026-01-01",
+      type: "PDF",
+      fileUrl: "https://drive.google.com/file/d/1HNNlnOhx8jYLkHnrws0-E-BMdCH3SZDN/view",
+      size: "Google Drive PDF",
+      uploader: "SK Ranggu Tawau"
+    },
+    {
       id: "doc-murid-xlsx",
-      title: "Data Rasmi Enrolmen & Maklumat 890 Murid SK Ranggu 2026 (APDM/MOEIS)",
+      title: "Pangkalan Data Rasmi Enrolmen & 890 Murid SK Ranggu 2026 (APDM/MOEIS)",
       category: "Data Murid",
-      panitia: "Pengurusan Data & idMe",
+      panitia: "Pengurusan Data",
       date: "2026-06-08",
       type: "XLSX",
       fileUrl: "assets/senarai-murid-2026.xlsx",
-      size: "185 KB",
-      uploader: "Penyelaras Data / idMe (Mohd Alfaizal)"
+      size: "217 KB",
+      uploader: "Penyelaras Data & APDM"
     },
     {
       id: "doc-murid-csv",
-      title: "Senarai Keseluruhan Murid SK Ranggu 2026 (Format CSV)",
+      title: "Senarai Keseluruhan 890 Murid SK Ranggu 2026 (Format CSV)",
       category: "Data Murid",
-      panitia: "Pengurusan Data & idMe",
+      panitia: "Pengurusan Data",
       date: "2026-06-08",
       type: "CSV",
       fileUrl: "assets/senarai-murid-2026.csv",
-      size: "235 KB",
-      uploader: "Penyelaras Data / idMe (Mohd Alfaizal)"
+      size: "437 KB",
+      uploader: "Penyelaras Data & APDM"
     },
     {
       id: "doc-kurikulum",
-      title: "Poster Rasmi Carta Organisasi Kurikulum SK Ranggu 2026",
+      title: "Poster Rasmi HD Carta Organisasi Kurikulum SK Ranggu 2026",
       category: "Carta Organisasi",
       panitia: "Kurikulum",
       date: "2026-06-08",
-      type: "PNG",
+      type: "PNG HD",
       fileUrl: "assets/carta-organisasi-kurikulum-2026.png",
-      size: "397 KB",
-      uploader: "Unit Kurikulum (Mohammad Fikrey)"
+      size: "394 KB",
+      uploader: "Unit Kurikulum"
     },
     {
-      id: "doc-1",
-      title: "Poster Rasmi Carta Organisasi Pentadbiran SK Ranggu 2026",
+      id: "doc-admin",
+      title: "Poster Rasmi HD Carta Organisasi Pentadbiran SK Ranggu 2026",
       category: "Carta Organisasi",
       panitia: "Pentadbiran",
       date: "2026-06-08",
-      type: "PNG",
+      type: "PNG HD",
       fileUrl: "assets/carta-organisasi-2026.png",
       size: "388 KB",
       uploader: "Unit Media / Digital (Mohammad Fikrey)"
-    },
-    {
-      id: "doc-2",
-      title: "Takwim Persekolahan & Jadual Aktiviti Kurikulum Sesi 2025/2026",
-      category: "Takwim & Jadual",
-      panitia: "Pentadbiran",
-      date: "2025-01-15",
-      type: "PDF",
-      fileUrl: "#",
-      size: "1.2 MB",
-      uploader: "Rahmatiah binti Mohd Juda (PK1)"
-    },
-    {
-      id: "doc-3",
-      title: "Buku Panduan Pengurusan Kurikulum & MMI SK Ranggu",
-      category: "Buku Panduan",
-      panitia: "Kurikulum",
-      date: "2025-02-10",
-      type: "PDF",
-      fileUrl: "#",
-      size: "2.5 MB",
-      uploader: "Ani binti Patola (SU Kurikulum)"
-    },
-    {
-      id: "doc-4",
-      title: "DSKP KSSR Semakan Bahasa Melayu Tahun 1 hingga 6",
-      category: "DSKP & RPT",
-      panitia: "Bahasa Melayu",
-      date: "2025-03-01",
-      type: "ZIP",
-      fileUrl: "#",
-      size: "4.8 MB",
-      uploader: "Sabriah @ Habibah (KP BM)"
     }
   ],
 
@@ -469,12 +649,17 @@ const DEFAULT_SYSTEM_DATA = {
 
   // PORTAL KPM
   portalLinks: [
-    { name: "idMe / MOEIS", desc: "Sistem Pengurusan ID Awam KPM & PBD", url: "https://idme.moe.gov.my", badge: "Utama" },
-    { name: "DELIMa KPM", desc: "Portal Pembelajaran Digital & e-RPH", url: "https://d2.delima.edu.my", badge: "PdPc" },
-    { name: "APDM", desc: "Aplikasi Pangkalan Data Murid & Kehadiran", url: "https://apdm.moe.gov.my", badge: "HEM" },
-    { name: "e-Operasi", desc: "Pengurusan Guru & Staf Sokongan", url: "https://eoperasi.moe.gov.my", badge: "Guru" },
-    { name: "SPLKPM", desc: "Latihan & Pembangunan Profesionalisme", url: "https://splkpm.moe.gov.my", badge: "Latihan" },
-    { name: "SSDM", desc: "Sistem Sahsiah Diri Murid & Amalan Baik", url: "https://ssdm.moe.gov.my", badge: "Disiplin" }
+    { id: "p1", name: "IdMe KPM", cat: "SISTEM GURU", desc: "Identiti digital guru, murid & akses perkhidmatan KPM", url: "https://idme.moe.gov.my/login", badge: "Utama", icon: "🆔" },
+    { id: "p2", name: "BPK KPM", cat: "KURIKULUM", desc: "Bahagian Pembangunan Kurikulum, DSKP & Dokumen Penjajaran", url: "https://bpk.moe.gov.my", badge: "Kurikulum", icon: "📖" },
+    { id: "p3", name: "Portal Rasmi KPM", cat: "KEMENTERIAN", desc: "Laman sesawang rasmi Kementerian Pendidikan Malaysia", url: "https://www.moe.gov.my", badge: "Kementerian", icon: "🏛️" },
+    { id: "p4", name: "JPN Sabah", cat: "JABATAN PENDIDIKAN", desc: "Portal rasmi Jabatan Pendidikan Negeri Sabah", url: "https://jpnsabah.moe.gov.my", badge: "Negeri", icon: "🏖️" },
+    { id: "p5", name: "PPD Tawau", cat: "PEJABAT PENDIDIKAN", desc: "Portal pendidikan daerah Tawau (Tawau Leads)", url: "https://sites.google.com/moe-dl.edu.my/websiteppdtawauv2/utama", badge: "Daerah", icon: "📍" },
+    { id: "p6", name: "MySG 2026", cat: "GURU 2026", desc: "Sistem pengurusan perjawatan & penempatan warga guru", url: "https://sgmy.moe.gov.my/sgmy_2026/", badge: "Perjawatan", icon: "👨‍🏫" },
+    { id: "p7", name: "DELIMa KPM", cat: "PEMBELAJARAN", desc: "Portal Pembelajaran Digital, Google Classroom & e-RPH", url: "https://d2.delima.edu.my", badge: "PdPc", icon: "💻" },
+    { id: "p8", name: "APDM", cat: "HAL EHWAL MURID", desc: "Aplikasi Pangkalan Data Murid & e-Kehadiran Harian", url: "https://apdm.moe.gov.my", badge: "Kehadiran", icon: "📋" },
+    { id: "p9", name: "e-Operasi", cat: "PENTADBIRAN", desc: "Modul pengurusan data guru dan staf sokongan KPM", url: "https://eoperasi.moe.gov.my", badge: "Staf", icon: "👥" },
+    { id: "p10", name: "SPLKPM", cat: "LATIHAN GURU", desc: "Sistem Pengurusan Latihan Kementerian Pendidikan Malaysia", url: "https://splkpm.moe.gov.my", badge: "Kompetensi", icon: "🎓" },
+    { id: "p11", name: "SSDM", cat: "DISIPLIN", desc: "Sistem Sahsiah Diri Murid & Amalan Baik KPM", url: "https://ssdm.moe.gov.my", badge: "Sahsiah", icon: "🛡️" }
   ],
 
   googleSheets: {
@@ -486,7 +671,7 @@ const DEFAULT_SYSTEM_DATA = {
 
 function getStoredData() {
   try {
-    const stored = localStorage.getItem("SK_RANGGU_DASHBOARD_DATA_V6");
+    const stored = localStorage.getItem("SK_RANGGU_DASHBOARD_DATA_V7");
     if (stored) return JSON.parse(stored);
   } catch (err) {
     console.warn("Gagal membaca LocalStorage:", err);
@@ -496,7 +681,7 @@ function getStoredData() {
 
 function saveStoredData(data) {
   try {
-    localStorage.setItem("SK_RANGGU_DASHBOARD_DATA_V6", JSON.stringify(data));
+    localStorage.setItem("SK_RANGGU_DASHBOARD_DATA_V7", JSON.stringify(data));
     return true;
   } catch (err) {
     console.error("Gagal simpan LocalStorage:", err);
@@ -505,7 +690,7 @@ function saveStoredData(data) {
 }
 
 function resetToDefaultData() {
-  localStorage.removeItem("SK_RANGGU_DASHBOARD_DATA_V6");
+  localStorage.removeItem("SK_RANGGU_DASHBOARD_DATA_V7");
   return DEFAULT_SYSTEM_DATA;
 }
 

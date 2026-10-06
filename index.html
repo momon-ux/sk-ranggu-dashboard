@@ -147,29 +147,41 @@
     <div class="max-w-7xl mx-auto px-4 flex items-center justify-between">
       
       <div class="hidden md:flex items-center gap-1.5 py-2.5 overflow-x-auto w-full">
-        <button data-tab-target="tab-utama" class="px-4 py-2 rounded-xl text-xs font-bold transition flex items-center gap-2 bg-blue-900 text-white shadow-sm">
-          <span>🏛️</span> Ringkasan Eksekutif
+        <button data-tab-target="tab-utama" class="px-3.5 py-2 rounded-xl text-xs font-bold transition flex items-center gap-1.5 bg-blue-900 text-white shadow-sm shrink-0">
+          <span>🏛️</span> Pentadbiran
         </button>
-        <button data-tab-target="tab-carta" class="px-4 py-2 rounded-xl text-xs font-medium text-slate-600 hover:bg-slate-100 transition flex items-center gap-2">
-          <span>👥</span> Carta Organisasi
+        <button data-tab-target="tab-carta" class="px-3.5 py-2 rounded-xl text-xs font-medium text-slate-600 hover:bg-slate-100 transition flex items-center gap-1.5 shrink-0">
+          <span>👥</span> Carta Pentadbiran
         </button>
-        <button data-tab-target="tab-murid" class="px-4 py-2 rounded-xl text-xs font-medium text-slate-600 hover:bg-slate-100 transition flex items-center gap-2">
-          <span>🎒</span> Enrolmen & 27 Kelas (890 Murid)
+        <button data-tab-target="tab-kurikulum" class="px-3.5 py-2 rounded-xl text-xs font-medium text-slate-600 hover:bg-slate-100 transition flex items-center gap-1.5 shrink-0">
+          <span>📚</span> Unit Kurikulum
         </button>
-        <button data-tab-target="tab-kurikulum" class="px-4 py-2 rounded-xl text-xs font-medium text-slate-600 hover:bg-slate-100 transition flex items-center gap-2">
-          <span>📚</span> Pengurusan Kurikulum
+        <button data-tab-target="tab-hem" class="px-3.5 py-2 rounded-xl text-xs font-medium text-slate-600 hover:bg-slate-100 transition flex items-center gap-1.5 shrink-0">
+          <span>🤝</span> Unit HEM
         </button>
-        <button data-tab-target="tab-bahan" class="px-4 py-2 rounded-xl text-xs font-medium text-slate-600 hover:bg-slate-100 transition flex items-center gap-2">
-          <span>📂</span> Muat Turun Bahan
+        <button data-tab-target="tab-kokurikulum" class="px-3.5 py-2 rounded-xl text-xs font-medium text-slate-600 hover:bg-slate-100 transition flex items-center gap-1.5 shrink-0">
+          <span>🏆</span> Unit Kokurikulum
         </button>
-        <button data-tab-target="tab-pbd" class="px-4 py-2 rounded-xl text-xs font-medium text-slate-600 hover:bg-slate-100 transition flex items-center gap-2">
+        <button data-tab-target="tab-petang" class="px-3.5 py-2 rounded-xl text-xs font-medium text-slate-600 hover:bg-slate-100 transition flex items-center gap-1.5 shrink-0">
+          <span>🌇</span> Sidang Petang
+        </button>
+        <button data-tab-target="tab-murid" class="px-3.5 py-2 rounded-xl text-xs font-medium text-slate-600 hover:bg-slate-100 transition flex items-center gap-1.5 shrink-0">
+          <span>🎒</span> Enrolmen (890 Murid)
+        </button>
+        <button data-tab-target="tab-bahan" class="px-3.5 py-2 rounded-xl text-xs font-medium text-slate-600 hover:bg-slate-100 transition flex items-center gap-1.5 shrink-0">
+          <span>📂</span> Dokumen & Pekeliling
+        </button>
+        <button data-tab-target="tab-portal" class="px-3.5 py-2 rounded-xl text-xs font-medium text-slate-600 hover:bg-slate-100 transition flex items-center gap-1.5 shrink-0">
+          <span>🌐</span> Portal & Media
+        </button>
+        <button data-tab-target="tab-pbd" class="px-3.5 py-2 rounded-xl text-xs font-medium text-slate-600 hover:bg-slate-100 transition flex items-center gap-1.5 shrink-0">
           <span>📊</span> Analisis PBD
         </button>
-        <button data-tab-target="tab-takwim" class="px-4 py-2 rounded-xl text-xs font-medium text-slate-600 hover:bg-slate-100 transition flex items-center gap-2">
-          <span>📅</span> Takwim & Acara
+        <button data-tab-target="tab-takwim" class="px-3.5 py-2 rounded-xl text-xs font-medium text-slate-600 hover:bg-slate-100 transition flex items-center gap-1.5 shrink-0">
+          <span>📅</span> Takwim
         </button>
-        <button data-tab-target="tab-sheets" class="px-4 py-2 rounded-xl text-xs font-medium text-slate-600 hover:bg-slate-100 transition flex items-center gap-2">
-          <span>🔗</span> Penyelarasan Spreadsheet
+        <button data-tab-target="tab-sheets" class="px-3.5 py-2 rounded-xl text-xs font-medium text-slate-600 hover:bg-slate-100 transition flex items-center gap-1.5 shrink-0">
+          <span>🔗</span> Spreadsheet
         </button>
       </div>
 
@@ -195,28 +207,40 @@
     <!-- Mobile Drawer -->
     <div id="mobileNavDrawer" class="hidden md:hidden border-t border-slate-200 bg-white px-4 py-3 space-y-1.5 shadow-lg">
       <button data-tab-target="tab-utama" class="w-full text-left px-3 py-2 rounded-lg text-xs font-bold bg-blue-900 text-white flex items-center gap-2">
-        <span>🏛️</span> Ringkasan Eksekutif
+        <span>🏛️</span> Pengurusan & Pentadbiran
       </button>
       <button data-tab-target="tab-carta" class="w-full text-left px-3 py-2 rounded-lg text-xs font-medium text-slate-700 hover:bg-slate-100 flex items-center gap-2">
         <span>👥</span> Carta Organisasi Pentadbiran
       </button>
+      <button data-tab-target="tab-kurikulum" class="w-full text-left px-3 py-2 rounded-lg text-xs font-medium text-slate-700 hover:bg-slate-100 flex items-center gap-2">
+        <span>📚</span> Unit Kurikulum (3 Lajur Rasmi)
+      </button>
+      <button data-tab-target="tab-hem" class="w-full text-left px-3 py-2 rounded-lg text-xs font-medium text-slate-700 hover:bg-slate-100 flex items-center gap-2">
+        <span>🤝</span> Unit Hal Ehwal Murid (HEM)
+      </button>
+      <button data-tab-target="tab-kokurikulum" class="w-full text-left px-3 py-2 rounded-lg text-xs font-medium text-slate-700 hover:bg-slate-100 flex items-center gap-2">
+        <span>🏆</span> Unit Kokurikulum & Sukan
+      </button>
+      <button data-tab-target="tab-petang" class="w-full text-left px-3 py-2 rounded-lg text-xs font-medium text-slate-700 hover:bg-slate-100 flex items-center gap-2">
+        <span>🌇</span> Unit Sidang Petang (Tahap 1)
+      </button>
       <button data-tab-target="tab-murid" class="w-full text-left px-3 py-2 rounded-lg text-xs font-medium text-slate-700 hover:bg-slate-100 flex items-center gap-2">
         <span>🎒</span> Enrolmen & 27 Kelas (890 Murid)
       </button>
-      <button data-tab-target="tab-kurikulum" class="w-full text-left px-3 py-2 rounded-lg text-xs font-medium text-slate-700 hover:bg-slate-100 flex items-center gap-2">
-        <span>📚</span> Pengurusan Kurikulum & Panitia
-      </button>
       <button data-tab-target="tab-bahan" class="w-full text-left px-3 py-2 rounded-lg text-xs font-medium text-slate-700 hover:bg-slate-100 flex items-center gap-2">
-        <span>📂</span> Muat Turun Dokumen & Bahan
+        <span>📂</span> Dokumen & Pekeliling Rasmi
+      </button>
+      <button data-tab-target="tab-portal" class="w-full text-left px-3 py-2 rounded-lg text-xs font-medium text-slate-700 hover:bg-slate-100 flex items-center gap-2">
+        <span>🌐</span> Portal Perkhidmatan & Media Sosial
       </button>
       <button data-tab-target="tab-pbd" class="w-full text-left px-3 py-2 rounded-lg text-xs font-medium text-slate-700 hover:bg-slate-100 flex items-center gap-2">
-        <span>📊</span> Analisis PBD & Data Murid
+        <span>📊</span> Analisis PBD & Akademik
       </button>
       <button data-tab-target="tab-takwim" class="w-full text-left px-3 py-2 rounded-lg text-xs font-medium text-slate-700 hover:bg-slate-100 flex items-center gap-2">
-        <span>📅</span> Takwim & Kalendar Aktiviti
+        <span>📅</span> Takwim Persekolahan
       </button>
       <button data-tab-target="tab-sheets" class="w-full text-left px-3 py-2 rounded-lg text-xs font-medium text-slate-700 hover:bg-slate-100 flex items-center gap-2">
-        <span>🔗</span> Penyelarasan Spreadsheet
+        <span>🔗</span> Pangkalan Data Spreadsheet
       </button>
     </div>
   </nav>
@@ -226,9 +250,68 @@
        ========================================================================= -->
   <main class="flex-1 max-w-7xl w-full mx-auto p-4 sm:p-6 lg:p-8 space-y-8 bg-watermark">
 
-    <!-- TAB 1: RINGKASAN EKSEKUTIF -->
+    <!-- TAB 1: PENGURUSAN & PENTADBIRAN -->
     <section id="tab-utama" class="tab-content-section space-y-8">
       
+      <!-- BAR JAM DIGITAL & UCAPAN HARIAN LANGSUNG -->
+      <div class="bg-gradient-to-r from-royal-950 via-slate-900 to-royal-950 text-white p-4 sm:p-5 rounded-2xl border border-white/10 shadow-lg flex flex-col md:flex-row items-center justify-between gap-4">
+        <div class="flex items-center gap-3.5 text-center md:text-left">
+          <div class="w-12 h-12 rounded-2xl bg-amber-500/20 text-amber-300 flex items-center justify-center text-2xl border border-amber-400/30 shadow-inner shrink-0">
+            🕒
+          </div>
+          <div>
+            <div class="text-[11px] font-extrabold text-amber-300 uppercase tracking-widest flex items-center justify-center md:justify-start gap-1.5" id="liveGreeting">
+              <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+              SELAMAT DATANG KE DASHBOARD SK RANGGU
+            </div>
+            <div class="text-xs sm:text-sm text-slate-200 font-medium mt-0.5" id="liveFullDate">
+              Memuatkan hari dan tarikh rasmi...
+            </div>
+          </div>
+        </div>
+        <div class="px-5 py-2.5 rounded-2xl bg-black/50 border border-white/15 font-mono text-lg sm:text-xl font-extrabold text-amber-300 tracking-wider shadow-inner text-center" id="liveDigitalTime">
+          00:00:00 AM
+        </div>
+      </div>
+
+      <!-- PILAR KECEMERLANGAN: TAWAU LEADS & DIGITAL FORWARD (DARIPADA PROTOTAIP) -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div class="p-4 sm:p-5 rounded-2xl bg-gradient-to-r from-royal-950 via-slate-900 to-red-950 border border-red-500/30 shadow-md flex items-center gap-3.5 text-white">
+          <span class="text-2xl sm:text-3xl p-2.5 rounded-2xl bg-white/10 border border-white/10 shrink-0">📣</span>
+          <div>
+            <div class="text-[10px] font-extrabold text-amber-300 tracking-widest uppercase">PELAN PPD TAWAU</div>
+            <div class="text-sm sm:text-base font-extrabold tracking-tight mt-0.5">“TAWAU LEADS : IKHLAS MEMACU KECEMERLANGAN”</div>
+            <div class="text-[11px] text-slate-300 mt-0.5 font-medium">Inisiatif strategik kecemerlangan modal insan pendidikan daerah Tawau.</div>
+          </div>
+        </div>
+        <div class="p-4 sm:p-5 rounded-2xl bg-gradient-to-r from-royal-950 via-slate-900 to-blue-950 border border-blue-400/30 shadow-md flex items-center gap-3.5 text-white">
+          <span class="text-2xl sm:text-3xl p-2.5 rounded-2xl bg-white/10 border border-white/10 shrink-0">🚀</span>
+          <div>
+            <div class="text-[10px] font-extrabold text-sky-300 tracking-widest uppercase">DIGITAL FORWARD SK RANGGU</div>
+            <div class="text-sm sm:text-base font-extrabold tracking-tight mt-0.5">“SK RANGGU MELANGKAH BERSAMA, MEMACU MASA DEPAN”</div>
+            <div class="text-[11px] text-slate-300 mt-0.5 font-medium">Pembudayaan inovasi digital dan teknologi dalam pengurusan sekolah.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- INSPIRASI WARGA PENDIDIK (QUOTE CARD PROTOTAIP) -->
+      <div class="bg-gradient-to-r from-red-950 via-royal-950 to-slate-900 rounded-2xl p-5 sm:p-6 border border-amber-500/30 shadow-lg text-white flex flex-col md:flex-row items-center gap-5">
+        <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-amber-500 to-red-600 text-white flex items-center justify-center text-3xl shrink-0 shadow-lg border border-white/20">
+          💡
+        </div>
+        <div class="flex-1 text-center md:text-left">
+          <div class="text-[10px] font-extrabold text-amber-300 tracking-widest uppercase mb-1 flex items-center justify-center md:justify-start gap-1.5">
+            <span>★</span> INSPIRASI WARGA PENDIDIK SK RANGGU <span>★</span>
+          </div>
+          <p class="text-sm sm:text-base md:text-lg font-extrabold text-white leading-relaxed">
+            <span class="text-amber-300">“TEKNOLOGI MEMBUKA PELUANG.</span> GURU MEMBERI ARAH. <span class="text-amber-300">PENDIDIKAN MEMBENTUK MASA DEPAN.”</span>
+          </p>
+          <div class="text-xs text-slate-300 font-semibold mt-1">
+            SK RANGGU TAWAU (XBA3037) • “CITA • USAHA • JAYA”
+          </div>
+        </div>
+      </div>
+
       <!-- KAD STATISTIK -->
       <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 sm:gap-4">
         
@@ -531,6 +614,355 @@
       </div>
 
       <div id="committeesContainer" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4"></div>
+
+    </section>
+
+    <!-- =========================================================================
+         TAB BARU: UNIT HAL EHWAL MURID (HEM)
+         ========================================================================= -->
+    <section id="tab-hem" class="tab-content-section hidden space-y-6">
+      
+      <!-- HEADER UNIT HEM -->
+      <div class="bg-gradient-to-r from-royal-950 via-slate-900 to-royal-900 rounded-3xl p-6 sm:p-8 text-white shadow-xl border border-white/10 relative overflow-hidden">
+        <div class="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
+          <div>
+            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/20 border border-emerald-400/30 text-xs font-bold text-emerald-300 mb-2">
+              <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
+              PENGURUSAN HAL EHWAL MURID (HEM) 2026
+            </div>
+            <h2 class="text-2xl sm:text-3xl font-extrabold tracking-tight text-white drop-shadow">
+              Unit Hal Ehwal Murid SK Ranggu
+            </h2>
+            <p class="text-xs sm:text-sm text-slate-300 mt-1 max-w-2xl font-medium">
+              “Sahsiah Terpuji, Murid Berkualiti, Sekolah Harmoni” — Memastikan kebajikan, disiplin, kesihatan dan keselamatan 890 murid terpelihara sepanjang masa.
+            </p>
+          </div>
+          
+          <div class="flex items-center gap-2.5">
+            <div class="bg-white/10 backdrop-blur-sm p-3 rounded-2xl border border-white/15 text-center min-w-[130px]">
+              <span class="text-[10px] uppercase font-bold text-emerald-300 block">PK HEM</span>
+              <strong class="text-xs sm:text-sm font-extrabold text-white block mt-0.5">KOMALA BT JOSEPH</strong>
+              <span class="text-[9px] text-slate-300">Pengerusi HEM</span>
+            </div>
+            <div class="bg-white/10 backdrop-blur-sm p-3 rounded-2xl border border-white/15 text-center min-w-[130px]">
+              <span class="text-[10px] uppercase font-bold text-amber-300 block">Setiausaha HEM</span>
+              <strong class="text-xs sm:text-sm font-extrabold text-white block mt-0.5">NORLINA BT BAGWAS</strong>
+              <span class="text-[9px] text-slate-300">Penyelaras Induk</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 4 KAD KPI HEM -->
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 mt-6 pt-6 border-t border-white/15">
+          <div class="p-3.5 rounded-2xl bg-white/10 border border-white/10">
+            <span class="text-xs text-slate-300 block font-medium">Sasaran Kehadiran</span>
+            <div class="text-xl sm:text-2xl font-extrabold text-emerald-300 mt-0.5">95%+</div>
+            <span class="text-[10px] text-slate-300">APDM e-Kehadiran</span>
+          </div>
+          <div class="p-3.5 rounded-2xl bg-white/10 border border-white/10">
+            <span class="text-xs text-slate-300 block font-medium">Salah Laku Disiplin</span>
+            <div class="text-xl sm:text-2xl font-extrabold text-sky-300 mt-0.5">&lt; 0.5%</div>
+            <span class="text-[10px] text-slate-300">Sifar Kes Berat (SSDM)</span>
+          </div>
+          <div class="p-3.5 rounded-2xl bg-white/10 border border-white/10">
+            <span class="text-xs text-slate-300 block font-medium">Penerima SPBT</span>
+            <div class="text-xl sm:text-2xl font-extrabold text-amber-300 mt-0.5">100%</div>
+            <span class="text-[10px] text-slate-300">890 Murid Layak</span>
+          </div>
+          <div class="p-3.5 rounded-2xl bg-white/10 border border-white/10">
+            <span class="text-xs text-slate-300 block font-medium">Murid Layak RMT & Susu</span>
+            <div class="text-xl sm:text-2xl font-extrabold text-purple-300 mt-0.5">184 Murid</div>
+            <span class="text-[10px] text-slate-300">Bantuan Pemakanan KPM</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 10 UNIT UTAMA HEM INTERAKTIF -->
+      <div class="bg-white p-5 sm:p-6 rounded-2xl border border-slate-200 shadow-sm space-y-4">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-4 border-b border-slate-100">
+          <div>
+            <h3 class="text-lg font-extrabold text-royal-900 flex items-center gap-2">
+              <span>🛡️</span> 10 Portfolio Jawatankuasa Pengurusan HEM 2026
+            </h3>
+            <p class="text-xs text-slate-500 mt-0.5">Struktur jawatankuasa kerja bagi memastikan keharmonian dan pembangunan modal insan murid SK Ranggu.</p>
+          </div>
+          <span class="text-xs font-bold px-3 py-1 bg-emerald-50 text-emerald-800 rounded-full border border-emerald-200 self-start sm:self-auto">
+            10 Unit Beroperasi
+          </span>
+        </div>
+
+        <div id="hemUnitsGrid" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <!-- Dimuatkan secara dinamik melalui app.js -->
+        </div>
+      </div>
+
+    </section>
+
+    <!-- =========================================================================
+         TAB BARU: UNIT KOKURIKULUM
+         ========================================================================= -->
+    <section id="tab-kokurikulum" class="tab-content-section hidden space-y-6">
+      
+      <!-- HEADER KOKURIKULUM -->
+      <div class="bg-gradient-to-r from-royal-950 via-slate-900 to-red-950 rounded-3xl p-6 sm:p-8 text-white shadow-xl border border-white/10 relative overflow-hidden">
+        <div class="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
+          <div>
+            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500/20 border border-amber-400/30 text-xs font-bold text-amber-300 mb-2">
+              <span class="w-2 h-2 rounded-full bg-amber-400"></span>
+              PENGURUSAN UNIT KOKURIKULUM & SUKAN 2026
+            </div>
+            <h2 class="text-2xl sm:text-3xl font-extrabold tracking-tight text-white drop-shadow">
+              Unit Kokurikulum SK Ranggu
+            </h2>
+            <p class="text-xs sm:text-sm text-slate-300 mt-1 max-w-2xl font-medium">
+              “Kecergasan Fizikal, Ketahanan Mental, Kecemerlangan Modal Insan” — Mengembangkan bakat kepimpinan, sahsiah dan potensi murid melalui unit beruniform, persatuan dan sukan.
+            </p>
+          </div>
+          
+          <div class="flex items-center gap-2.5">
+            <div class="bg-white/10 backdrop-blur-sm p-3 rounded-2xl border border-white/15 text-center min-w-[130px]">
+              <span class="text-[10px] uppercase font-bold text-amber-300 block">PK Kokurikulum</span>
+              <strong class="text-xs sm:text-sm font-extrabold text-white block mt-0.5">WARNAH BT SIRA</strong>
+              <span class="text-[9px] text-slate-300">Pengerusi KOKU</span>
+            </div>
+            <div class="bg-white/10 backdrop-blur-sm p-3 rounded-2xl border border-white/15 text-center min-w-[130px]">
+              <span class="text-[10px] uppercase font-bold text-sky-300 block">Setiausaha KOKU</span>
+              <strong class="text-xs sm:text-sm font-extrabold text-white block mt-0.5">EVALORENNA BT LAMINSIN</strong>
+              <span class="text-[9px] text-slate-300">Penyelaras Induk</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- SOROTAN PENCAPAIAN KEBANGSAAN & DAERAH -->
+        <div class="mt-6 pt-6 border-t border-white/15 space-y-3">
+          <div class="text-xs font-bold text-amber-300 uppercase tracking-widest flex items-center gap-1.5">
+            <span>🏆</span> SOROTAN KEJAYAAN & PENCAPAIAN KOKURIKULUM (DARIPADA PROTOTAIP)
+          </div>
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+            <div class="p-3.5 rounded-2xl bg-white/10 border border-white/10">
+              <span class="text-[10px] font-bold px-2 py-0.5 rounded bg-amber-500/30 text-amber-200 border border-amber-400/40">KEBANGSAAN 🥇</span>
+              <h4 class="text-sm font-bold text-white mt-2">Kejohanan TASCAR 3.0</h4>
+              <p class="text-xs text-slate-300 mt-1">Penyampaian pingat & sijil pengiktirafan kebangsaan, dibimbing oleh <strong>Cikgu Mohammad Fikrey bin Abdul Gapar</strong>.</p>
+            </div>
+            <div class="p-3.5 rounded-2xl bg-white/10 border border-white/10">
+              <span class="text-[10px] font-bold px-2 py-0.5 rounded bg-sky-500/30 text-sky-200 border border-sky-400/40">DAERAH / NEGERI 🥈</span>
+              <h4 class="text-sm font-bold text-white mt-2">White Bridge Unichamp</h4>
+              <p class="text-xs text-slate-300 mt-1">Penghargaan khas kepada barisan murid dan jurulatih bagi kejohanan berprestij White Bridge Unichamp.</p>
+            </div>
+            <div class="p-3.5 rounded-2xl bg-white/10 border border-white/10">
+              <span class="text-[10px] font-bold px-2 py-0.5 rounded bg-emerald-500/30 text-emerald-200 border border-emerald-400/40">PERINGKAT SEKOLAH</span>
+              <h4 class="text-sm font-bold text-white mt-2">Minggu Unit Beruniform</h4>
+              <p class="text-xs text-slate-300 mt-1">Minggu kokurikulum dikendalikan oleh Persekutuan Pengakap Kanak-Kanak bagi melatih kepimpinan asas.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 4 SEKTOR KOKURIKULUM -->
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        
+        <!-- 1. UNIT BERUNIFORM -->
+        <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm space-y-3">
+          <div class="flex items-center justify-between pb-3 border-b border-slate-100">
+            <h3 class="text-base font-extrabold text-royal-900 flex items-center gap-2">
+              <span>🏕️</span> 5 Unit Beruniform (Tahap 2)
+            </h3>
+            <span class="text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-emerald-100 text-emerald-800">5 Pasukan</span>
+          </div>
+          <div id="kokoUniformGrid" class="space-y-2.5"></div>
+        </div>
+
+        <!-- 2. KELAB & PERSATUAN -->
+        <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm space-y-3">
+          <div class="flex items-center justify-between pb-3 border-b border-slate-100">
+            <h3 class="text-base font-extrabold text-royal-900 flex items-center gap-2">
+              <span>📚</span> 7 Kelab & Persatuan Akademik/Hobi
+            </h3>
+            <span class="text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-blue-100 text-blue-800">7 Kelab</span>
+          </div>
+          <div id="kokoClubsGrid" class="space-y-2.5"></div>
+        </div>
+
+        <!-- 3. SUKAN & PERMAINAN (1M1S) -->
+        <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm space-y-3">
+          <div class="flex items-center justify-between pb-3 border-b border-slate-100">
+            <h3 class="text-base font-extrabold text-royal-900 flex items-center gap-2">
+              <span>⚽</span> 5 Kelab Sukan & Permainan (1M1S)
+            </h3>
+            <span class="text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-amber-100 text-amber-800">5 Sukan</span>
+          </div>
+          <div id="kokoSportsGrid" class="space-y-2.5"></div>
+        </div>
+
+        <!-- 4. RUMAH SUKAN -->
+        <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm space-y-3">
+          <div class="flex items-center justify-between pb-3 border-b border-slate-100">
+            <h3 class="text-base font-extrabold text-royal-900 flex items-center gap-2">
+              <span>🚩</span> 4 Rumah Sukan SK Ranggu
+            </h3>
+            <span class="text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-purple-100 text-purple-800">4 Rumah</span>
+          </div>
+          <div id="kokoHousesGrid" class="grid grid-cols-1 sm:grid-cols-2 gap-3"></div>
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- =========================================================================
+         TAB BARU: UNIT SIDANG PETANG
+         ========================================================================= -->
+    <section id="tab-petang" class="tab-content-section hidden space-y-6">
+      
+      <!-- HEADER SIDANG PETANG -->
+      <div class="bg-gradient-to-r from-royal-950 via-slate-900 to-amber-950 rounded-3xl p-6 sm:p-8 text-white shadow-xl border border-white/10 relative overflow-hidden">
+        <div class="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
+          <div>
+            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500/20 border border-amber-400/30 text-xs font-bold text-amber-300 mb-2">
+              <span class="w-2 h-2 rounded-full bg-amber-400"></span>
+              PENGURUSAN SESI PERSEKOLAHAN PETANG 2026
+            </div>
+            <h2 class="text-2xl sm:text-3xl font-extrabold tracking-tight text-white drop-shadow">
+              Unit Sidang Petang SK Ranggu
+            </h2>
+            <p class="text-xs sm:text-sm text-slate-300 mt-1 max-w-2xl font-medium">
+              Khusus bagi Pengurusan Murid Tahap 1 (Tahun 1, Tahun 2 & Tahun 3) — Memastikan pembelajaran petang berjalan lancar, teratur dan selamat.
+            </p>
+          </div>
+          
+          <div class="flex items-center gap-2.5">
+            <div class="bg-white/10 backdrop-blur-sm p-3 rounded-2xl border border-white/15 text-center min-w-[140px]">
+              <span class="text-[10px] uppercase font-bold text-amber-300 block">PK Petang</span>
+              <strong class="text-xs sm:text-sm font-extrabold text-white block mt-0.5">EMRAN BIN HJ SELAMAT</strong>
+              <span class="text-[9px] text-slate-300">Pengerusi Sesi Petang</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 3 KAD STATISTIK PETANG -->
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4 mt-6 pt-6 border-t border-white/15">
+          <div class="p-4 rounded-2xl bg-white/10 border border-white/10 flex items-center justify-between">
+            <div>
+              <span class="text-xs text-slate-300">Tahun 1 (4 Kelas)</span>
+              <div class="text-2xl font-extrabold text-amber-300">148 Murid</div>
+            </div>
+            <span class="text-3xl">🌱</span>
+          </div>
+          <div class="p-4 rounded-2xl bg-white/10 border border-white/10 flex items-center justify-between">
+            <div>
+              <span class="text-xs text-slate-300">Tahun 2 (4 Kelas)</span>
+              <div class="text-2xl font-extrabold text-emerald-300">132 Murid</div>
+            </div>
+            <span class="text-3xl">🌿</span>
+          </div>
+          <div class="p-4 rounded-2xl bg-white/10 border border-white/10 flex items-center justify-between">
+            <div>
+              <span class="text-xs text-slate-300">Tahun 3 (4 Kelas)</span>
+              <div class="text-2xl font-extrabold text-sky-300">132 Murid</div>
+            </div>
+            <span class="text-3xl">🌳</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- JADUAL WAKTU OPERASI & PENYELARAS PETANG -->
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        
+        <!-- JADUAL WAKTU OPERASI -->
+        <div class="bg-white p-5 sm:p-6 rounded-2xl border border-slate-200 shadow-sm space-y-4">
+          <div class="flex items-center justify-between pb-3 border-b border-slate-100">
+            <h3 class="text-base font-extrabold text-royal-900 flex items-center gap-2">
+              <span>⏰</span> Jadual Waktu Operasi Persekolahan Petang
+            </h3>
+            <span class="text-xs font-bold px-2.5 py-0.5 rounded-full bg-amber-100 text-amber-800">Isnin – Jumaat</span>
+          </div>
+
+          <div id="petangHoursGrid" class="space-y-3">
+            <!-- Dimuatkan dari app.js -->
+          </div>
+        </div>
+
+        <!-- PENYELARAS & SOP KESELAMATAN -->
+        <div class="space-y-6">
+          <div class="bg-white p-5 sm:p-6 rounded-2xl border border-slate-200 shadow-sm space-y-4">
+            <h3 class="text-base font-extrabold text-royal-900 flex items-center gap-2 pb-3 border-b border-slate-100">
+              <span>👥</span> Barisan Penyelaras Khas Sesi Petang
+            </h3>
+            <div id="petangOfficersGrid" class="space-y-2.5">
+              <!-- Dimuatkan dari app.js -->
+            </div>
+          </div>
+
+          <div class="bg-amber-50 p-5 rounded-2xl border border-amber-200 space-y-2.5">
+            <h4 class="text-xs font-extrabold uppercase tracking-wider text-amber-900 flex items-center gap-1.5">
+              <span>🛡️</span> SOP Keselamatan & Kawalan Pintu Pagar Petang
+            </h4>
+            <ul class="text-xs text-amber-800 space-y-1.5 list-disc list-inside">
+              <li>Kawalan pertukaran sesi pagi & petang (12.30 – 1.00 petang) di Pintu Pagar Utama.</li>
+              <li>Program Guru Penyayang bertugas menyambut murid seawal 12.30 tengah hari.</li>
+              <li>Pelepasan bersurai murid secara berfasa: Isnin-Khamis (5.30 petang) & Jumaat (5.00 petang).</li>
+            </ul>
+          </div>
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- =========================================================================
+         TAB BARU: PORTAL DIGITAL & MEDIA SOSIAL
+         ========================================================================= -->
+    <section id="tab-portal" class="tab-content-section hidden space-y-6">
+      
+      <!-- HEADER PORTAL -->
+      <div class="bg-gradient-to-r from-royal-950 via-slate-900 to-blue-950 rounded-3xl p-6 sm:p-8 text-white shadow-xl border border-white/10 relative overflow-hidden">
+        <div class="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
+          <div>
+            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/20 border border-blue-400/30 text-xs font-bold text-blue-300 mb-2">
+              <span class="w-2 h-2 rounded-full bg-blue-400"></span>
+              PORTAL PERKHIDMATAN DIGITAL & MEDIA SOSIAL
+            </div>
+            <h2 class="text-2xl sm:text-3xl font-extrabold tracking-tight text-white drop-shadow">
+              Pusat Akses Digital & Saluran Rasmi SK Ranggu
+            </h2>
+            <p class="text-xs sm:text-sm text-slate-300 mt-1 max-w-2xl font-medium">
+              Pautan pantas ke sistem utama Kementerian Pendidikan Malaysia (KPM), JPN Sabah, PPD Tawau serta saluran media sosial rasmi sekolah.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- GRID 11 PORTAL DIGITAL KPM / GURU -->
+      <div class="bg-white p-5 sm:p-6 rounded-2xl border border-slate-200 shadow-sm space-y-4">
+        <div class="flex items-center justify-between pb-3 border-b border-slate-100">
+          <h3 class="text-base font-extrabold text-royal-900 flex items-center gap-2">
+            <span>🌐</span> 11 Portal Digital Perkhidmatan KPM & Guru
+          </h3>
+          <span class="text-xs font-bold px-3 py-1 bg-blue-50 text-blue-800 rounded-full border border-blue-200">
+            Akses Terus
+          </span>
+        </div>
+
+        <div id="portalsGridContainer" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+          <!-- Dimuatkan dari app.js -->
+        </div>
+      </div>
+
+      <!-- SALURAN MEDIA SOSIAL RASMI (FACEBOOK & TIKTOK) -->
+      <div class="bg-white p-5 sm:p-6 rounded-2xl border border-slate-200 shadow-sm space-y-4">
+        <div class="flex items-center justify-between pb-3 border-b border-slate-100">
+          <h3 class="text-base font-extrabold text-royal-900 flex items-center gap-2">
+            <span>📱</span> Saluran Media Sosial Rasmi SK Ranggu Tawau
+          </h3>
+          <span class="text-xs font-bold px-3 py-1 bg-red-50 text-red-800 rounded-full border border-red-200">
+            Ikuti Kami
+          </span>
+        </div>
+
+        <div id="socialLinksGrid" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <!-- Dimuatkan dari app.js -->
+        </div>
+      </div>
 
     </section>
 

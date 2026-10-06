@@ -28,6 +28,12 @@ function initSystem() {
   renderDeveloperCredits();
   renderPortalLinks();
 
+  // Render Induk Besar & Prototaip
+  renderHemHierarchy();
+  renderKokoHierarchy();
+  renderPetangHierarchy();
+  renderPortalAndSocial();
+
   // Inisialisasi Google Sheets
   initGoogleSheetsViewer();
 
@@ -62,11 +68,24 @@ function updateLiveClock() {
     day: "numeric" 
   });
 
+  const hour = now.getHours();
+  let greeting = "Selamat Datang";
+  if (hour >= 5 && hour < 12) greeting = "Selamat Pagi";
+  else if (hour >= 12 && hour < 14) greeting = "Selamat Tengah Hari";
+  else if (hour >= 14 && hour < 19) greeting = "Selamat Petang";
+  else greeting = "Selamat Malam";
+
   const clockEl = document.getElementById("liveClock");
   const dateEl = document.getElementById("liveDate");
+  const greetingEl = document.getElementById("liveGreeting");
+  const fullDateEl = document.getElementById("liveFullDate");
+  const digitalTimeEl = document.getElementById("liveDigitalTime");
   
   if (clockEl) clockEl.textContent = timeStr.toUpperCase();
   if (dateEl) dateEl.textContent = dateStr;
+  if (greetingEl) greetingEl.innerHTML = `<span>☀️</span> ${greeting} • Warga Pendidik & Staf`;
+  if (fullDateEl) fullDateEl.textContent = dateStr;
+  if (digitalTimeEl) digitalTimeEl.textContent = timeStr.toUpperCase();
 }
 
 /* ==========================================================================
@@ -184,11 +203,17 @@ function renderDocumentsList() {
         </div>
 
         <div class="shrink-0 flex items-center gap-2">
-          ${doc.fileUrl && doc.fileUrl !== '#' ? `
-            <a href="${doc.fileUrl}" target="_blank" download class="px-3.5 py-1.5 bg-blue-700 hover:bg-blue-800 text-white rounded-lg text-xs font-semibold shadow-sm transition flex items-center gap-1.5">
-              <span>📥</span> Muat Turun
-            </a>
-          ` : `
+          ${doc.fileUrl && doc.fileUrl !== '#' ? (
+            doc.fileUrl.includes("drive.google.com") ? `
+              <a href="${doc.fileUrl}" target="_blank" rel="noopener noreferrer" class="px-3.5 py-1.5 bg-indigo-700 hover:bg-indigo-800 text-white rounded-lg text-xs font-semibold shadow-sm transition flex items-center gap-1.5">
+                <span>👁️</span> Buka di Drive ↗
+              </a>
+            ` : `
+              <a href="${doc.fileUrl}" target="_blank" download class="px-3.5 py-1.5 bg-blue-700 hover:bg-blue-800 text-white rounded-lg text-xs font-semibold shadow-sm transition flex items-center gap-1.5">
+                <span>📥</span> Muat Turun Fail
+              </a>
+            `
+          ) : `
             <button onclick="alert('Bahan ini boleh dimuat turun melalui arkib Pejabat Pentadbiran SK Ranggu.')" class="px-3.5 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg text-xs font-semibold transition border border-slate-300 flex items-center gap-1.5">
               <span>👁️</span> Buka Bahan
             </button>
@@ -1010,6 +1035,234 @@ function renderPortalLinks() {
 }
 
 /* ==========================================================================
+   RENDER INDUK BESAR HEM 2026 (10 PORTFOLIO)
+   ========================================================================== */
+function renderHemHierarchy() {
+  const container = document.getElementById("hemUnitsGrid");
+  if (!container) return;
+
+  const hem = window.SKR_DATA.hemHierarchy2026;
+  if (!hem || !hem.units) return;
+
+  container.innerHTML = hem.units.map(u => `
+    <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200 hover:border-emerald-300 hover:bg-emerald-50/30 transition shadow-sm executive-card flex flex-col justify-between">
+      <div>
+        <div class="flex items-center justify-between mb-2">
+          <span class="text-[10px] font-extrabold uppercase px-2.5 py-0.5 rounded-full bg-emerald-100 text-emerald-800 border border-emerald-200">
+            ${u.badge}
+          </span>
+          <span class="text-xl">${u.icon || '🛡️'}</span>
+        </div>
+        <h4 class="font-extrabold text-slate-900 text-sm leading-snug">${u.name}</h4>
+        <p class="text-xs text-slate-600 mt-1.5 leading-relaxed">${u.desc}</p>
+      </div>
+      <div class="mt-3.5 pt-2.5 border-t border-slate-200/80 flex items-center justify-between text-xs">
+        <span class="text-[11px] text-slate-500 font-medium">Ketua / Penyelaras:</span>
+        <strong class="text-slate-900 font-bold text-xs truncate ml-2 text-right">${u.head}</strong>
+      </div>
+    </div>
+  `).join("");
+}
+
+/* ==========================================================================
+   RENDER INDUK BESAR KOKURIKULUM 2026 (UNIFORM, KELAB, SUKAN, RUMAH)
+   ========================================================================== */
+function renderKokoHierarchy() {
+  const koko = window.SKR_DATA.kokoHierarchy2026;
+  if (!koko) return;
+
+  // 1. Unit Beruniform
+  const uniformContainer = document.getElementById("kokoUniformGrid");
+  if (uniformContainer && koko.uniformUnits) {
+    uniformContainer.innerHTML = koko.uniformUnits.map(u => `
+      <div class="p-3 rounded-xl bg-slate-50 border border-slate-200 flex items-center justify-between gap-3 executive-card">
+        <div class="flex items-center gap-2.5 min-w-0">
+          <span class="text-xl">${u.icon}</span>
+          <div class="min-w-0">
+            <h5 class="font-bold text-slate-900 text-xs sm:text-sm truncate">${u.name}</h5>
+            <p class="text-[11px] text-slate-500">${u.members}</p>
+          </div>
+        </div>
+        <div class="text-right shrink-0">
+          <span class="text-[10px] text-slate-400 block font-medium">Ketua Guru:</span>
+          <strong class="text-xs text-emerald-700 font-bold">${u.head}</strong>
+        </div>
+      </div>
+    `).join("");
+  }
+
+  // 2. Kelab & Persatuan
+  const clubsContainer = document.getElementById("kokoClubsGrid");
+  if (clubsContainer && koko.clubUnits) {
+    clubsContainer.innerHTML = koko.clubUnits.map(c => `
+      <div class="p-3 rounded-xl bg-slate-50 border border-slate-200 flex items-center justify-between gap-3 executive-card">
+        <div class="flex items-center gap-2.5 min-w-0">
+          <span class="text-xl">${c.icon}</span>
+          <div class="min-w-0">
+            <h5 class="font-bold text-slate-900 text-xs sm:text-sm truncate">${c.name}</h5>
+            <p class="text-[11px] text-slate-500">${c.field}</p>
+          </div>
+        </div>
+        <div class="text-right shrink-0">
+          <span class="text-[10px] text-slate-400 block font-medium">Ketua Guru:</span>
+          <strong class="text-xs text-blue-700 font-bold">${c.head}</strong>
+        </div>
+      </div>
+    `).join("");
+  }
+
+  // 3. Sukan & Permainan (1M1S)
+  const sportsContainer = document.getElementById("kokoSportsGrid");
+  if (sportsContainer && koko.sportsUnits) {
+    sportsContainer.innerHTML = koko.sportsUnits.map(s => `
+      <div class="p-3 rounded-xl bg-slate-50 border border-slate-200 flex items-center justify-between gap-3 executive-card">
+        <div class="flex items-center gap-2.5 min-w-0">
+          <span class="text-xl">${s.icon}</span>
+          <div class="min-w-0">
+            <h5 class="font-bold text-slate-900 text-xs sm:text-sm truncate">${s.name}</h5>
+            <p class="text-[11px] text-slate-500">${s.field}</p>
+          </div>
+        </div>
+        <div class="text-right shrink-0">
+          <span class="text-[10px] text-slate-400 block font-medium">Ketua Guru:</span>
+          <strong class="text-xs text-amber-700 font-bold">${s.head}</strong>
+        </div>
+      </div>
+    `).join("");
+  }
+
+  // 4. Rumah Sukan
+  const housesContainer = document.getElementById("kokoHousesGrid");
+  if (housesContainer && koko.sportHouses) {
+    const colorMap = {
+      blue: "border-blue-300 bg-blue-50/50 text-blue-900",
+      red: "border-rose-300 bg-rose-50/50 text-rose-900",
+      amber: "border-amber-300 bg-amber-50/50 text-amber-900",
+      emerald: "border-emerald-300 bg-emerald-50/50 text-emerald-900"
+    };
+    housesContainer.innerHTML = koko.sportHouses.map(h => `
+      <div class="p-3.5 rounded-xl border ${colorMap[h.color] || 'border-slate-200 bg-slate-50'} executive-card flex flex-col justify-between">
+        <div>
+          <div class="flex items-center justify-between mb-1">
+            <h5 class="font-extrabold text-sm">${h.name}</h5>
+            <span class="text-xs font-mono font-bold">🚩</span>
+          </div>
+          <p class="text-[11px] text-slate-600 italic">“${h.motto}”</p>
+        </div>
+        <div class="mt-2.5 pt-2 border-t border-black/10 text-xs">
+          <span class="text-[10px] text-slate-500 block font-medium">Ketua Rumah:</span>
+          <strong class="font-bold text-xs">${h.head}</strong>
+        </div>
+      </div>
+    `).join("");
+  }
+}
+
+/* ==========================================================================
+   RENDER INDUK BESAR SIDANG PETANG 2026 (JADUAL & PENYELARAS)
+   ========================================================================== */
+function renderPetangHierarchy() {
+  const petang = window.SKR_DATA.petangHierarchy2026;
+  if (!petang) return;
+
+  // Jadual Waktu Operasi
+  const hoursContainer = document.getElementById("petangHoursGrid");
+  if (hoursContainer && petang.operatingHours) {
+    hoursContainer.innerHTML = petang.operatingHours.map((h, idx) => `
+      <div class="p-3 rounded-xl bg-slate-50 border border-slate-200 flex items-start gap-3 executive-card">
+        <span class="w-6 h-6 rounded-full bg-amber-100 text-amber-900 flex items-center justify-center text-xs font-bold shrink-0 mt-0.5">
+          ${idx + 1}
+        </span>
+        <div class="flex-1 min-w-0">
+          <div class="flex items-center justify-between gap-2 flex-wrap">
+            <h5 class="font-bold text-slate-900 text-xs sm:text-sm">${h.item}</h5>
+            <span class="text-xs font-bold text-amber-800 bg-amber-50 px-2 py-0.5 rounded border border-amber-200">${h.time}</span>
+          </div>
+          <p class="text-[11px] text-slate-500 mt-1">${h.notes}</p>
+        </div>
+      </div>
+    `).join("");
+  }
+
+  // Pegawai Penyelaras Khas
+  const officersContainer = document.getElementById("petangOfficersGrid");
+  if (officersContainer) {
+    const officers = [
+      { role: "Penolong Kanan Petang", name: petang.pengerusi, badge: "Peneraju Petang", icon: "👑" },
+      { role: "Penyelaras Tahap 1", name: petang.penyelarasTahap1, badge: "Akademik Tahap 1", icon: "🧒" },
+      { role: "Penyelaras Jadual Waktu", name: petang.penyelarasJadual, badge: "Jadual Petang", icon: "📅" },
+      { role: "Penyelaras Disiplin & Keselamatan", name: petang.penyelarasDisiplin, badge: "Disiplin & Pintu Pagar", icon: "🛡️" },
+      { role: "Penyelaras Transisi Tahun 1", name: petang.penyelarasTransisi, badge: "Transisi Murid", icon: "🌱" }
+    ];
+
+    officersContainer.innerHTML = officers.map(o => `
+      <div class="p-3 rounded-xl bg-slate-50 border border-slate-200 flex items-center justify-between gap-3 executive-card">
+        <div class="flex items-center gap-2.5 min-w-0">
+          <span class="text-lg">${o.icon}</span>
+          <div class="min-w-0">
+            <span class="text-[10px] font-bold uppercase tracking-wider text-amber-800 block">${o.role}</span>
+            <h5 class="font-bold text-slate-900 text-xs sm:text-sm truncate">${o.name}</h5>
+          </div>
+        </div>
+        <span class="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-slate-200 text-slate-700 shrink-0">
+          ${o.badge}
+        </span>
+      </div>
+    `).join("");
+  }
+}
+
+/* ==========================================================================
+   RENDER PORTAL DIGITAL & MEDIA SOSIAL RASMI
+   ========================================================================== */
+function renderPortalAndSocial() {
+  const portalsContainer = document.getElementById("portalsGridContainer");
+  if (portalsContainer) {
+    const portals = window.SKR_DATA.portalLinks || [];
+    portalsContainer.innerHTML = portals.map(p => `
+      <a href="${p.url}" target="_blank" rel="noopener noreferrer" class="p-4 bg-slate-50 hover:bg-blue-50/50 rounded-2xl border border-slate-200 hover:border-blue-300 transition shadow-sm executive-card flex flex-col justify-between group">
+        <div>
+          <div class="flex items-center justify-between mb-2">
+            <span class="text-[10px] font-extrabold uppercase px-2 py-0.5 rounded bg-blue-100 text-blue-800">${p.cat}</span>
+            <span class="text-xl">${p.icon || '🌐'}</span>
+          </div>
+          <h4 class="font-extrabold text-slate-900 group-hover:text-blue-700 transition text-sm">${p.name}</h4>
+          <p class="text-xs text-slate-500 mt-1 leading-snug">${p.desc}</p>
+        </div>
+        <div class="mt-3 pt-2 border-t border-slate-200/80 flex items-center justify-between text-xs text-blue-700 font-semibold group-hover:underline">
+          <span>Buka Portal</span>
+          <span class="text-sm">↗</span>
+        </div>
+      </a>
+    `).join("");
+  }
+
+  const socialContainer = document.getElementById("socialLinksGrid");
+  if (socialContainer) {
+    const socials = window.SKR_DATA.socialLinks || [];
+    socialContainer.innerHTML = socials.map(s => `
+      <a href="${s.url}" target="_blank" rel="noopener noreferrer" class="p-5 rounded-2xl border border-slate-200 hover:border-blue-400 bg-slate-50 hover:bg-white transition shadow-sm executive-card flex items-start gap-4 group">
+        <div class="w-12 h-12 rounded-2xl ${s.color === 'blue' ? 'bg-blue-600 text-white' : 'bg-slate-900 text-white'} flex items-center justify-center text-2xl shrink-0 shadow-md">
+          ${s.icon}
+        </div>
+        <div class="flex-1 min-w-0">
+          <div class="flex items-center gap-2 mb-1">
+            <span class="text-[10px] font-bold px-2 py-0.5 rounded bg-slate-200 text-slate-700 uppercase">${s.badge}</span>
+            <span class="text-xs text-slate-400 font-medium">${s.platform}</span>
+          </div>
+          <h4 class="font-extrabold text-slate-900 group-hover:text-blue-700 transition text-base">${s.name}</h4>
+          <p class="text-xs text-slate-500 mt-1 leading-relaxed">${s.desc}</p>
+          <div class="mt-2.5 inline-flex items-center gap-1.5 text-xs font-bold text-blue-600 group-hover:underline">
+            <span>Layari Saluran</span>
+            <span>↗</span>
+          </div>
+        </div>
+      </a>
+    `).join("");
+  }
+}
+
+/* ==========================================================================
    PBD CHARTS
    ========================================================================== */
 function initPbdCharts() {
@@ -1192,6 +1445,11 @@ function setupNavigation() {
           sec.classList.remove("hidden");
           if (targetId === "tab-murid") renderStudentDemographics();
           if (targetId === "tab-carta") renderOrganizationChart();
+          if (targetId === "tab-hem") renderHemHierarchy();
+          if (targetId === "tab-kokurikulum") renderKokoHierarchy();
+          if (targetId === "tab-petang") renderPetangHierarchy();
+          if (targetId === "tab-portal") renderPortalAndSocial();
+          if (targetId === "tab-bahan") renderDocumentsList();
         } else {
           sec.classList.add("hidden");
         }
