@@ -253,12 +253,12 @@ function renderSchoolHeader() {
   if (s.logoUrl) {
     document.querySelectorAll(".school-logo-img").forEach(el => el.src = s.logoUrl);
   } else {
-    document.querySelectorAll(".school-logo-img").forEach(el => el.src = "assets/skrg.png?v=20261006_v14");
+    document.querySelectorAll(".school-logo-img").forEach(el => el.src = "assets/skrg.png?v=20261006_v18");
   }
   if (s.kpmLogoUrl) {
     document.querySelectorAll(".kpm-logo-img").forEach(el => el.src = s.kpmLogoUrl);
   } else {
-    document.querySelectorAll(".kpm-logo-img").forEach(el => el.src = "assets/logo-kpm.svg?v=20261006_v14");
+    document.querySelectorAll(".kpm-logo-img").forEach(el => el.src = "assets/logo-kpm.svg?v=20261006_v18");
   }
 
   // Refresh favicon untuk Safari dan Chrome
