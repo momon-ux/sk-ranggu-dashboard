@@ -1,7 +1,7 @@
 /**
- * MODUL PENTADBIR & TETAPAN SISTEM (ADMIN PORTAL)
+ * MODUL PENTADBIR & PENGURUSAN TETAPAN (ADMIN PORTAL)
  * Sistem Dashboard Pengurusan Pentadbiran & Kurikulum SK Ranggu
- * Pembangun: Momon (Lead System Architect)
+ * Pembangun: Mohammad Fikrey (Pentadbir Sistem)
  */
 
 class AdminManager {
@@ -12,25 +12,21 @@ class AdminManager {
     this.defaultPin = "1234";
   }
 
-  // Semak status pengesahan sedia ada
   checkAuth() {
     this.isAuthenticated = sessionStorage.getItem(this.storageKey) === "true";
     return this.isAuthenticated;
   }
 
-  // Dapatkan PIN semasa
   getPin() {
     return localStorage.getItem(this.pinKey) || this.defaultPin;
   }
 
-  // Tetapkan PIN baru
   setPin(newPin) {
     if (!newPin || newPin.length < 4) return false;
     localStorage.setItem(this.pinKey, newPin);
     return true;
   }
 
-  // Log masuk
   login(inputPin) {
     const currentPin = this.getPin();
     if (inputPin === currentPin) {
@@ -41,13 +37,12 @@ class AdminManager {
     return { success: false, error: "Kata laluan PIN pentadbir tidak tepat. Sila cuba lagi." };
   }
 
-  // Log keluar
   logout() {
     this.isAuthenticated = false;
     sessionStorage.removeItem(this.storageKey);
   }
 
-  // Kemaskini Profil Sekolah
+  // Pengurusan Profil Sekolah
   updateSchoolProfile(profileData) {
     if (!this.checkAuth()) return false;
     window.SKR_DATA.school = { ...window.SKR_DATA.school, ...profileData };
@@ -55,47 +50,56 @@ class AdminManager {
     return true;
   }
 
-  // Kemaskini Kredit Pembangun Sistem (Momon)
-  updateDeveloperInfo(devData) {
+  // Pengurusan Dokumen / Muat Naik Bahan Kurikulum
+  addDocument(doc) {
     if (!this.checkAuth()) return false;
-    window.SKR_DATA.developer = { ...window.SKR_DATA.developer, ...devData };
+    if (!window.SKR_DATA.documents) window.SKR_DATA.documents = [];
+
+    const newDoc = {
+      id: "doc-" + Date.now(),
+      title: doc.title,
+      category: doc.category || "Umum",
+      panitia: doc.panitia || "Kurikulum",
+      date: new Date().toISOString().split("T")[0],
+      type: doc.type || "PDF",
+      fileUrl: doc.fileUrl || "#",
+      size: doc.size || "1.0 MB",
+      uploader: doc.uploader || "Pentadbir Sistem"
+    };
+
+    window.SKR_DATA.documents.unshift(newDoc);
+    saveStoredData(window.SKR_DATA);
+    return newDoc;
+  }
+
+  deleteDocument(id) {
+    if (!this.checkAuth()) return false;
+    if (!window.SKR_DATA.documents) return false;
+    window.SKR_DATA.documents = window.SKR_DATA.documents.filter(d => d.id !== id);
     saveStoredData(window.SKR_DATA);
     return true;
   }
 
-  // Kemaskini Konfigurasi Google Sheets
-  updateGoogleSheetConfig(sheetConfig) {
-    if (!this.checkAuth()) return false;
-    window.SKR_DATA.googleSheets = { ...window.SKR_DATA.googleSheets, ...sheetConfig };
-    if (window.googleSheetManager) {
-      window.googleSheetManager.sheetId = sheetConfig.sheetId;
-      window.googleSheetManager.gid = sheetConfig.gid;
-    }
-    saveStoredData(window.SKR_DATA);
-    return true;
-  }
-
-  // Pengurusan Carta Organisasi: Tambah Ahli
+  // Pengurusan Carta Organisasi
   addOrgMember(member) {
     if (!this.checkAuth()) return false;
     const newMember = {
       id: "org-" + Date.now(),
       tier: parseInt(member.tier) || 3,
-      role: member.role || "Ahli Jawatankuasa",
+      role: member.role || "Guru",
       name: member.name || "Nama Guru",
       grade: member.grade || "DG41",
-      category: member.category || "Jawatankuasa Kurikulum",
+      category: member.category || "Ketua Panitia",
       email: member.email || "guru@moe-dl.edu.my",
       phone: member.phone || "089-925493",
-      avatarBg: member.avatarBg || "from-slate-600 to-slate-800",
-      duties: member.duties || "Tugas pentadbiran dan kurikulum"
+      avatarBg: "from-blue-600 to-indigo-800",
+      duties: member.duties || "Pengurusan akademik dan kurikulum"
     };
     window.SKR_DATA.organizationChart.push(newMember);
     saveStoredData(window.SKR_DATA);
     return newMember;
   }
 
-  // Pengurusan Carta Organisasi: Kemas kini Ahli
   updateOrgMember(id, updatedFields) {
     if (!this.checkAuth()) return false;
     const index = window.SKR_DATA.organizationChart.findIndex(m => m.id === id);
@@ -110,7 +114,6 @@ class AdminManager {
     return false;
   }
 
-  // Pengurusan Carta Organisasi: Padam Ahli
   deleteOrgMember(id) {
     if (!this.checkAuth()) return false;
     window.SKR_DATA.organizationChart = window.SKR_DATA.organizationChart.filter(m => m.id !== id);
@@ -118,7 +121,7 @@ class AdminManager {
     return true;
   }
 
-  // Tambah Pengumuman Baru
+  // Pengumuman
   addAnnouncement(announcement) {
     if (!this.checkAuth()) return false;
     const newAnn = {
@@ -127,7 +130,7 @@ class AdminManager {
       date: announcement.date || new Date().toISOString().split("T")[0],
       priority: announcement.priority || "Sederhana",
       category: announcement.category || "Pentadbiran",
-      author: announcement.author || "Unit Pentadbiran SK Ranggu",
+      author: announcement.author || "Unit Pentadbiran",
       content: announcement.content
     };
     window.SKR_DATA.announcements.unshift(newAnn);
@@ -135,7 +138,6 @@ class AdminManager {
     return newAnn;
   }
 
-  // Padam Pengumuman
   deleteAnnouncement(id) {
     if (!this.checkAuth()) return false;
     window.SKR_DATA.announcements = window.SKR_DATA.announcements.filter(a => a.id !== id);
@@ -143,52 +145,36 @@ class AdminManager {
     return true;
   }
 
-  // Tambah Acara Takwim
-  addTakwimEvent(event) {
+  // Google Sheets
+  updateGoogleSheetConfig(sheetConfig) {
     if (!this.checkAuth()) return false;
-    const newEvent = {
-      id: "tak-" + Date.now(),
-      title: event.title,
-      date: event.date,
-      time: event.time || "08:00 AM",
-      venue: event.venue || "Bilik Mesyuarat",
-      inCharge: event.inCharge || "Setiausaha Kurikulum",
-      status: event.status || "Akan Datang"
-    };
-    window.SKR_DATA.takwimEvents.push(newEvent);
-    // Susun mengikut tarikh
-    window.SKR_DATA.takwimEvents.sort((a, b) => new Date(a.date) - new Date(b.date));
-    saveStoredData(window.SKR_DATA);
-    return newEvent;
-  }
-
-  // Padam Acara Takwim
-  deleteTakwimEvent(id) {
-    if (!this.checkAuth()) return false;
-    window.SKR_DATA.takwimEvents = window.SKR_DATA.takwimEvents.filter(e => e.id !== id);
+    window.SKR_DATA.googleSheets = { ...window.SKR_DATA.googleSheets, ...sheetConfig };
+    if (window.googleSheetManager) {
+      window.googleSheetManager.sheetId = sheetConfig.sheetId;
+      window.googleSheetManager.gid = sheetConfig.gid;
+    }
     saveStoredData(window.SKR_DATA);
     return true;
   }
 
-  // Eksport Sandaran Penuh (JSON)
+  // Sandaran Penuh (JSON)
   exportFullBackup() {
     const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(window.SKR_DATA, null, 2));
     const downloadAnchor = document.createElement("a");
     const dateStr = new Date().toISOString().split("T")[0];
     downloadAnchor.setAttribute("href", dataStr);
-    downloadAnchor.setAttribute("download", `sandaran-sk-ranggu-dashboard-${dateStr}.json`);
+    downloadAnchor.setAttribute("download", `sandaran-sk-ranggu-${dateStr}.json`);
     document.body.appendChild(downloadAnchor);
     downloadAnchor.click();
     downloadAnchor.remove();
   }
 
-  // Import Sandaran Fail (JSON)
   importBackupFile(jsonString) {
     if (!this.checkAuth()) return { success: false, error: "Akses pentadbir diperlukan" };
     try {
       const parsed = JSON.parse(jsonString);
       if (!parsed.school || !parsed.organizationChart) {
-        throw new Error("Format fail sandaran tidak sah. Tiada struktur data SK Ranggu yang lengkap.");
+        throw new Error("Fail sandaran tidak mengandungi data SK Ranggu yang sah.");
       }
       window.SKR_DATA = parsed;
       saveStoredData(window.SKR_DATA);
@@ -198,7 +184,6 @@ class AdminManager {
     }
   }
 
-  // Tetapkan semula ke lalai kilang
   resetSystem() {
     if (!this.checkAuth()) return false;
     window.SKR_DATA = resetToDefaultData();
@@ -206,5 +191,4 @@ class AdminManager {
   }
 }
 
-// Inisialisasi global
 window.adminManager = new AdminManager();

@@ -1,7 +1,7 @@
 /**
  * PENGENDALI UTAMA APLIKASI (APP CONTROLLER)
  * Sistem Dashboard Pengurusan Pentadbiran & Kurikulum SK Ranggu
- * Pembangun: Momon (Lead System Architect)
+ * Pembangun: Mohammad Fikrey (Pentadbir Sistem)
  */
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -15,7 +15,7 @@ function initSystem() {
   updateLiveClock();
   setInterval(updateLiveClock, 1000);
 
-  // Render semua komponen data
+  // Render komponen utama
   renderSchoolHeader();
   renderExecutiveStats();
   renderAnnouncements();
@@ -23,21 +23,22 @@ function initSystem() {
   renderCommittees();
   renderTakwimEvents();
   renderDutyTeachers();
+  renderDocumentsList();
   renderDeveloperCredits();
   renderPortalLinks();
 
   // Inisialisasi Google Sheets
   initGoogleSheetsViewer();
 
-  // Inisialisasi Chart.js
+  // Inisialisasi Carta PBD
   initPbdCharts();
 
-  // Event Listeners
+  // Navigasi & Pendengar Peristiwa
   setupNavigation();
   setupSearchAndFilters();
   setupAdminListeners();
 
-  console.log("Sistem Dashboard SK Ranggu berjaya dimuatkan. Dibangunkan oleh Momon.");
+  console.log("Sistem Dashboard SK Ranggu dimuatkan.");
 }
 
 /* ==========================================================================
@@ -46,7 +47,6 @@ function initSystem() {
 function updateLiveClock() {
   const now = new Date();
   
-  // Format Masa (HH:MM:SS)
   const timeStr = now.toLocaleTimeString("ms-MY", { 
     hour: "2-digit", 
     minute: "2-digit", 
@@ -54,7 +54,6 @@ function updateLiveClock() {
     hour12: true 
   });
   
-  // Format Tarikh (Hari, DD Bulan YYYY)
   const dateStr = now.toLocaleDateString("ms-MY", { 
     weekday: "long", 
     year: "numeric", 
@@ -73,23 +72,13 @@ function updateLiveClock() {
    RENDER MAKLUMAT KEPALA & PROFIL SEKOLAH
    ========================================================================== */
 function renderSchoolHeader() {
-  const data = window.SKR_DATA;
-  const s = data.school;
+  const s = window.SKR_DATA.school;
 
-  const schoolNameEls = document.querySelectorAll(".school-name-text");
-  schoolNameEls.forEach(el => el.textContent = s.name);
-
-  const schoolCodeEls = document.querySelectorAll(".school-code-text");
-  schoolCodeEls.forEach(el => el.textContent = s.code);
-
-  const schoolAddressEls = document.querySelectorAll(".school-address-text");
-  schoolAddressEls.forEach(el => el.textContent = `${s.address} • Tel: ${s.phone}`);
-
-  const schoolMottoEls = document.querySelectorAll(".school-motto-text");
-  schoolMottoEls.forEach(el => el.textContent = `"${s.motto}"`);
-
-  const schoolSessionEls = document.querySelectorAll(".school-session-text");
-  schoolSessionEls.forEach(el => el.textContent = s.academicSession);
+  document.querySelectorAll(".school-name-text").forEach(el => el.textContent = s.name);
+  document.querySelectorAll(".school-code-text").forEach(el => el.textContent = s.code);
+  document.querySelectorAll(".school-address-text").forEach(el => el.textContent = `${s.address} • Tel: ${s.phone}`);
+  document.querySelectorAll(".school-motto-text").forEach(el => el.textContent = `"${s.motto}"`);
+  document.querySelectorAll(".school-session-text").forEach(el => el.textContent = s.academicSession);
 }
 
 /* ==========================================================================
@@ -153,7 +142,64 @@ function renderAnnouncements() {
 }
 
 /* ==========================================================================
-   RENDER CARTA ORGANISASI PENTADBIRAN (INTERAKTIF & PRESTIS)
+   RENDER DOKUMEN & BAHAN KURIKULUM (PUSAT SUMBER BAHAN)
+   ========================================================================== */
+function renderDocumentsList() {
+  const container = document.getElementById("documentsContainer");
+  if (!container) return;
+
+  const docs = window.SKR_DATA.documents || [];
+  if (docs.length === 0) {
+    container.innerHTML = `
+      <div class="p-8 text-center text-slate-400 bg-white rounded-2xl border border-slate-200">
+        Belum ada bahan atau dokumen dimuat naik.
+      </div>
+    `;
+    return;
+  }
+
+  container.innerHTML = docs.map(doc => {
+    let fileIcon = "📄";
+    if (doc.type === "PDF") fileIcon = "📕";
+    if (doc.type === "ZIP") fileIcon = "🗂️";
+    if (doc.type === "DOCX" || doc.type === "DOC") fileIcon = "📘";
+    if (doc.type === "XLSX" || doc.type === "CSV") fileIcon = "📊";
+
+    return `
+      <div class="p-4 bg-white rounded-xl border border-slate-200 executive-card flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div class="flex items-start gap-3">
+          <div class="w-12 h-12 rounded-xl bg-slate-100 text-slate-700 flex items-center justify-center text-2xl shrink-0 border border-slate-200">
+            ${fileIcon}
+          </div>
+          <div>
+            <div class="flex items-center gap-2 flex-wrap mb-1">
+              <span class="text-[10px] font-bold px-2 py-0.5 rounded bg-blue-100 text-blue-800">${doc.category}</span>
+              <span class="text-[10px] font-semibold px-2 py-0.5 rounded bg-slate-100 text-slate-600">${doc.panitia}</span>
+              <span class="text-[10px] text-slate-400">${doc.date}</span>
+            </div>
+            <h4 class="font-bold text-slate-900 text-sm leading-snug">${doc.title}</h4>
+            <p class="text-[11px] text-slate-500 mt-0.5">Dimuat naik oleh: <span class="font-semibold text-slate-700">${doc.uploader}</span> (${doc.size})</p>
+          </div>
+        </div>
+
+        <div class="shrink-0 flex items-center gap-2">
+          ${doc.fileUrl && doc.fileUrl !== '#' ? `
+            <a href="${doc.fileUrl}" target="_blank" download class="px-3.5 py-1.5 bg-blue-700 hover:bg-blue-800 text-white rounded-lg text-xs font-semibold shadow-sm transition flex items-center gap-1.5">
+              <span>📥</span> Muat Turun
+            </a>
+          ` : `
+            <button onclick="alert('Bahan ini boleh dimuat turun melalui arkib Pejabat Pentadbiran SK Ranggu.')" class="px-3.5 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg text-xs font-semibold transition border border-slate-300 flex items-center gap-1.5">
+              <span>👁️</span> Buka Bahan
+            </button>
+          `}
+        </div>
+      </div>
+    `;
+  }).join("");
+}
+
+/* ==========================================================================
+   RENDER CARTA ORGANISASI RASMI SK RANGGU
    ========================================================================== */
 function renderOrganizationChart(filterCategory = "Semua", searchQuery = "") {
   const container = document.getElementById("orgChartContainer");
@@ -161,53 +207,48 @@ function renderOrganizationChart(filterCategory = "Semua", searchQuery = "") {
 
   let members = window.SKR_DATA.organizationChart || [];
 
-  // Tapis mengikut kategori
   if (filterCategory !== "Semua") {
     members = members.filter(m => m.category === filterCategory || (filterCategory === "Pengurusan Tertinggi" && m.tier <= 2));
   }
 
-  // Carian mengikut teks
   if (searchQuery.trim() !== "") {
     const q = searchQuery.toLowerCase();
     members = members.filter(m => 
       m.name.toLowerCase().includes(q) || 
-      m.role.toLowerCase().includes(q) || 
-      (m.email && m.email.toLowerCase().includes(q))
+      m.role.toLowerCase().includes(q)
     );
   }
 
-  // Asingkan mengikut tier untuk susun atur hierarki
-  const tier1 = members.filter(m => m.tier === 1);
-  const tier2 = members.filter(m => m.tier === 2);
-  const tier3 = members.filter(m => m.tier === 3);
-  const tier4 = members.filter(m => m.tier === 4);
-
-  // Jika sedang membuat carian atau menapis unit khusus, paparkan format grid responsif terus
   const isFiltered = filterCategory !== "Semua" || searchQuery.trim() !== "";
 
   if (isFiltered) {
     if (members.length === 0) {
       container.innerHTML = `
         <div class="text-center py-12 bg-white rounded-2xl border border-slate-200">
-          <p class="text-slate-500 font-medium">Tiada padanan ahli organisasi dijumpai.</p>
+          <p class="text-slate-500 font-medium">Tiada padanan nama atau jawatan ditemui.</p>
         </div>
       `;
       return;
     }
 
     container.innerHTML = `
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
         ${members.map(m => createMemberCard(m)).join("")}
       </div>
     `;
     return;
   }
 
-  // Paparan Hierarki Rasmi (Tree Flow)
+  // Hierarki Rasmi Mengikut Barisan Sebenar SK Ranggu
+  const tier1 = members.filter(m => m.tier === 1); // Guru Besar
+  const tier2 = members.filter(m => m.tier === 2); // Barisan PK
+  const tier3 = members.filter(m => m.tier === 3); // Setiausaha & Pegawai Khas
+  const tier4 = members.filter(m => m.tier === 4); // Ketua Panitia & Guru
+
   container.innerHTML = `
     <!-- TIER 1: GURU BESAR -->
     <div class="flex flex-col items-center mb-8">
-      <div class="text-xs font-bold tracking-widest uppercase text-amber-700 bg-amber-100/80 px-4 py-1 rounded-full mb-3 border border-amber-300">
+      <div class="text-xs font-bold tracking-widest uppercase text-amber-700 bg-amber-100/90 px-4 py-1 rounded-full mb-3 border border-amber-300">
         Peneraju Kepimpinan Tertinggi Sekolah
       </div>
       <div class="w-full max-w-md org-tree-line">
@@ -218,8 +259,8 @@ function renderOrganizationChart(filterCategory = "Semua", searchQuery = "") {
     <!-- TIER 2: BARISAN PENOLONG KANAN -->
     <div class="mb-10">
       <div class="text-center mb-4">
-        <span class="text-xs font-bold tracking-widest uppercase text-blue-800 bg-blue-100/80 px-4 py-1 rounded-full border border-blue-300">
-          Barisan Penolong Kanan Pentadbiran & Kurikulum
+        <span class="text-xs font-bold tracking-widest uppercase text-blue-800 bg-blue-100/90 px-4 py-1 rounded-full border border-blue-300">
+          Barisan Penolong Kanan Pentadbiran
         </span>
       </div>
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 max-w-6xl mx-auto">
@@ -227,23 +268,23 @@ function renderOrganizationChart(filterCategory = "Semua", searchQuery = "") {
       </div>
     </div>
 
-    <!-- TIER 3: SETIAUSAHA & PEGAWAI KHAS KURIKULUM -->
+    <!-- TIER 3: SETIAUSAHA & PEGAWAI KHAS -->
     <div class="mb-10">
       <div class="text-center mb-4">
-        <span class="text-xs font-bold tracking-widest uppercase text-emerald-800 bg-emerald-100/80 px-4 py-1 rounded-full border border-emerald-300">
-          Pegawai Khas Pengurusan Kurikulum & Pusat Sumber
+        <span class="text-xs font-bold tracking-widest uppercase text-emerald-800 bg-emerald-100/90 px-4 py-1 rounded-full border border-emerald-300">
+          Setiausaha Kurikulum, Hal Ehwal Murid & Kokurikulum
         </span>
       </div>
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 max-w-6xl mx-auto">
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 max-w-6xl mx-auto">
         ${tier3.map(m => createMemberCard(m)).join("")}
       </div>
     </div>
 
-    <!-- TIER 4: KETUA-KETUA PANITIA MATA PELAJARAN -->
+    <!-- TIER 4: KETUA-KETUA PANITIA -->
     <div>
       <div class="text-center mb-4">
-        <span class="text-xs font-bold tracking-widest uppercase text-indigo-800 bg-indigo-100/80 px-4 py-1 rounded-full border border-indigo-300">
-          Ketua-Ketua Panitia Mata Pelajaran & Program Khas
+        <span class="text-xs font-bold tracking-widest uppercase text-indigo-800 bg-indigo-100/90 px-4 py-1 rounded-full border border-indigo-300">
+          Ketua-Ketua Panitia Mata Pelajaran & Akademik
         </span>
       </div>
       <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
@@ -268,10 +309,9 @@ function createMemberCard(member, isPrincipal = false) {
     borderHighlight = "border-emerald-300";
   }
 
-  // Inisial nama untuk avatar
   const initials = member.name
     .split(" ")
-    .filter(n => !["bin", "binti", "bin/", "bt", "haji", "tuan", "puan", "cik", "ustaz", "ustazah", "encik"].includes(n.toLowerCase()))
+    .filter(n => !["bin", "binti", "hjh.", "haji", "encik", "puan", "cik"].includes(n.toLowerCase()))
     .slice(0, 2)
     .map(n => n[0])
     .join("")
@@ -279,17 +319,14 @@ function createMemberCard(member, isPrincipal = false) {
 
   return `
     <div class="bg-white rounded-2xl p-4 border ${borderHighlight} executive-card flex flex-col justify-between relative overflow-hidden group">
-      <!-- Background subtle gradient top -->
       <div class="absolute top-0 left-0 right-0 h-1.5 ${isPrincipal ? 'bg-amber-500' : (member.tier === 2 ? 'bg-blue-600' : 'bg-slate-400')}"></div>
 
       <div>
         <div class="flex items-start gap-3">
-          <!-- Avatar Icon / Portrait Placeholder -->
-          <div class="w-12 h-12 rounded-xl bg-gradient-to-tr ${member.avatarBg || 'from-blue-600 to-indigo-800'} text-white flex items-center justify-center font-bold text-base shadow-sm shrink-0 border border-white">
+          <div class="w-12 h-12 rounded-xl bg-gradient-to-tr from-royal-800 to-blue-900 text-white flex items-center justify-center font-bold text-base shadow-sm shrink-0 border border-white">
             ${initials}
           </div>
 
-          <!-- Role & Name -->
           <div class="min-w-0 flex-1">
             <span class="inline-block text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-md ${badgeClass} mb-1">
               ${member.grade || 'DG41'}
@@ -303,16 +340,14 @@ function createMemberCard(member, isPrincipal = false) {
           </div>
         </div>
 
-        <!-- Duties / Description -->
         <div class="mt-3 pt-2.5 border-t border-slate-100 text-xs text-slate-500 leading-relaxed">
           <p class="line-clamp-2">${member.duties || 'Pengurusan pentadbiran dan pengajaran pembelajaran.'}</p>
         </div>
       </div>
 
-      <!-- Contact / DELIMa link -->
       <div class="mt-3 pt-2 border-t border-slate-100 flex items-center justify-between text-[11px] text-slate-500">
-        <span class="truncate flex items-center gap-1 font-mono text-[10px] text-slate-600">
-          ✉️ ${member.email || 'rasmi@moe.edu.my'}
+        <span class="truncate font-mono text-[10px] text-slate-600">
+          ✉️ ${member.email || 'xba3037@moe.edu.my'}
         </span>
         <button onclick="showMemberModal('${member.id}')" class="text-blue-600 hover:text-blue-800 font-semibold shrink-0 ml-1 hover:underline">
           Profil
@@ -322,7 +357,6 @@ function createMemberCard(member, isPrincipal = false) {
   `;
 }
 
-/* Modal Butiran Ahli */
 window.showMemberModal = function(id) {
   const member = window.SKR_DATA.organizationChart.find(m => m.id === id);
   if (!member) return;
@@ -352,16 +386,16 @@ window.showMemberModal = function(id) {
         <div class="space-y-2 text-sm text-slate-700">
           <div class="flex justify-between py-1.5 border-b border-slate-100">
             <span class="text-slate-500 font-medium">Emel DELIMa / Rasmi:</span>
-            <span class="font-mono text-blue-700">${member.email || 'Tiada maklumat'}</span>
+            <span class="font-mono text-blue-700">${member.email || 'xba3037@moe.edu.my'}</span>
           </div>
           <div class="flex justify-between py-1.5 border-b border-slate-100">
-            <span class="text-slate-500 font-medium">No. Sambungan Telefon:</span>
-            <span class="font-medium">${member.phone || '089-925493 (Pejabat)'}</span>
+            <span class="text-slate-500 font-medium">Telefon Pejabat:</span>
+            <span class="font-medium">${member.phone || '089-925493'}</span>
           </div>
           <div class="pt-2">
-            <span class="text-slate-500 font-medium block mb-1">Bidang Tugas & Tanggungjawab:</span>
+            <span class="text-slate-500 font-medium block mb-1">Bidang Tugas:</span>
             <p class="p-3 bg-white border border-slate-200 rounded-lg text-slate-600 text-xs leading-relaxed">
-              ${member.duties || 'Melaksanakan ketetapan dasar Kementerian Pendidikan Malaysia, Jabatan Pendidikan Negeri Sabah, PPD Tawau serta arahan pentadbiran sekolah.'}
+              ${member.duties || 'Menjalankan amanah pengurusan instruksional dan pentadbiran sekolah.'}
             </p>
           </div>
         </div>
@@ -394,7 +428,7 @@ function renderCommittees() {
       <div>
         <div class="flex items-center justify-between mb-2">
           <span class="text-xs font-bold text-blue-800 bg-blue-50 px-2.5 py-1 rounded-md border border-blue-200">
-            ${c.membersCount} Orang Guru
+            ${c.membersCount} Guru
           </span>
           <span class="inline-flex items-center gap-1 text-[11px] font-semibold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">
             <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span> ${c.status}
@@ -403,7 +437,6 @@ function renderCommittees() {
         <h4 class="font-bold text-slate-900 text-base mb-1">${c.name}</h4>
         <div class="space-y-1 text-xs text-slate-600 mt-2">
           <p><span class="text-slate-400">Ketua Panitia:</span> <strong class="text-slate-800">${c.head}</strong></p>
-          <p><span class="text-slate-400">Setiausaha:</span> ${c.secretary}</p>
         </div>
       </div>
 
@@ -416,7 +449,7 @@ function renderCommittees() {
 }
 
 /* ==========================================================================
-   RENDER TAKWIM & PERISTIWA KURIKULUM
+   RENDER TAKWIM & GURU BERTUGAS
    ========================================================================== */
 function renderTakwimEvents() {
   const container = document.getElementById("takwimEventsContainer");
@@ -425,7 +458,7 @@ function renderTakwimEvents() {
   const events = window.SKR_DATA.takwimEvents || [];
   container.innerHTML = events.map(e => `
     <div class="flex items-start gap-4 p-4 rounded-xl bg-white border border-slate-200 executive-card">
-      <div class="bg-gradient-to-br from-blue-900 to-indigo-950 text-white rounded-xl p-3 text-center shrink-0 w-16 shadow-sm">
+      <div class="bg-royal-900 text-white rounded-xl p-3 text-center shrink-0 w-16 shadow-sm">
         <div class="text-[10px] font-bold uppercase tracking-wider text-amber-300">
           ${new Date(e.date).toLocaleDateString("ms-MY", { month: "short" })}
         </div>
@@ -454,9 +487,6 @@ function renderTakwimEvents() {
   `).join("");
 }
 
-/* ==========================================================================
-   RENDER GURU BERTUGAS MINGGUAN
-   ========================================================================== */
 function renderDutyTeachers() {
   const container = document.getElementById("dutyTeachersContainer");
   if (!container) return;
@@ -474,7 +504,7 @@ function renderDutyTeachers() {
           <h4 class="font-bold text-slate-900 text-base mt-2">${activeDuty.dateRange}</h4>
         </div>
         <div class="text-xs text-slate-500 sm:text-right">
-          Tema Mingguan: <strong class="text-amber-800 bg-amber-50 px-2.5 py-1 rounded-md border border-amber-200 inline-block mt-1 sm:mt-0">${activeDuty.theme}</strong>
+          Tema: <strong class="text-amber-800 bg-amber-50 px-2.5 py-1 rounded-md border border-amber-200 inline-block mt-1 sm:mt-0">${activeDuty.theme}</strong>
         </div>
       </div>
 
@@ -492,14 +522,12 @@ function renderDutyTeachers() {
 
         <div class="p-3 bg-slate-50 rounded-xl border border-slate-200 flex flex-col justify-between">
           <div>
-            <span class="text-xs font-semibold text-slate-500 uppercase tracking-wider block mb-1">Lokasi Kawalan Pintu Pagar:</span>
+            <span class="text-xs font-semibold text-slate-500 uppercase tracking-wider block mb-1">Lokasi Kawalan:</span>
             <p class="text-xs text-slate-700 mb-2">🚪 ${activeDuty.venueGates}</p>
-            
-            <span class="text-xs font-semibold text-slate-500 uppercase tracking-wider block mb-1">Pengawasan Waktu Rehat & Kantin:</span>
             <p class="text-xs text-slate-700">🍽️ ${activeDuty.venueCanteen}</p>
           </div>
           <div class="mt-3 pt-2 border-t border-slate-200 text-[11px] text-slate-500">
-            Sila catat laporan bertugas dalam Buku Laporan Harian di Pejabat Am.
+            Sila lengkapkan buku laporan bertugas harian di Pejabat Am.
           </div>
         </div>
       </div>
@@ -507,36 +535,14 @@ function renderDutyTeachers() {
   `;
 }
 
-/* ==========================================================================
-   RENDER KREDIT & ARKITEK SISTEM (MOMON)
-   ========================================================================== */
 function renderDeveloperCredits() {
   const dev = window.SKR_DATA.developer || {};
 
-  const nameEls = document.querySelectorAll(".developer-name-text");
-  nameEls.forEach(el => el.textContent = dev.name);
-
-  const roleEls = document.querySelectorAll(".developer-role-text");
-  roleEls.forEach(el => el.textContent = dev.role);
-
-  const unitEls = document.querySelectorAll(".developer-unit-text");
-  unitEls.forEach(el => el.textContent = dev.unit);
-
-  const verEls = document.querySelectorAll(".developer-version-text");
-  verEls.forEach(el => el.textContent = dev.systemVersion);
-
-  const stmtEls = document.querySelectorAll(".developer-statement-text");
-  stmtEls.forEach(el => el.textContent = dev.creditStatement);
-
-  const repoEls = document.querySelectorAll(".developer-repo-link");
-  repoEls.forEach(el => {
-    if (dev.githubRepo) el.setAttribute("href", dev.githubRepo);
-  });
+  document.querySelectorAll(".developer-name-text").forEach(el => el.textContent = dev.name);
+  document.querySelectorAll(".developer-role-text").forEach(el => el.textContent = dev.role);
+  document.querySelectorAll(".developer-unit-text").forEach(el => el.textContent = dev.unit);
 }
 
-/* ==========================================================================
-   RENDER PAUTAN RASMI KPM
-   ========================================================================== */
 function renderPortalLinks() {
   const container = document.getElementById("portalLinksContainer");
   if (!container) return;
@@ -557,13 +563,12 @@ function renderPortalLinks() {
 }
 
 /* ==========================================================================
-   PBD CHARTS (CHART.JS)
+   PBD CHARTS
    ========================================================================== */
 function initPbdCharts() {
   const pbdData = window.SKR_DATA.pbdSummary;
   if (!pbdData || !window.Chart) return;
 
-  // Chart 1: Donut Chart Tahap Penguasaan TP1-TP6
   const ctxDonut = document.getElementById("pbdDonutChart");
   if (ctxDonut) {
     if (pbdChartInstance) pbdChartInstance.destroy();
@@ -573,14 +578,7 @@ function initPbdCharts() {
         labels: ["TP1", "TP2", "TP3", "TP4", "TP5", "TP6"],
         datasets: [{
           data: pbdData.data,
-          backgroundColor: [
-            "#ef4444", // TP1 Merah
-            "#f97316", // TP2 Jingga
-            "#eab308", // TP3 Kuning
-            "#3b82f6", // TP4 Biru
-            "#10b981", // TP5 Hijau
-            "#8b5cf6"  // TP6 Ungu Cemerlang
-          ],
+          backgroundColor: ["#ef4444", "#f97316", "#eab308", "#3b82f6", "#10b981", "#8b5cf6"],
           borderWidth: 2,
           borderColor: "#ffffff"
         }]
@@ -589,83 +587,45 @@ function initPbdCharts() {
         responsive: true,
         maintainAspectRatio: false,
         plugins: {
-          legend: {
-            position: "bottom",
-            labels: { boxWidth: 12, font: { size: 11 } }
-          }
+          legend: { position: "bottom", labels: { boxWidth: 12, font: { size: 11 } } }
         },
         cutout: "68%"
       }
     });
   }
 
-  // Chart 2: Bar Chart Peratusan Penguasaan Mengikut Subjek
   const ctxBar = document.getElementById("pbdSubjectBarChart");
   if (ctxBar) {
     if (pbdSubjectChartInstance) pbdSubjectChartInstance.destroy();
-    
-    const subjects = pbdData.bySubjects.map(s => s.subject);
-    const tp1_2 = pbdData.bySubjects.map(s => s.tp1_2);
-    const tp3_4 = pbdData.bySubjects.map(s => s.tp3_4);
-    const tp5_6 = pbdData.bySubjects.map(s => s.tp5_6);
-
     pbdSubjectChartInstance = new Chart(ctxBar, {
       type: "bar",
       data: {
-        labels: subjects,
+        labels: pbdData.bySubjects.map(s => s.subject),
         datasets: [
-          {
-            label: "TP 5 - 6 (Cemerlang)",
-            data: tp5_6,
-            backgroundColor: "#10b981"
-          },
-          {
-            label: "TP 3 - 4 (Menguasai)",
-            data: tp3_4,
-            backgroundColor: "#3b82f6"
-          },
-          {
-            label: "TP 1 - 2 (Intervensi)",
-            data: tp1_2,
-            backgroundColor: "#ef4444"
-          }
+          { label: "TP 5 - 6 (Cemerlang)", data: pbdData.bySubjects.map(s => s.tp5_6), backgroundColor: "#10b981" },
+          { label: "TP 3 - 4 (Menguasai)", data: pbdData.bySubjects.map(s => s.tp3_4), backgroundColor: "#3b82f6" },
+          { label: "TP 1 - 2 (Intervensi)", data: pbdData.bySubjects.map(s => s.tp1_2), backgroundColor: "#ef4444" }
         ]
       },
       options: {
         responsive: true,
         maintainAspectRatio: false,
-        scales: {
-          x: { stacked: true },
-          y: { stacked: true, max: 100 }
-        },
-        plugins: {
-          legend: { position: "bottom", labels: { boxWidth: 12, font: { size: 11 } } }
-        }
+        scales: { x: { stacked: true }, y: { stacked: true, max: 100 } },
+        plugins: { legend: { position: "bottom", labels: { boxWidth: 12, font: { size: 11 } } } }
       }
     });
   }
 }
 
 /* ==========================================================================
-   VIEWER & PENYELARASAN GOOGLE SHEETS
+   GOOGLE SHEETS VIEWER
    ========================================================================== */
 async function initGoogleSheetsViewer() {
   const syncBtn = document.getElementById("btnSyncSheet");
-  const tableContainer = document.getElementById("sheetTableWrapper");
-  const sheetStatusEl = document.getElementById("sheetSyncStatus");
-  const sheetIdDisplay = document.getElementById("displaySheetId");
-
-  if (sheetIdDisplay) {
-    sheetIdDisplay.textContent = window.googleSheetManager.sheetId;
-  }
-
-  // Muat turun data secara langsung dari Google Sheet
   loadSheetDataAndRender();
 
   if (syncBtn) {
-    syncBtn.addEventListener("click", () => {
-      loadSheetDataAndRender(true);
-    });
+    syncBtn.addEventListener("click", () => loadSheetDataAndRender(true));
   }
 }
 
@@ -677,8 +637,7 @@ async function loadSheetDataAndRender(forceAlert = false) {
   tableContainer.innerHTML = `
     <div class="p-8 text-center text-slate-500">
       <div class="inline-block animate-spin w-8 h-8 border-4 border-blue-600 border-t-transparent rounded-full mb-3"></div>
-      <p class="font-medium text-sm">Menghubungkan ke Google Sheets SK Ranggu...</p>
-      <p class="text-xs text-slate-400 mt-1">ID: ${window.googleSheetManager.sheetId}</p>
+      <p class="font-medium text-sm">Menyemak pangkalan data Google Sheets...</p>
     </div>
   `;
 
@@ -687,17 +646,15 @@ async function loadSheetDataAndRender(forceAlert = false) {
   if (result.success && result.data && result.data.length > 0) {
     renderSheetTable(result.headers, result.data);
     if (sheetStatusEl) {
-      const syncDate = new Date().toLocaleTimeString("ms-MY");
       sheetStatusEl.innerHTML = `<span class="inline-flex items-center gap-1.5 text-emerald-700 bg-emerald-50 px-3 py-1 rounded-full border border-emerald-200 text-xs font-semibold">
-        <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span> Segerak Berjaya (${syncDate})
+        <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span> Data Terkini Disegerakkan
       </span>`;
     }
   } else {
-    // Paparan Ralat / Panduan Jika Perkongsian Google Sheet Ditutup (Private / 401)
     renderSheetPermissionGuide(result.error);
     if (sheetStatusEl) {
       sheetStatusEl.innerHTML = `<span class="inline-flex items-center gap-1.5 text-amber-700 bg-amber-50 px-3 py-1 rounded-full border border-amber-200 text-xs font-semibold">
-        ⚠️ Memerlukan Kebenaran Perkongsian Pautan
+        ⚠️ Memerlukan Kebenaran Pautan
       </span>`;
     }
   }
@@ -740,34 +697,22 @@ function renderSheetPermissionGuide(errorMessage) {
   const currentSheetUrl = window.SKR_DATA.googleSheets.fullUrl;
 
   tableContainer.innerHTML = `
-    <div class="p-6 bg-gradient-to-br from-amber-50 to-orange-50 rounded-2xl border border-amber-200">
+    <div class="p-6 bg-amber-50 rounded-2xl border border-amber-200">
       <div class="flex items-start gap-4">
         <div class="w-12 h-12 rounded-xl bg-amber-100 text-amber-800 flex items-center justify-center text-2xl shrink-0 border border-amber-300">
           🔒
         </div>
         <div class="flex-1">
-          <h4 class="font-bold text-slate-900 text-base">Google Spreadsheet Memerlukan Kebenaran Paparan Awam</h4>
+          <h4 class="font-bold text-slate-900 text-base">Tetapan Kebenaran Google Spreadsheet</h4>
           <p class="text-xs text-slate-600 mt-1 leading-relaxed">
-            Google Sheets anda (${window.googleSheetManager.sheetId}) belum ditetapkan kepada perkongsian <strong>"Sesiapa yang mempunyai pautan boleh melihat"</strong> (Anyone with the link can view). 
-            Ini adalah langkah keselamatan biasa oleh Google untuk dokumen baharu.
+            Sila pastikan perkongsian pautan ditetapkan kepada <strong>"Sesiapa sahaja dengan pautan boleh melihat"</strong> (Anyone with the link can view) di Google Drive agar data dapat dimuat turun terus.
           </p>
-
-          <div class="mt-4 p-4 bg-white rounded-xl border border-amber-200/80 shadow-sm">
-            <h5 class="text-xs font-bold text-slate-800 uppercase tracking-wider mb-2">Cara Membuka Akses Dalam 3 Langkah Mudah:</h5>
-            <ol class="text-xs text-slate-700 space-y-2 list-decimal list-inside leading-relaxed">
-              <li>Buka pautan fail Google Sheet anda: <a href="${currentSheetUrl}" target="_blank" class="text-blue-600 font-semibold underline">Buka Dokumen di Google Drive ↗</a></li>
-              <li>Klik butang hijau <strong>"Share" (Kongsi)</strong> di penjuru kanan atas.</li>
-              <li>Di bahagian <em>General access</em>, tukar daripada <em>Restricted</em> kepada <strong>"Anyone with the link" (Sesiapa sahaja dengan pautan)</strong> dengan hak <em>Viewer (Pelihat)</em>, kemudian klik <strong>Done</strong>.</li>
-            </ol>
-          </div>
-
-          <!-- Opsyen Muat Naik / Tampal CSV Manual Serta Merta -->
-          <div class="mt-4 pt-4 border-t border-amber-200/60 flex flex-wrap items-center gap-3">
-            <button onclick="loadSheetDataAndRender(true)" class="px-4 py-2 bg-amber-600 hover:bg-amber-700 text-white font-semibold rounded-xl text-xs shadow-sm transition flex items-center gap-1.5">
-              🔄 Segerak Semula Selepas Ditetapkan
-            </button>
-            <button onclick="openCsvImportModal()" class="px-4 py-2 bg-white hover:bg-slate-50 border border-slate-300 text-slate-700 font-semibold rounded-xl text-xs transition">
-              📋 Atau Tampal / Muat Naik CSV Terus
+          <div class="mt-3 flex items-center gap-3">
+            <a href="${currentSheetUrl}" target="_blank" class="px-4 py-2 bg-blue-700 text-white font-semibold rounded-xl text-xs shadow-sm hover:bg-blue-800 transition">
+              Buka di Google Drive ↗
+            </a>
+            <button onclick="loadSheetDataAndRender(true)" class="px-4 py-2 bg-white text-slate-700 font-semibold rounded-xl text-xs border border-slate-300 hover:bg-slate-50">
+              Segerak Semula
             </button>
           </div>
         </div>
@@ -776,60 +721,8 @@ function renderSheetPermissionGuide(errorMessage) {
   `;
 }
 
-// Modal Import CSV Manual
-window.openCsvImportModal = function() {
-  const modal = document.getElementById("genericDetailModal");
-  const modalContent = document.getElementById("genericDetailModalContent");
-  if (!modal || !modalContent) return;
-
-  modalContent.innerHTML = `
-    <div class="p-6">
-      <div class="flex items-center justify-between border-b pb-4 mb-4">
-        <h3 class="font-bold text-lg text-slate-900">Import Data Google Sheet Secara Manual (CSV / TSV)</h3>
-        <button onclick="closeGenericModal()" class="text-slate-400 hover:text-slate-700 text-xl font-bold">&times;</button>
-      </div>
-
-      <div class="space-y-4">
-        <p class="text-xs text-slate-600">
-          Anda boleh menyalin semua sel dalam spreadsheet Google Sheets anda (Ctrl+A & Ctrl+C) kemudian tampal di bawah, atau muat naik fail CSV yang dieksport dari Google Sheets:
-        </p>
-
-        <div>
-          <label class="block text-xs font-bold text-slate-700 mb-1">Tampal Kandungan CSV / Tab Separated:</label>
-          <textarea id="manualCsvInput" rows="7" placeholder="Contoh:&#10;Bil, Nama Guru, Opsyen, Mata Pelajaran, Kelas&#10;1, Cikgu Ahmad, Sains, Sains Tahun 5, 5 Cekal" class="w-full text-xs font-mono p-3 border border-slate-300 rounded-xl focus:ring-2 focus:ring-blue-600 focus:outline-none"></textarea>
-        </div>
-      </div>
-
-      <div class="mt-6 flex justify-end gap-3">
-        <button onclick="closeGenericModal()" class="px-4 py-2 text-slate-600 font-semibold rounded-xl text-xs hover:bg-slate-100">Batal</button>
-        <button onclick="processManualCsv()" class="px-5 py-2 bg-blue-700 hover:bg-blue-800 text-white font-semibold rounded-xl text-xs shadow transition">
-          Muat Masuk & Paparkan
-        </button>
-      </div>
-    </div>
-  `;
-  modal.classList.remove("hidden");
-};
-
-window.processManualCsv = function() {
-  const input = document.getElementById("manualCsvInput");
-  if (!input || !input.value.trim()) {
-    alert("Sila masukkan teks data terlebih dahulu.");
-    return;
-  }
-
-  const result = window.googleSheetManager.parseCsvText(input.value);
-  if (result.success) {
-    renderSheetTable(result.headers, result.data);
-    closeGenericModal();
-    alert("Data spreadsheet berjaya dipaparkan!");
-  } else {
-    alert("Ralat memproses CSV: " + result.error);
-  }
-};
-
 /* ==========================================================================
-   NAVIGASI TAB & RESPONSIF MENU
+   NAVIGASI TAB
    ========================================================================== */
 function setupNavigation() {
   const tabButtons = document.querySelectorAll("[data-tab-target]");
@@ -839,17 +732,14 @@ function setupNavigation() {
     btn.addEventListener("click", () => {
       const targetId = btn.getAttribute("data-tab-target");
 
-      // Reset semua butang
       tabButtons.forEach(b => {
         b.classList.remove("bg-blue-900", "text-white", "font-bold", "shadow-sm");
         b.classList.add("text-slate-600", "hover:bg-slate-100", "font-medium");
       });
 
-      // Aktifkan butang ditekan
       btn.classList.add("bg-blue-900", "text-white", "font-bold", "shadow-sm");
       btn.classList.remove("text-slate-600", "hover:bg-slate-100", "font-medium");
 
-      // Paparkan seksyen berkenaan
       tabSections.forEach(sec => {
         if (sec.id === targetId) {
           sec.classList.remove("hidden");
@@ -858,12 +748,10 @@ function setupNavigation() {
         }
       });
 
-      // Tatal ke atas dengan lembut
       window.scrollTo({ top: 0, behavior: "smooth" });
     });
   });
 
-  // Mobile drawer toggle
   const mobileMenuBtn = document.getElementById("mobileMenuToggle");
   const mobileNavDrawer = document.getElementById("mobileNavDrawer");
   if (mobileMenuBtn && mobileNavDrawer) {
@@ -871,27 +759,17 @@ function setupNavigation() {
       mobileNavDrawer.classList.toggle("hidden");
     });
 
-    // Tutup bila klik item menu
-    const mobileLinks = mobileNavDrawer.querySelectorAll("[data-tab-target]");
-    mobileLinks.forEach(link => {
-      link.addEventListener("click", () => {
-        mobileNavDrawer.classList.add("hidden");
-      });
+    mobileNavDrawer.querySelectorAll("[data-tab-target]").forEach(link => {
+      link.addEventListener("click", () => mobileNavDrawer.classList.add("hidden"));
     });
   }
 
-  // Butang Cetak A4 Rasmi
   const printBtn = document.getElementById("btnPrintPage");
   if (printBtn) {
-    printBtn.addEventListener("click", () => {
-      window.print();
-    });
+    printBtn.addEventListener("click", () => window.print());
   }
 }
 
-/* ==========================================================================
-   CARIAN & PENAPIS CARTA ORGANISASI
-   ========================================================================== */
 function setupSearchAndFilters() {
   const searchInput = document.getElementById("orgSearchInput");
   const filterSelect = document.getElementById("orgFilterSelect");
@@ -907,7 +785,7 @@ function setupSearchAndFilters() {
 }
 
 /* ==========================================================================
-   PORTAL PENTADBIR (ADMIN LISTENERS & MODALS)
+   PORTAL PENTADBIR (ADMIN SETTINGS)
    ========================================================================== */
 function setupAdminListeners() {
   const adminOpenBtn = document.getElementById("btnOpenAdminModal");
@@ -918,7 +796,6 @@ function setupAdminListeners() {
   const adminPinInput = document.getElementById("adminPinInput");
   const adminLogoutBtn = document.getElementById("btnAdminLogout");
 
-  // Buka Modal Pentadbir
   if (adminOpenBtn && adminModal) {
     adminOpenBtn.addEventListener("click", () => {
       adminModal.classList.remove("hidden");
@@ -930,15 +807,11 @@ function setupAdminListeners() {
     });
   }
 
-  // Tutup Modal Pentadbir
   const closeAdminBtn = document.getElementById("btnCloseAdminModal");
   if (closeAdminBtn && adminModal) {
-    closeAdminBtn.addEventListener("click", () => {
-      adminModal.classList.add("hidden");
-    });
+    closeAdminBtn.addEventListener("click", () => adminModal.classList.add("hidden"));
   }
 
-  // Log Masuk Pentadbir
   if (adminLoginForm) {
     adminLoginForm.addEventListener("submit", (e) => {
       e.preventDefault();
@@ -954,7 +827,6 @@ function setupAdminListeners() {
     });
   }
 
-  // Log Keluar Pentadbir
   if (adminLogoutBtn) {
     adminLogoutBtn.addEventListener("click", () => {
       window.adminManager.logout();
@@ -975,13 +847,10 @@ function setupAdminListeners() {
   }
 }
 
-// Muatkan data sedia ada ke dalam borang pentadbir
 function loadAdminFormData() {
   const s = window.SKR_DATA.school;
-  const dev = window.SKR_DATA.developer;
   const gs = window.SKR_DATA.googleSheets;
 
-  // Profil Sekolah
   const setVal = (id, val) => {
     const el = document.getElementById(id);
     if (el) el.value = val || "";
@@ -994,51 +863,131 @@ function loadAdminFormData() {
   setVal("admSchoolEmail", s.email);
   setVal("admSchoolMotto", s.motto);
   setVal("admSchoolSession", s.academicSession);
-
-  // Kredit Pembangun
-  setVal("admDevName", dev.name);
-  setVal("admDevRole", dev.role);
-  setVal("admDevUnit", dev.unit);
-  setVal("admDevRepo", dev.githubRepo);
-  setVal("admDevStatement", dev.creditStatement);
-
-  // Google Sheets
   setVal("admSheetId", gs.sheetId);
-  setVal("admSheetGid", gs.gid);
 
-  // Render Senarai Ahli untuk Edit/Delete di Admin
   renderAdminStaffList();
+  renderAdminDocList();
 }
 
+// Render Senarai Staf untuk Dikelola Admin
 function renderAdminStaffList() {
   const listContainer = document.getElementById("admStaffListWrapper");
   if (!listContainer) return;
 
   const members = window.SKR_DATA.organizationChart || [];
   listContainer.innerHTML = members.map(m => `
-    <div class="flex items-center justify-between p-3 bg-white border border-slate-200 rounded-xl text-xs">
+    <div class="flex items-center justify-between p-2.5 bg-white border border-slate-200 rounded-xl text-xs">
       <div>
         <h5 class="font-bold text-slate-900">${m.name}</h5>
-        <p class="text-slate-500">${m.role} • <span class="font-mono">${m.grade}</span> (${m.category})</p>
+        <p class="text-slate-500">${m.role} • <span class="font-mono">${m.grade}</span></p>
       </div>
-      <div class="flex items-center gap-2">
-        <button onclick="deleteStaffMember('${m.id}')" class="text-red-600 hover:text-red-800 font-semibold px-2 py-1 bg-red-50 hover:bg-red-100 rounded-md border border-red-200">
-          Padam
-        </button>
-      </div>
+      <button onclick="deleteStaffMember('${m.id}')" class="text-red-600 hover:text-red-800 font-semibold px-2 py-1 bg-red-50 hover:bg-red-100 rounded-md border border-red-200">
+        Padam
+      </button>
     </div>
   `).join("");
 }
 
 window.deleteStaffMember = function(id) {
-  if (confirm("Adakah anda pasti ingin memadamkan ahli ini daripada carta organisasi?")) {
+  if (confirm("Padamkan ahli ini daripada Carta Organisasi?")) {
     window.adminManager.deleteOrgMember(id);
     renderOrganizationChart();
     renderAdminStaffList();
   }
 };
 
-// Simpan Profil Sekolah dari Admin
+// Render Senarai Bahan di Admin
+function renderAdminDocList() {
+  const container = document.getElementById("admDocListWrapper");
+  if (!container) return;
+
+  const docs = window.SKR_DATA.documents || [];
+  container.innerHTML = docs.map(d => `
+    <div class="flex items-center justify-between p-2.5 bg-white border border-slate-200 rounded-xl text-xs">
+      <div>
+        <h5 class="font-bold text-slate-900">${d.title}</h5>
+        <p class="text-slate-500">${d.category} • ${d.panitia} (${d.size})</p>
+      </div>
+      <button onclick="deleteDocItem('${d.id}')" class="text-red-600 hover:text-red-800 font-semibold px-2 py-1 bg-red-50 hover:bg-red-100 rounded-md border border-red-200">
+        Padam
+      </button>
+    </div>
+  `).join("");
+}
+
+window.deleteDocItem = function(id) {
+  if (confirm("Padamkan bahan/dokumen ini?")) {
+    window.adminManager.deleteDocument(id);
+    renderDocumentsList();
+    renderAdminDocList();
+  }
+};
+
+// Tambah Dokumen / Bahan Baru oleh Admin
+window.addNewDocumentFromAdmin = function() {
+  const title = document.getElementById("newDocTitle")?.value.trim();
+  const category = document.getElementById("newDocCategory")?.value;
+  const panitia = document.getElementById("newDocPanitia")?.value.trim() || "Kurikulum";
+  const fileInput = document.getElementById("newDocFileInput");
+  const linkUrl = document.getElementById("newDocLinkUrl")?.value.trim();
+
+  if (!title) {
+    alert("Sila masukkan tajuk bahan!");
+    return;
+  }
+
+  // Jika pengguna memuat naik fail fizikal
+  if (fileInput && fileInput.files && fileInput.files[0]) {
+    const file = fileInput.files[0];
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      const dataUrl = e.target.result;
+      const sizeStr = (file.size / 1024 / 1024).toFixed(1) + " MB";
+      const fileExt = file.name.split('.').pop().toUpperCase();
+
+      window.adminManager.addDocument({
+        title: title,
+        category: category,
+        panitia: panitia,
+        type: fileExt,
+        fileUrl: dataUrl,
+        size: sizeStr,
+        uploader: "Pentadbir SK Ranggu"
+      });
+
+      renderDocumentsList();
+      renderAdminDocList();
+      resetDocInputs();
+      alert("Bahan berjaya dimuat naik ke dalam sistem!");
+    };
+    reader.readAsDataURL(file);
+    return;
+  }
+
+  // Jika pengguna memasukkan pautan URL
+  window.adminManager.addDocument({
+    title: title,
+    category: category,
+    panitia: panitia,
+    type: "PDF",
+    fileUrl: linkUrl || "#",
+    size: "Pautan Luar",
+    uploader: "Pentadbir SK Ranggu"
+  });
+
+  renderDocumentsList();
+  renderAdminDocList();
+  resetDocInputs();
+  alert("Pautan bahan berjaya ditambah!");
+};
+
+function resetDocInputs() {
+  document.getElementById("newDocTitle").value = "";
+  document.getElementById("newDocPanitia").value = "";
+  if (document.getElementById("newDocLinkUrl")) document.getElementById("newDocLinkUrl").value = "";
+  if (document.getElementById("newDocFileInput")) document.getElementById("newDocFileInput").value = "";
+}
+
 window.saveSchoolProfileFromAdmin = function() {
   const getVal = id => document.getElementById(id)?.value || "";
   
@@ -1057,41 +1006,6 @@ window.saveSchoolProfileFromAdmin = function() {
   alert("Maklumat profil sekolah berjaya dikemaskini!");
 };
 
-// Simpan Kredit Pembangun dari Admin
-window.saveDevCreditsFromAdmin = function() {
-  const getVal = id => document.getElementById(id)?.value || "";
-  
-  const updated = {
-    name: getVal("admDevName"),
-    role: getVal("admDevRole"),
-    unit: getVal("admDevUnit"),
-    githubRepo: getVal("admDevRepo"),
-    creditStatement: getVal("admDevStatement")
-  };
-
-  window.adminManager.updateDeveloperInfo(updated);
-  renderDeveloperCredits();
-  alert("Kredit pembangun sistem berjaya dikemaskini!");
-};
-
-// Simpan Konfigurasi Google Sheets dari Admin
-window.saveSheetConfigFromAdmin = function() {
-  const getVal = id => document.getElementById(id)?.value || "";
-  
-  const updated = {
-    sheetId: getVal("admSheetId"),
-    gid: getVal("admSheetGid")
-  };
-
-  window.adminManager.updateGoogleSheetConfig(updated);
-  const sheetIdDisplay = document.getElementById("displaySheetId");
-  if (sheetIdDisplay) sheetIdDisplay.textContent = updated.sheetId;
-
-  loadSheetDataAndRender(true);
-  alert("Konfigurasi Google Sheets disimpan. Memulakan penyelarasan...");
-};
-
-// Tambah Ahli Staf Baru
 window.addNewStaffMemberFromAdmin = function() {
   const getVal = id => document.getElementById(id)?.value || "";
 
@@ -1107,42 +1021,17 @@ window.addNewStaffMemberFromAdmin = function() {
     role: role,
     tier: parseInt(getVal("newStaffTier")) || 3,
     grade: getVal("newStaffGrade") || "DG41",
-    category: getVal("newStaffCategory") || "Jawatankuasa Kurikulum",
-    email: getVal("newStaffEmail") || "guru@moe-dl.edu.my",
+    category: getVal("newStaffCategory") || "Ketua Panitia",
+    email: getVal("newStaffEmail") || "xba3037@moe.edu.my",
     phone: "089-925493",
-    duties: getVal("newStaffDuties") || "Tugas pentadbiran dan kurikulum"
+    duties: getVal("newStaffDuties") || "Tugas akademik dan kurikulum"
   };
 
   window.adminManager.addOrgMember(member);
   renderOrganizationChart();
   renderAdminStaffList();
 
-  // Reset inputs
   document.getElementById("newStaffName").value = "";
   document.getElementById("newStaffRole").value = "";
   alert("Pegawai/Guru berjaya ditambah ke dalam Carta Organisasi!");
-};
-
-// Sandaran Penuh & Muat Turun JSON
-window.exportSystemBackup = function() {
-  window.adminManager.exportFullBackup();
-};
-
-// Muat Naik Fail Sandaran JSON
-window.importSystemBackup = function(event) {
-  const file = event.target.files[0];
-  if (!file) return;
-
-  const reader = new FileReader();
-  reader.onload = function(e) {
-    const contents = e.target.result;
-    const result = window.adminManager.importBackupFile(contents);
-    if (result.success) {
-      alert("Sistem berjaya dipulihkan daripada fail sandaran!");
-      location.reload();
-    } else {
-      alert("Ralat memulihkan sandaran: " + result.error);
-    }
-  };
-  reader.readAsText(file);
 };
