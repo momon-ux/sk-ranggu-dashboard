@@ -375,10 +375,47 @@ class AdminManager {
     if (!window.SKR_DATA.staffList) return false;
     window.SKR_DATA.staffList = window.SKR_DATA.staffList.filter(s => String(s.id) !== String(id));
     if (window.SKR_DATA.stats) {
-      window.SKR_DATA.stats.totalAllStaff = window.SKR_DATA.staffList.length;
+      const activeCount = window.SKR_DATA.staffList.filter(s => s.isActive !== false && s.status !== "Nyahaktif" && s.status !== "Bersara / Pencen").length;
+      window.SKR_DATA.stats.totalAllStaff = activeCount;
     }
     saveStoredData(window.SKR_DATA);
     return true;
+  }
+
+  deactivateStaffMember(id, reason = "Bersara / Pencen") {
+    if (!this.checkAuth()) return false;
+    const list = window.SKR_DATA.staffList || [];
+    const staff = list.find(s => String(s.id) === String(id));
+    if (staff) {
+      staff.isActive = false;
+      staff.status = reason;
+      staff.deactivatedAt = new Date().toISOString();
+      if (window.SKR_DATA.stats) {
+        const activeCount = list.filter(s => s.isActive !== false && s.status !== "Nyahaktif" && s.status !== "Bersara / Pencen").length;
+        window.SKR_DATA.stats.totalAllStaff = activeCount;
+      }
+      saveStoredData(window.SKR_DATA);
+      return true;
+    }
+    return false;
+  }
+
+  activateStaffMember(id) {
+    if (!this.checkAuth()) return false;
+    const list = window.SKR_DATA.staffList || [];
+    const staff = list.find(s => String(s.id) === String(id));
+    if (staff) {
+      staff.isActive = true;
+      staff.status = "Aktif";
+      delete staff.deactivatedAt;
+      if (window.SKR_DATA.stats) {
+        const activeCount = list.filter(s => s.isActive !== false && s.status !== "Nyahaktif" && s.status !== "Bersara / Pencen").length;
+        window.SKR_DATA.stats.totalAllStaff = activeCount;
+      }
+      saveStoredData(window.SKR_DATA);
+      return true;
+    }
+    return false;
   }
 
   // ==========================================

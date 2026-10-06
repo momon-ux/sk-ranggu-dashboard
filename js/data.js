@@ -115,10 +115,11 @@ const DEFAULT_SYSTEM_DATA = {
 
   // STATISTIK RASMI KESELURUHAN (DATA APDM / MOEIS & TELEGRAM 5 OKT 2026)
   stats: {
-    totalTeachers: 54,
+    totalTeachers: 52,
     totalStaff: 6,
-    totalAllStaff: 60,
-    morningSession: 30,
+    totalAllStaff: 58,
+    retiredStaff: 2,
+    morningSession: 28,
     afternoonSession: 24,
     totalStudents: 890,
     muridPerdana: 816,
@@ -1158,17 +1159,20 @@ const DEFAULT_SYSTEM_DATA = {
       id: 7,
       name: "AHAD BIN JAAFAR",
       ic: "660717-12-5251",
-      role: "Guru Akademik / Matapelajaran",
+      role: "Guru Akademik (Telah Bersara)",
       grade: "PPP DG7",
       type: "PPP",
       session: "Pagi",
       category: "Guru Akademik",
       tier: 4,
+      status: "Bersara / Pencen",
+      isActive: false,
+      retiredYear: 2026,
       photo: "assets/photos/ahad-bin-jaafar.jpg",
       classAssigned: null,
       email: "xba3037@moe.edu.my",
       phone: "089-925493",
-      duties: "Melaksanakan PdP mengikut sukatan kurikulum KSSR dan membimbing kemenjadian murid dalam bidang akademik."
+      duties: "Rekod arkib perkhidmatan: Guru telah bersara wajib (pencen) pada Sesi 2026."
     },
     {
       id: 8,
@@ -1334,17 +1338,20 @@ const DEFAULT_SYSTEM_DATA = {
       id: 18,
       name: "JAIBY BIN JULIAN",
       ic: "660707-12-5901",
-      role: "Guru Akademik / Matapelajaran",
+      role: "Guru Akademik (Telah Bersara)",
       grade: "PPP DG7",
       type: "PPP",
       session: "Pagi",
       category: "Guru Akademik",
       tier: 4,
+      status: "Bersara / Pencen",
+      isActive: false,
+      retiredYear: 2026,
       photo: "assets/photos/jaiby-bin-julian.jpg",
       classAssigned: null,
       email: "xba3037@moe.edu.my",
       phone: "089-925493",
-      duties: "Melaksanakan PdP berkesan dan menyokong aktiviti kokurikulum serta sahsiah sekolah."
+      duties: "Rekod arkib perkhidmatan: Guru telah bersara wajib (pencen) pada Sesi 2026."
     },
     {
       id: 19,
@@ -2395,17 +2402,14 @@ window.getStaffPhoto = function(name) {
 // ==========================================================================
 // PENYIMPANAN LOCALSTORAGE & PEMBERSIHAN CACHE VERSI LAMA
 // ==========================================================================
-// ==========================================================================
-// PENYIMPANAN LOCALSTORAGE & PEMBERSIHAN CACHE VERSI LAMA
-// ==========================================================================
 DEFAULT_SYSTEM_DATA.takwimEvents = DEFAULT_SYSTEM_DATA.takwim;
 
-const CURRENT_STORAGE_KEY = "SK_RANGGU_DASHBOARD_DATA_V19";
+const CURRENT_STORAGE_KEY = "SK_RANGGU_DASHBOARD_DATA_V20";
 
 function getStoredData() {
   try {
-    // Purge semua cache versi lapuk (V1 sehingga V18)
-    for (let i = 1; i <= 18; i++) {
+    // Purge semua cache versi lapuk (V1 sehingga V19)
+    for (let i = 1; i <= 19; i++) {
       try { localStorage.removeItem(`SK_RANGGU_DASHBOARD_DATA_V${i}`); } catch(e){}
     }
     try { localStorage.removeItem("SK_RANGGU_DASHBOARD_DATA"); } catch(e){}
@@ -2427,6 +2431,20 @@ function getStoredData() {
         if (!parsed.takwimEvents) parsed.takwimEvents = DEFAULT_SYSTEM_DATA.takwim;
         if (!parsed.sportsyncKOT26 || !parsed.sportsyncKOT26.houses) {
           parsed.sportsyncKOT26 = DEFAULT_SYSTEM_DATA.sportsyncKOT26;
+        }
+        // Pastikan AHAD BIN JAAFAR & JAIBY BIN JULIAN kekal tidak aktif / bersara
+        if (Array.isArray(parsed.staffList)) {
+          parsed.staffList.forEach(s => {
+            if (s.name && (s.name.includes("AHAD BIN JAAFAR") || s.name.includes("JAIBY BIN JULIAN"))) {
+              s.isActive = false;
+              s.status = "Bersara / Pencen";
+            }
+          });
+        }
+        if (parsed.stats) {
+          parsed.stats.totalTeachers = 52;
+          parsed.stats.totalAllStaff = 58;
+          parsed.stats.retiredStaff = 2;
         }
       }
       return parsed;

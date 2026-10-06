@@ -321,16 +321,22 @@ function refreshFavicon() {
    RENDER STATISTIK EKSEKUTIF
    ========================================================================== */
 function renderExecutiveStats() {
-  const stats = window.SKR_DATA.stats;
+  const stats = window.SKR_DATA.stats || {};
+  const staff = window.SKR_DATA.staffList || [];
+  const activeStaff = staff.filter(s => s.isActive !== false && s.status !== "Nyahaktif" && s.status !== "Bersara / Pencen");
+  const activeTeachers = activeStaff.filter(s => s.type !== "AKP");
+  const activeAkp = activeStaff.filter(s => s.type === "AKP");
   
   const elTeachers = document.getElementById("statTotalTeachers");
+  const elTeachersBreakdown = document.getElementById("statTeachersBreakdown");
   const elStudents = document.getElementById("statTotalStudents");
   const elClasses = document.getElementById("statTotalClasses");
   const elCommittees = document.getElementById("statTotalCommittees");
   const elPbd = document.getElementById("statPbdPercent");
   const elWeek = document.getElementById("statActiveWeek");
 
-  if (elTeachers) elTeachers.textContent = stats.totalAllStaff || 60;
+  if (elTeachers) elTeachers.textContent = activeStaff.length || stats.totalAllStaff || 58;
+  if (elTeachersBreakdown) elTeachersBreakdown.textContent = `${activeTeachers.length || 52} Guru + ${activeAkp.length || 6} AKP`;
   if (elStudents) elStudents.textContent = stats.totalStudents || 890;
   if (elClasses) elClasses.textContent = `${stats.totalClasses || 27} Kelas`;
   if (elCommittees) elCommittees.textContent = stats.totalCommittees || 12;
@@ -597,7 +603,8 @@ function renderOrganizationChart(filterCategory = "Semua", searchQuery = "") {
   const container = document.getElementById("orgChartContainer");
   if (!container) return;
 
-  const staff = window.SKR_DATA.staffList || [];
+  const allStaff = window.SKR_DATA.staffList || [];
+  const staff = allStaff.filter(m => m.isActive !== false && m.status !== "Nyahaktif" && m.status !== "Bersara / Pencen");
   const currH = window.SKR_DATA.curriculumHierarchy2026;
   const adminH = window.SKR_DATA.adminHierarchy2026;
 
@@ -2605,32 +2612,71 @@ window.toggleAddNewStaffForm = function() {
   if (formBox) formBox.classList.toggle("hidden");
 };
 
+window.adminStaffFilterTab = "semua";
+
+window.setAdminStaffFilterTab = function(tab) {
+  window.adminStaffFilterTab = tab;
+  const tabs = ["semua", "aktif", "nyahaktif"];
+  tabs.forEach(t => {
+    const btn = document.getElementById(`btnAdmFilterStaff-${t}`);
+    if (btn) {
+      if (t === tab) {
+        btn.className = "px-3 py-1.5 rounded-lg bg-white text-royal-900 shadow-2xs font-bold transition whitespace-nowrap";
+      } else {
+        btn.className = "px-3 py-1.5 rounded-lg text-slate-600 hover:text-royal-900 transition font-medium whitespace-nowrap";
+      }
+    }
+  });
+  renderAdminStaffList(document.getElementById("admStaffSearchInput")?.value || "");
+};
+
 function renderAdminStaffList(filterText = "") {
   const listContainer = document.getElementById("admStaffListWrapper");
   const countBadge = document.getElementById("admStaffCountBadge");
   if (!listContainer) return;
 
   const staff = window.SKR_DATA.staffList || [];
+  const activeStaff = staff.filter(s => s.isActive !== false && s.status !== "Nyahaktif" && s.status !== "Bersara / Pencen");
+  const inactiveStaff = staff.filter(s => s.isActive === false || s.status === "Nyahaktif" || s.status === "Bersara / Pencen");
+
+  // Kemas kini pembilang tab
+  const elCountAll = document.getElementById("admCountAll");
+  const elCountActive = document.getElementById("admCountActive");
+  const elCountInactive = document.getElementById("admCountInactive");
+  if (elCountAll) elCountAll.textContent = staff.length;
+  if (elCountActive) elCountActive.textContent = activeStaff.length;
+  if (elCountInactive) elCountInactive.textContent = inactiveStaff.length;
+
   let filtered = staff;
+  if (window.adminStaffFilterTab === "aktif") {
+    filtered = activeStaff;
+  } else if (window.adminStaffFilterTab === "nyahaktif") {
+    filtered = inactiveStaff;
+  }
 
   if (filterText.trim() !== "") {
     const q = filterText.toLowerCase();
-    filtered = staff.filter(s => 
+    filtered = filtered.filter(s => 
       (s.name && s.name.toLowerCase().includes(q)) ||
       (s.role && s.role.toLowerCase().includes(q)) ||
       (s.grade && s.grade.toLowerCase().includes(q)) ||
-      (s.category && s.category.toLowerCase().includes(q))
+      (s.category && s.category.toLowerCase().includes(q)) ||
+      (s.status && s.status.toLowerCase().includes(q))
     );
   }
 
-  if (countBadge) countBadge.textContent = `${filtered.length} daripada ${staff.length} Staf`;
+  if (countBadge) {
+    countBadge.textContent = `${filtered.length} Staf (${window.adminStaffFilterTab === 'aktif' ? 'Aktif' : (window.adminStaffFilterTab === 'nyahaktif' ? 'Nyahaktif' : 'Semua')})`;
+  }
 
   if (filtered.length === 0) {
-    listContainer.innerHTML = `<div class="p-6 text-center text-slate-400 bg-slate-50 rounded-xl border border-slate-200 text-xs">Tiada rekod guru sepadan carian "${filterText}".</div>`;
+    listContainer.innerHTML = `<div class="p-6 text-center text-slate-400 bg-slate-50 rounded-xl border border-slate-200 text-xs">Tiada rekod staf sepadan dengan tapisan ini.</div>`;
     return;
   }
 
   listContainer.innerHTML = filtered.map(m => {
+    const isInactive = m.isActive === false || m.status === "Bersara / Pencen" || m.status === "Nyahaktif";
+
     const initials = m.name
       .split(" ")
       .filter(n => !["bin", "binti", "hjh.", "haji", "encik", "puan", "cik"].includes(n.toLowerCase()))
@@ -2641,19 +2687,30 @@ function renderAdminStaffList(filterText = "") {
 
     const hasPhoto = m.photo && m.photo.trim() !== "";
     const thumbHtml = hasPhoto ? `
-      <img src="${m.photo}" alt="${m.name}" class="w-10 h-10 rounded-xl object-cover shrink-0 border border-slate-200">
+      <img src="${m.photo}" alt="${m.name}" class="w-10 h-10 rounded-xl object-cover shrink-0 border ${isInactive ? 'border-rose-300 opacity-60 grayscale' : 'border-slate-200'}">
     ` : `
-      <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-blue-700 to-indigo-900 text-white flex items-center justify-center font-bold text-xs shrink-0 shadow-sm">
+      <div class="w-10 h-10 rounded-xl ${isInactive ? 'bg-slate-400' : 'bg-gradient-to-tr from-blue-700 to-indigo-900'} text-white flex items-center justify-center font-bold text-xs shrink-0 shadow-sm">
         ${initials}
       </div>
     `;
 
     return `
-      <div class="p-3 bg-white border border-slate-200 rounded-xl flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs hover:border-blue-300 transition shadow-sm">
+      <div class="p-3 ${isInactive ? 'bg-rose-50/40 border-rose-200' : 'bg-white border-slate-200'} border rounded-xl flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs hover:border-blue-300 transition shadow-sm">
         <div class="flex items-center gap-3 min-w-0">
           ${thumbHtml}
           <div class="min-w-0">
-            <h5 class="font-extrabold text-slate-900 truncate">${m.name}</h5>
+            <div class="flex items-center gap-1.5 flex-wrap">
+              <h5 class="font-extrabold text-slate-900 truncate">${m.name}</h5>
+              ${isInactive ? `
+                <span class="px-1.5 py-0.5 rounded text-[9px] font-black bg-rose-100 text-rose-800 border border-rose-300">
+                  🔴 ${m.status || 'BERSARA / NYAHAKTIF'}
+                </span>
+              ` : `
+                <span class="px-1.5 py-0.5 rounded text-[9px] font-bold bg-emerald-100 text-emerald-800 border border-emerald-300">
+                  🟢 AKTIF
+                </span>
+              `}
+            </div>
             <p class="text-blue-700 font-semibold text-[11px] truncate">${m.role}</p>
             <div class="flex items-center gap-2 text-[10px] text-slate-500 mt-0.5">
               <span class="font-mono bg-slate-100 px-1.5 py-0.5 rounded font-bold">${m.grade || 'DG41'}</span>
@@ -2666,10 +2723,19 @@ function renderAdminStaffList(filterText = "") {
         </div>
 
         <div class="flex items-center gap-2 shrink-0 self-end sm:self-auto">
+          ${isInactive ? `
+            <button type="button" onclick="toggleDeactivateStaff('${m.id}')" title="Aktifkan Semula Staf" class="px-2.5 py-1.5 bg-emerald-50 hover:bg-emerald-100 text-emerald-800 rounded-lg border border-emerald-300 font-bold text-xs transition flex items-center gap-1">
+              <span>▶️</span> Aktifkan
+            </button>
+          ` : `
+            <button type="button" onclick="toggleDeactivateStaff('${m.id}')" title="Nyahaktifkan / Bersara" class="px-2.5 py-1.5 bg-amber-50 hover:bg-amber-100 text-amber-800 rounded-lg border border-amber-300 font-bold text-xs transition flex items-center gap-1">
+              <span>⏸️</span> Nyahaktif
+            </button>
+          `}
           <button type="button" onclick="openEditStaffModal('${m.id}')" class="px-3 py-1.5 bg-blue-50 hover:bg-blue-100 text-blue-800 rounded-lg border border-blue-200 font-bold text-xs transition flex items-center gap-1">
             <span>✏️</span> Sunting & Foto
           </button>
-          <button type="button" onclick="deleteStaffMember('${m.id}')" class="px-2.5 py-1.5 bg-red-50 hover:bg-red-100 text-red-700 rounded-lg border border-red-200 font-bold text-xs transition">
+          <button type="button" onclick="deleteStaffMember('${m.id}')" title="Padamkan Rekod" class="px-2.5 py-1.5 bg-red-50 hover:bg-red-100 text-red-700 rounded-lg border border-red-200 font-bold text-xs transition">
             🗑️
           </button>
         </div>
@@ -2697,6 +2763,7 @@ window.openEditStaffModal = function(id) {
   setVal("editStaffGrade", member.grade || "DG41");
   setVal("editStaffCategory", member.category || "Guru Akademik");
   setVal("editStaffSession", member.session || "Pagi");
+  setVal("editStaffStatus", member.status || (member.isActive === false ? "Bersara / Pencen" : "Aktif"));
   setVal("editStaffEmail", member.email || "xba3037@moe.edu.my");
   setVal("editStaffPhone", member.phone || "089-925493");
   setVal("editStaffDuties", member.duties || "");
@@ -2797,12 +2864,17 @@ window.saveEditedStaff = function(event) {
   const staffId = getVal("editStaffId");
   if (!staffId) return;
 
+  const statusVal = getVal("editStaffStatus") || "Aktif";
+  const isActive = statusVal === "Aktif";
+
   const updatedFields = {
     name: getVal("editStaffName").toUpperCase().trim(),
     role: getVal("editStaffRole").trim(),
     grade: getVal("editStaffGrade").trim(),
     category: getVal("editStaffCategory"),
     session: getVal("editStaffSession"),
+    status: statusVal,
+    isActive: isActive,
     email: getVal("editStaffEmail").trim(),
     phone: getVal("editStaffPhone").trim(),
     duties: getVal("editStaffDuties").trim(),
@@ -2811,11 +2883,17 @@ window.saveEditedStaff = function(event) {
 
   const success = window.adminManager.updateStaffMember(staffId, updatedFields);
   if (success) {
+    if (window.SKR_DATA.stats) {
+      const activeCount = (window.SKR_DATA.staffList || []).filter(s => s.isActive !== false && s.status !== "Nyahaktif" && s.status !== "Bersara / Pencen").length;
+      window.SKR_DATA.stats.totalAllStaff = activeCount;
+      saveStoredData(window.SKR_DATA);
+    }
     renderOrganizationChart();
     renderAdminStaffList();
+    renderExecutiveStats();
     renderSchoolHeader();
     closeEditStaffModal();
-    alert("Profil dan foto staf berjaya dikemaskini!");
+    alert("Profil dan status staf berjaya dikemaskini!");
   } else {
     alert("Gagal mengemaskini maklumat staf. Sila pastikan sesi pentadbir aktif.");
   }
@@ -2837,6 +2915,8 @@ window.addNewStaffMemberFromAdmin = function() {
     grade: getVal("newStaffGrade") || "DG41",
     category: getVal("newStaffCategory") || "Guru Akademik",
     session: getVal("newStaffSession") || "Pagi",
+    status: "Aktif",
+    isActive: true,
     tier: 4,
     email: "xba3037@moe.edu.my",
     phone: "089-925493",
@@ -2852,6 +2932,38 @@ window.addNewStaffMemberFromAdmin = function() {
   document.getElementById("newStaffName").value = "";
   document.getElementById("newStaffRole").value = "";
   alert("Pegawai/Guru baharu berjaya didaftarkan ke dalam sistem!");
+};
+
+window.toggleDeactivateStaff = function(id) {
+  const staff = window.adminManager.getStaffById(id);
+  if (!staff) return;
+
+  const isCurrentlyActive = staff.isActive !== false && staff.status !== "Nyahaktif" && staff.status !== "Bersara / Pencen";
+
+  if (isCurrentlyActive) {
+    const reason = prompt(`Nyahaktifkan staf "${staff.name}" daripada sistem?\n\nSila pilih status:\n1. Bersara / Pencen\n2. Pindah Sekolah\n3. Nyahaktif Rekod\n\n(Taip 1, 2, atau nama status):`, "Bersara / Pencen");
+    if (reason === null) return;
+
+    let chosen = reason.trim();
+    if (chosen === "1") chosen = "Bersara / Pencen";
+    else if (chosen === "2") chosen = "Pindah Sekolah";
+    else if (chosen === "3") chosen = "Nyahaktif";
+    else if (!chosen) chosen = "Bersara / Pencen";
+
+    window.adminManager.deactivateStaffMember(id, chosen);
+    renderOrganizationChart();
+    renderAdminStaffList();
+    renderExecutiveStats();
+    alert(`Rekod "${staff.name}" telah berjaya dinyahaktifkan (${chosen}) dan tidak lagi dipaparkan dalam direktori awam.`);
+  } else {
+    if (confirm(`Aktifkan semula "${staff.name}" ke dalam direktori bertugas aktif sekolah?`)) {
+      window.adminManager.activateStaffMember(id);
+      renderOrganizationChart();
+      renderAdminStaffList();
+      renderExecutiveStats();
+      alert(`Staf "${staff.name}" telah diaktifkan semula!`);
+    }
+  }
 };
 
 window.deleteStaffMember = function(id) {
