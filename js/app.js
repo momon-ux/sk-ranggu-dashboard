@@ -567,7 +567,10 @@ function renderDigitalCurriculumChart(c) {
           <div class="bg-gradient-to-r from-blue-700 to-indigo-800 text-white py-1.5 px-4 text-xs font-extrabold tracking-wider uppercase">
             ${c.leader.role}
           </div>
-          <div class="p-3">
+          <div class="p-3.5 flex flex-col items-center">
+            <div class="w-16 h-16 rounded-full overflow-hidden border-2 border-blue-500 shadow mb-2 bg-slate-100">
+              <img src="${c.leader.photo || window.getStaffPhoto(c.leader.name)}" alt="${c.leader.name}" class="w-full h-full object-cover" onerror="this.onerror=null;this.src='assets/photos/default.jpg'">
+            </div>
             <h4 class="font-extrabold text-slate-900 text-base tracking-wide">${c.leader.name}</h4>
             <span class="text-[11px] font-semibold text-blue-800 bg-blue-50 px-2.5 py-0.5 rounded-full border border-blue-200 inline-block mt-1">
               ${c.leader.badge}
@@ -583,7 +586,10 @@ function renderDigitalCurriculumChart(c) {
           <div class="bg-gradient-to-r from-blue-700 to-indigo-800 text-white py-1.5 px-4 text-xs font-extrabold tracking-wider uppercase">
             ${c.deputyAdmin.role}
           </div>
-          <div class="p-3">
+          <div class="p-3.5 flex flex-col items-center">
+            <div class="w-16 h-16 rounded-full overflow-hidden border-2 border-blue-500 shadow mb-2 bg-slate-100">
+              <img src="${c.deputyAdmin.photo || window.getStaffPhoto(c.deputyAdmin.name)}" alt="${c.deputyAdmin.name}" class="w-full h-full object-cover" onerror="this.onerror=null;this.src='assets/photos/default.jpg'">
+            </div>
             <h4 class="font-extrabold text-slate-900 text-base tracking-wide">${c.deputyAdmin.name}</h4>
             <span class="text-[11px] font-semibold text-indigo-700 bg-indigo-50 px-2.5 py-0.5 rounded-full border border-indigo-200 inline-block mt-1">
               ${c.deputyAdmin.badge}
@@ -599,7 +605,10 @@ function renderDigitalCurriculumChart(c) {
           <div class="bg-gradient-to-r from-blue-700 to-indigo-800 text-white py-1.5 px-4 text-xs font-extrabold tracking-wider uppercase">
             ${c.deputyPetang.role}
           </div>
-          <div class="p-3">
+          <div class="p-3.5 flex flex-col items-center">
+            <div class="w-16 h-16 rounded-full overflow-hidden border-2 border-blue-500 shadow mb-2 bg-slate-100">
+              <img src="${c.deputyPetang.photo || window.getStaffPhoto(c.deputyPetang.name)}" alt="${c.deputyPetang.name}" class="w-full h-full object-cover" onerror="this.onerror=null;this.src='assets/photos/default.jpg'">
+            </div>
             <h4 class="font-extrabold text-slate-900 text-base tracking-wide">${c.deputyPetang.name}</h4>
             <span class="text-[11px] font-semibold text-cyan-700 bg-cyan-50 px-2.5 py-0.5 rounded-full border border-cyan-200 inline-block mt-1">
               ${c.deputyPetang.badge}
@@ -615,7 +624,10 @@ function renderDigitalCurriculumChart(c) {
           <div class="bg-gradient-to-r from-blue-700 to-indigo-800 text-white py-1.5 px-4 text-xs font-extrabold tracking-wider uppercase">
             ${c.secretary.role}
           </div>
-          <div class="p-3">
+          <div class="p-3.5 flex flex-col items-center">
+            <div class="w-16 h-16 rounded-full overflow-hidden border-2 border-blue-500 shadow mb-2 bg-slate-100">
+              <img src="${c.secretary.photo || window.getStaffPhoto(c.secretary.name)}" alt="${c.secretary.name}" class="w-full h-full object-cover" onerror="this.onerror=null;this.src='assets/photos/default.jpg'">
+            </div>
             <h4 class="font-extrabold text-slate-900 text-base tracking-wide">${c.secretary.name}</h4>
             <span class="text-[11px] font-semibold text-emerald-700 bg-emerald-50 px-2.5 py-0.5 rounded-full border border-emerald-200 inline-block mt-1">
               ${c.secretary.badge}
@@ -639,15 +651,21 @@ function renderDigitalCurriculumChart(c) {
             </div>
             <div class="space-y-2">
               ${c.panitia.map(p => `
-                <div class="bg-white rounded-xl border border-sky-300/80 shadow-sm overflow-hidden executive-card">
+                <div class="bg-white rounded-xl border border-sky-300/80 shadow-sm overflow-hidden executive-card hover:border-sky-500 transition">
                   <div class="bg-sky-600 text-white py-1 px-3 text-[10px] font-extrabold tracking-wider uppercase flex items-center justify-between">
                     <span>${p.subject}</span>
                     <span>${p.icon || '📘'}</span>
                   </div>
-                  <div class="p-2.5 text-center">
-                    <h5 class="font-extrabold text-slate-900 text-xs sm:text-sm tracking-wide leading-tight">
-                      ${p.head}
-                    </h5>
+                  <div class="p-2 flex items-center gap-2.5 text-left">
+                    <div class="w-10 h-10 rounded-lg overflow-hidden shrink-0 shadow-2xs border border-sky-200 bg-slate-100">
+                      <img src="${p.photo || window.getStaffPhoto(p.head)}" alt="${p.head}" class="w-full h-full object-cover" onerror="this.onerror=null;this.src='assets/photos/default.jpg'">
+                    </div>
+                    <div class="min-w-0 flex-1">
+                      <h5 class="font-extrabold text-slate-900 text-xs tracking-wide leading-tight line-clamp-2">
+                        ${p.head}
+                      </h5>
+                      <span class="text-[10px] text-sky-700 font-semibold block mt-0.5">Ketua Panitia</span>
+                    </div>
                   </div>
                 </div>
               `).join("")}
@@ -662,15 +680,21 @@ function renderDigitalCurriculumChart(c) {
             </div>
             <div class="space-y-2">
               ${c.penyelaras.map(py => `
-                <div class="bg-white rounded-xl border border-cyan-300/80 shadow-sm overflow-hidden executive-card">
+                <div class="bg-white rounded-xl border border-cyan-300/80 shadow-sm overflow-hidden executive-card hover:border-cyan-500 transition">
                   <div class="bg-cyan-600 text-white py-1 px-3 text-[10px] font-extrabold tracking-wider uppercase flex items-center justify-between">
                     <span>${py.portfolio}</span>
                     <span>${py.icon || '📌'}</span>
                   </div>
-                  <div class="p-2.5 text-center">
-                    <h5 class="font-extrabold text-slate-900 text-xs sm:text-sm tracking-wide leading-tight">
-                      ${py.officer}
-                    </h5>
+                  <div class="p-2 flex items-center gap-2.5 text-left">
+                    <div class="w-10 h-10 rounded-lg overflow-hidden shrink-0 shadow-2xs border border-cyan-200 bg-slate-100">
+                      <img src="${py.photo || window.getStaffPhoto(py.officer)}" alt="${py.officer}" class="w-full h-full object-cover" onerror="this.onerror=null;this.src='assets/photos/default.jpg'">
+                    </div>
+                    <div class="min-w-0 flex-1">
+                      <h5 class="font-extrabold text-slate-900 text-xs tracking-wide leading-tight line-clamp-2">
+                        ${py.officer}
+                      </h5>
+                      <span class="text-[10px] text-cyan-700 font-semibold block mt-0.5">Pegawai Penyelaras</span>
+                    </div>
                   </div>
                 </div>
               `).join("")}
@@ -685,15 +709,21 @@ function renderDigitalCurriculumChart(c) {
             </div>
             <div class="space-y-2">
               ${c.unitKurikulum.map(uk => `
-                <div class="bg-white rounded-xl border border-indigo-300/80 shadow-sm overflow-hidden executive-card">
+                <div class="bg-white rounded-xl border border-indigo-300/80 shadow-sm overflow-hidden executive-card hover:border-indigo-500 transition">
                   <div class="bg-indigo-700 text-white py-1 px-3 text-[10px] font-extrabold tracking-wider uppercase flex items-center justify-between">
                     <span>${uk.unit}</span>
                     <span>${uk.icon || '📋'}</span>
                   </div>
-                  <div class="p-2.5 text-center">
-                    <h5 class="font-extrabold text-slate-900 text-xs sm:text-sm tracking-wide leading-tight">
-                      ${uk.officer}
-                    </h5>
+                  <div class="p-2 flex items-center gap-2.5 text-left">
+                    <div class="w-10 h-10 rounded-lg overflow-hidden shrink-0 shadow-2xs border border-indigo-200 bg-slate-100">
+                      <img src="${uk.photo || window.getStaffPhoto(uk.officer)}" alt="${uk.officer}" class="w-full h-full object-cover" onerror="this.onerror=null;this.src='assets/photos/default.jpg'">
+                    </div>
+                    <div class="min-w-0 flex-1">
+                      <h5 class="font-extrabold text-slate-900 text-xs tracking-wide leading-tight line-clamp-2">
+                        ${uk.officer}
+                      </h5>
+                      <span class="text-[10px] text-indigo-700 font-semibold block mt-0.5">Penyelaras Unit</span>
+                    </div>
                   </div>
                 </div>
               `).join("")}
@@ -720,7 +750,10 @@ function renderDigitalAdminChart(h) {
           <div class="bg-gradient-to-r from-red-600 to-rose-600 text-white py-1.5 px-4 text-xs font-extrabold tracking-wider uppercase">
             ${h.leader.role}
           </div>
-          <div class="p-3">
+          <div class="p-3.5 flex flex-col items-center">
+            <div class="w-16 h-16 rounded-full overflow-hidden border-2 border-red-500 shadow mb-2 bg-slate-100">
+              <img src="${h.leader.photo || window.getStaffPhoto(h.leader.name)}" alt="${h.leader.name}" class="w-full h-full object-cover" onerror="this.onerror=null;this.src='assets/photos/default.jpg'">
+            </div>
             <h4 class="font-extrabold text-slate-900 text-base tracking-wide">${h.leader.name}</h4>
             <span class="text-[11px] font-semibold text-rose-700 bg-rose-50 px-2.5 py-0.5 rounded-full border border-rose-200 inline-block mt-1">
               ${h.leader.badge}
@@ -736,7 +769,10 @@ function renderDigitalAdminChart(h) {
           <div class="bg-gradient-to-r from-red-600 to-rose-600 text-white py-1.5 px-4 text-xs font-extrabold tracking-wider uppercase">
             ${h.deputy.role}
           </div>
-          <div class="p-3">
+          <div class="p-3.5 flex flex-col items-center">
+            <div class="w-16 h-16 rounded-full overflow-hidden border-2 border-red-500 shadow mb-2 bg-slate-100">
+              <img src="${h.deputy.photo || window.getStaffPhoto(h.deputy.name)}" alt="${h.deputy.name}" class="w-full h-full object-cover" onerror="this.onerror=null;this.src='assets/photos/default.jpg'">
+            </div>
             <h4 class="font-extrabold text-slate-900 text-base tracking-wide">${h.deputy.name}</h4>
             <span class="text-[11px] font-semibold text-blue-700 bg-blue-50 px-2.5 py-0.5 rounded-full border border-blue-200 inline-block mt-1">
               ${h.deputy.badge}
@@ -760,7 +796,10 @@ function renderDigitalAdminChart(h) {
           <div class="bg-gradient-to-r from-red-600 to-rose-600 text-white py-1.5 px-4 text-xs font-extrabold tracking-wider uppercase">
             ${h.secretary.role}
           </div>
-          <div class="p-3">
+          <div class="p-3.5 flex flex-col items-center">
+            <div class="w-16 h-16 rounded-full overflow-hidden border-2 border-red-500 shadow mb-2 bg-slate-100">
+              <img src="${h.secretary.photo || window.getStaffPhoto(h.secretary.name)}" alt="${h.secretary.name}" class="w-full h-full object-cover" onerror="this.onerror=null;this.src='assets/photos/default.jpg'">
+            </div>
             <h4 class="font-extrabold text-slate-900 text-base tracking-wide">${h.secretary.name}</h4>
             <span class="text-[11px] font-semibold text-emerald-700 bg-emerald-50 px-2.5 py-0.5 rounded-full border border-emerald-200 inline-block mt-1">
               ${h.secretary.badge}
@@ -804,20 +843,43 @@ function renderDigitalAdminChart(h) {
 // Kad Gaya Poster Rasmi Pentadbiran SK Ranggu
 function createPosterStyleCard(item) {
   const isUser = item.officer && item.officer.includes("FIKREY");
+  const mainPhoto = item.photo || (window.getStaffPhoto ? window.getStaffPhoto(item.officer) : "assets/photos/default.jpg");
 
   return `
-    <div class="bg-white rounded-xl border border-red-300/80 shadow-sm overflow-hidden executive-card ${isUser ? 'ring-2 ring-amber-400' : ''}">
+    <div class="bg-white rounded-xl border border-red-300/80 shadow-sm overflow-hidden executive-card hover:border-red-500 transition ${isUser ? 'ring-2 ring-amber-400' : ''}">
       <div class="bg-gradient-to-r from-red-600 via-rose-600 to-red-500 text-white py-1 px-3 text-[11px] font-extrabold tracking-wider uppercase flex items-center justify-between">
         <span>${item.portfolio}</span>
         ${isUser ? '<span class="text-[10px] bg-amber-400 text-slate-900 px-1.5 py-0.2 rounded font-bold">Pentadbir Sistem</span>' : ''}
       </div>
-      <div class="p-2.5 text-center">
-        <h5 class="font-extrabold text-slate-900 text-xs sm:text-sm tracking-wide leading-tight">
-          ${item.officer}
-        </h5>
+      <div class="p-2.5">
+        <div class="flex items-center gap-2.5 text-left">
+          <div class="w-11 h-11 rounded-xl overflow-hidden shrink-0 shadow-2xs border border-red-200 bg-slate-100">
+            <img src="${mainPhoto}" alt="${item.officer}" class="w-full h-full object-cover" onerror="this.onerror=null;this.src='assets/photos/default.jpg'">
+          </div>
+          <div class="min-w-0 flex-1">
+            <h5 class="font-extrabold text-slate-900 text-xs sm:text-sm tracking-wide leading-tight">
+              ${item.officer}
+            </h5>
+            <span class="text-[10px] text-rose-700 font-semibold block mt-0.5">Pegawai Penyelaras</span>
+          </div>
+        </div>
         ${item.extraOfficers && item.extraOfficers.length > 0 ? `
-          <div class="mt-1 pt-1 border-t border-slate-100 text-xs font-bold text-slate-800 space-y-0.5">
-            ${item.extraOfficers.map(name => `<div>${name}</div>`).join("")}
+          <div class="mt-2 pt-2 border-t border-slate-100 space-y-1.5">
+            <span class="text-[9px] font-bold text-slate-400 uppercase tracking-wider block">Pegawai / Staf Bersama:</span>
+            ${item.extraOfficers.map(eo => {
+              const eoName = typeof eo === "string" ? eo : eo.name;
+              const eoPhoto = (typeof eo === "object" && eo.photo) ? eo.photo : (window.getStaffPhoto ? window.getStaffPhoto(eoName) : "assets/photos/default.jpg");
+              return `
+                <div class="flex items-center gap-2 text-left bg-slate-50 p-1.5 rounded-lg border border-slate-100">
+                  <div class="w-7 h-7 rounded-lg overflow-hidden shrink-0 border border-slate-200 bg-white">
+                    <img src="${eoPhoto}" alt="${eoName}" class="w-full h-full object-cover" onerror="this.onerror=null;this.src='assets/photos/default.jpg'">
+                  </div>
+                  <div class="min-w-0 flex-1">
+                    <div class="text-[11px] font-bold text-slate-800 leading-tight truncate">${eoName}</div>
+                  </div>
+                </div>
+              `;
+            }).join("")}
           </div>
         ` : ''}
       </div>
@@ -848,21 +910,17 @@ function createMemberCard(member, isPrincipal = false) {
     .join("")
     .toUpperCase() || "SK";
 
+  const photoUrl = member.photo || (window.getStaffPhoto ? window.getStaffPhoto(member.name) : "assets/photos/default.jpg");
+
   return `
     <div class="bg-white rounded-2xl p-4 border ${borderHighlight} executive-card flex flex-col justify-between relative overflow-hidden group">
       <div class="absolute top-0 left-0 right-0 h-1.5 ${isPrincipal ? 'bg-amber-500' : (member.tier === 2 ? 'bg-blue-600' : 'bg-slate-400')}"></div>
 
       <div>
         <div class="flex items-start gap-3">
-          ${member.photo && member.photo.trim() !== "" ? `
-            <div class="w-12 h-12 rounded-xl overflow-hidden shrink-0 shadow-sm border border-slate-200 bg-slate-100 flex items-center justify-center">
-              <img src="${member.photo}" alt="${member.name}" class="w-full h-full object-cover">
-            </div>
-          ` : `
-            <div class="w-12 h-12 rounded-xl bg-gradient-to-tr from-royal-800 to-blue-900 text-white flex items-center justify-center font-bold text-base shadow-sm shrink-0 border border-white">
-              ${initials}
-            </div>
-          `}
+          <div class="w-12 h-12 rounded-xl overflow-hidden shrink-0 shadow-sm border border-slate-200 bg-slate-100 flex items-center justify-center">
+            <img src="${photoUrl}" alt="${member.name}" class="w-full h-full object-cover" onerror="this.onerror=null;this.src='assets/photos/default.jpg'">
+          </div>
 
           <div class="min-w-0 flex-1">
             <div class="flex items-center gap-1.5 flex-wrap mb-1">
@@ -912,13 +970,7 @@ window.showMemberModal = function(id) {
   const modalContent = document.getElementById("genericDetailModalContent");
   if (!modal || !modalContent) return;
 
-  const initials = member.name
-    .split(" ")
-    .filter(n => !["bin", "binti", "hjh.", "haji", "encik", "puan", "cik"].includes(n.toLowerCase()))
-    .slice(0, 2)
-    .map(n => n[0])
-    .join("")
-    .toUpperCase() || "SK";
+  const photoUrl = member.photo || (window.getStaffPhoto ? window.getStaffPhoto(member.name) : "assets/photos/default.jpg");
 
   modalContent.innerHTML = `
     <div class="p-6">
@@ -931,15 +983,9 @@ window.showMemberModal = function(id) {
       </div>
       <div class="space-y-4">
         <div class="p-4 bg-slate-50 rounded-2xl border border-slate-200 flex items-center gap-4">
-          ${member.photo && member.photo.trim() !== "" ? `
-            <div class="w-16 h-16 rounded-2xl overflow-hidden shrink-0 shadow border border-white">
-              <img src="${member.photo}" alt="${member.name}" class="w-full h-full object-cover">
-            </div>
-          ` : `
-            <div class="w-16 h-16 rounded-2xl bg-gradient-to-tr from-blue-700 to-indigo-900 text-white flex items-center justify-center font-bold text-xl shadow shrink-0">
-              ${initials}
-            </div>
-          `}
+          <div class="w-16 h-16 rounded-2xl overflow-hidden shrink-0 shadow border border-white bg-slate-100">
+            <img src="${photoUrl}" alt="${member.name}" class="w-full h-full object-cover" onerror="this.onerror=null;this.src='assets/photos/default.jpg'">
+          </div>
           <div class="min-w-0">
             <h4 class="font-extrabold text-slate-900 text-base leading-tight">${member.name}</h4>
             <p class="text-xs font-bold text-blue-700 mt-1 leading-snug">${member.role}</p>
@@ -1003,11 +1049,47 @@ window.closeGenericModal = function() {
 };
 
 /* ==========================================================================
-   RENDER PANITIA KURIKULUM
+   RENDER PANITIA KURIKULUM (12 PANITIA BERSAMA FOTO KETUA PANITIA)
    ========================================================================== */
 function renderCommittees() {
   const container = document.getElementById("committeesContainer");
   if (!container) return;
+
+  const panitiaList = (window.SKR_DATA.curriculumHierarchy2026 && window.SKR_DATA.curriculumHierarchy2026.panitia) || [];
+  if (panitiaList.length > 0) {
+    container.innerHTML = panitiaList.map(p => {
+      const photo = p.photo || (window.getStaffPhoto ? window.getStaffPhoto(p.head) : "assets/photos/default.jpg");
+      return `
+        <div class="bg-white rounded-2xl p-4 border border-slate-200 executive-card flex flex-col justify-between hover:border-blue-400 hover:shadow-md transition">
+          <div>
+            <div class="flex items-center justify-between mb-3">
+              <span class="text-[10px] font-extrabold uppercase px-2.5 py-0.5 rounded-full bg-blue-50 text-blue-800 border border-blue-200">
+                Panitia Mata Pelajaran
+              </span>
+              <span class="text-2xl">${p.icon || '📘'}</span>
+            </div>
+            <h4 class="font-extrabold text-slate-900 text-sm sm:text-base leading-snug mb-3">${p.subject}</h4>
+            
+            <div class="flex items-center gap-3 p-2.5 rounded-xl bg-slate-50 border border-slate-100">
+              <div class="w-12 h-12 rounded-xl overflow-hidden shrink-0 shadow-2xs border border-blue-300 bg-white">
+                <img src="${photo}" alt="${p.head}" class="w-full h-full object-cover" onerror="this.onerror=null;this.src='assets/photos/default.jpg'">
+              </div>
+              <div class="min-w-0 flex-1">
+                <span class="text-[10px] text-blue-700 font-bold uppercase block">Ketua Panitia:</span>
+                <strong class="text-slate-900 font-extrabold text-xs block leading-tight line-clamp-2">${p.head}</strong>
+              </div>
+            </div>
+          </div>
+
+          <div class="mt-3.5 pt-2.5 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500">
+            <span class="text-[11px] font-semibold text-emerald-700">🎯 Sasaran TP3 - TP6</span>
+            <span class="text-[10px] font-mono bg-slate-100 px-2 py-0.5 rounded text-slate-600">DSKP KSSR Semakan</span>
+          </div>
+        </div>
+      `;
+    }).join("");
+    return;
+  }
 
   const list = window.SKR_DATA.committees || [];
   container.innerHTML = list.map(c => `
@@ -1015,21 +1097,21 @@ function renderCommittees() {
       <div>
         <div class="flex items-center justify-between mb-2">
           <span class="text-xs font-bold text-blue-800 bg-blue-50 px-2.5 py-1 rounded-md border border-blue-200">
-            ${c.membersCount} Guru
+            ${c.membersCount || 10} Guru
           </span>
           <span class="inline-flex items-center gap-1 text-[11px] font-semibold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">
-            <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span> ${c.status}
+            <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span> ${c.status || 'Aktif'}
           </span>
         </div>
         <h4 class="font-bold text-slate-900 text-base mb-1">${c.name}</h4>
         <div class="space-y-1 text-xs text-slate-600 mt-2">
-          <p><span class="text-slate-400">Ketua Panitia:</span> <strong class="text-slate-800">${c.head}</strong></p>
+          <p><span class="text-slate-400">Ketua:</span> <strong class="text-slate-800">${c.head || c.chairperson}</strong></p>
         </div>
       </div>
 
       <div class="mt-3 pt-2.5 border-t border-slate-100 flex items-center justify-between text-xs">
-        <span class="text-slate-500 text-[11px]">🎯 KPI: ${c.kpi}</span>
-        <span class="text-slate-400 text-[10px] font-mono">${c.dskpStatus}</span>
+        <span class="text-slate-500 text-[11px]">🎯 KPI: ${c.kpi || 'Pencapaian Cemerlang'}</span>
+        <span class="text-slate-400 text-[10px] font-mono">${c.dskpStatus || 'KSSR'}</span>
       </div>
     </div>
   `).join("");
@@ -1078,45 +1160,51 @@ function renderDutyTeachers() {
   const container = document.getElementById("dutyTeachersContainer");
   if (!container) return;
 
-  const duties = window.SKR_DATA.weeklyDutyTeachers || [];
+  const duties = window.SKR_DATA.dutyTeachers || window.SKR_DATA.weeklyDutyTeachers || [];
   const activeDuty = duties[0] || {};
+  const teachers = activeDuty.teachers || [];
 
   container.innerHTML = `
     <div class="bg-white rounded-2xl p-5 border border-slate-200 shadow-sm executive-card">
       <div class="flex flex-col sm:flex-row sm:items-center justify-between pb-3 border-b border-slate-100 gap-2">
         <div>
           <span class="text-xs font-bold uppercase tracking-wider text-blue-700 bg-blue-50 px-3 py-1 rounded-full border border-blue-200">
-            Minggu Ke-${activeDuty.weekNumber || 28}
+            Minggu Ke-${activeDuty.week || activeDuty.weekNumber || 28}
           </span>
-          <h4 class="font-bold text-slate-900 text-base mt-2">${activeDuty.dateRange}</h4>
+          <h4 class="font-extrabold text-slate-900 text-base mt-2">${activeDuty.dateRange || '06 Okt 2026 - 10 Okt 2026'}</h4>
         </div>
         <div class="text-xs text-slate-500 sm:text-right">
-          Tema: <strong class="text-amber-800 bg-amber-50 px-2.5 py-1 rounded-md border border-amber-200 inline-block mt-1 sm:mt-0">${activeDuty.theme}</strong>
+          Tema: <strong class="text-amber-800 bg-amber-50 px-2.5 py-1 rounded-md border border-amber-200 inline-block mt-1 sm:mt-0">${activeDuty.theme || 'Kebersihan Diri & Persekitaran Sekolah'}</strong>
         </div>
       </div>
 
-      <div class="mt-4 grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div class="p-3 bg-slate-50 rounded-xl border border-slate-200">
-          <span class="text-xs font-semibold text-slate-500 uppercase tracking-wider block mb-1">Ketua Guru Bertugas:</span>
-          <p class="font-bold text-slate-900 text-sm">⭐ ${activeDuty.leader}</p>
-          <div class="mt-3">
-            <span class="text-xs font-semibold text-slate-500 uppercase tracking-wider block mb-1">Guru-Guru Ahli:</span>
-            <ul class="text-xs space-y-1 text-slate-700 font-medium">
-              ${(activeDuty.members || []).map(m => `<li>• ${m}</li>`).join("")}
-            </ul>
+      <div class="mt-4">
+        <h5 class="text-xs font-bold text-slate-600 uppercase tracking-wider mb-3">Senarai Guru Bertugas Mingguan:</h5>
+        ${teachers.length > 0 ? `
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+            ${teachers.map(t => {
+              const tName = typeof t === "string" ? t : t.name;
+              const tRole = (typeof t === "object" && t.role) ? t.role : "Guru Bertugas";
+              const tPhoto = (typeof t === "object" && t.photo) ? t.photo : (window.getStaffPhoto ? window.getStaffPhoto(tName) : "assets/photos/default.jpg");
+              return `
+                <div class="p-3 bg-slate-50 rounded-xl border border-slate-200 flex items-center gap-3">
+                  <div class="w-11 h-11 rounded-xl overflow-hidden shrink-0 shadow-2xs border border-blue-200 bg-white">
+                    <img src="${tPhoto}" alt="${tName}" class="w-full h-full object-cover" onerror="this.onerror=null;this.src='assets/photos/default.jpg'">
+                  </div>
+                  <div class="min-w-0 flex-1">
+                    <span class="text-[10px] font-bold text-blue-700 uppercase block truncate">${tRole}</span>
+                    <strong class="text-xs text-slate-900 font-extrabold block truncate">${tName}</strong>
+                  </div>
+                </div>
+              `;
+            }).join("")}
           </div>
-        </div>
-
-        <div class="p-3 bg-slate-50 rounded-xl border border-slate-200 flex flex-col justify-between">
-          <div>
-            <span class="text-xs font-semibold text-slate-500 uppercase tracking-wider block mb-1">Lokasi Kawalan:</span>
-            <p class="text-xs text-slate-700 mb-2">🚪 ${activeDuty.venueGates}</p>
-            <p class="text-xs text-slate-700">🍽️ ${activeDuty.venueCanteen}</p>
+        ` : `
+          <div class="p-3 bg-slate-50 rounded-xl border border-slate-200">
+            <span class="text-xs font-semibold text-slate-500 uppercase tracking-wider block mb-1">Ketua Guru Bertugas:</span>
+            <p class="font-bold text-slate-900 text-sm">⭐ ${activeDuty.leader || '—'}</p>
           </div>
-          <div class="mt-3 pt-2 border-t border-slate-200 text-[11px] text-slate-500">
-            Sila lengkapkan buku laporan bertugas harian di Pejabat Am.
-          </div>
-        </div>
+        `}
       </div>
     </div>
   `;
@@ -1150,7 +1238,7 @@ function renderPortalLinks() {
 }
 
 /* ==========================================================================
-   RENDER INDUK BESAR HEM 2026 (10 PORTFOLIO)
+   RENDER INDUK BESAR HEM 2026 (15 PORTFOLIO BERSAMA FOTO RASMI)
    ========================================================================== */
 function renderHemHierarchy() {
   const container = document.getElementById("hemUnitsGrid");
@@ -1159,28 +1247,54 @@ function renderHemHierarchy() {
   const hem = window.SKR_DATA.hemHierarchy2026;
   if (!hem || !hem.units) return;
 
-  container.innerHTML = hem.units.map(u => `
-    <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200 hover:border-emerald-300 hover:bg-emerald-50/30 transition shadow-sm executive-card flex flex-col justify-between">
-      <div>
-        <div class="flex items-center justify-between mb-2">
-          <span class="text-[10px] font-extrabold uppercase px-2.5 py-0.5 rounded-full bg-emerald-100 text-emerald-800 border border-emerald-200">
-            ${u.badge}
-          </span>
-          <span class="text-xl">${u.icon || '🛡️'}</span>
+  container.innerHTML = hem.units.map(u => {
+    const headPhoto = u.photo || (window.getStaffPhoto ? window.getStaffPhoto(u.head) : "assets/photos/default.jpg");
+    const extraPhoto = u.extraOfficerPhoto || (u.extraOfficer && window.getStaffPhoto ? window.getStaffPhoto(u.extraOfficer) : null);
+
+    return `
+      <div class="p-4 rounded-2xl bg-white border border-slate-200 hover:border-emerald-400 hover:shadow-md transition executive-card flex flex-col justify-between">
+        <div>
+          <div class="flex items-center justify-between mb-2.5">
+            <span class="text-[10px] font-extrabold uppercase px-2.5 py-0.5 rounded-full bg-emerald-100 text-emerald-800 border border-emerald-200">
+              ${u.badge}
+            </span>
+            <span class="text-xl">${u.icon || '🛡️'}</span>
+          </div>
+          <h4 class="font-extrabold text-slate-900 text-sm sm:text-base leading-snug">${u.name}</h4>
+          <p class="text-xs text-slate-600 mt-2 leading-relaxed">${u.desc}</p>
         </div>
-        <h4 class="font-extrabold text-slate-900 text-sm leading-snug">${u.name}</h4>
-        <p class="text-xs text-slate-600 mt-1.5 leading-relaxed">${u.desc}</p>
+
+        <div class="mt-4 pt-3 border-t border-slate-100 space-y-2">
+          <!-- KETUA / PENYELARAS -->
+          <div class="flex items-center gap-3">
+            <div class="w-11 h-11 rounded-xl overflow-hidden shrink-0 shadow-sm border border-emerald-200 bg-slate-100">
+              <img src="${headPhoto}" alt="${u.head}" class="w-full h-full object-cover" onerror="this.onerror=null;this.src='assets/photos/default.jpg'">
+            </div>
+            <div class="min-w-0 flex-1">
+              <span class="text-[10px] font-bold text-emerald-700 uppercase tracking-wider block">Penyelaras / Ketua:</span>
+              <strong class="text-slate-900 font-extrabold text-xs sm:text-sm block truncate">${u.head}</strong>
+            </div>
+          </div>
+
+          ${u.extraOfficer ? `
+            <div class="flex items-center gap-2.5 pt-1.5 border-t border-slate-50 bg-slate-50/70 p-2 rounded-xl">
+              <div class="w-8 h-8 rounded-lg overflow-hidden shrink-0 shadow-2xs border border-slate-200 bg-white">
+                <img src="${extraPhoto || 'assets/photos/default.jpg'}" alt="${u.extraOfficer}" class="w-full h-full object-cover" onerror="this.onerror=null;this.src='assets/photos/default.jpg'">
+              </div>
+              <div class="min-w-0 flex-1">
+                <span class="text-[9px] font-bold text-slate-500 uppercase block">Jawatankuasa Kerja:</span>
+                <span class="text-xs font-bold text-slate-800 block truncate">${u.extraOfficer}</span>
+              </div>
+            </div>
+          ` : ''}
+        </div>
       </div>
-      <div class="mt-3.5 pt-2.5 border-t border-slate-200/80 flex items-center justify-between text-xs">
-        <span class="text-[11px] text-slate-500 font-medium">Ketua / Penyelaras:</span>
-        <strong class="text-slate-900 font-bold text-xs truncate ml-2 text-right">${u.head}</strong>
-      </div>
-    </div>
-  `).join("");
+    `;
+  }).join("");
 }
 
 /* ==========================================================================
-   RENDER INDUK BESAR KOKURIKULUM 2026 (UNIFORM, KELAB, SUKAN, RUMAH)
+   RENDER INDUK BESAR KOKURIKULUM 2026 (UNIFORM, KELAB, SUKAN, RUMAH BERSAMA FOTO)
    ========================================================================== */
 function renderKokoHierarchy() {
   const koko = window.SKR_DATA.kokoHierarchy2026;
@@ -1189,61 +1303,85 @@ function renderKokoHierarchy() {
   // 1. Unit Beruniform
   const uniformContainer = document.getElementById("kokoUniformGrid");
   if (uniformContainer && koko.uniformUnits) {
-    uniformContainer.innerHTML = koko.uniformUnits.map(u => `
-      <div class="p-3 rounded-xl bg-slate-50 border border-slate-200 flex items-center justify-between gap-3 executive-card">
-        <div class="flex items-center gap-2.5 min-w-0">
-          <span class="text-xl">${u.icon}</span>
-          <div class="min-w-0">
-            <h5 class="font-bold text-slate-900 text-xs sm:text-sm truncate">${u.name}</h5>
-            <p class="text-[11px] text-slate-500">${u.members}</p>
+    uniformContainer.innerHTML = koko.uniformUnits.map(u => {
+      const photo = u.photo || (window.getStaffPhoto ? window.getStaffPhoto(u.head) : "assets/photos/default.jpg");
+      return `
+        <div class="p-3 rounded-xl bg-white border border-slate-200 flex items-center justify-between gap-3 executive-card shadow-2xs hover:border-emerald-300 transition">
+          <div class="flex items-center gap-3 min-w-0">
+            <div class="w-11 h-11 rounded-xl overflow-hidden shrink-0 shadow-sm border border-emerald-200 bg-slate-100">
+              <img src="${photo}" alt="${u.head}" class="w-full h-full object-cover" onerror="this.onerror=null;this.src='assets/photos/default.jpg'">
+            </div>
+            <div class="min-w-0">
+              <div class="flex items-center gap-1.5">
+                <span class="text-sm">${u.icon}</span>
+                <h5 class="font-extrabold text-slate-900 text-xs sm:text-sm truncate">${u.name}</h5>
+              </div>
+              <p class="text-[11px] text-slate-500 truncate">${u.members}</p>
+            </div>
+          </div>
+          <div class="text-right shrink-0">
+            <span class="text-[10px] text-emerald-700 block font-bold uppercase tracking-wider">Ketua Guru:</span>
+            <strong class="text-xs text-slate-900 font-extrabold block truncate max-w-[140px]">${u.head}</strong>
           </div>
         </div>
-        <div class="text-right shrink-0">
-          <span class="text-[10px] text-slate-400 block font-medium">Ketua Guru:</span>
-          <strong class="text-xs text-emerald-700 font-bold">${u.head}</strong>
-        </div>
-      </div>
-    `).join("");
+      `;
+    }).join("");
   }
 
   // 2. Kelab & Persatuan
   const clubsContainer = document.getElementById("kokoClubsGrid");
   if (clubsContainer && koko.clubUnits) {
-    clubsContainer.innerHTML = koko.clubUnits.map(c => `
-      <div class="p-3 rounded-xl bg-slate-50 border border-slate-200 flex items-center justify-between gap-3 executive-card">
-        <div class="flex items-center gap-2.5 min-w-0">
-          <span class="text-xl">${c.icon}</span>
-          <div class="min-w-0">
-            <h5 class="font-bold text-slate-900 text-xs sm:text-sm truncate">${c.name}</h5>
-            <p class="text-[11px] text-slate-500">${c.field}</p>
+    clubsContainer.innerHTML = koko.clubUnits.map(c => {
+      const photo = c.photo || (window.getStaffPhoto ? window.getStaffPhoto(c.head) : "assets/photos/default.jpg");
+      return `
+        <div class="p-3 rounded-xl bg-white border border-slate-200 flex items-center justify-between gap-3 executive-card shadow-2xs hover:border-blue-300 transition">
+          <div class="flex items-center gap-3 min-w-0">
+            <div class="w-11 h-11 rounded-xl overflow-hidden shrink-0 shadow-sm border border-blue-200 bg-slate-100">
+              <img src="${photo}" alt="${c.head}" class="w-full h-full object-cover" onerror="this.onerror=null;this.src='assets/photos/default.jpg'">
+            </div>
+            <div class="min-w-0">
+              <div class="flex items-center gap-1.5">
+                <span class="text-sm">${c.icon}</span>
+                <h5 class="font-extrabold text-slate-900 text-xs sm:text-sm truncate">${c.name}</h5>
+              </div>
+              <p class="text-[11px] text-slate-500 truncate">${c.field}</p>
+            </div>
+          </div>
+          <div class="text-right shrink-0">
+            <span class="text-[10px] text-blue-700 block font-bold uppercase tracking-wider">Ketua Guru:</span>
+            <strong class="text-xs text-slate-900 font-extrabold block truncate max-w-[140px]">${c.head}</strong>
           </div>
         </div>
-        <div class="text-right shrink-0">
-          <span class="text-[10px] text-slate-400 block font-medium">Ketua Guru:</span>
-          <strong class="text-xs text-blue-700 font-bold">${c.head}</strong>
-        </div>
-      </div>
-    `).join("");
+      `;
+    }).join("");
   }
 
   // 3. Sukan & Permainan (1M1S)
   const sportsContainer = document.getElementById("kokoSportsGrid");
   if (sportsContainer && koko.sportsUnits) {
-    sportsContainer.innerHTML = koko.sportsUnits.map(s => `
-      <div class="p-3 rounded-xl bg-slate-50 border border-slate-200 flex items-center justify-between gap-3 executive-card">
-        <div class="flex items-center gap-2.5 min-w-0">
-          <span class="text-xl">${s.icon}</span>
-          <div class="min-w-0">
-            <h5 class="font-bold text-slate-900 text-xs sm:text-sm truncate">${s.name}</h5>
-            <p class="text-[11px] text-slate-500">${s.field}</p>
+    sportsContainer.innerHTML = koko.sportsUnits.map(s => {
+      const photo = s.photo || (window.getStaffPhoto ? window.getStaffPhoto(s.head) : "assets/photos/default.jpg");
+      return `
+        <div class="p-3 rounded-xl bg-white border border-slate-200 flex items-center justify-between gap-3 executive-card shadow-2xs hover:border-amber-300 transition">
+          <div class="flex items-center gap-3 min-w-0">
+            <div class="w-11 h-11 rounded-xl overflow-hidden shrink-0 shadow-sm border border-amber-200 bg-slate-100">
+              <img src="${photo}" alt="${s.head}" class="w-full h-full object-cover" onerror="this.onerror=null;this.src='assets/photos/default.jpg'">
+            </div>
+            <div class="min-w-0">
+              <div class="flex items-center gap-1.5">
+                <span class="text-sm">${s.icon}</span>
+                <h5 class="font-extrabold text-slate-900 text-xs sm:text-sm truncate">${s.name}</h5>
+              </div>
+              <p class="text-[11px] text-slate-500 truncate">${s.field}</p>
+            </div>
+          </div>
+          <div class="text-right shrink-0">
+            <span class="text-[10px] text-amber-700 block font-bold uppercase tracking-wider">Ketua Guru:</span>
+            <strong class="text-xs text-slate-900 font-extrabold block truncate max-w-[140px]">${s.head}</strong>
           </div>
         </div>
-        <div class="text-right shrink-0">
-          <span class="text-[10px] text-slate-400 block font-medium">Ketua Guru:</span>
-          <strong class="text-xs text-amber-700 font-bold">${s.head}</strong>
-        </div>
-      </div>
-    `).join("");
+      `;
+    }).join("");
   }
 
   // 4. Rumah Sukan
@@ -1256,27 +1394,35 @@ function renderKokoHierarchy() {
       amber: "border-amber-300 bg-amber-50/50 text-amber-900",
       emerald: "border-emerald-300 bg-emerald-50/50 text-emerald-900"
     };
-    housesContainer.innerHTML = koko.sportHouses.map(h => `
-      <div class="p-3.5 rounded-xl border ${colorMap[h.color] || 'border-slate-200 bg-slate-50'} executive-card flex flex-col justify-between">
-        <div>
-          <div class="flex items-center justify-between mb-1">
-            <h5 class="font-extrabold text-sm">${h.name}</h5>
-            <span class="text-xs font-mono font-bold">🚩</span>
-          </div>
-          <p class="text-[11px] text-slate-600 italic">“${h.motto}”</p>
-        </div>
-        <div class="mt-2.5 pt-2 border-t border-black/10 text-xs flex items-center justify-between">
+    housesContainer.innerHTML = koko.sportHouses.map(h => {
+      const photo = h.photo || (window.getStaffPhoto ? window.getStaffPhoto(h.head) : "assets/photos/default.jpg");
+      return `
+        <div class="p-3.5 rounded-xl border ${colorMap[h.color] || 'border-slate-200 bg-slate-50'} executive-card flex flex-col justify-between shadow-2xs">
           <div>
-            <span class="text-[10px] text-slate-500 block font-medium">Ketua Rumah:</span>
-            <strong class="font-bold text-xs">${h.head}</strong>
+            <div class="flex items-center justify-between mb-1">
+              <h5 class="font-extrabold text-sm">${h.name}</h5>
+              <span class="text-xs font-mono font-bold">🚩</span>
+            </div>
+            <p class="text-[11px] text-slate-600 italic">“${h.motto}”</p>
           </div>
-          <div class="text-right">
-            <span class="text-[10px] text-slate-500 block font-medium">Kedudukan:</span>
-            <span class="font-bold text-xs text-amber-700">#${h.standing || '—'}</span>
+          <div class="mt-3 pt-2.5 border-t border-black/10 flex items-center justify-between gap-2">
+            <div class="flex items-center gap-2 min-w-0">
+              <div class="w-9 h-9 rounded-lg overflow-hidden shrink-0 shadow-2xs border border-slate-300 bg-white">
+                <img src="${photo}" alt="${h.head}" class="w-full h-full object-cover" onerror="this.onerror=null;this.src='assets/photos/default.jpg'">
+              </div>
+              <div class="min-w-0">
+                <span class="text-[9px] text-slate-500 block font-bold uppercase">Ketua Rumah:</span>
+                <strong class="font-extrabold text-xs block truncate">${h.head}</strong>
+              </div>
+            </div>
+            <div class="text-right shrink-0">
+              <span class="text-[10px] text-slate-500 block font-medium">Kedudukan:</span>
+              <span class="font-black text-sm text-amber-700">#${h.standing || '—'}</span>
+            </div>
           </div>
         </div>
-      </div>
-    `).join("");
+      `;
+    }).join("");
   }
 }
 
@@ -1349,10 +1495,16 @@ function renderSportsyncSection() {
             </div>
           </div>
 
-          <div class="mt-4 pt-2.5 border-t border-black/10 text-xs">
-            <span class="text-[10px] text-slate-500 block font-medium">Ketua Guru:</span>
-            <strong class="text-slate-900 font-bold text-xs truncate block">${h.leadTeacher}</strong>
-            <span class="text-[10px] text-slate-500 mt-0.5 block">${h.teachers ? h.teachers.length : 10} Guru Pembimbing</span>
+          <div class="mt-4 pt-2.5 border-t border-black/10 text-xs flex items-center gap-2.5">
+            <img src="${h.leadPhoto || (window.getStaffPhoto ? window.getStaffPhoto(h.leadTeacher) : 'assets/photos/default.jpg')}" 
+                 alt="${h.leadTeacher}" 
+                 class="w-10 h-10 rounded-full object-cover border-2 border-slate-300 shadow-2xs shrink-0" 
+                 onerror="this.onerror=null;this.src='assets/photos/default.jpg'">
+            <div class="min-w-0 flex-1">
+              <span class="text-[10px] text-slate-500 block font-medium">Ketua Guru:</span>
+              <strong class="text-slate-900 font-bold text-xs truncate block">${h.leadTeacher}</strong>
+              <span class="text-[10px] text-slate-500 mt-0.5 block">${h.teachers ? h.teachers.length : 10} Guru Pembimbing</span>
+            </div>
           </div>
         </div>
       `;
@@ -1377,7 +1529,15 @@ function renderSportsyncSection() {
               <strong class="text-slate-900">${h.name}</strong>
             </div>
           </td>
-          <td class="py-3 px-4 text-slate-700 text-xs">${h.leadTeacher}</td>
+          <td class="py-3 px-4 text-slate-700 text-xs">
+            <div class="flex items-center gap-2">
+              <img src="${h.leadPhoto || (window.getStaffPhoto ? window.getStaffPhoto(h.leadTeacher) : 'assets/photos/default.jpg')}" 
+                   alt="${h.leadTeacher}" 
+                   class="w-7 h-7 rounded-full object-cover border border-slate-200 shrink-0" 
+                   onerror="this.onerror=null;this.src='assets/photos/default.jpg'">
+              <span>${h.leadTeacher}</span>
+            </div>
+          </td>
           <td class="py-3 px-4 text-center font-bold text-amber-600 bg-amber-50/40">${h.gold}</td>
           <td class="py-3 px-4 text-center font-bold text-slate-600 bg-slate-100/50">${h.silver}</td>
           <td class="py-3 px-4 text-center font-bold text-amber-800 bg-amber-100/40">${h.bronze}</td>
@@ -1489,19 +1649,24 @@ function renderPetangHierarchy() {
   const officersContainer = document.getElementById("petangOfficersGrid");
   if (officersContainer) {
     const officers = [
-      { role: "Penolong Kanan Petang", name: petang.pengerusi, badge: "Peneraju Petang", icon: "👑" },
-      { role: "Penyelaras Tahap 1", name: petang.penyelarasTahap1, badge: "Akademik Tahap 1", icon: "🧒" },
-      { role: "Penyelaras Jadual Waktu", name: petang.penyelarasJadual, badge: "Jadual Petang", icon: "📅" },
-      { role: "Penyelaras Disiplin & Keselamatan", name: petang.penyelarasDisiplin, badge: "Disiplin & Pintu Pagar", icon: "🛡️" },
-      { role: "Penyelaras Transisi Tahun 1", name: petang.penyelarasTransisi, badge: "Transisi Murid", icon: "🌱" }
+      { role: "Penolong Kanan Petang", name: petang.pengerusi, photo: petang.pengerusiPhoto, badge: "Peneraju Petang", icon: "👑" },
+      { role: "Penyelaras Tahap 1", name: petang.penyelarasTahap1, photo: petang.penyelarasTahap1Photo, badge: "Akademik Tahap 1", icon: "🧒" },
+      { role: "Penyelaras Jadual Waktu", name: petang.penyelarasJadual, photo: petang.penyelarasJadualPhoto, badge: "Jadual Petang", icon: "📅" },
+      { role: "Penyelaras Disiplin & Keselamatan", name: petang.penyelarasDisiplin, photo: petang.penyelarasDisiplinPhoto, badge: "Disiplin & Pintu Pagar", icon: "🛡️" },
+      { role: "Penyelaras Transisi Tahun 1", name: petang.penyelarasTransisi, photo: petang.penyelarasTransisiPhoto, badge: "Transisi Murid", icon: "🌱" }
     ];
 
-    officersContainer.innerHTML = officers.map(o => `
+    officersContainer.innerHTML = officers.map(o => {
+      const photoSrc = o.photo || (window.getStaffPhoto ? window.getStaffPhoto(o.name) : 'assets/photos/default.jpg');
+      return `
       <div class="p-3 rounded-xl bg-slate-50 border border-slate-200 flex items-center justify-between gap-3 executive-card">
-        <div class="flex items-center gap-2.5 min-w-0">
-          <span class="text-lg">${o.icon}</span>
+        <div class="flex items-center gap-3 min-w-0">
+          <img src="${photoSrc}" 
+               alt="${o.name}" 
+               class="w-11 h-11 rounded-full object-cover border-2 border-amber-400 shadow-2xs shrink-0" 
+               onerror="this.onerror=null;this.src='assets/photos/default.jpg'">
           <div class="min-w-0">
-            <span class="text-[10px] font-bold uppercase tracking-wider text-amber-800 block">${o.role}</span>
+            <span class="text-[10px] font-bold uppercase tracking-wider text-amber-800 block">${o.icon} ${o.role}</span>
             <h5 class="font-bold text-slate-900 text-xs sm:text-sm truncate">${o.name}</h5>
           </div>
         </div>
@@ -1509,7 +1674,8 @@ function renderPetangHierarchy() {
           ${o.badge}
         </span>
       </div>
-    `).join("");
+    `;
+    }).join("");
   }
 }
 
