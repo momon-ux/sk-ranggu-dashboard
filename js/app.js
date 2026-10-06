@@ -11,12 +11,145 @@ document.addEventListener("DOMContentLoaded", () => {
 let pbdChartInstance = null;
 let pbdSubjectChartInstance = null;
 
+// Semakan Keselamatan: Adakah Mod Suntingan Pentadbir Aktif? (Hanya Ts.FIKREY37)
+function isAdminEditActive() {
+  return typeof window.adminManager !== "undefined" && window.adminManager.isEditModeActive();
+}
+window.isAdminEditActive = isAdminEditActive;
+
+// Penjana Butang Suntingan Pentadbir Pada Kad (Hanya Muncul Apabila Admin Log Masuk)
+function renderCardEditButton({ targetType, targetId, subId, name, role, extra, photo }) {
+  if (!isAdminEditActive()) return "";
+  const safeName = (name || "").replace(/'/g, "\\'");
+  const safeRole = (role || "").replace(/'/g, "\\'");
+  const safeExtra = (extra || "").replace(/'/g, "\\'");
+  const safePhoto = (photo || "").replace(/'/g, "\\'");
+  return `
+    <button type="button" 
+            onclick="event.stopPropagation(); window.openLiveEditModal({
+              targetType: '${targetType}',
+              targetId: '${targetId || ''}',
+              subId: '${subId || ''}',
+              name: '${safeName}',
+              role: '${safeRole}',
+              extra: '${safeExtra}',
+              photo: '${safePhoto}'
+            })"
+            class="admin-edit-btn absolute top-2 right-2 px-2.5 py-1 rounded-lg bg-amber-400 hover:bg-amber-300 text-slate-950 font-black text-[11px] shadow border border-amber-500 z-30 transition flex items-center gap-1 hover:scale-105"
+            title="Sunting Maklumat & Foto (Mod Pentadbir)">
+      <span>✏️</span> Sunting
+    </button>
+  `;
+}
+window.renderCardEditButton = renderCardEditButton;
+
+// RENDER GERBANG 4 BAHAGIAN PENGURUSAN INDUK (TAB UTAMA)
+function renderGateways() {
+  const container = document.getElementById("gatewaysGridContainer");
+  if (!container) return;
+
+  const gw = window.SKR_DATA.gateways;
+  if (!gw) return;
+
+  const isEdit = isAdminEditActive();
+  const keys = ["kurikulum", "hem", "koko", "petang"];
+  const themeMap = {
+    kurikulum: {
+      border: "border-blue-200 hover:border-blue-600 bg-gradient-to-br from-white via-white to-blue-50/70",
+      iconGrad: "from-blue-600 to-indigo-700",
+      badge: "bg-blue-100 text-blue-800 border-blue-200",
+      btn: "bg-blue-700 hover:bg-blue-800",
+      subText: "text-blue-700"
+    },
+    hem: {
+      border: "border-emerald-200 hover:border-emerald-600 bg-gradient-to-br from-white via-white to-emerald-50/70",
+      iconGrad: "from-emerald-600 to-teal-700",
+      badge: "bg-emerald-100 text-emerald-800 border-emerald-200",
+      btn: "bg-emerald-700 hover:bg-emerald-800",
+      subText: "text-emerald-700"
+    },
+    koko: {
+      border: "border-rose-200 hover:border-rose-600 bg-gradient-to-br from-white via-white to-rose-50/70",
+      iconGrad: "from-rose-600 to-red-700",
+      badge: "bg-rose-100 text-rose-800 border-rose-200",
+      btn: "bg-rose-700 hover:bg-rose-800",
+      subText: "text-rose-700"
+    },
+    petang: {
+      border: "border-amber-200 hover:border-amber-600 bg-gradient-to-br from-white via-white to-amber-50/70",
+      iconGrad: "from-amber-500 to-yellow-600",
+      badge: "bg-amber-100 text-amber-800 border-amber-200",
+      btn: "bg-amber-600 hover:bg-amber-700",
+      subText: "text-amber-800"
+    }
+  };
+
+  container.innerHTML = keys.map(k => {
+    const item = gw[k];
+    if (!item) return "";
+    const theme = themeMap[k] || themeMap.kurikulum;
+    const photo = item.photo || (window.getStaffPhoto ? window.getStaffPhoto(item.head) : "assets/photos/default.jpg");
+
+    return `
+      <div class="${theme.border} p-5 rounded-2xl border-2 shadow-sm hover:shadow-lg transition-all duration-300 flex flex-col justify-between group relative overflow-hidden">
+        ${renderCardEditButton({ targetType: 'gateway', targetId: k, name: item.head, role: item.role, extra: item.desc, photo: item.photo })}
+        <div>
+          <div class="flex items-center justify-between mb-3.5">
+            <div class="w-12 h-12 rounded-2xl bg-gradient-to-br ${theme.iconGrad} text-white flex items-center justify-center text-2xl shadow-md group-hover:scale-110 transition-transform">
+              ${item.icon || '🏛️'}
+            </div>
+            <span class="text-[10px] font-extrabold px-2.5 py-1 rounded-full ${theme.badge} border tracking-wide uppercase">
+              ${item.badge}
+            </span>
+          </div>
+
+          <h4 class="text-base font-extrabold text-royal-900 group-hover:text-blue-700 transition-colors">
+            ${item.title}
+          </h4>
+          <p class="text-xs text-slate-600 mt-1 line-clamp-2">
+            ${item.desc}
+          </p>
+
+          <div class="mt-4 pt-3 border-t border-black/10 flex items-center gap-3">
+            <div class="w-12 h-12 rounded-xl overflow-hidden shrink-0 shadow-sm border border-slate-300 bg-slate-100">
+              <img src="${photo}" alt="${item.head}" class="w-full h-full object-cover" onerror="this.onerror=null;this.src='assets/photos/default.jpg'">
+            </div>
+            <div class="min-w-0 flex-1">
+              <span class="text-[10px] font-bold ${theme.subText} uppercase block">Ketua Bahagian:</span>
+              <strong class="text-slate-900 font-extrabold text-xs block truncate">${item.head}</strong>
+              <span class="text-[11px] text-slate-500 font-semibold block">${item.role}</span>
+            </div>
+          </div>
+
+          <div class="mt-3 pt-2 border-t border-black/5 space-y-1.5 text-xs">
+            <div class="flex items-center justify-between text-slate-500">
+              <span class="text-[11px]">${item.stat1Label}</span>
+              <span class="font-bold text-slate-800 text-[11px]">${item.stat1Val}</span>
+            </div>
+            <div class="flex items-center justify-between text-slate-500">
+              <span class="text-[11px]">${item.stat2Label}</span>
+              <span class="font-bold text-emerald-600 text-[11px]">${item.stat2Val}</span>
+            </div>
+          </div>
+        </div>
+
+        <button onclick="document.querySelector('[data-tab-target=\\'${item.targetTab}\\']').click()" class="mt-5 w-full py-2.5 px-3 rounded-xl ${theme.btn} text-white font-bold text-xs flex items-center justify-center gap-2 shadow-sm transition">
+          <span>Buka Papan ${item.title.replace('Pengurusan ', '')}</span>
+          <span>→</span>
+        </button>
+      </div>
+    `;
+  }).join("");
+}
+window.renderGateways = renderGateways;
+
 function initSystem() {
   updateLiveClock();
   setInterval(updateLiveClock, 1000);
 
   // Render komponen utama
   renderSchoolHeader();
+  renderGateways();
   renderExecutiveStats();
   renderAnnouncements();
   renderOrganizationChart();
@@ -45,6 +178,9 @@ function initSystem() {
   setupNavigation();
   setupSearchAndFilters();
   setupAdminListeners();
+
+  // Kemas kini paparan status admin (Ts.FIKREY37)
+  updateAdminUIState();
 
   console.log("Sistem Dashboard SK Ranggu dimuatkan.");
 }
@@ -563,7 +699,8 @@ function renderDigitalCurriculumChart(c) {
 
       <!-- 1. GURU BESAR -->
       <div class="flex flex-col items-center">
-        <div class="w-full max-w-sm bg-white rounded-2xl border-2 border-blue-600 shadow-md overflow-hidden text-center executive-card">
+        <div class="w-full max-w-sm bg-white rounded-2xl border-2 border-blue-600 shadow-md overflow-hidden text-center executive-card relative">
+          ${renderCardEditButton({ targetType: 'curriculum_leader', targetId: 'leader', name: c.leader.name, role: c.leader.role, extra: c.leader.badge, photo: c.leader.photo })}
           <div class="bg-gradient-to-r from-blue-700 to-indigo-800 text-white py-1.5 px-4 text-xs font-extrabold tracking-wider uppercase">
             ${c.leader.role}
           </div>
@@ -582,7 +719,8 @@ function renderDigitalCurriculumChart(c) {
 
       <!-- 2. PENOLONG KANAN PENTADBIRAN -->
       <div class="flex flex-col items-center">
-        <div class="w-full max-w-sm bg-white rounded-2xl border-2 border-blue-600 shadow-md overflow-hidden text-center executive-card">
+        <div class="w-full max-w-sm bg-white rounded-2xl border-2 border-blue-600 shadow-md overflow-hidden text-center executive-card relative">
+          ${renderCardEditButton({ targetType: 'curriculum_leader', targetId: 'deputyAdmin', name: c.deputyAdmin.name, role: c.deputyAdmin.role, extra: c.deputyAdmin.badge, photo: c.deputyAdmin.photo })}
           <div class="bg-gradient-to-r from-blue-700 to-indigo-800 text-white py-1.5 px-4 text-xs font-extrabold tracking-wider uppercase">
             ${c.deputyAdmin.role}
           </div>
@@ -601,7 +739,8 @@ function renderDigitalCurriculumChart(c) {
 
       <!-- 3. PENOLONG KANAN PETANG -->
       <div class="flex flex-col items-center">
-        <div class="w-full max-w-sm bg-white rounded-2xl border-2 border-blue-600 shadow-md overflow-hidden text-center executive-card">
+        <div class="w-full max-w-sm bg-white rounded-2xl border-2 border-blue-600 shadow-md overflow-hidden text-center executive-card relative">
+          ${renderCardEditButton({ targetType: 'curriculum_leader', targetId: 'deputyPetang', name: c.deputyPetang.name, role: c.deputyPetang.role, extra: c.deputyPetang.badge, photo: c.deputyPetang.photo })}
           <div class="bg-gradient-to-r from-blue-700 to-indigo-800 text-white py-1.5 px-4 text-xs font-extrabold tracking-wider uppercase">
             ${c.deputyPetang.role}
           </div>
@@ -620,7 +759,8 @@ function renderDigitalCurriculumChart(c) {
 
       <!-- 4. SETIAUSAHA -->
       <div class="flex flex-col items-center">
-        <div class="w-full max-w-sm bg-white rounded-2xl border-2 border-blue-600 shadow-md overflow-hidden text-center executive-card">
+        <div class="w-full max-w-sm bg-white rounded-2xl border-2 border-blue-600 shadow-md overflow-hidden text-center executive-card relative">
+          ${renderCardEditButton({ targetType: 'curriculum_leader', targetId: 'secretary', name: c.secretary.name, role: c.secretary.role, extra: c.secretary.badge, photo: c.secretary.photo })}
           <div class="bg-gradient-to-r from-blue-700 to-indigo-800 text-white py-1.5 px-4 text-xs font-extrabold tracking-wider uppercase">
             ${c.secretary.role}
           </div>
@@ -650,8 +790,9 @@ function renderDigitalCurriculumChart(c) {
               <span class="text-[10px] bg-white/20 px-2 py-0.5 rounded-full font-mono">${c.panitia.length} Panitia</span>
             </div>
             <div class="space-y-2">
-              ${c.panitia.map(p => `
-                <div class="bg-white rounded-xl border border-sky-300/80 shadow-sm overflow-hidden executive-card hover:border-sky-500 transition">
+              ${c.panitia.map((p, idx) => `
+                <div class="bg-white rounded-xl border border-sky-300/80 shadow-sm overflow-hidden executive-card relative hover:border-sky-500 transition">
+                  ${renderCardEditButton({ targetType: 'curriculum_panitia', targetId: idx, name: p.head, role: p.subject, photo: p.photo })}
                   <div class="bg-sky-600 text-white py-1 px-3 text-[10px] font-extrabold tracking-wider uppercase flex items-center justify-between">
                     <span>${p.subject}</span>
                     <span>${p.icon || '📘'}</span>
@@ -679,8 +820,9 @@ function renderDigitalCurriculumChart(c) {
               <span class="text-[10px] bg-white/20 px-2 py-0.5 rounded-full font-mono">${c.penyelaras.length} Portfolio</span>
             </div>
             <div class="space-y-2">
-              ${c.penyelaras.map(py => `
-                <div class="bg-white rounded-xl border border-cyan-300/80 shadow-sm overflow-hidden executive-card hover:border-cyan-500 transition">
+              ${c.penyelaras.map((py, idx) => `
+                <div class="bg-white rounded-xl border border-cyan-300/80 shadow-sm overflow-hidden executive-card relative hover:border-cyan-500 transition">
+                  ${renderCardEditButton({ targetType: 'curriculum_penyelaras', targetId: idx, name: py.officer, role: py.portfolio, photo: py.photo })}
                   <div class="bg-cyan-600 text-white py-1 px-3 text-[10px] font-extrabold tracking-wider uppercase flex items-center justify-between">
                     <span>${py.portfolio}</span>
                     <span>${py.icon || '📌'}</span>
@@ -708,8 +850,9 @@ function renderDigitalCurriculumChart(c) {
               <span class="text-[10px] bg-white/20 px-2 py-0.5 rounded-full font-mono">${c.unitKurikulum.length} Unit</span>
             </div>
             <div class="space-y-2">
-              ${c.unitKurikulum.map(uk => `
-                <div class="bg-white rounded-xl border border-indigo-300/80 shadow-sm overflow-hidden executive-card hover:border-indigo-500 transition">
+              ${c.unitKurikulum.map((uk, idx) => `
+                <div class="bg-white rounded-xl border border-indigo-300/80 shadow-sm overflow-hidden executive-card relative hover:border-indigo-500 transition">
+                  ${renderCardEditButton({ targetType: 'curriculum_unit_khas', targetId: idx, name: uk.officer, role: uk.unit, photo: uk.photo })}
                   <div class="bg-indigo-700 text-white py-1 px-3 text-[10px] font-extrabold tracking-wider uppercase flex items-center justify-between">
                     <span>${uk.unit}</span>
                     <span>${uk.icon || '📋'}</span>
@@ -746,7 +889,8 @@ function renderDigitalAdminChart(h) {
       
       <!-- 1. GURU BESAR -->
       <div class="flex flex-col items-center">
-        <div class="w-full max-w-sm bg-white rounded-2xl border-2 border-red-500 shadow-md overflow-hidden text-center executive-card">
+        <div class="w-full max-w-sm bg-white rounded-2xl border-2 border-red-500 shadow-md overflow-hidden text-center executive-card relative">
+          ${renderCardEditButton({ targetType: 'admin_leader', targetId: 'leader', name: h.leader.name, role: h.leader.role, extra: h.leader.badge, photo: h.leader.photo })}
           <div class="bg-gradient-to-r from-red-600 to-rose-600 text-white py-1.5 px-4 text-xs font-extrabold tracking-wider uppercase">
             ${h.leader.role}
           </div>
@@ -765,7 +909,8 @@ function renderDigitalAdminChart(h) {
 
       <!-- 2. PENOLONG KANAN PENTADBIRAN -->
       <div class="flex flex-col items-center">
-        <div class="w-full max-w-sm bg-white rounded-2xl border-2 border-red-500 shadow-md overflow-hidden text-center executive-card">
+        <div class="w-full max-w-sm bg-white rounded-2xl border-2 border-red-500 shadow-md overflow-hidden text-center executive-card relative">
+          ${renderCardEditButton({ targetType: 'admin_leader', targetId: 'deputy', name: h.deputy.name, role: h.deputy.role, extra: h.deputy.badge, photo: h.deputy.photo })}
           <div class="bg-gradient-to-r from-red-600 to-rose-600 text-white py-1.5 px-4 text-xs font-extrabold tracking-wider uppercase">
             ${h.deputy.role}
           </div>
@@ -792,7 +937,8 @@ function renderDigitalAdminChart(h) {
 
       <!-- 4. SETIAUSAHA PENTADBIRAN -->
       <div class="flex flex-col items-center">
-        <div class="w-full max-w-sm bg-white rounded-2xl border-2 border-red-500 shadow-md overflow-hidden text-center executive-card">
+        <div class="w-full max-w-sm bg-white rounded-2xl border-2 border-red-500 shadow-md overflow-hidden text-center executive-card relative">
+          ${renderCardEditButton({ targetType: 'admin_leader', targetId: 'secretary', name: h.secretary.name, role: h.secretary.role, extra: h.secretary.badge, photo: h.secretary.photo })}
           <div class="bg-gradient-to-r from-red-600 to-rose-600 text-white py-1.5 px-4 text-xs font-extrabold tracking-wider uppercase">
             ${h.secretary.role}
           </div>
@@ -821,7 +967,7 @@ function renderDigitalAdminChart(h) {
               <span>🏛️ Unit Pentadbiran & Kewangan</span>
               <span class="text-[10px] bg-red-100 text-red-800 px-2 py-0.5 rounded font-mono">7 Portfolio</span>
             </div>
-            ${h.leftWing.map(item => createPosterStyleCard(item)).join("")}
+            ${h.leftWing.map((item, idx) => createPosterStyleCard(item, "leftWing", idx)).join("")}
           </div>
 
           <!-- SAYAP KANAN: DIGITAL, ICT, DATA & PEMBANGUNAN -->
@@ -830,7 +976,7 @@ function renderDigitalAdminChart(h) {
               <span>💻 Unit Digital, ICT, Data & Pembangunan</span>
               <span class="text-[10px] bg-red-100 text-red-800 px-2 py-0.5 rounded font-mono">8 Portfolio</span>
             </div>
-            ${h.rightWing.map(item => createPosterStyleCard(item)).join("")}
+            ${h.rightWing.map((item, idx) => createPosterStyleCard(item, "rightWing", idx)).join("")}
           </div>
 
         </div>
@@ -841,12 +987,13 @@ function renderDigitalAdminChart(h) {
 }
 
 // Kad Gaya Poster Rasmi Pentadbiran SK Ranggu
-function createPosterStyleCard(item) {
+function createPosterStyleCard(item, wing = "leftWing", idx = 0) {
   const isUser = item.officer && item.officer.includes("FIKREY");
   const mainPhoto = item.photo || (window.getStaffPhoto ? window.getStaffPhoto(item.officer) : "assets/photos/default.jpg");
 
   return `
-    <div class="bg-white rounded-xl border border-red-300/80 shadow-sm overflow-hidden executive-card hover:border-red-500 transition ${isUser ? 'ring-2 ring-amber-400' : ''}">
+    <div class="bg-white rounded-xl border border-red-300/80 shadow-sm overflow-hidden executive-card relative hover:border-red-500 transition ${isUser ? 'ring-2 ring-amber-400' : ''}">
+      ${renderCardEditButton({ targetType: 'admin_wing', targetId: wing, subId: idx, name: item.officer, role: item.portfolio, extra: item.title, photo: item.photo })}
       <div class="bg-gradient-to-r from-red-600 via-rose-600 to-red-500 text-white py-1 px-3 text-[11px] font-extrabold tracking-wider uppercase flex items-center justify-between">
         <span>${item.portfolio}</span>
         ${isUser ? '<span class="text-[10px] bg-amber-400 text-slate-900 px-1.5 py-0.2 rounded font-bold">Pentadbir Sistem</span>' : ''}
@@ -914,6 +1061,7 @@ function createMemberCard(member, isPrincipal = false) {
 
   return `
     <div class="bg-white rounded-2xl p-4 border ${borderHighlight} executive-card flex flex-col justify-between relative overflow-hidden group">
+      ${renderCardEditButton({ targetType: 'staff', targetId: member.id, name: member.name, role: member.role, extra: member.duties, photo: member.photo })}
       <div class="absolute top-0 left-0 right-0 h-1.5 ${isPrincipal ? 'bg-amber-500' : (member.tier === 2 ? 'bg-blue-600' : 'bg-slate-400')}"></div>
 
       <div>
@@ -1165,7 +1313,8 @@ function renderDutyTeachers() {
   const teachers = activeDuty.teachers || [];
 
   container.innerHTML = `
-    <div class="bg-white rounded-2xl p-5 border border-slate-200 shadow-sm executive-card">
+    <div class="bg-white rounded-2xl p-5 border border-slate-200 shadow-sm executive-card relative">
+      ${renderCardEditButton({ targetType: 'duty', targetId: 0, name: activeDuty.leader || '', role: 'Ketua Guru Bertugas', extra: activeDuty.theme || '' })}
       <div class="flex flex-col sm:flex-row sm:items-center justify-between pb-3 border-b border-slate-100 gap-2">
         <div>
           <span class="text-xs font-bold uppercase tracking-wider text-blue-700 bg-blue-50 px-3 py-1 rounded-full border border-blue-200">
@@ -1242,17 +1391,49 @@ function renderPortalLinks() {
    ========================================================================== */
 function renderHemHierarchy() {
   const container = document.getElementById("hemUnitsGrid");
-  if (!container) return;
-
   const hem = window.SKR_DATA.hemHierarchy2026;
-  if (!hem || !hem.units) return;
+  if (!hem) return;
 
-  container.innerHTML = hem.units.map(u => {
+  // Header Kepimpinan HEM (PK HEM & Setiausaha)
+  const leadersContainer = document.getElementById("hemHeaderLeadersContainer");
+  if (leadersContainer) {
+    const pkPhoto = hem.pengerusiPhoto || (window.getStaffPhoto ? window.getStaffPhoto(hem.pengerusi) : "assets/photos/komala-binti-joseph.jpg");
+    const suPhoto = hem.setiausahaPhoto || (window.getStaffPhoto ? window.getStaffPhoto(hem.setiausaha) : "assets/photos/norlina-binti-bagwas.jpg");
+    leadersContainer.innerHTML = `
+      <div class="bg-white/10 backdrop-blur-sm p-3 rounded-2xl border border-white/15 flex items-center gap-3 min-w-[160px] relative">
+        ${renderCardEditButton({ targetType: 'hem_leader', targetId: 'pengerusi', name: hem.pengerusi, role: 'Penolong Kanan HEM', extra: 'Pengerusi HEM', photo: hem.pengerusiPhoto })}
+        <div class="w-11 h-11 rounded-xl overflow-hidden shrink-0 border border-emerald-400/50 bg-slate-800">
+          <img src="${pkPhoto}" alt="${hem.pengerusi}" class="w-full h-full object-cover" onerror="this.onerror=null;this.src='assets/photos/default.jpg'">
+        </div>
+        <div>
+          <span class="text-[10px] uppercase font-bold text-emerald-300 block">PK HEM</span>
+          <strong class="text-xs sm:text-sm font-extrabold text-white block mt-0.5 truncate max-w-[150px]">${hem.pengerusi}</strong>
+          <span class="text-[9px] text-slate-300">Pengerusi HEM</span>
+        </div>
+      </div>
+      <div class="bg-white/10 backdrop-blur-sm p-3 rounded-2xl border border-white/15 flex items-center gap-3 min-w-[160px] relative">
+        ${renderCardEditButton({ targetType: 'hem_leader', targetId: 'setiausaha', name: hem.setiausaha, role: 'Setiausaha HEM', extra: 'Penyelaras Induk', photo: hem.setiausahaPhoto })}
+        <div class="w-11 h-11 rounded-xl overflow-hidden shrink-0 border border-amber-400/50 bg-slate-800">
+          <img src="${suPhoto}" alt="${hem.setiausaha}" class="w-full h-full object-cover" onerror="this.onerror=null;this.src='assets/photos/default.jpg'">
+        </div>
+        <div>
+          <span class="text-[10px] uppercase font-bold text-amber-300 block">Setiausaha HEM</span>
+          <strong class="text-xs sm:text-sm font-extrabold text-white block mt-0.5 truncate max-w-[150px]">${hem.setiausaha}</strong>
+          <span class="text-[9px] text-slate-300">Penyelaras Induk</span>
+        </div>
+      </div>
+    `;
+  }
+
+  if (!container || !hem.units) return;
+
+  container.innerHTML = hem.units.map((u, idx) => {
     const headPhoto = u.photo || (window.getStaffPhoto ? window.getStaffPhoto(u.head) : "assets/photos/default.jpg");
     const extraPhoto = u.extraOfficerPhoto || (u.extraOfficer && window.getStaffPhoto ? window.getStaffPhoto(u.extraOfficer) : null);
 
     return `
-      <div class="p-4 rounded-2xl bg-white border border-slate-200 hover:border-emerald-400 hover:shadow-md transition executive-card flex flex-col justify-between">
+      <div class="p-4 rounded-2xl bg-white border border-slate-200 hover:border-emerald-400 hover:shadow-md transition executive-card flex flex-col justify-between relative">
+        ${renderCardEditButton({ targetType: 'hem_unit', targetId: idx, name: u.head, role: u.name, extra: u.badge, photo: u.photo })}
         <div>
           <div class="flex items-center justify-between mb-2.5">
             <span class="text-[10px] font-extrabold uppercase px-2.5 py-0.5 rounded-full bg-emerald-100 text-emerald-800 border border-emerald-200">
@@ -1300,13 +1481,57 @@ function renderKokoHierarchy() {
   const koko = window.SKR_DATA.kokoHierarchy2026;
   if (!koko) return;
 
+  // Header Kepimpinan Kokurikulum (PK Koko, SU KOKU, SU Sukan)
+  const leadersContainer = document.getElementById("kokoHeaderLeadersContainer");
+  if (leadersContainer) {
+    const pkPhoto = koko.pengerusiPhoto || (window.getStaffPhoto ? window.getStaffPhoto(koko.pengerusi) : "assets/photos/warnah-binti-sira.jpg");
+    const suPhoto = koko.setiausahaPhoto || (window.getStaffPhoto ? window.getStaffPhoto(koko.setiausaha) : "assets/photos/evalorenna-binti-laminsin.jpg");
+    const suSukanPhoto = koko.setiausahaSukanPhoto || (window.getStaffPhoto ? window.getStaffPhoto(koko.setiausahaSukan) : "assets/photos/rosidian-bin-idris.jpg");
+    leadersContainer.innerHTML = `
+      <div class="bg-white/10 backdrop-blur-sm p-3 rounded-2xl border border-white/15 flex items-center gap-3 min-w-[150px] relative">
+        ${renderCardEditButton({ targetType: 'koko_leader', targetId: 'pengerusi', name: koko.pengerusi, role: 'Penolong Kanan Kokurikulum', extra: 'Pengerusi KOKU', photo: koko.pengerusiPhoto })}
+        <div class="w-11 h-11 rounded-xl overflow-hidden shrink-0 border border-amber-400/50 bg-slate-800">
+          <img src="${pkPhoto}" alt="${koko.pengerusi}" class="w-full h-full object-cover" onerror="this.onerror=null;this.src='assets/photos/default.jpg'">
+        </div>
+        <div>
+          <span class="text-[10px] uppercase font-bold text-amber-300 block">PK Kokurikulum</span>
+          <strong class="text-xs sm:text-sm font-extrabold text-white block mt-0.5 truncate max-w-[150px]">${koko.pengerusi}</strong>
+          <span class="text-[9px] text-slate-300">Pengerusi KOKU</span>
+        </div>
+      </div>
+      <div class="bg-white/10 backdrop-blur-sm p-3 rounded-2xl border border-white/15 flex items-center gap-3 min-w-[150px] relative">
+        ${renderCardEditButton({ targetType: 'koko_leader', targetId: 'setiausaha', name: koko.setiausaha, role: 'Setiausaha KOKU', extra: 'Penyelaras Induk', photo: koko.setiausahaPhoto })}
+        <div class="w-11 h-11 rounded-xl overflow-hidden shrink-0 border border-sky-400/50 bg-slate-800">
+          <img src="${suPhoto}" alt="${koko.setiausaha}" class="w-full h-full object-cover" onerror="this.onerror=null;this.src='assets/photos/default.jpg'">
+        </div>
+        <div>
+          <span class="text-[10px] uppercase font-bold text-sky-300 block">Setiausaha KOKU</span>
+          <strong class="text-xs sm:text-sm font-extrabold text-white block mt-0.5 truncate max-w-[150px]">${koko.setiausaha}</strong>
+          <span class="text-[9px] text-slate-300">Penyelaras Induk</span>
+        </div>
+      </div>
+      <div class="bg-white/10 backdrop-blur-sm p-3 rounded-2xl border border-white/15 flex items-center gap-3 min-w-[150px] relative">
+        ${renderCardEditButton({ targetType: 'koko_leader', targetId: 'setiausahaSukan', name: koko.setiausahaSukan || 'ROSIDIAN BIN IDRIS', role: 'Setiausaha Sukan', extra: 'Pegawai Teknikal Sukan', photo: koko.setiausahaSukanPhoto })}
+        <div class="w-11 h-11 rounded-xl overflow-hidden shrink-0 border border-emerald-400/50 bg-slate-800">
+          <img src="${suSukanPhoto}" alt="${koko.setiausahaSukan || 'ROSIDIAN BIN IDRIS'}" class="w-full h-full object-cover" onerror="this.onerror=null;this.src='assets/photos/default.jpg'">
+        </div>
+        <div>
+          <span class="text-[10px] uppercase font-bold text-emerald-300 block">Setiausaha Sukan</span>
+          <strong class="text-xs sm:text-sm font-extrabold text-white block mt-0.5 truncate max-w-[150px]">${koko.setiausahaSukan || 'ROSIDIAN BIN IDRIS'}</strong>
+          <span class="text-[9px] text-slate-300">Pegawai Teknikal</span>
+        </div>
+      </div>
+    `;
+  }
+
   // 1. Unit Beruniform
   const uniformContainer = document.getElementById("kokoUniformGrid");
   if (uniformContainer && koko.uniformUnits) {
-    uniformContainer.innerHTML = koko.uniformUnits.map(u => {
+    uniformContainer.innerHTML = koko.uniformUnits.map((u, idx) => {
       const photo = u.photo || (window.getStaffPhoto ? window.getStaffPhoto(u.head) : "assets/photos/default.jpg");
       return `
-        <div class="p-3 rounded-xl bg-white border border-slate-200 flex items-center justify-between gap-3 executive-card shadow-2xs hover:border-emerald-300 transition">
+        <div class="p-3 rounded-xl bg-white border border-slate-200 flex items-center justify-between gap-3 executive-card shadow-2xs hover:border-emerald-300 transition relative">
+          ${renderCardEditButton({ targetType: 'koko_sub', targetId: 'uniformUnits', subId: idx, name: u.head, role: u.name, extra: u.members, photo: u.photo })}
           <div class="flex items-center gap-3 min-w-0">
             <div class="w-11 h-11 rounded-xl overflow-hidden shrink-0 shadow-sm border border-emerald-200 bg-slate-100">
               <img src="${photo}" alt="${u.head}" class="w-full h-full object-cover" onerror="this.onerror=null;this.src='assets/photos/default.jpg'">
@@ -1331,10 +1556,11 @@ function renderKokoHierarchy() {
   // 2. Kelab & Persatuan
   const clubsContainer = document.getElementById("kokoClubsGrid");
   if (clubsContainer && koko.clubUnits) {
-    clubsContainer.innerHTML = koko.clubUnits.map(c => {
+    clubsContainer.innerHTML = koko.clubUnits.map((c, idx) => {
       const photo = c.photo || (window.getStaffPhoto ? window.getStaffPhoto(c.head) : "assets/photos/default.jpg");
       return `
-        <div class="p-3 rounded-xl bg-white border border-slate-200 flex items-center justify-between gap-3 executive-card shadow-2xs hover:border-blue-300 transition">
+        <div class="p-3 rounded-xl bg-white border border-slate-200 flex items-center justify-between gap-3 executive-card shadow-2xs hover:border-blue-300 transition relative">
+          ${renderCardEditButton({ targetType: 'koko_sub', targetId: 'clubUnits', subId: idx, name: c.head, role: c.name, extra: c.field, photo: c.photo })}
           <div class="flex items-center gap-3 min-w-0">
             <div class="w-11 h-11 rounded-xl overflow-hidden shrink-0 shadow-sm border border-blue-200 bg-slate-100">
               <img src="${photo}" alt="${c.head}" class="w-full h-full object-cover" onerror="this.onerror=null;this.src='assets/photos/default.jpg'">
@@ -1359,10 +1585,11 @@ function renderKokoHierarchy() {
   // 3. Sukan & Permainan (1M1S)
   const sportsContainer = document.getElementById("kokoSportsGrid");
   if (sportsContainer && koko.sportsUnits) {
-    sportsContainer.innerHTML = koko.sportsUnits.map(s => {
+    sportsContainer.innerHTML = koko.sportsUnits.map((s, idx) => {
       const photo = s.photo || (window.getStaffPhoto ? window.getStaffPhoto(s.head) : "assets/photos/default.jpg");
       return `
-        <div class="p-3 rounded-xl bg-white border border-slate-200 flex items-center justify-between gap-3 executive-card shadow-2xs hover:border-amber-300 transition">
+        <div class="p-3 rounded-xl bg-white border border-slate-200 flex items-center justify-between gap-3 executive-card shadow-2xs hover:border-amber-300 transition relative">
+          ${renderCardEditButton({ targetType: 'koko_sub', targetId: 'sportsUnits', subId: idx, name: s.head, role: s.name, extra: s.field, photo: s.photo })}
           <div class="flex items-center gap-3 min-w-0">
             <div class="w-11 h-11 rounded-xl overflow-hidden shrink-0 shadow-sm border border-amber-200 bg-slate-100">
               <img src="${photo}" alt="${s.head}" class="w-full h-full object-cover" onerror="this.onerror=null;this.src='assets/photos/default.jpg'">
@@ -1394,10 +1621,11 @@ function renderKokoHierarchy() {
       amber: "border-amber-300 bg-amber-50/50 text-amber-900",
       emerald: "border-emerald-300 bg-emerald-50/50 text-emerald-900"
     };
-    housesContainer.innerHTML = koko.sportHouses.map(h => {
+    housesContainer.innerHTML = koko.sportHouses.map((h, idx) => {
       const photo = h.photo || (window.getStaffPhoto ? window.getStaffPhoto(h.head) : "assets/photos/default.jpg");
       return `
-        <div class="p-3.5 rounded-xl border ${colorMap[h.color] || 'border-slate-200 bg-slate-50'} executive-card flex flex-col justify-between shadow-2xs">
+        <div class="p-3.5 rounded-xl border ${colorMap[h.color] || 'border-slate-200 bg-slate-50'} executive-card flex flex-col justify-between shadow-2xs relative">
+          ${renderCardEditButton({ targetType: 'koko_sub', targetId: 'sportHouses', subId: idx, name: h.head, role: h.name, extra: h.motto, photo: h.photo })}
           <div>
             <div class="flex items-center justify-between mb-1">
               <h5 class="font-extrabold text-sm">${h.name}</h5>
@@ -1456,13 +1684,14 @@ function renderSportsyncSection() {
       Kuning: "from-amber-500 to-yellow-600"
     };
 
-    medalsGrid.innerHTML = kot.houses.map(h => {
+    medalsGrid.innerHTML = kot.houses.map((h, idx) => {
       const bColor = badgeColors[h.id] || "bg-slate-100 text-slate-700 border-slate-200";
       const bStyle = borderStyles[h.id] || "border-slate-200 bg-white";
       const grad = pillGradients[h.id] || "from-slate-700 to-slate-900";
 
       return `
-        <div class="p-5 rounded-2xl border-2 ${bStyle} shadow-sm hover:shadow-md transition flex flex-col justify-between executive-card">
+        <div class="p-5 rounded-2xl border-2 ${bStyle} shadow-sm hover:shadow-md transition flex flex-col justify-between executive-card relative">
+          ${renderCardEditButton({ targetType: 'koko_sub', targetId: 'sportHouses', subId: idx, name: h.leadTeacher, role: h.name, extra: h.motto, photo: h.leadPhoto })}
           <div>
             <div class="flex items-center justify-between mb-3">
               <span class="text-xs font-black px-2.5 py-0.5 rounded-full ${bColor} border">
@@ -1649,17 +1878,18 @@ function renderPetangHierarchy() {
   const officersContainer = document.getElementById("petangOfficersGrid");
   if (officersContainer) {
     const officers = [
-      { role: "Penolong Kanan Petang", name: petang.pengerusi, photo: petang.pengerusiPhoto, badge: "Peneraju Petang", icon: "👑" },
-      { role: "Penyelaras Tahap 1", name: petang.penyelarasTahap1, photo: petang.penyelarasTahap1Photo, badge: "Akademik Tahap 1", icon: "🧒" },
-      { role: "Penyelaras Jadual Waktu", name: petang.penyelarasJadual, photo: petang.penyelarasJadualPhoto, badge: "Jadual Petang", icon: "📅" },
-      { role: "Penyelaras Disiplin & Keselamatan", name: petang.penyelarasDisiplin, photo: petang.penyelarasDisiplinPhoto, badge: "Disiplin & Pintu Pagar", icon: "🛡️" },
-      { role: "Penyelaras Transisi Tahun 1", name: petang.penyelarasTransisi, photo: petang.penyelarasTransisiPhoto, badge: "Transisi Murid", icon: "🌱" }
+      { key: "pengerusi", role: "Penolong Kanan Petang", name: petang.pengerusi, photo: petang.pengerusiPhoto, badge: "Peneraju Petang", icon: "👑" },
+      { key: "penyelarasTahap1", role: "Penyelaras Tahap 1", name: petang.penyelarasTahap1, photo: petang.penyelarasTahap1Photo, badge: "Akademik Tahap 1", icon: "🧒" },
+      { key: "penyelarasJadual", role: "Penyelaras Jadual Waktu", name: petang.penyelarasJadual, photo: petang.penyelarasJadualPhoto, badge: "Jadual Petang", icon: "📅" },
+      { key: "penyelarasDisiplin", role: "Penyelaras Disiplin & Keselamatan", name: petang.penyelarasDisiplin, photo: petang.penyelarasDisiplinPhoto, badge: "Disiplin & Pintu Pagar", icon: "🛡️" },
+      { key: "penyelarasTransisi", role: "Penyelaras Transisi Tahun 1", name: petang.penyelarasTransisi, photo: petang.penyelarasTransisiPhoto, badge: "Transisi Murid", icon: "🌱" }
     ];
 
     officersContainer.innerHTML = officers.map(o => {
       const photoSrc = o.photo || (window.getStaffPhoto ? window.getStaffPhoto(o.name) : 'assets/photos/default.jpg');
       return `
-      <div class="p-3 rounded-xl bg-slate-50 border border-slate-200 flex items-center justify-between gap-3 executive-card">
+      <div class="p-3 rounded-xl bg-slate-50 border border-slate-200 flex items-center justify-between gap-3 executive-card relative">
+        ${renderCardEditButton({ targetType: 'petang_officer', targetId: o.key, name: o.name, role: o.role, extra: o.badge, photo: o.photo })}
         <div class="flex items-center gap-3 min-w-0">
           <img src="${photoSrc}" 
                alt="${o.name}" 
@@ -1993,6 +2223,9 @@ function setupAdminListeners() {
       const result = window.adminManager.login(pin);
       if (result.success) {
         showAdminControlPanel();
+        updateAdminUIState();
+        refreshAllDashboardViews();
+        showToastNotification("Selamat datang Pentadbir Ts.FIKREY37! Mod Suntingan Paparan telah Diaktifkan.", "success");
       } else {
         alert(result.error);
         adminPinInput.value = "";
@@ -2005,6 +2238,9 @@ function setupAdminListeners() {
     adminLogoutBtn.addEventListener("click", () => {
       window.adminManager.logout();
       showAdminLoginForm();
+      updateAdminUIState();
+      refreshAllDashboardViews();
+      showToastNotification("Log keluar pentadbir berjaya.", "info");
     });
   }
 
@@ -2695,3 +2931,375 @@ window.handleResetSystemData = function() {
     location.reload();
   }
 };
+
+/* ==========================================================================
+   MODAL SUNTINGAN PAPARAN LANGSUNG (UNIVERSAL LIVE EDIT MODAL)
+   Eksklusif untuk Pentadbir dengan Kod Akses Ts.FIKREY37
+   ========================================================================== */
+
+// 1. Buka Modal Suntingan
+function openLiveEditModal(config) {
+  if (!isAdminEditActive()) {
+    alert("Hanya pentadbir yang sah (Ts.FIKREY37) dibenarkan membuat suntingan.");
+    return;
+  }
+
+  const modal = document.getElementById("universalLiveEditModal");
+  if (!modal) return;
+
+  const targetType = config.targetType || "staff";
+  const targetId = config.targetId !== undefined ? config.targetId : "";
+  const subId = config.subId !== undefined ? config.subId : "";
+  const name = config.name || "";
+  const role = config.role || "";
+  const extra = config.extra || "";
+  const photo = config.photo || "";
+
+  // Set nilai input tersembunyi & borang
+  const setElVal = (id, val) => {
+    const el = document.getElementById(id);
+    if (el) el.value = val;
+  };
+
+  setElVal("liveEditTargetType", targetType);
+  setElVal("liveEditTargetId", targetId);
+  setElVal("liveEditTargetSubId", subId);
+  setElVal("liveEditNameInput", name);
+  setElVal("liveEditRoleInput", role);
+  setElVal("liveEditExtraInput", extra);
+  setElVal("liveEditPhotoUrlInput", photo);
+
+  const fileIn = document.getElementById("liveEditFileInput");
+  if (fileIn) fileIn.value = "";
+
+  // Pratonton Foto
+  const previewImg = document.getElementById("liveEditPhotoPreview");
+  if (previewImg) {
+    const effectivePhoto = photo || (window.getStaffPhoto ? window.getStaffPhoto(name) : "assets/photos/default.jpg");
+    previewImg.src = effectivePhoto || "assets/photos/default.jpg";
+  }
+
+  // Tajuk Modal Berdasarkan Kategori
+  const titleEl = document.getElementById("liveEditModalTitle");
+  if (titleEl) {
+    let typeName = "Pegawai / Jawatan";
+    if (targetType === "admin_wing") typeName = "Portfolio Sayap Pentadbiran";
+    else if (targetType === "admin_leader") typeName = "Kepimpinan Pentadbiran";
+    else if (targetType === "curriculum_leader") typeName = "Kepimpinan Kurikulum";
+    else if (targetType === "curriculum_panitia") typeName = "Ketua Panitia Mata Pelajaran";
+    else if (targetType === "curriculum_penyelaras") typeName = "Penyelaras Bilik / Program Khas";
+    else if (targetType === "curriculum_unit_khas") typeName = "Unit Khas Kurikulum";
+    else if (targetType === "hem_leader") typeName = "Kepimpinan Hal Ehwal Murid (HEM)";
+    else if (targetType === "hem_unit") typeName = "Portfolio Jawatankuasa HEM";
+    else if (targetType === "koko_leader") typeName = "Kepimpinan Kokurikulum";
+    else if (targetType === "koko_sub") typeName = "Unit Kokurikulum / Sukan / Rumah";
+    else if (targetType === "petang_officer") typeName = "Penyelaras Sidang Petang";
+    else if (targetType === "gateway") typeName = "Gerbang 4 Bahagian Utama";
+    else if (targetType === "staff") typeName = "Direktori Staf / Guru";
+    else if (targetType === "duty") typeName = "Jadual Guru Bertugas";
+
+    titleEl.textContent = `Sunting ${typeName}: ${name || role}`;
+  }
+
+  modal.classList.remove("hidden");
+}
+window.openLiveEditModal = openLiveEditModal;
+
+// 2. Tutup Modal Suntingan
+function closeLiveEditModal() {
+  const modal = document.getElementById("universalLiveEditModal");
+  if (modal) modal.classList.add("hidden");
+}
+window.closeLiveEditModal = closeLiveEditModal;
+
+// 3. Mampatkan Gambar Menggunakan HTML5 Canvas (Resolusi Optimum ~30KB)
+function resizeImageToDataUrl(file, maxWidth = 400, maxHeight = 500, quality = 0.85) {
+  return new Promise((resolve, reject) => {
+    if (!file || !file.type.match(/image.*/)) {
+      return reject(new Error("Fail bukan imej yang sah."));
+    }
+
+    const reader = new FileReader();
+    reader.onerror = () => reject(new Error("Gagal membaca fail imej."));
+    reader.onload = (readerEvent) => {
+      const img = new Image();
+      img.onerror = () => reject(new Error("Gagal memproses fail imej."));
+      img.onload = () => {
+        let width = img.width;
+        let height = img.height;
+
+        if (width > height) {
+          if (width > maxWidth) {
+            height = Math.round((height * maxWidth) / width);
+            width = maxWidth;
+          }
+        } else {
+          if (height > maxHeight) {
+            width = Math.round((width * maxHeight) / height);
+            height = maxHeight;
+          }
+        }
+
+        const canvas = document.createElement("canvas");
+        canvas.width = width;
+        canvas.height = height;
+        const ctx = canvas.getContext("2d");
+        ctx.drawImage(img, 0, 0, width, height);
+
+        const dataUrl = canvas.toDataURL("image/jpeg", quality);
+        resolve(dataUrl);
+      };
+      img.src = readerEvent.target.result;
+    };
+    reader.readAsDataURL(file);
+  });
+}
+
+// 4. Muat Naik Gambar dari PC / Telefon
+window.handleLiveEditFileUpload = async function(event) {
+  const file = event.target.files && event.target.files[0];
+  if (!file) return;
+
+  try {
+    const dataUrl = await resizeImageToDataUrl(file);
+    const previewImg = document.getElementById("liveEditPhotoPreview");
+    if (previewImg) previewImg.src = dataUrl;
+
+    const urlInput = document.getElementById("liveEditPhotoUrlInput");
+    if (urlInput) urlInput.value = dataUrl;
+
+    showToastNotification("Imej berjaya dimampatkan dan sedia untuk disimpan.", "info");
+  } catch (err) {
+    console.error("Ralat muat naik imej:", err);
+    alert("Ralat semasa memproses fail imej: " + err.message);
+  }
+};
+
+// 5. Input URL Gambar Manual
+window.handleLiveEditUrlInput = function(event) {
+  const url = event.target.value.trim();
+  const previewImg = document.getElementById("liveEditPhotoPreview");
+  if (previewImg) {
+    previewImg.src = url || "assets/photos/default.jpg";
+  }
+};
+
+// 6. Reset Foto ke Asal
+window.resetLiveEditPhoto = function() {
+  const previewImg = document.getElementById("liveEditPhotoPreview");
+  const urlInput = document.getElementById("liveEditPhotoUrlInput");
+  const fileInput = document.getElementById("liveEditFileInput");
+
+  if (urlInput) urlInput.value = "";
+  if (fileInput) fileInput.value = "";
+  if (previewImg) previewImg.src = "assets/photos/default.jpg";
+  showToastNotification("Foto ditetapkan semula kepada gambar lalai.", "info");
+};
+
+// 7. Simpan Perubahan Suntingan Pentadbir
+window.handleSaveLiveEdit = function(event) {
+  if (event) event.preventDefault();
+
+  if (!isAdminEditActive()) {
+    alert("Sesi pentadbir tidak aktif. Sila masukkan Kod Akses Ts.FIKREY37.");
+    return;
+  }
+
+  const getVal = (id) => (document.getElementById(id)?.value || "").trim();
+  const targetType = getVal("liveEditTargetType");
+  const targetId = getVal("liveEditTargetId");
+  const subId = getVal("liveEditTargetSubId");
+  const name = getVal("liveEditNameInput");
+  const role = getVal("liveEditRoleInput");
+  const extra = getVal("liveEditExtraInput");
+  const photo = getVal("liveEditPhotoUrlInput");
+  const syncStaff = document.getElementById("liveEditSyncStaffCheck")?.checked !== false;
+
+  if (!name && !role) {
+    alert("Sila masukkan sekurang-kurangnya nama atau peranan!");
+    return;
+  }
+
+  const result = window.adminManager.updateEntity({
+    targetType,
+    targetId,
+    subId,
+    name,
+    role,
+    extra,
+    photo,
+    syncStaff
+  });
+
+  if (result.success) {
+    closeLiveEditModal();
+    refreshAllDashboardViews();
+    showToastNotification("Maklumat & foto berjaya dikemaskini ke dalam paparan!", "success");
+  } else {
+    alert("Ralat menyimpan maklumat: " + (result.error || "Ralat sistem."));
+  }
+};
+
+// 8. Segarkan Semua Bahagian Papan Pemuka Secara Dinamik
+function refreshAllDashboardViews() {
+  renderSchoolHeader();
+  renderGateways();
+
+  // Carta Interaktif Kurikulum & Pentadbiran
+  if (window.SKR_DATA.curriculumHierarchy2026 && typeof renderDigitalCurriculumChart === "function") {
+    renderDigitalCurriculumChart(window.SKR_DATA.curriculumHierarchy2026);
+  }
+  if (window.SKR_DATA.adminHierarchy2026 && typeof renderDigitalAdminChart === "function") {
+    renderDigitalAdminChart(window.SKR_DATA.adminHierarchy2026);
+  }
+
+  // Induk HEM, Koko, Sidang Petang, dan Sukan
+  renderHemHierarchy();
+  renderKokoHierarchy();
+  renderSportsyncSection();
+  renderPetangHierarchy();
+
+  // Direktori dan Carta Organisasi
+  renderOrganizationChart();
+  renderDutyTeachers();
+  renderExecutiveStats();
+
+  // Kemas kini status butang
+  updateAdminUIState();
+}
+window.refreshAllDashboardViews = refreshAllDashboardViews;
+
+// 9. Togol Mod Suntingan Pentadbir
+window.toggleAdminEditMode = function() {
+  if (!window.adminManager.checkAuth()) {
+    promptAdminLogin();
+    return;
+  }
+
+  const isActive = window.adminManager.toggleEditMode();
+  updateAdminUIState();
+  refreshAllDashboardViews();
+
+  showToastNotification(
+    isActive ? "Mod Suntingan Paparan DIAKTIFKAN. Klik ikon [✏️ Sunting] pada kad untuk mengedit." : "Mod Suntingan Paparan DIMATIKAN. Paparan kini dalam tatapan umum.",
+    isActive ? "success" : "info"
+  );
+};
+
+// 10. Log Keluar Terus Pentadbir
+window.handleAdminDirectLogout = function() {
+  window.adminManager.logout();
+  updateAdminUIState();
+  refreshAllDashboardViews();
+  showToastNotification("Log keluar pentadbir Ts.FIKREY37 berjaya.", "info");
+};
+
+// 11. Buka Dialog Log Masuk Pentadbir
+function promptAdminLogin() {
+  const modal = document.getElementById("adminModal");
+  if (modal) {
+    modal.classList.remove("hidden");
+    const pinIn = document.getElementById("adminPinInput");
+    if (pinIn) {
+      pinIn.value = "";
+      setTimeout(() => pinIn.focus(), 150);
+    }
+  }
+}
+window.promptAdminLogin = promptAdminLogin;
+
+// 12. Kemas Kini Status UI Pentadbir di Seluruh Halaman
+function updateAdminUIState() {
+  const isAuth = typeof window.adminManager !== "undefined" && window.adminManager.checkAuth();
+  const isEdit = typeof window.adminManager !== "undefined" && window.adminManager.isEditModeActive();
+
+  // Bar Terapung Bawah
+  const floatingBar = document.getElementById("adminFloatingBar");
+  if (floatingBar) {
+    if (isAuth) {
+      floatingBar.classList.remove("hidden");
+      floatingBar.classList.add("flex");
+    } else {
+      floatingBar.classList.add("hidden");
+      floatingBar.classList.remove("flex");
+    }
+  }
+
+  // Butang Mod Suntingan Pada Bar Terapung
+  const btnToggle = document.getElementById("btnToggleEditMode");
+  const editIcon = document.getElementById("editModeIcon");
+  const editLabel = document.getElementById("editModeLabel");
+  if (btnToggle && editLabel) {
+    if (isEdit) {
+      btnToggle.className = "px-3 py-1 rounded-xl text-xs font-bold bg-amber-400 text-slate-950 hover:bg-amber-300 transition shrink-0 flex items-center gap-1 shadow";
+      if (editIcon) editIcon.textContent = "✏️";
+      editLabel.textContent = "Mod Sunting: AKTIF";
+    } else {
+      btnToggle.className = "px-3 py-1 rounded-xl text-xs font-bold bg-slate-800 text-slate-300 hover:bg-slate-700 transition shrink-0 flex items-center gap-1 border border-slate-700";
+      if (editIcon) editIcon.textContent = "👁️";
+      editLabel.textContent = "Mod Paparan Sahaja";
+    }
+  }
+
+  // Ikon & Label Status Pentadbir di Bar Atas
+  const topIcon = document.getElementById("topAdminStatusIcon");
+  const topLabel = document.getElementById("topAdminStatusLabel");
+  const topBtn = document.getElementById("btnOpenAdminModal");
+
+  if (topIcon && topLabel) {
+    if (isAuth) {
+      topIcon.textContent = "👑";
+      topLabel.textContent = "Mod Pentadbir (Ts.FIKREY37)";
+      if (topBtn) {
+        topBtn.classList.add("border-amber-400", "bg-amber-500/10", "text-amber-300");
+      }
+    } else {
+      topIcon.textContent = "🔐";
+      topLabel.textContent = "Log Masuk Pentadbir";
+      if (topBtn) {
+        topBtn.classList.remove("border-amber-400", "bg-amber-500/10", "text-amber-300");
+      }
+    }
+  }
+}
+window.updateAdminUIState = updateAdminUIState;
+
+// 13. Notifikasi Toast Terapung Cantik
+function showToastNotification(message, type = "info") {
+  let toast = document.getElementById("skrLiveToast");
+  if (!toast) {
+    toast = document.createElement("div");
+    toast.id = "skrLiveToast";
+    document.body.appendChild(toast);
+  }
+
+  const colors = {
+    success: "bg-emerald-950/95 text-emerald-200 border-emerald-500 shadow-emerald-900/30",
+    error: "bg-rose-950/95 text-rose-200 border-rose-500 shadow-rose-900/30",
+    info: "bg-slate-950/95 text-amber-200 border-amber-400 shadow-slate-900/40"
+  };
+
+  const icons = {
+    success: "✅",
+    error: "❌",
+    info: "🔔"
+  };
+
+  toast.className = `fixed top-5 right-5 z-[9999] max-w-sm px-4 py-3 rounded-2xl shadow-2xl border text-xs font-bold transition-all duration-300 transform flex items-center gap-2.5 ${colors[type] || colors.info}`;
+  toast.innerHTML = `<span>${icons[type] || '🔔'}</span><div class="flex-1">${message}</div>`;
+
+  // Animate in
+  requestAnimationFrame(() => {
+    toast.style.transform = "translateY(0)";
+    toast.style.opacity = "1";
+  });
+
+  // Auto dismiss
+  clearTimeout(window.__skrToastTimeout);
+  window.__skrToastTimeout = setTimeout(() => {
+    toast.style.transform = "translateY(-20px)";
+    toast.style.opacity = "0";
+  }, 4000);
+}
+window.showToastNotification = showToastNotification;
+

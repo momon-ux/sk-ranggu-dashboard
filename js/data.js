@@ -37,6 +37,74 @@ const DEFAULT_SYSTEM_DATA = {
     infografikEnrolmen: "assets/infografik-enrolmen-5okt2026.png"
   },
 
+  // GERBANG 4 BAHAGIAN PENGURUSAN INDUK (TAB UTAMA)
+  gateways: {
+    kurikulum: {
+      id: "kurikulum",
+      badge: "BAHAGIAN 1",
+      icon: "📚",
+      colorClass: "blue",
+      title: "Pengurusan Kurikulum",
+      desc: "Penyelarasan 12 Panitia, Pentaksiran PBD & UASA, e-RPH, jadual waktu dan pemerkasaan akademik bermakna.",
+      head: "RAHMATIAH BINTI MOHD JUDA",
+      role: "PK Pentadbiran & Kurikulum",
+      photo: "assets/photos/rahmatiah-binti-mohd-juda.jpg",
+      stat1Label: "Panitia Mata Pelajaran:",
+      stat1Val: "12 Panitia Aktif",
+      stat2Label: "Penguasaan PBD:",
+      stat2Val: "96.6% (TP3 - TP6)",
+      targetTab: "tab-kurikulum"
+    },
+    hem: {
+      id: "hem",
+      badge: "BAHAGIAN 2",
+      icon: "🤝",
+      colorClass: "emerald",
+      title: "Pengurusan HEM",
+      desc: "Disiplin, kebajikan & bantuan (RMT, KWAPM, SPBT), keselamatan, kesihatan (3K) dan e-Kehadiran murid.",
+      head: "KOMALA BINTI JOSEPH",
+      role: "PK Hal Ehwal Murid",
+      photo: "assets/photos/komala-binti-joseph.jpg",
+      stat1Label: "Enrolmen Murid:",
+      stat1Val: "890 Murid (APDM)",
+      stat2Label: "Jawatankuasa HEM:",
+      stat2Val: "15 Portfolio Unit",
+      targetTab: "tab-hem"
+    },
+    koko: {
+      id: "koko",
+      badge: "BAHAGIAN 3",
+      icon: "🏆",
+      colorClass: "rose",
+      title: "Pengurusan Kokurikulum",
+      desc: "5 Beruniform, 7 Kelab, 5 Sukan 1M1S, 4 Rumah Sukan dan Kejohanan Olahraga (KOT 26 / Sportsync).",
+      head: "WARNAH BINTI SIRA",
+      role: "PK Kokurikulum",
+      photo: "assets/photos/warnah-binti-sira.jpg",
+      stat1Label: "4 Rumah Sukan:",
+      stat1Val: "Merah, Ungu, Biru, Kuning",
+      stat2Label: "Kejohanan Sukan:",
+      stat2Val: "Sportsync KOT 26",
+      targetTab: "tab-kokurikulum"
+    },
+    petang: {
+      id: "petang",
+      badge: "BAHAGIAN 4",
+      icon: "🌇",
+      colorClass: "amber",
+      title: "Pengurusan Sidang Petang",
+      desc: "Operasi Tahap 1 (Tahun 1, 2, 3), program transisi, SOP keselamatan pintu pagar dan penyelarasan jadual.",
+      head: "EMRAN BIN HJ SELAMAT",
+      role: "PK Petang",
+      photo: "assets/photos/emran-bin-hj-selamat.jpg",
+      stat1Label: "Sesi Persekolahan:",
+      stat1Val: "Tahap 1 (Thn 1, 2, 3)",
+      stat2Label: "Jumlah Murid Petang:",
+      stat2Val: "412 Murid",
+      targetTab: "tab-petang"
+    }
+  },
+
   // KREDIT PEMBANGUN
   developer: {
     name: "MOHAMMAD FIKREY BIN ABDUL GAPAR",
@@ -2205,12 +2273,12 @@ window.getStaffPhoto = function(name) {
 // ==========================================================================
 // PENYIMPANAN LOCALSTORAGE & PEMBERSIHAN CACHE VERSI LAMA
 // ==========================================================================
-const CURRENT_STORAGE_KEY = "SK_RANGGU_DASHBOARD_DATA_V16";
+const CURRENT_STORAGE_KEY = "SK_RANGGU_DASHBOARD_DATA_V17";
 
 function getStoredData() {
   try {
-    // Purge semua cache versi lapuk (V1 sehingga V15)
-    for (let i = 1; i <= 15; i++) {
+    // Purge semua cache versi lapuk (V1 sehingga V16)
+    for (let i = 1; i <= 16; i++) {
       try { localStorage.removeItem(`SK_RANGGU_DASHBOARD_DATA_V${i}`); } catch(e){}
     }
     try { localStorage.removeItem("SK_RANGGU_DASHBOARD_DATA"); } catch(e){}
@@ -2225,6 +2293,9 @@ function getStoredData() {
         parsed.school.infografikEnrolmen = DEFAULT_SYSTEM_DATA.school.infografikEnrolmen;
         parsed.school.logoSchool = DEFAULT_SYSTEM_DATA.school.logoSchool;
         parsed.school.logoKpm = DEFAULT_SYSTEM_DATA.school.logoKpm;
+      }
+      if (parsed && !parsed.gateways) {
+        parsed.gateways = DEFAULT_SYSTEM_DATA.gateways;
       }
       return parsed;
     }

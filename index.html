@@ -100,8 +100,9 @@
           <span id="liveClock">00:00:00 AM</span>
         </div>
         <span class="text-slate-600">|</span>
-        <button id="btnOpenAdminModal" class="text-amber-400 hover:text-amber-300 font-semibold flex items-center gap-1 bg-amber-400/10 hover:bg-amber-400/20 px-2.5 py-0.5 rounded border border-amber-400/30 transition">
-          ⚙️ Pentadbir Sistem
+        <button id="btnOpenAdminModal" class="text-amber-400 hover:text-amber-300 font-bold flex items-center gap-1.5 bg-amber-400/10 hover:bg-amber-400/20 px-3 py-1 rounded-full border border-amber-400/30 transition text-xs">
+          <span id="topAdminStatusIcon">🔐</span>
+          <span id="topAdminStatusLabel">Log Masuk Pentadbir</span>
         </button>
       </div>
     </div>
@@ -422,204 +423,8 @@
           </div>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-          
-          <!-- 1. BAHAGIAN PENGURUSAN KURIKULUM -->
-          <div class="bg-gradient-to-br from-white via-white to-blue-50/70 p-5 rounded-2xl border-2 border-blue-200 hover:border-blue-600 shadow-sm hover:shadow-lg transition-all duration-300 flex flex-col justify-between group relative overflow-hidden">
-            <div class="absolute top-0 right-0 w-24 h-24 bg-blue-500/5 rounded-bl-full pointer-events-none"></div>
-            <div>
-              <div class="flex items-center justify-between mb-3.5">
-                <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-blue-600 to-indigo-700 text-white flex items-center justify-center text-2xl shadow-md group-hover:scale-110 transition-transform">
-                  📚
-                </div>
-                <span class="text-[10px] font-extrabold px-2.5 py-1 rounded-full bg-blue-100 text-blue-800 border border-blue-200 tracking-wide uppercase">
-                  BAHAGIAN 1
-                </span>
-              </div>
-
-              <h4 class="text-base font-extrabold text-royal-900 group-hover:text-blue-700 transition-colors">
-                Pengurusan Kurikulum
-              </h4>
-              <p class="text-xs text-slate-600 mt-1 line-clamp-2">
-                Penyelarasan 12 Panitia, Pentaksiran PBD & UASA, e-RPH, jadual waktu dan pemerkasaan akademik bermakna.
-              </p>
-
-              <div class="mt-4 pt-3 border-t border-blue-100 flex items-center gap-3">
-                <div class="w-12 h-12 rounded-xl overflow-hidden shrink-0 shadow-sm border border-blue-300 bg-slate-100">
-                  <img src="assets/photos/rahmatiah-binti-mohd-juda.jpg" alt="RAHMATIAH BINTI MOHD JUDA" class="w-full h-full object-cover" onerror="this.onerror=null;this.src='assets/photos/default.jpg'">
-                </div>
-                <div class="min-w-0 flex-1">
-                  <span class="text-[10px] font-bold text-blue-700 uppercase block">Ketua Bahagian:</span>
-                  <strong class="text-blue-900 font-extrabold text-xs block truncate">RAHMATIAH BINTI MOHD JUDA</strong>
-                  <span class="text-[11px] text-slate-500 font-semibold block">PK Pentadbiran & Kurikulum</span>
-                </div>
-              </div>
-
-              <div class="mt-3 pt-2 border-t border-blue-50 space-y-1.5 text-xs">
-                <div class="flex items-center justify-between text-slate-500">
-                  <span class="text-[11px]">Panitia Mata Pelajaran:</span>
-                  <span class="font-bold text-blue-700 text-[11px]">12 Panitia Aktif</span>
-                </div>
-                <div class="flex items-center justify-between text-slate-500">
-                  <span class="text-[11px]">Penguasaan PBD:</span>
-                  <span class="font-bold text-emerald-600 text-[11px]">96.6% (TP3 - TP6)</span>
-                </div>
-              </div>
-            </div>
-
-            <button onclick="document.querySelector('[data-tab-target=\'tab-kurikulum\']').click()" class="mt-5 w-full py-2.5 px-3 rounded-xl bg-blue-700 hover:bg-blue-800 text-white font-bold text-xs flex items-center justify-center gap-2 shadow-sm transition">
-              <span>Buka Papan Kurikulum</span>
-              <span>→</span>
-            </button>
-          </div>
-
-          <!-- 2. BAHAGIAN PENGURUSAN HAL EHWAL MURID (HEM) -->
-          <div class="bg-gradient-to-br from-white via-white to-emerald-50/70 p-5 rounded-2xl border-2 border-emerald-200 hover:border-emerald-600 shadow-sm hover:shadow-lg transition-all duration-300 flex flex-col justify-between group relative overflow-hidden">
-            <div class="absolute top-0 right-0 w-24 h-24 bg-emerald-500/5 rounded-bl-full pointer-events-none"></div>
-            <div>
-              <div class="flex items-center justify-between mb-3.5">
-                <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-emerald-600 to-teal-700 text-white flex items-center justify-center text-2xl shadow-md group-hover:scale-110 transition-transform">
-                  🤝
-                </div>
-                <span class="text-[10px] font-extrabold px-2.5 py-1 rounded-full bg-emerald-100 text-emerald-800 border border-emerald-200 tracking-wide uppercase">
-                  BAHAGIAN 2
-                </span>
-              </div>
-
-              <h4 class="text-base font-extrabold text-royal-900 group-hover:text-emerald-700 transition-colors">
-                Pengurusan HEM
-              </h4>
-              <p class="text-xs text-slate-600 mt-1 line-clamp-2">
-                Disiplin, kebajikan & bantuan (RMT, KWAPM, SPBT), keselamatan, kesihatan (3K) dan e-Kehadiran murid.
-              </p>
-
-              <div class="mt-4 pt-3 border-t border-emerald-100 flex items-center gap-3">
-                <div class="w-12 h-12 rounded-xl overflow-hidden shrink-0 shadow-sm border border-emerald-300 bg-slate-100">
-                  <img src="assets/photos/komala-binti-joseph.jpg" alt="KOMALA BINTI JOSEPH" class="w-full h-full object-cover" onerror="this.onerror=null;this.src='assets/photos/default.jpg'">
-                </div>
-                <div class="min-w-0 flex-1">
-                  <span class="text-[10px] font-bold text-emerald-700 uppercase block">Ketua Bahagian:</span>
-                  <strong class="text-emerald-900 font-extrabold text-xs block truncate">KOMALA BINTI JOSEPH</strong>
-                  <span class="text-[11px] text-slate-500 font-semibold block">PK Hal Ehwal Murid</span>
-                </div>
-              </div>
-
-              <div class="mt-3 pt-2 border-t border-emerald-50 space-y-1.5 text-xs">
-                <div class="flex items-center justify-between text-slate-500">
-                  <span class="text-[11px]">Enrolmen Murid:</span>
-                  <span class="font-bold text-emerald-700 text-[11px]">890 Murid (APDM)</span>
-                </div>
-                <div class="flex items-center justify-between text-slate-500">
-                  <span class="text-[11px]">Jawatankuasa HEM:</span>
-                  <span class="font-bold text-amber-600 text-[11px]">15 Portfolio Unit</span>
-                </div>
-              </div>
-            </div>
-
-            <button onclick="document.querySelector('[data-tab-target=\'tab-hem\']').click()" class="mt-5 w-full py-2.5 px-3 rounded-xl bg-emerald-700 hover:bg-emerald-800 text-white font-bold text-xs flex items-center justify-center gap-2 shadow-sm transition">
-              <span>Buka Papan HEM</span>
-              <span>→</span>
-            </button>
-          </div>
-
-          <!-- 3. BAHAGIAN PENGURUSAN KOKURIKULUM & SUKAN -->
-          <div class="bg-gradient-to-br from-white via-white to-rose-50/70 p-5 rounded-2xl border-2 border-rose-200 hover:border-rose-600 shadow-sm hover:shadow-lg transition-all duration-300 flex flex-col justify-between group relative overflow-hidden">
-            <div class="absolute top-0 right-0 w-24 h-24 bg-rose-500/5 rounded-bl-full pointer-events-none"></div>
-            <div>
-              <div class="flex items-center justify-between mb-3.5">
-                <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-rose-600 to-red-700 text-white flex items-center justify-center text-2xl shadow-md group-hover:scale-110 transition-transform">
-                  🏆
-                </div>
-                <span class="text-[10px] font-extrabold px-2.5 py-1 rounded-full bg-rose-100 text-rose-800 border border-rose-200 tracking-wide uppercase">
-                  BAHAGIAN 3
-                </span>
-              </div>
-
-              <h4 class="text-base font-extrabold text-royal-900 group-hover:text-rose-700 transition-colors">
-                Pengurusan Kokurikulum
-              </h4>
-              <p class="text-xs text-slate-600 mt-1 line-clamp-2">
-                5 Beruniform, 7 Kelab, 5 Sukan 1M1S, 4 Rumah Sukan dan Kejohanan Olahraga (KOT 26 / Sportsync).
-              </p>
-
-              <div class="mt-4 pt-3 border-t border-rose-100 flex items-center gap-3">
-                <div class="w-12 h-12 rounded-xl overflow-hidden shrink-0 shadow-sm border border-rose-300 bg-slate-100">
-                  <img src="assets/photos/warnah-binti-sira.jpg" alt="WARNAH BINTI SIRA" class="w-full h-full object-cover" onerror="this.onerror=null;this.src='assets/photos/default.jpg'">
-                </div>
-                <div class="min-w-0 flex-1">
-                  <span class="text-[10px] font-bold text-rose-700 uppercase block">Ketua Bahagian:</span>
-                  <strong class="text-rose-900 font-extrabold text-xs block truncate">WARNAH BINTI SIRA</strong>
-                  <span class="text-[11px] text-slate-500 font-semibold block">PK Kokurikulum</span>
-                </div>
-              </div>
-
-              <div class="mt-3 pt-2 border-t border-rose-50 space-y-1.5 text-xs">
-                <div class="flex items-center justify-between text-slate-500">
-                  <span class="text-[11px]">4 Rumah Sukan:</span>
-                  <span class="font-bold text-rose-700 text-[11px]">Merah, Ungu, Biru, Kuning</span>
-                </div>
-                <div class="flex items-center justify-between text-slate-500">
-                  <span class="text-[11px]">Kejohanan Sukan:</span>
-                  <span class="font-bold text-amber-600 text-[11px]">Sportsync KOT 26</span>
-                </div>
-              </div>
-            </div>
-
-            <button onclick="document.querySelector('[data-tab-target=\'tab-kokurikulum\']').click()" class="mt-5 w-full py-2.5 px-3 rounded-xl bg-rose-700 hover:bg-rose-800 text-white font-bold text-xs flex items-center justify-center gap-2 shadow-sm transition">
-              <span>Buka Papan Kokurikulum</span>
-              <span>→</span>
-            </button>
-          </div>
-
-          <!-- 4. BAHAGIAN PENGURUSAN SIDANG PETANG -->
-          <div class="bg-gradient-to-br from-white via-white to-amber-50/70 p-5 rounded-2xl border-2 border-amber-200 hover:border-amber-600 shadow-sm hover:shadow-lg transition-all duration-300 flex flex-col justify-between group relative overflow-hidden">
-            <div class="absolute top-0 right-0 w-24 h-24 bg-amber-500/5 rounded-bl-full pointer-events-none"></div>
-            <div>
-              <div class="flex items-center justify-between mb-3.5">
-                <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-amber-500 to-yellow-600 text-white flex items-center justify-center text-2xl shadow-md group-hover:scale-110 transition-transform">
-                  🌇
-                </div>
-                <span class="text-[10px] font-extrabold px-2.5 py-1 rounded-full bg-amber-100 text-amber-800 border border-amber-200 tracking-wide uppercase">
-                  BAHAGIAN 4
-                </span>
-              </div>
-
-              <h4 class="text-base font-extrabold text-royal-900 group-hover:text-amber-700 transition-colors">
-                Pengurusan Sidang Petang
-              </h4>
-              <p class="text-xs text-slate-600 mt-1 line-clamp-2">
-                Operasi Tahap 1 (Tahun 1, 2, 3), program transisi, SOP keselamatan pintu pagar dan penyelarasan jadual.
-              </p>
-
-              <div class="mt-4 pt-3 border-t border-amber-100 flex items-center gap-3">
-                <div class="w-12 h-12 rounded-xl overflow-hidden shrink-0 shadow-sm border border-amber-300 bg-slate-100">
-                  <img src="assets/photos/emran-bin-hj-selamat.jpg" alt="EMRAN BIN HJ SELAMAT" class="w-full h-full object-cover" onerror="this.onerror=null;this.src='assets/photos/default.jpg'">
-                </div>
-                <div class="min-w-0 flex-1">
-                  <span class="text-[10px] font-bold text-amber-800 uppercase block">Ketua Bahagian:</span>
-                  <strong class="text-amber-950 font-extrabold text-xs block truncate">EMRAN BIN HJ SELAMAT</strong>
-                  <span class="text-[11px] text-slate-500 font-semibold block">PK Petang</span>
-                </div>
-              </div>
-
-              <div class="mt-3 pt-2 border-t border-amber-50 space-y-1.5 text-xs">
-                <div class="flex items-center justify-between text-slate-500">
-                  <span class="text-[11px]">Enrolmen Tahap 1:</span>
-                  <span class="font-bold text-amber-700 text-[11px]">412 Murid (12 Kelas)</span>
-                </div>
-                <div class="flex items-center justify-between text-slate-500">
-                  <span class="text-[11px]">Waktu Operasi:</span>
-                  <span class="font-bold text-slate-700 text-[11px]">1.00 ptg – 5.30 ptg</span>
-                </div>
-              </div>
-            </div>
-
-            <button onclick="document.querySelector('[data-tab-target=\'tab-petang\']').click()" class="mt-5 w-full py-2.5 px-3 rounded-xl bg-amber-600 hover:bg-amber-700 text-white font-bold text-xs flex items-center justify-center gap-2 shadow-sm transition">
-              <span>Buka Papan Sidang Petang</span>
-              <span>→</span>
-            </button>
-          </div>
-
+        <div id="gatewaysGridContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+          <!-- Dimuatkan secara dinamik melalui renderGateways() dalam app.js -->
         </div>
       </div>
       <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -1028,28 +833,8 @@
               “Sahsiah Terpuji, Murid Berkualiti, Sekolah Harmoni” — Memastikan kebajikan, disiplin, kesihatan dan keselamatan 890 murid terpelihara sepanjang masa.
             </p>
           </div>
-          
-          <div class="flex items-center gap-2.5">
-            <div class="bg-white/10 backdrop-blur-sm p-3 rounded-2xl border border-white/15 flex items-center gap-3 min-w-[160px]">
-              <div class="w-11 h-11 rounded-xl overflow-hidden shrink-0 border border-emerald-400/50 bg-slate-800">
-                <img src="assets/photos/komala-binti-joseph.jpg" alt="KOMALA BT JOSEPH" class="w-full h-full object-cover" onerror="this.onerror=null;this.src='assets/photos/default.jpg'">
-              </div>
-              <div>
-                <span class="text-[10px] uppercase font-bold text-emerald-300 block">PK HEM</span>
-                <strong class="text-xs sm:text-sm font-extrabold text-white block mt-0.5">KOMALA BT JOSEPH</strong>
-                <span class="text-[9px] text-slate-300">Pengerusi HEM</span>
-              </div>
-            </div>
-            <div class="bg-white/10 backdrop-blur-sm p-3 rounded-2xl border border-white/15 flex items-center gap-3 min-w-[160px]">
-              <div class="w-11 h-11 rounded-xl overflow-hidden shrink-0 border border-amber-400/50 bg-slate-800">
-                <img src="assets/photos/norlina-binti-bagwas.jpg" alt="NORLINA BT BAGWAS" class="w-full h-full object-cover" onerror="this.onerror=null;this.src='assets/photos/default.jpg'">
-              </div>
-              <div>
-                <span class="text-[10px] uppercase font-bold text-amber-300 block">Setiausaha HEM</span>
-                <strong class="text-xs sm:text-sm font-extrabold text-white block mt-0.5">NORLINA BT BAGWAS</strong>
-                <span class="text-[9px] text-slate-300">Penyelaras Induk</span>
-              </div>
-            </div>
+          <div id="hemHeaderLeadersContainer" class="flex items-center gap-2.5">
+            <!-- Dimuatkan secara dinamik melalui app.js -->
           </div>
         </div>
 
@@ -1119,38 +904,8 @@
               “Kecergasan Fizikal, Ketahanan Mental, Kecemerlangan Modal Insan” — Mengembangkan bakat kepimpinan, sahsiah dan potensi murid melalui unit beruniform, persatuan dan sukan.
             </p>
           </div>
-          
-          <div class="flex items-center gap-2.5 flex-wrap">
-            <div class="bg-white/10 backdrop-blur-sm p-3 rounded-2xl border border-white/15 flex items-center gap-3 min-w-[150px]">
-              <div class="w-11 h-11 rounded-xl overflow-hidden shrink-0 border border-amber-400/50 bg-slate-800">
-                <img src="assets/photos/warnah-binti-sira.jpg" alt="WARNAH BT SIRA" class="w-full h-full object-cover" onerror="this.onerror=null;this.src='assets/photos/default.jpg'">
-              </div>
-              <div>
-                <span class="text-[10px] uppercase font-bold text-amber-300 block">PK Kokurikulum</span>
-                <strong class="text-xs sm:text-sm font-extrabold text-white block mt-0.5">WARNAH BT SIRA</strong>
-                <span class="text-[9px] text-slate-300">Pengerusi KOKU</span>
-              </div>
-            </div>
-            <div class="bg-white/10 backdrop-blur-sm p-3 rounded-2xl border border-white/15 flex items-center gap-3 min-w-[150px]">
-              <div class="w-11 h-11 rounded-xl overflow-hidden shrink-0 border border-sky-400/50 bg-slate-800">
-                <img src="assets/photos/evalorenna-binti-laminsin.jpg" alt="EVALORENNA BT LAMINSIN" class="w-full h-full object-cover" onerror="this.onerror=null;this.src='assets/photos/default.jpg'">
-              </div>
-              <div>
-                <span class="text-[10px] uppercase font-bold text-sky-300 block">Setiausaha KOKU</span>
-                <strong class="text-xs sm:text-sm font-extrabold text-white block mt-0.5">EVALORENNA BT LAMINSIN</strong>
-                <span class="text-[9px] text-slate-300">Penyelaras Induk</span>
-              </div>
-            </div>
-            <div class="bg-white/10 backdrop-blur-sm p-3 rounded-2xl border border-white/15 flex items-center gap-3 min-w-[150px]">
-              <div class="w-11 h-11 rounded-xl overflow-hidden shrink-0 border border-emerald-400/50 bg-slate-800">
-                <img src="assets/photos/rosidian-bin-idris.jpg" alt="HJ. ROSIDIAN HJ. IDRIS" class="w-full h-full object-cover" onerror="this.onerror=null;this.src='assets/photos/default.jpg'">
-              </div>
-              <div>
-                <span class="text-[10px] uppercase font-bold text-emerald-300 block">Setiausaha Sukan</span>
-                <strong class="text-xs sm:text-sm font-extrabold text-white block mt-0.5">HJ. ROSIDIAN HJ. IDRIS</strong>
-                <span class="text-[9px] text-slate-300">Pegawai Teknikal Sukan</span>
-              </div>
-            </div>
+          <div id="kokoHeaderLeadersContainer" class="flex items-center gap-2.5 flex-wrap">
+            <!-- Dimuatkan secara dinamik melalui app.js -->
           </div>
         </div>
 
@@ -2313,12 +2068,125 @@
         <iframe src="https://fikreyxcode.github.io/kejohanan-olahraga-skrg/index.html?tahun=2026" class="w-full h-full border-0" title="Portal KOT 26" loading="lazy"></iframe>
       </div>
     </div>
+  <!-- =========================================================================
+       MODAL SUNTINGAN PAPARAN LANGSUNG PENTADBIR (UNIVERSAL LIVE EDIT MODAL)
+       Akses Sah Pentadbir Sahaja: Ts.FIKREY37
+       ========================================================================= -->
+  <div id="universalLiveEditModal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm hidden flex items-center justify-center p-3 sm:p-4 overflow-y-auto">
+    <div class="bg-white rounded-3xl max-w-lg w-full p-5 sm:p-6 shadow-2xl border-2 border-amber-400 relative my-6 animate-fadeIn">
+      <!-- Header Modal -->
+      <div class="flex items-center justify-between pb-3.5 border-b border-slate-100">
+        <div>
+          <div class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-amber-100 text-amber-900 border border-amber-300 text-[10px] font-extrabold uppercase tracking-wider mb-1">
+            <span>👑</span> MOD PENTADBIR • Ts.FIKREY37
+          </div>
+          <h3 id="liveEditModalTitle" class="text-base sm:text-lg font-extrabold text-slate-900">
+            Sunting Maklumat & Foto Paparan
+          </h3>
+        </div>
+        <button type="button" onclick="window.closeLiveEditModal()" class="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold flex items-center justify-center text-sm transition">
+          ✕
+        </button>
+      </div>
+
+      <!-- Borang Suntingan -->
+      <form id="universalLiveEditForm" onsubmit="window.handleSaveLiveEdit(event)" class="mt-4 space-y-4">
+        <input type="hidden" id="liveEditTargetType">
+        <input type="hidden" id="liveEditTargetId">
+        <input type="hidden" id="liveEditTargetSubId">
+
+        <!-- Pratonton & Muat Naik Gambar -->
+        <div class="p-3.5 rounded-2xl bg-slate-50 border border-slate-200 flex flex-col sm:flex-row items-center gap-3.5">
+          <div class="w-20 h-20 rounded-2xl overflow-hidden shrink-0 border-2 border-amber-400 shadow bg-white relative">
+            <img id="liveEditPhotoPreview" src="assets/photos/default.jpg" alt="Pratonton Wajah" class="w-full h-full object-cover" onerror="this.onerror=null;this.src='assets/photos/default.jpg'">
+          </div>
+          <div class="flex-1 w-full space-y-2">
+            <span class="text-xs font-bold text-slate-800 block">Foto Wajah / Gambar Pegawai:</span>
+            
+            <!-- Butang Muat Naik Fail Terus -->
+            <label class="w-full py-2 px-3 rounded-xl bg-blue-700 hover:bg-blue-800 text-white font-bold text-xs flex items-center justify-center gap-2 cursor-pointer shadow-sm transition">
+              <span>📁</span>
+              <span>Muat Naik Gambar (PC / Telefon)</span>
+              <input type="file" id="liveEditFileInput" accept="image/*" class="hidden" onchange="window.handleLiveEditFileUpload(event)">
+            </label>
+
+            <!-- Masukkan URL -->
+            <div class="flex items-center gap-1.5">
+              <input type="text" id="liveEditPhotoUrlInput" placeholder="assets/photos/... atau pautan URL" class="flex-1 px-3 py-1.5 rounded-lg border border-slate-300 text-xs bg-white text-slate-900 focus:ring-2 focus:ring-blue-500" oninput="window.handleLiveEditUrlInput(event)">
+              <button type="button" onclick="window.resetLiveEditPhoto()" class="px-2.5 py-1.5 rounded-lg bg-slate-200 hover:bg-slate-300 text-slate-700 text-xs font-semibold" title="Reset ke foto asal">
+                🔄
+              </button>
+            </div>
+            <span class="text-[10px] text-slate-500 block">Pilih foto dari galeri/folder anda. Dimampatkan secara automatik ke saiz optimum.</span>
+          </div>
+        </div>
+
+        <!-- Nama Pegawai -->
+        <div>
+          <label class="text-xs font-bold text-slate-700 block mb-1">Nama Pegawai / Guru:</label>
+          <input type="text" id="liveEditNameInput" required class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm font-bold text-slate-900 bg-white focus:ring-2 focus:ring-blue-500 uppercase">
+        </div>
+
+        <!-- Jawatan / Peranan -->
+        <div>
+          <label class="text-xs font-bold text-slate-700 block mb-1">Jawatan / Peranan Rasmi:</label>
+          <input type="text" id="liveEditRoleInput" required class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm font-semibold text-slate-900 bg-white focus:ring-2 focus:ring-blue-500">
+        </div>
+
+        <!-- Portfolio / Gred / Maklumat Tambahan -->
+        <div>
+          <label class="text-xs font-bold text-slate-700 block mb-1">Portfolio / Gred / Keterangan (Pilihan):</label>
+          <input type="text" id="liveEditExtraInput" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-xs text-slate-900 bg-white focus:ring-2 focus:ring-blue-500" placeholder="Contoh: Unit HEM / Gred DG44 / dsb.">
+        </div>
+
+        <!-- Opsyen Auto-Penyegerakan ke Direktori 60 Staf -->
+        <div class="p-3 rounded-xl bg-amber-50/80 border border-amber-200">
+          <label class="flex items-start gap-2.5 cursor-pointer text-xs text-amber-950 font-medium">
+            <input type="checkbox" id="liveEditSyncStaffCheck" checked class="mt-0.5 rounded text-blue-600 focus:ring-blue-500">
+            <span><strong>Segerakkan secara pintar:</strong> Kemas kini juga gambar dan nama ini ke dalam Direktori 60 Staf SK Ranggu jika nama sepadan.</span>
+          </label>
+        </div>
+
+        <!-- Butang Tindakan -->
+        <div class="pt-3 border-t border-slate-100 flex items-center justify-end gap-2.5">
+          <button type="button" onclick="window.closeLiveEditModal()" class="px-4 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs transition">
+            Batal
+          </button>
+          <button type="submit" class="px-5 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold text-xs shadow-md transition flex items-center gap-1.5">
+            <span>💾</span>
+            <span>Simpan & Kemaskini Paparan</span>
+          </button>
+        </div>
+      </form>
+    </div>
   </div>
 
-  <script src="js/data.js?v=20261006_v14"></script>
-  <script src="js/sheets.js?v=20261006_v14"></script>
-  <script src="js/admin.js?v=20261006_v14"></script>
-  <script src="js/app.js?v=20261006_v14"></script>
+  <!-- =========================================================================
+       BAR TERAPUNG KAWALAN PENTADBIR (ADMIN FLOATING ACTION BAR)
+       Hanya dipaparkan apabila sesi pentadbir Ts.FIKREY37 aktif
+       ========================================================================= -->
+  <div id="adminFloatingBar" class="fixed bottom-4 left-1/2 -translate-x-1/2 z-50 bg-slate-950/95 backdrop-blur-md text-white px-4 py-2.5 rounded-2xl shadow-2xl border-2 border-amber-400 hidden items-center gap-3 max-w-[95vw] overflow-x-auto">
+    <div class="flex items-center gap-2 shrink-0">
+      <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-ping"></span>
+      <span class="text-xs font-black text-amber-300">PENTADBIR: <span class="text-white font-mono">Ts.FIKREY37</span></span>
+    </div>
+    <div class="h-4 w-px bg-white/20 shrink-0"></div>
+    <button id="btnToggleEditMode" onclick="window.toggleAdminEditMode()" class="px-3 py-1 rounded-xl text-xs font-bold bg-amber-400 text-slate-950 hover:bg-amber-300 transition shrink-0 flex items-center gap-1 shadow">
+      <span id="editModeIcon">✏️</span>
+      <span id="editModeLabel">Mod Sunting: AKTIF</span>
+    </button>
+    <button onclick="document.getElementById('btnOpenAdminModal').click()" class="px-3 py-1 rounded-xl text-xs font-bold bg-white/10 hover:bg-white/20 text-white transition shrink-0 flex items-center gap-1">
+      ⚙️ Panel Penuh
+    </button>
+    <button onclick="window.handleAdminDirectLogout()" class="px-2.5 py-1 rounded-xl text-xs font-bold bg-rose-600/80 hover:bg-rose-700 text-white transition shrink-0 flex items-center gap-1">
+      🚪 Keluar
+    </button>
+  </div>
+
+  <script src="js/data.js?v=20261006_v17"></script>
+  <script src="js/sheets.js?v=20261006_v17"></script>
+  <script src="js/admin.js?v=20261006_v17"></script>
+  <script src="js/app.js?v=20261006_v17"></script>
 
 </body>
 </html>
