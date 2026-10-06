@@ -182,6 +182,10 @@ function initSystem() {
   // Kemas kini paparan status admin (Ts.FIKREY37)
   updateAdminUIState();
 
+  // Inisialisasi Progressive Web App (PWA) & Service Worker
+  initPwaServiceWorker();
+  setupPwaInstallHandlers();
+
   console.log("Sistem Dashboard SK Ranggu dimuatkan.");
 }
 
@@ -262,15 +266,19 @@ function renderSchoolHeader() {
 }
 
 function refreshFavicon() {
-  const v = "20261006_v14";
+  const v = "20261006_v18";
   const iconUrls = [
     { rel: "icon", type: "image/png", sizes: "64x64", href: `assets/pwa/favicon-64.png?v=${v}` },
     { rel: "icon", type: "image/png", sizes: "32x32", href: `assets/pwa/favicon-32.png?v=${v}` },
     { rel: "icon", type: "image/png", sizes: "192x192", href: `assets/pwa/icon-192.png?v=${v}` },
+    { rel: "icon", type: "image/png", sizes: "512x512", href: `assets/pwa/icon-512.png?v=${v}` },
+    { rel: "apple-touch-icon", sizes: "180x180", href: `assets/pwa/apple-touch-icon.png?v=${v}` },
     { rel: "shortcut icon", type: "image/x-icon", href: `favicon.ico?v=${v}` }
   ];
   iconUrls.forEach(cfg => {
-    let el = document.querySelector(`link[rel='${cfg.rel}'][sizes='${cfg.sizes || ''}']`);
+    let selector = `link[rel='${cfg.rel}']`;
+    if (cfg.sizes) selector += `[sizes='${cfg.sizes}']`;
+    let el = document.querySelector(selector);
     if (!el) {
       el = document.createElement("link");
       el.rel = cfg.rel;
@@ -3302,4 +3310,107 @@ function showToastNotification(message, type = "info") {
   }, 4000);
 }
 window.showToastNotification = showToastNotification;
+
+/* ==========================================================================
+   14. PENGURUSAN PROGRESSIVE WEB APP (PWA) & SERVICE WORKER
+   Ikon & Lambang 3D Rasmi SK Ranggu Dipaparkan pada Semua Peranti
+   ========================================================================== */
+let deferredPwaPrompt = null;
+
+function initPwaServiceWorker() {
+  if ("serviceWorker" in navigator) {
+    window.addEventListener("load", () => {
+      navigator.serviceWorker
+        .register("./sw.js?v=20261006_v18")
+        .then((reg) => {
+          console.log("PWA Service Worker SK Ranggu berjaya didaftarkan:", reg.scope);
+          reg.onupdatefound = () => {
+            const installingWorker = reg.installing;
+            if (installingWorker) {
+              installingWorker.onstatechange = () => {
+                if (installingWorker.state === "installed" && navigator.serviceWorker.controller) {
+                  console.log("Versi terkini PWA SK Ranggu tersedia.");
+                }
+              };
+            }
+          };
+        })
+        .catch((err) => {
+          console.warn("Pendaftaran Service Worker PWA gagal:", err);
+        });
+    });
+  }
+}
+window.initPwaServiceWorker = initPwaServiceWorker;
+
+function setupPwaInstallHandlers() {
+  // Tangkap event pemasangan pelayar natif (Chrome/Edge/Android)
+  window.addEventListener("beforeinstallprompt", (e) => {
+    e.preventDefault();
+    deferredPwaPrompt = e;
+    console.log("PWA beforeinstallprompt ditangkap.");
+
+    const triggerBtn = document.getElementById("btnPwaTriggerNative");
+    const label = document.getElementById("pwaTriggerBtnLabel");
+    if (label) label.textContent = "Pasang Sekarang ke Peranti (Satu Klik)";
+    if (triggerBtn) {
+      triggerBtn.classList.remove("opacity-80");
+      triggerBtn.classList.add("animate-pulse");
+    }
+
+    const topPwaBtn = document.getElementById("btnPwaInstall");
+    if (topPwaBtn) {
+      topPwaBtn.classList.add("bg-sky-500/30", "text-white", "animate-pulse");
+    }
+  });
+
+  window.addEventListener("appinstalled", () => {
+    deferredPwaPrompt = null;
+    console.log("PWA SK Ranggu berjaya dipasang pada peranti!");
+    showToastNotification("Tahniah! Papan Induk Utama SK Ranggu telah dipasang pada peranti anda.", "success");
+    closePwaInstallModal();
+  });
+}
+window.setupPwaInstallHandlers = setupPwaInstallHandlers;
+
+function openPwaInstallModal() {
+  const modal = document.getElementById("pwaInstallModal");
+  if (modal) {
+    modal.classList.remove("hidden");
+    document.body.classList.add("overflow-hidden");
+  }
+}
+window.openPwaInstallModal = openPwaInstallModal;
+
+function closePwaInstallModal() {
+  const modal = document.getElementById("pwaInstallModal");
+  if (modal) {
+    modal.classList.add("hidden");
+    document.body.classList.remove("overflow-hidden");
+  }
+}
+window.closePwaInstallModal = closePwaInstallModal;
+
+async function triggerPwaInstallPrompt() {
+  if (deferredPwaPrompt) {
+    deferredPwaPrompt.prompt();
+    const { outcome } = await deferredPwaPrompt.userChoice;
+    console.log("Respon pemasangan PWA:", outcome);
+    if (outcome === "accepted") {
+      showToastNotification("Memasang PWA SK Ranggu dengan logo rasmi...", "success");
+      closePwaInstallModal();
+    }
+    deferredPwaPrompt = null;
+  } else {
+    // Panduan untuk peranti iOS Safari atau pelayar yang tidak menyokong prompt natif
+    const isIos = /iphone|ipad|ipod/i.test(navigator.userAgent);
+    if (isIos) {
+      alert("Untuk memasang pada iPhone/iPad:\n1. Tekan ikon Kongsi (Share) di bar bawah Safari.\n2. Pilih 'Tambah ke Skrin Utama' (Add to Home Screen).\n3. Logo rasmi SK Ranggu akan terpapar pada skrin utama anda!");
+    } else {
+      alert("Untuk memasang aplikasi ini:\n• Di Android: Buka menu pelayar (tiga titik ⋮) dan pilih 'Pasang Aplikasi' atau 'Tambah ke Skrin Utama'.\n• Di Komputer: Klik ikon Pasang (⊕) di bar alamat pelayar Chrome/Edge.\n\nLogo lambang 3D rasmi SK Ranggu akan menjadi ikon aplikasi!");
+    }
+  }
+}
+window.triggerPwaInstallPrompt = triggerPwaInstallPrompt;
+
 

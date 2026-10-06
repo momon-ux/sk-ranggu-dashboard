@@ -6,20 +6,18 @@
   <title>PAPAN INDUK UTAMA SEKOLAH KEBANGSAAN RANGGU PETI SURAT 842, 91008 TAWAU SABAH</title>
   
   <meta name="description" content="Papan Induk Utama Sekolah Kebangsaan Ranggu, Peti Surat 842, 91008 Tawau, Sabah (XBA3037). Pusat Bersepadu Pengurusan Pentadbiran, Kurikulum, Hal Ehwal Murid (HEM), Kokurikulum & Sukan, dan Sidang Petang.">
-  <!-- Favicon Rasmi & PWA SK Ranggu (Anti-Cache v14) -->
-  <link rel="icon" type="image/x-icon" href="favicon.ico?v=20261006_v14">
-  <link rel="shortcut icon" type="image/x-icon" href="favicon.ico?v=20261006_v14">
-  <link rel="icon" type="image/png" sizes="32x32" href="assets/pwa/favicon-32.png?v=20261006_v14">
-  <link rel="icon" type="image/png" sizes="64x64" href="assets/pwa/favicon-64.png?v=20261006_v14">
-  <link rel="icon" type="image/png" sizes="192x192" href="assets/pwa/icon-192.png?v=20261006_v14">
-  <link rel="icon" type="image/png" sizes="512x512" href="assets/pwa/icon-512.png?v=20261006_v14">
-  <link rel="icon" type="image/png" href="assets/skrg.png?v=20261006_v14">
-  <link rel="apple-touch-icon" sizes="180x180" href="assets/pwa/apple-touch-icon.png?v=20261006_v14">
-  <link rel="mask-icon" href="assets/logo-sk-ranggu.svg?v=20261006_v14" color="#f59e0b">
+  <!-- Favicon Rasmi & PWA SK Ranggu (Anti-Cache v18) -->
+  <link rel="icon" type="image/x-icon" href="favicon.ico?v=20261006_v18">
+  <link rel="shortcut icon" type="image/x-icon" href="favicon.ico?v=20261006_v18">
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/pwa/favicon-32.png?v=20261006_v18">
+  <link rel="icon" type="image/png" sizes="64x64" href="assets/pwa/favicon-64.png?v=20261006_v18">
+  <link rel="icon" type="image/png" sizes="192x192" href="assets/pwa/icon-192.png?v=20261006_v18">
+  <link rel="icon" type="image/png" sizes="512x512" href="assets/pwa/icon-512.png?v=20261006_v18">
+  <link rel="apple-touch-icon" sizes="180x180" href="assets/pwa/apple-touch-icon.png?v=20261006_v18">
   <meta name="apple-mobile-web-app-title" content="SK Ranggu">
   <meta name="application-name" content="Papan Induk SK Ranggu">
   <meta name="theme-color" content="#081b33">
-  <link rel="manifest" href="manifest.json?v=20261006_v14">
+  <link rel="manifest" href="manifest.json?v=20261006_v18">
 
   <!-- Fon Eksekutif Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -99,6 +97,11 @@
           <span>⏰</span>
           <span id="liveClock">00:00:00 AM</span>
         </div>
+        <span class="text-slate-600">|</span>
+        <button id="btnPwaInstall" onclick="window.openPwaInstallModal()" class="text-sky-300 hover:text-white font-bold flex items-center gap-1.5 bg-sky-500/10 hover:bg-sky-500/20 px-2.5 py-1 rounded-full border border-sky-400/30 transition text-xs" title="Pasang Aplikasi PWA pada Telefon atau Komputer">
+          <span>📱</span>
+          <span class="hidden sm:inline">Pasang PWA</span>
+        </button>
         <span class="text-slate-600">|</span>
         <button id="btnOpenAdminModal" class="text-amber-400 hover:text-amber-300 font-bold flex items-center gap-1.5 bg-amber-400/10 hover:bg-amber-400/20 px-3 py-1 rounded-full border border-amber-400/30 transition text-xs">
           <span id="topAdminStatusIcon">🔐</span>
@@ -2068,6 +2071,68 @@
         <iframe src="https://fikreyxcode.github.io/kejohanan-olahraga-skrg/index.html?tahun=2026" class="w-full h-full border-0" title="Portal KOT 26" loading="lazy"></iframe>
       </div>
     </div>
+  <!-- =========================================================================
+       MODAL PASANG APLIKASI PWA (PAPAN INDUK UTAMA SK RANGGU)
+       ========================================================================= -->
+  <div id="pwaInstallModal" class="fixed inset-0 z-50 bg-slate-950/85 backdrop-blur-md hidden flex items-center justify-center p-3 sm:p-4 overflow-y-auto">
+    <div class="bg-gradient-to-b from-royal-950 via-slate-900 to-royal-900 text-white rounded-3xl max-w-md w-full p-6 sm:p-7 shadow-2xl border-2 border-amber-400 relative my-6 text-center animate-fadeIn">
+      <button type="button" onclick="window.closePwaInstallModal()" class="absolute top-4 right-4 w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 text-white font-bold flex items-center justify-center text-sm transition">
+        ✕
+      </button>
+
+      <!-- Logo PWA Rasmi 3D -->
+      <div class="w-48 sm:w-56 mx-auto mb-4 p-2 bg-white rounded-2xl shadow-xl border-2 border-amber-400/80">
+        <img src="assets/logo-pwa.png?v=20261006_v18" alt="Logo Rasmi PWA SK Ranggu" class="w-full h-auto object-contain">
+      </div>
+
+      <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-400/20 text-amber-300 border border-amber-400/30 text-[11px] font-extrabold uppercase tracking-wider mb-2">
+        <span>📱</span> APLIKASI WEB PROGRESIF (PWA)
+      </div>
+
+      <h3 class="text-lg sm:text-xl font-black text-white leading-tight">
+        Papan Induk Utama SK Ranggu
+      </h3>
+      <p class="text-xs text-slate-300 mt-1.5 leading-relaxed">
+        Pasang aplikasi terus ke skrin telefon (Android & iOS) atau desktop komputer anda. Logo lambang rasmi di atas akan terpapar sebagai ikon aplikasi di mana-mana peranti!
+      </p>
+
+      <!-- Panduan Pemasangan Mengikut Peranti -->
+      <div class="mt-4 space-y-2.5 text-left text-xs bg-white/5 p-4 rounded-2xl border border-white/10">
+        <div class="flex items-start gap-2.5">
+          <span class="text-base">🤖</span>
+          <div>
+            <strong class="text-amber-300 block">Android (Google Chrome):</strong>
+            <span class="text-slate-300 text-[11px]">Tekan butang <strong>"Pasang Sekarang"</strong> di bawah atau pilih menu tiga titik <strong>(⋮) ➔ Pasang Aplikasi / Tambah ke Skrin Utama</strong>.</span>
+          </div>
+        </div>
+
+        <div class="flex items-start gap-2.5 pt-2 border-t border-white/10">
+          <span class="text-base">🍎</span>
+          <div>
+            <strong class="text-sky-300 block">iPhone / iPad (Apple Safari):</strong>
+            <span class="text-slate-300 text-[11px]">Tekan ikon <strong>Kongsi (Share / ⎙)</strong> di bar bawah Safari, kemudian skrol dan pilih <strong>"Tambah ke Skrin Utama" (Add to Home Screen)</strong>.</span>
+          </div>
+        </div>
+
+        <div class="flex items-start gap-2.5 pt-2 border-t border-white/10">
+          <span class="text-base">💻</span>
+          <div>
+            <strong class="text-emerald-300 block">Komputer (Chrome / Edge / Mac):</strong>
+            <span class="text-slate-300 text-[11px]">Klik ikon <strong>Pasang (⊕)</strong> di hujung bar alamat URL browser untuk pasang sebagai aplikasi desktop kendiri.</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Butang Tindakan Pemasangan -->
+      <div class="mt-5 flex items-center justify-center gap-3">
+        <button id="btnPwaTriggerNative" onclick="window.triggerPwaInstallPrompt()" class="w-full py-3 px-4 rounded-xl bg-gradient-to-r from-amber-400 via-amber-500 to-yellow-500 hover:from-amber-300 hover:to-yellow-400 text-slate-950 font-black text-xs shadow-lg transition flex items-center justify-center gap-2">
+          <span>⬇️</span>
+          <span id="pwaTriggerBtnLabel">Pasang Sekarang ke Peranti</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
   <!-- =========================================================================
        MODAL SUNTINGAN PAPARAN LANGSUNG PENTADBIR (UNIVERSAL LIVE EDIT MODAL)
        Akses Sah Pentadbir Sahaja: Ts.FIKREY37
