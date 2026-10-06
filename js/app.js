@@ -1746,24 +1746,34 @@ async function syncWithKOT26(forceReload = false) {
   }
 
   try {
-    const url = "https://fikreyxcode.github.io/kejohanan-olahraga-skrg/data.json" + (forceReload ? `?t=${Date.now()}` : "");
+    const url = "https://fikreyxcode.github.io/kejohanan-olahraga-skrg/data.json" + (forceReload ? `?t=${Date.now()}` : `?t=${Date.now()}`);
     const response = await fetch(url, { cache: "no-store" });
     if (!response.ok) throw new Error(`HTTP status: ${response.status}`);
     const liveData = await response.json();
 
     const year2026 = liveData?.years?.["2026"] || {};
     const results = Array.isArray(year2026.results) ? year2026.results : [];
+    const housesData = year2026.houses || {};
 
+    // Kira murid berdaftar & penyertaan dari portal KOT 26
+    let totalMembers = 0;
+    let totalParticipants = 0;
+    Object.values(housesData).forEach(h => {
+      if (Array.isArray(h.members)) totalMembers += h.members.length;
+      if (Array.isArray(h.participants)) totalParticipants += h.participants.length;
+    });
+
+    // Susunan rasmi KOT 26: Biru, Kuning, Ungu, Merah
     const houseStats = {
-      Merah: { id: "Merah", name: "Rumah Merah", color: "#df3f47", gold: 0, silver: 0, bronze: 0, fourth: 0, points: 0 },
-      Ungu: { id: "Ungu", name: "Rumah Ungu", color: "#6d36d8", gold: 0, silver: 0, bronze: 0, fourth: 0, points: 0 },
       Biru: { id: "Biru", name: "Rumah Biru", color: "#246bfd", gold: 0, silver: 0, bronze: 0, fourth: 0, points: 0 },
-      Kuning: { id: "Kuning", name: "Rumah Kuning", color: "#e5ad00", gold: 0, silver: 0, bronze: 0, fourth: 0, points: 0 }
+      Kuning: { id: "Kuning", name: "Rumah Kuning", color: "#e5ad00", gold: 0, silver: 0, bronze: 0, fourth: 0, points: 0 },
+      Ungu: { id: "Ungu", name: "Rumah Ungu", color: "#6d36d8", gold: 0, silver: 0, bronze: 0, fourth: 0, points: 0 },
+      Merah: { id: "Merah", name: "Rumah Merah", color: "#df3f47", gold: 0, silver: 0, bronze: 0, fourth: 0, points: 0 }
     };
 
     // Kira pungutan pingat jika acara telah direkodkan dalam portal rasmi KOT 26
     results.forEach(res => {
-      const hId = (res.house || res.houseName || "").toString().toLowerCase();
+      const hId = (res.house || res.houseName || "").toString().trim().toLowerCase();
       const matchedKey = Object.keys(houseStats).find(k => hId.includes(k.toLowerCase()));
       if (matchedKey) {
         const place = parseInt(res.place || res.position || res.kedudukan, 10);
@@ -1774,8 +1784,10 @@ async function syncWithKOT26(forceReload = false) {
       }
     });
 
+    let overallPoints = 0;
     Object.values(houseStats).forEach(h => {
       h.points = (h.gold * 7) + (h.silver * 5) + (h.bronze * 3) + (h.fourth * 1);
+      overallPoints += h.points;
     });
 
     const hasAnyPoints = Object.values(houseStats).some(h => h.points > 0);
@@ -1788,6 +1800,15 @@ async function syncWithKOT26(forceReload = false) {
     });
 
     // Kemas kini ke dalam struktur data sportsyncKOT26
+    if (!window.SKR_DATA.sportsyncKOT26) window.SKR_DATA.sportsyncKOT26 = {};
+    if (!window.SKR_DATA.sportsyncKOT26.stats) window.SKR_DATA.sportsyncKOT26.stats = {};
+
+    window.SKR_DATA.sportsyncKOT26.stats.registeredStudents = totalMembers;
+    window.SKR_DATA.sportsyncKOT26.stats.officialResults = results.length;
+    window.SKR_DATA.sportsyncKOT26.stats.completedEntries = totalParticipants;
+    window.SKR_DATA.sportsyncKOT26.stats.totalPoints = overallPoints;
+    window.SKR_DATA.sportsyncKOT26.liveSyncedWithKOT26 = true;
+
     if (window.SKR_DATA?.sportsyncKOT26?.houses) {
       window.SKR_DATA.sportsyncKOT26.houses.forEach(h => {
         const stat = houseStats[h.id];
@@ -1821,22 +1842,26 @@ async function syncWithKOT26(forceReload = false) {
       });
     }
 
+    // Simpan data terselaras ke LocalStorage
+    saveStoredData(window.SKR_DATA);
+
     renderSportsyncSection();
     if (typeof renderKokoHierarchy === "function") renderKokoHierarchy();
 
     if (syncBadge) {
+      const timeStr = new Date().toLocaleTimeString("ms-MY");
       if (hasAnyPoints) {
-        syncBadge.innerHTML = `🟢 KOT 26 Terselaras: ${results.length} Acara Dikemas Kini (${new Date().toLocaleTimeString("ms-MY")})`;
+        syncBadge.innerHTML = `🟢 KOT 26 Terselaras: ${results.length} Acara Dikemas Kini (${timeStr})`;
         syncBadge.className = "text-xs font-semibold px-2.5 py-1 rounded-full bg-emerald-100 text-emerald-800 border border-emerald-300";
       } else {
-        syncBadge.innerHTML = `🟢 Terselaras dengan KOT 26: Temasya Belum Bermula • 0 Mata (${new Date().toLocaleTimeString("ms-MY")})`;
+        syncBadge.innerHTML = `🟢 Terselaras dengan KOT 26: 0 Keputusan • 0 Mata (${timeStr})`;
         syncBadge.className = "text-xs font-semibold px-2.5 py-1 rounded-full bg-blue-100 text-blue-800 border border-blue-300";
       }
     }
   } catch (err) {
     console.warn("Penyelarasan KOT 26 mod luar talian:", err);
     if (syncBadge) {
-      syncBadge.innerHTML = `🟢 KOT 26 Terselaras: Data Rasmi 0 Mata (Menanti Temasya 24-25 Okt)`;
+      syncBadge.innerHTML = `🟢 KOT 26: Data Rasmi 0 Mata (Menanti Temasya 2026)`;
       syncBadge.className = "text-xs font-semibold px-2.5 py-1 rounded-full bg-blue-50 text-blue-800 border border-blue-200";
     }
   } finally {
@@ -1854,6 +1879,16 @@ window.syncWithKOT26 = syncWithKOT26;
 function renderSportsyncSection() {
   const kot = window.SKR_DATA.sportsyncKOT26;
   if (!kot) return;
+
+  // 0. Kemas kini 4 kad ringkasan statistik rasmi KOT 26
+  const kotMemberEl = document.getElementById("kotMemberCount");
+  const kotResultEl = document.getElementById("kotResultCount");
+  const kotPartEl = document.getElementById("kotParticipantCount");
+  const kotTotalPtsEl = document.getElementById("kotTotalPointsCount");
+  if (kotMemberEl) kotMemberEl.textContent = kot.stats?.registeredStudents ?? 0;
+  if (kotResultEl) kotResultEl.textContent = kot.stats?.officialResults ?? 0;
+  if (kotPartEl) kotPartEl.textContent = kot.stats?.completedEntries ?? 0;
+  if (kotTotalPtsEl) kotTotalPtsEl.textContent = `${kot.stats?.totalPoints ?? 0} Mata`;
 
   // 1. Kad Kedudukan 4 Rumah Sukan
   const medalsGrid = document.getElementById("kotMedalsGridContainer");
@@ -3701,9 +3736,11 @@ function initPwaServiceWorker() {
   if ("serviceWorker" in navigator) {
     window.addEventListener("load", () => {
       navigator.serviceWorker
-        .register("./sw.js?v=20261006_v18")
+        .register("./sw.js?v=20261006_v25")
         .then((reg) => {
-          console.log("PWA Service Worker SK Ranggu berjaya didaftarkan:", reg.scope);
+          console.log("PWA Service Worker SK Ranggu V25 didaftarkan:", reg.scope);
+          // Paksa semak versi terkini serta-merta
+          try { reg.update(); } catch(e){}
           reg.onupdatefound = () => {
             const installingWorker = reg.installing;
             if (installingWorker) {

@@ -596,41 +596,13 @@ const DEFAULT_SYSTEM_DATA = {
       setiausahaSukan: "ROSIDIAN BIN IDRIS",
       penolongSetiausahaSukan: "MOHAMMAD IKHWAN BIN ABDURAIS"
     },
+    stats: {
+      registeredStudents: 0,
+      officialResults: 0,
+      completedEntries: 0,
+      totalPoints: 0
+    },
     houses: [
-      {
-        id: "Merah",
-        name: "Rumah Merah",
-        color: "#df3f47",
-        badgeColor: "rose",
-        motto: "Semangat Juang Membara",
-        leadTeacher: "HJH. MASTURAH BINTI TUDA (K)",
-        leadPhoto: "assets/photos/masturah-binti-tuda.jpg",
-        teachers: ["Hjh. Masturah binti Tuda (K)", "Tanjang bin Ture", "Zamrie bin Omar Ali", "Hj. Wan Muhamad Yusuf", "Sabriah @ Habibah binti Abdul Sabar", "Rini binti Daud", "Darmawati binti Lokkong", "S. Lili binti Ladi", "Nur Faezah binti Bantalani", "Robiatul Aidawyah"],
-        gold: 0,
-        silver: 0,
-        bronze: 0,
-        fourth: 0,
-        points: 0,
-        standing: "—",
-        status: "MENANTI KEPUTUSAN ACARA"
-      },
-      {
-        id: "Ungu",
-        name: "Rumah Ungu",
-        color: "#6d36d8",
-        badgeColor: "purple",
-        motto: "Keazaman Menjana Kejuaraan",
-        leadTeacher: "HALIM BIN BIDI (K)",
-        leadPhoto: "assets/photos/halim-bin-bidi.jpg",
-        teachers: ["Halim bin Bidi (K)", "Ag Ku Kemainddra bin Pg Mohd Taib", "MOHAMMAD FIKREY BIN ABDUL GAPAR", "Jainah binti Sulaiman", "Siti Naurin Fadzilah binti Jalal", "Ani binti Patola", "Mariana binti Kassim", "Rosminah binti Sapar", "Marini binti Ladi", "Ainatun Nadhirah binti Dharmawi", "Salsabila binti Shahruddin"],
-        gold: 0,
-        silver: 0,
-        bronze: 0,
-        fourth: 0,
-        points: 0,
-        standing: "—",
-        status: "MENANTI KEPUTUSAN ACARA"
-      },
       {
         id: "Biru",
         name: "Rumah Biru",
@@ -657,6 +629,40 @@ const DEFAULT_SYSTEM_DATA = {
         leadTeacher: "NORLINA BINTI BAGWAS (K)",
         leadPhoto: "assets/photos/norlina-binti-bagwas.jpg",
         teachers: ["Norlina binti Bagwas (K)", "Mohd. Ikhwan bin Abdurais", "Hasnan bin Mat Zin", "Hamsiah binti Hamid", "Wafa Farhana binti Abd. Kadir", "Evalorenna binti Laminsin", "Noor Syafiqah Nadhirah binti Jamaluddin", "Ruhaya binti Ahmad", "Nechi binti Serunai", "Yusni binti Wahjudin", "Sunarti binti Tappa"],
+        gold: 0,
+        silver: 0,
+        bronze: 0,
+        fourth: 0,
+        points: 0,
+        standing: "—",
+        status: "MENANTI KEPUTUSAN ACARA"
+      },
+      {
+        id: "Ungu",
+        name: "Rumah Ungu",
+        color: "#6d36d8",
+        badgeColor: "purple",
+        motto: "Keazaman Menjana Kejuaraan",
+        leadTeacher: "HALIM BIN BIDI (K)",
+        leadPhoto: "assets/photos/halim-bin-bidi.jpg",
+        teachers: ["Halim bin Bidi (K)", "Ag Ku Kemainddra bin Pg Mohd Taib", "MOHAMMAD FIKREY BIN ABDUL GAPAR", "Jainah binti Sulaiman", "Siti Naurin Fadzilah binti Jalal", "Ani binti Patola", "Mariana binti Kassim", "Rosminah binti Sapar", "Marini binti Ladi", "Ainatun Nadhirah binti Dharmawi", "Salsabila binti Shahruddin"],
+        gold: 0,
+        silver: 0,
+        bronze: 0,
+        fourth: 0,
+        points: 0,
+        standing: "—",
+        status: "MENANTI KEPUTUSAN ACARA"
+      },
+      {
+        id: "Merah",
+        name: "Rumah Merah",
+        color: "#df3f47",
+        badgeColor: "rose",
+        motto: "Semangat Juang Membara",
+        leadTeacher: "HJH. MASTURAH BINTI TUDA (K)",
+        leadPhoto: "assets/photos/masturah-binti-tuda.jpg",
+        teachers: ["Hjh. Masturah binti Tuda (K)", "Tanjang bin Ture", "Zamrie bin Omar Ali", "Hj. Wan Muhamad Yusuf", "Sabriah @ Habibah binti Abdul Sabar", "Rini binti Daud", "Darmawati binti Lokkong", "S. Lili binti Ladi", "Nur Faezah binti Bantalani", "Robiatul Aidawyah"],
         gold: 0,
         silver: 0,
         bronze: 0,
@@ -2404,12 +2410,12 @@ window.getStaffPhoto = function(name) {
 // ==========================================================================
 DEFAULT_SYSTEM_DATA.takwimEvents = DEFAULT_SYSTEM_DATA.takwim;
 
-const CURRENT_STORAGE_KEY = "SK_RANGGU_DASHBOARD_DATA_V20";
+const CURRENT_STORAGE_KEY = "SK_RANGGU_DASHBOARD_DATA_V25";
 
 function getStoredData() {
   try {
-    // Purge semua cache versi lapuk (V1 sehingga V19)
-    for (let i = 1; i <= 19; i++) {
+    // Purge semua cache versi lapuk (V1 sehingga V24)
+    for (let i = 1; i <= 24; i++) {
       try { localStorage.removeItem(`SK_RANGGU_DASHBOARD_DATA_V${i}`); } catch(e){}
     }
     try { localStorage.removeItem("SK_RANGGU_DASHBOARD_DATA"); } catch(e){}
@@ -2429,9 +2435,41 @@ function getStoredData() {
       if (parsed) {
         if (!parsed.gateways) parsed.gateways = DEFAULT_SYSTEM_DATA.gateways;
         if (!parsed.takwimEvents) parsed.takwimEvents = DEFAULT_SYSTEM_DATA.takwim;
+        
+        // Penyelarasan mutlak dengan sistem rasmi KOT 26 (0 mata jika belum berlangsung)
         if (!parsed.sportsyncKOT26 || !parsed.sportsyncKOT26.houses) {
           parsed.sportsyncKOT26 = DEFAULT_SYSTEM_DATA.sportsyncKOT26;
+        } else {
+          // Jika tiada pengesahan penyelarasan secara langsung, paksa reset ke 0 mata
+          if (!parsed.sportsyncKOT26.liveSyncedWithKOT26) {
+            parsed.sportsyncKOT26.houses.forEach(h => {
+              h.gold = 0;
+              h.silver = 0;
+              h.bronze = 0;
+              h.fourth = 0;
+              h.points = 0;
+              h.standing = "—";
+              h.status = "MENANTI KEPUTUSAN ACARA";
+            });
+            if (parsed.sportsyncKOT26.stats) {
+              parsed.sportsyncKOT26.stats.registeredStudents = 0;
+              parsed.sportsyncKOT26.stats.officialResults = 0;
+              parsed.sportsyncKOT26.stats.completedEntries = 0;
+              parsed.sportsyncKOT26.stats.totalPoints = 0;
+            }
+          }
         }
+
+        // Pastikan sportHouses dalam kokurikulum juga bermula dengan 0 mata
+        if (Array.isArray(parsed.sportHouses)) {
+          if (!parsed.sportsyncKOT26?.liveSyncedWithKOT26) {
+            parsed.sportHouses.forEach(sh => {
+              sh.points = 0;
+              sh.standing = "—";
+            });
+          }
+        }
+
         // Pastikan AHAD BIN JAAFAR & JAIBY BIN JULIAN kekal tidak aktif / bersara
         if (Array.isArray(parsed.staffList)) {
           parsed.staffList.forEach(s => {

@@ -6,18 +6,27 @@
   <title>PAPAN INDUK UTAMA SEKOLAH KEBANGSAAN RANGGU PETI SURAT 842, 91008 TAWAU SABAH</title>
   
   <meta name="description" content="Papan Induk Utama Sekolah Kebangsaan Ranggu, Peti Surat 842, 91008 Tawau, Sabah (XBA3037). Pusat Bersepadu Pengurusan Pentadbiran, Kurikulum, Hal Ehwal Murid (HEM), Kokurikulum & Sukan, dan Sidang Petang.">
-  <!-- Favicon Rasmi & PWA SK Ranggu (Anti-Cache v18) -->
-  <link rel="icon" type="image/x-icon" href="favicon.ico?v=20261006_v18">
-  <link rel="shortcut icon" type="image/x-icon" href="favicon.ico?v=20261006_v18">
-  <link rel="icon" type="image/png" sizes="32x32" href="assets/pwa/favicon-32.png?v=20261006_v18">
-  <link rel="icon" type="image/png" sizes="64x64" href="assets/pwa/favicon-64.png?v=20261006_v18">
-  <link rel="icon" type="image/png" sizes="192x192" href="assets/pwa/icon-192.png?v=20261006_v18">
-  <link rel="icon" type="image/png" sizes="512x512" href="assets/pwa/icon-512.png?v=20261006_v18">
-  <link rel="apple-touch-icon" sizes="180x180" href="assets/pwa/apple-touch-icon.png?v=20261006_v18">
+  <!-- Favicon Rasmi & PWA SK Ranggu (Anti-Cache v25) -->
+  <link rel="icon" type="image/x-icon" href="favicon.ico?v=20261006_v25">
+  <link rel="shortcut icon" type="image/x-icon" href="favicon.ico?v=20261006_v25">
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/pwa/favicon-32.png?v=20261006_v25">
+  <link rel="icon" type="image/png" sizes="64x64" href="assets/pwa/favicon-64.png?v=20261006_v25">
+  <link rel="icon" type="image/png" sizes="192x192" href="assets/pwa/icon-192.png?v=20261006_v25">
+  <link rel="icon" type="image/png" sizes="512x512" href="assets/pwa/icon-512.png?v=20261006_v25">
+  <link rel="apple-touch-icon" sizes="180x180" href="assets/pwa/apple-touch-icon.png?v=20261006_v25">
   <meta name="apple-mobile-web-app-title" content="SK Ranggu">
   <meta name="application-name" content="Papan Induk SK Ranggu">
   <meta name="theme-color" content="#081b33">
-  <link rel="manifest" href="manifest.json?v=20261006_v18">
+  <link rel="manifest" href="manifest.json?v=20261006_v25">
+
+  <script>
+    // Pastikan Service Worker sentiasa dikemas kini dan cache lama dihapuskan segera
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.getRegistrations().then(function(regs) {
+        for (let reg of regs) { reg.update(); }
+      });
+    }
+  </script>
 
   <!-- Fon Eksekutif Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -1175,6 +1184,38 @@
             </div>
             <div class="text-[11px] text-slate-500">
               *Data terselaras secara langsung dari sistem rasmi KOT 26. Sebarang mata yang dimasukkan ke portal KOT 26 akan tertera di sini secara automatik.
+            </div>
+          </div>
+
+          <!-- RINGKASAN STATISTIK KOT 26 RASMI (SEPADAN fikreyxcode.github.io/kejohanan-olahraga-skrg) -->
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+            <div class="p-3.5 rounded-xl bg-slate-50 border border-slate-200/80 flex items-center gap-3">
+              <span class="w-10 h-10 rounded-lg bg-blue-100 text-blue-800 flex items-center justify-center text-xl shrink-0">🏃</span>
+              <div>
+                <b class="text-lg font-extrabold text-slate-900 block leading-tight font-mono" id="kotMemberCount">0</b>
+                <span class="text-[11px] text-slate-500 font-medium">Murid Berdaftar</span>
+              </div>
+            </div>
+            <div class="p-3.5 rounded-xl bg-slate-50 border border-slate-200/80 flex items-center gap-3">
+              <span class="w-10 h-10 rounded-lg bg-emerald-100 text-emerald-800 flex items-center justify-center text-xl shrink-0">🏅</span>
+              <div>
+                <b class="text-lg font-extrabold text-slate-900 block leading-tight font-mono" id="kotResultCount">0</b>
+                <span class="text-[11px] text-slate-500 font-medium">Keputusan Rasmi</span>
+              </div>
+            </div>
+            <div class="p-3.5 rounded-xl bg-slate-50 border border-slate-200/80 flex items-center gap-3">
+              <span class="w-10 h-10 rounded-lg bg-purple-100 text-purple-800 flex items-center justify-center text-xl shrink-0">📝</span>
+              <div>
+                <b class="text-lg font-extrabold text-slate-900 block leading-tight font-mono" id="kotParticipantCount">0</b>
+                <span class="text-[11px] text-slate-500 font-medium">Penyertaan Lengkap</span>
+              </div>
+            </div>
+            <div class="p-3.5 rounded-xl bg-slate-50 border border-slate-200/80 flex items-center gap-3">
+              <span class="w-10 h-10 rounded-lg bg-amber-100 text-amber-800 flex items-center justify-center text-xl shrink-0">🏆</span>
+              <div>
+                <b class="text-lg font-extrabold text-amber-900 block leading-tight font-mono" id="kotTotalPointsCount">0</b>
+                <span class="text-[11px] text-slate-500 font-medium">Jumlah Mata Rasmi</span>
+              </div>
             </div>
           </div>
 
@@ -2426,10 +2467,10 @@
     </button>
   </div>
 
-  <script src="js/data.js?v=20261006_v18"></script>
-  <script src="js/sheets.js?v=20261006_v18"></script>
-  <script src="js/admin.js?v=20261006_v18"></script>
-  <script src="js/app.js?v=20261006_v18"></script>
+  <script src="js/data.js?v=20261006_v25"></script>
+  <script src="js/sheets.js?v=20261006_v25"></script>
+  <script src="js/admin.js?v=20261006_v25"></script>
+  <script src="js/app.js?v=20261006_v25"></script>
 
 </body>
 </html>
