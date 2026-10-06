@@ -30,7 +30,7 @@ const DEFAULT_SYSTEM_DATA = {
 
   // KREDIT PEMBANGUN SISTEM
   developer: {
-    name: "Momon",
+    name: "Mohammad Fikrey bin Abdul Gapar (Momon)",
     role: "Lead System Architect & Senior Developer",
     unit: "Unit Pengurusan Pentadbiran & ICT SK Ranggu",
     badge: "Pembangun Rasmi Sistem",
@@ -38,7 +38,7 @@ const DEFAULT_SYSTEM_DATA = {
     githubRepo: "https://github.com/momon/sk-ranggu-dashboard",
     systemVersion: "v2.5.0 Prestige Edition",
     buildDate: "2025/2026",
-    creditStatement: "Sistem ini direka bentuk dan dibangunkan oleh Momon khas untuk Bahagian Unit Pengurusan Pentadbiran & Kurikulum SK Ranggu bagi membolehkan pemantauan berpusat yang responsif, dinamik dan berprestij tinggi pada semua peranti awam dan warga pendidik."
+    creditStatement: "Sistem ini direka bentuk dan dibangunkan oleh Mohammad Fikrey bin Abdul Gapar (Momon) khas untuk Bahagian Unit Pengurusan Pentadbiran & Kurikulum SK Ranggu bagi membolehkan pemantauan berpusat yang responsif, dinamik dan berprestij tinggi pada semua peranti awam dan warga pendidik."
   },
 
   // KONFIGURASI GOOGLE SHEETS

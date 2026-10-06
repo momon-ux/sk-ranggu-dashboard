@@ -2,7 +2,7 @@
 ### SEKOLAH KEBANGSAAN RANGGU, TAWAU, SABAH (KOD SEKOLAH: XBA3037)
 **Alamat Rasmi:** Peti Surat 842, 91008 Tawau, Sabah  
 **Moto Sekolah:** *"Cita • Usaha • Jaya"*  
-**Pembangun & Arkitek Sistem Utama:** **Momon** (*Lead System Architect & Senior Developer*)
+**Pembangun & Arkitek Sistem Utama:** **Mohammad Fikrey bin Abdul Gapar (Momon)** (*Lead System Architect & Senior Developer*)
 
 ---
 
