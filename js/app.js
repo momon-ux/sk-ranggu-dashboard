@@ -1,7 +1,7 @@
 /**
  * PENGENDALI UTAMA APLIKASI (APP CONTROLLER)
  * Sistem Dashboard Pengurusan Pentadbiran & Kurikulum SK Ranggu
- * Pembangun: Mohammad Fikrey (Pentadbir Sistem)
+ * Pembangun: MOHAMMAD FIKREY BIN ABDUL GAPAR (Pentadbir Sistem)
  */
 
 document.addEventListener("DOMContentLoaded", () => {

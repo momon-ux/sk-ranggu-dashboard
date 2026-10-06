@@ -1,7 +1,7 @@
 /**
  * MODUL PENTADBIR & PENGURUSAN SISTEM (ADMIN PORTAL)
  * Sistem Dashboard Pengurusan Bersepadu SK Ranggu Tawau
- * Pembangun: Mohammad Fikrey (Pentadbir Sistem)
+ * Pembangun: MOHAMMAD FIKREY BIN ABDUL GAPAR (Pentadbir Sistem)
  */
 
 class AdminManager {

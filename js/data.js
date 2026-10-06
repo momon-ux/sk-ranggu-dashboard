@@ -4,7 +4,7 @@
  * 
  * Pangkalan Data Induk Rasmi - Berdasarkan Carta Organisasi Pentadbiran 2026
  * & Senarai 60 Staf SK Ranggu (08.06.2026)
- * Pembangun: Mohammad Fikrey (Pentadbir Sistem)
+ * Pembangun: MOHAMMAD FIKREY BIN ABDUL GAPAR (Pentadbir Sistem)
  */
 
 const DEFAULT_SYSTEM_DATA = {
@@ -32,8 +32,8 @@ const DEFAULT_SYSTEM_DATA = {
 
   // KREDIT PEMBANGUN
   developer: {
-    name: "Mohammad Fikrey",
-    role: "Pentadbir Sistem & Pengurusan ICT",
+    name: "MOHAMMAD FIKREY BIN ABDUL GAPAR",
+    role: "Pentadbir Sistem & Penyelaras ICT (Guru Kelas 6 Jayyid)",
     unit: "Unit Pengurusan Pentadbiran SK Ranggu"
   },
 
@@ -309,7 +309,7 @@ const DEFAULT_SYSTEM_DATA = {
       { name: "Rumah Kuning", color: "amber", hex: "#e5ad00", head: "NORLINA BINTI BAGWAS (K)", motto: "Menyinari Arena Kejayaan", teachersCount: 11, standing: 4, points: 139 }
     ],
     achievements: [
-      { title: "Kejohanan TASCAR 3.0 Peringkat Kebangsaan", badge: "Kebangsaan 🥇", level: "Kebangsaan", date: "2026", desc: "Penyampaian pingat dan sijil pencapaian cemerlang peringkat kebangsaan, dibimbing dan dilatih oleh Cikgu Mohammad Fikrey bin Abdul Gapar." },
+      { title: "Kejohanan TASCAR 3.0 Peringkat Kebangsaan", badge: "Kebangsaan 🥇", level: "Kebangsaan", date: "2026", desc: "Penyampaian pingat dan sijil pencapaian cemerlang peringkat kebangsaan, dibimbing dan dilatih oleh MOHAMMAD FIKREY BIN ABDUL GAPAR." },
       { title: "White Bridge Unichamp", badge: "Daerah / Negeri 🥈", level: "Daerah / Negeri", date: "2026", desc: "Pengiktirafan dan penganugerahan kepada barisan murid dan guru pembimbing peserta kejohanan White Bridge Unichamp." },
       { title: "Minggu Kokurikulum Unit Beruniform (Pengakap)", badge: "Peringkat Sekolah", level: "Sekolah", date: "September 2026", desc: "Aktiviti kemahiran ikatan, perkhemahan, dan disiplin baris yang dikendalikan oleh Persekutuan Pengakap Kanak-Kanak SK Ranggu." }
     ]
@@ -359,7 +359,7 @@ const DEFAULT_SYSTEM_DATA = {
         badgeColor: "purple",
         motto: "Keazaman Menjana Kejuaraan",
         leadTeacher: "HALIM BIN BIDI (K)",
-        teachers: ["Halim bin Bidi (K)", "Ag. Ku Kemaindra Pg. Mohd. Taib", "Mohammad Fikrey bin Abdul Gapar", "Jainah binti Sulaiman", "Siti Naurin Fadzilah binti Jalal", "Ani binti Patola", "Mariana binti Kassim", "Rosminah bte Sapar", "Marini binti Ladi", "Ainatun Nadhirah bt. Dharmawi", "Salsabilah binti Shahruddin"],
+        teachers: ["Halim bin Bidi (K)", "Ag. Ku Kemaindra Pg. Mohd. Taib", "MOHAMMAD FIKREY BIN ABDUL GAPAR", "Jainah binti Sulaiman", "Siti Naurin Fadzilah binti Jalal", "Ani binti Patola", "Mariana binti Kassim", "Rosminah bte Sapar", "Marini binti Ladi", "Ainatun Nadhirah bt. Dharmawi", "Salsabilah binti Shahruddin"],
         gold: 11,
         silver: 12,
         bronze: 9,
@@ -657,7 +657,7 @@ const DEFAULT_SYSTEM_DATA = {
       type: "PNG HD",
       fileUrl: "assets/carta-organisasi-2026.png",
       size: "388 KB",
-      uploader: "Unit Media / Digital (Mohammad Fikrey)"
+      uploader: "Unit Media / Digital (MOHAMMAD FIKREY BIN ABDUL GAPAR)"
     }
   ],
 
@@ -808,7 +808,7 @@ const DEFAULT_SYSTEM_DATA = {
 
 function getStoredData() {
   try {
-    const stored = localStorage.getItem("SK_RANGGU_DASHBOARD_DATA_V8");
+    const stored = localStorage.getItem("SK_RANGGU_DASHBOARD_DATA_V9");
     if (stored) return JSON.parse(stored);
   } catch (err) {
     console.warn("Gagal membaca LocalStorage:", err);
@@ -818,7 +818,7 @@ function getStoredData() {
 
 function saveStoredData(data) {
   try {
-    localStorage.setItem("SK_RANGGU_DASHBOARD_DATA_V8", JSON.stringify(data));
+    localStorage.setItem("SK_RANGGU_DASHBOARD_DATA_V9", JSON.stringify(data));
     return true;
   } catch (err) {
     console.error("Gagal simpan LocalStorage:", err);
@@ -827,7 +827,7 @@ function saveStoredData(data) {
 }
 
 function resetToDefaultData() {
-  localStorage.removeItem("SK_RANGGU_DASHBOARD_DATA_V8");
+  localStorage.removeItem("SK_RANGGU_DASHBOARD_DATA_V9");
   return DEFAULT_SYSTEM_DATA;
 }
 

@@ -1,8 +1,8 @@
-# 🏛️ SISTEM DASHBOARD BAHAGIAN UNIT PENGURUSAN PENTADBIRAN & KURIKULUM
-### SEKOLAH KEBANGSAAN RANGGU, TAWAU, SABAH (KOD SEKOLAH: XBA3037)
+# 🏛️ PAPAN INDUK UTAMA SEKOLAH KEBANGSAAN RANGGU
+### PETI SURAT 842, 91008 TAWAU, SABAH (KOD SEKOLAH: XBA3037)
 **Alamat Rasmi:** Peti Surat 842, 91008 Tawau, Sabah  
 **Moto Sekolah:** *"Cita • Usaha • Jaya"*  
-**Pembangun & Arkitek Sistem Utama:** **Mohammad Fikrey bin Abdul Gapar (Momon)** (*Lead System Architect & Senior Developer*)
+**Pembangun & Pentadbir Sistem:** **MOHAMMAD FIKREY BIN ABDUL GAPAR** (*Lead System Architect, Pentadbir Sistem & Guru Kelas 6 Jayyid*)
 
 ---
 
