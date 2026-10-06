@@ -25,8 +25,8 @@ const DEFAULT_SYSTEM_DATA = {
     mission: "Melestarikan Sistem Pendidikan Yang Berkualiti Untuk Membangunkan Potensi Individu Bagi Memenuhi Aspirasi Negara",
     establishedYear: 1973,
     academicSession: "Sesi Persekolahan 2025 / 2026",
-    logoKpm: "assets/kpm.png",
-    logoSchool: "assets/skrg.png",
+    logoKpm: "assets/kpm.png?v=20261006_v13",
+    logoSchool: "assets/skrg.png?v=20261006_v13",
     posterCarta: "assets/carta-organisasi-2026.png",
     infografikEnrolmen: "assets/infografik-enrolmen-5okt2026.png"
   },
@@ -1882,12 +1882,12 @@ const DEFAULT_SYSTEM_DATA = {
   }
 };
 
-const CURRENT_STORAGE_KEY = "SK_RANGGU_DASHBOARD_DATA_V12";
+const CURRENT_STORAGE_KEY = "SK_RANGGU_DASHBOARD_DATA_V13";
 
 function getStoredData() {
   try {
     // Purge legacy caches
-    ["SK_RANGGU_DASHBOARD_DATA", "SK_RANGGU_DASHBOARD_DATA_V2", "SK_RANGGU_DASHBOARD_DATA_V9", "SK_RANGGU_DASHBOARD_DATA_V10", "SK_RANGGU_DASHBOARD_DATA_V11"].forEach(k => {
+    ["SK_RANGGU_DASHBOARD_DATA", "SK_RANGGU_DASHBOARD_DATA_V2", "SK_RANGGU_DASHBOARD_DATA_V9", "SK_RANGGU_DASHBOARD_DATA_V10", "SK_RANGGU_DASHBOARD_DATA_V11", "SK_RANGGU_DASHBOARD_DATA_V12"].forEach(k => {
       try { localStorage.removeItem(k); } catch(e){}
     });
     const stored = localStorage.getItem(CURRENT_STORAGE_KEY);
@@ -1898,6 +1898,8 @@ function getStoredData() {
         parsed.school.address = DEFAULT_SYSTEM_DATA.school.address;
         parsed.school.motto = DEFAULT_SYSTEM_DATA.school.motto;
         parsed.school.infografikEnrolmen = DEFAULT_SYSTEM_DATA.school.infografikEnrolmen;
+        parsed.school.logoSchool = DEFAULT_SYSTEM_DATA.school.logoSchool;
+        parsed.school.logoKpm = DEFAULT_SYSTEM_DATA.school.logoKpm;
       }
       return parsed;
     }

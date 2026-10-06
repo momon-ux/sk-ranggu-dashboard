@@ -1,5 +1,5 @@
 {
-  "name": "Papan Induk Utama SK Ranggu",
+  "name": "PAPAN INDUK UTAMA SEKOLAH KEBANGSAAN RANGGU",
   "short_name": "SK Ranggu",
   "description": "Papan Induk Utama Pentadbiran, Kurikulum, HEM, Kokurikulum & Sidang Petang SK Ranggu Tawau (XBA3037)",
   "start_url": "index.html",
@@ -8,32 +8,32 @@
   "theme_color": "#081b33",
   "icons": [
     {
-      "src": "assets/pwa/icon-192.png",
+      "src": "assets/pwa/icon-192.png?v=20261006_v13",
       "sizes": "192x192",
       "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "assets/pwa/icon-512.png",
+      "src": "assets/pwa/icon-512.png?v=20261006_v13",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "assets/pwa/maskable-192.png",
+      "src": "assets/pwa/maskable-192.png?v=20261006_v13",
       "sizes": "192x192",
       "type": "image/png",
       "purpose": "maskable"
     },
     {
-      "src": "assets/pwa/maskable-512.png",
+      "src": "assets/pwa/maskable-512.png?v=20261006_v13",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "maskable"
     },
     {
-      "src": "assets/skrg.png",
-      "sizes": "162x212",
+      "src": "assets/skrg.png?v=20261006_v13",
+      "sizes": "466x600",
       "type": "image/png",
       "purpose": "any"
     }
