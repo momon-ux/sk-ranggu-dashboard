@@ -2,7 +2,7 @@
  * SISTEM DASHBOARD UNIT PENGURUSAN PENTADBIRAN & KURIKULUM
  * SEKOLAH KEBANGSAAN RANGGU, TAWAU, SABAH (XBA3037)
  * 
- * Data Induk Sistem & Senarai Guru Rasmi SK Ranggu
+ * Pangkalan Data Induk Rasmi - Berdasarkan Senarai Staf SK Ranggu (08.06.2026)
  * Pembangun: Mohammad Fikrey (Pentadbir Sistem)
  */
 
@@ -28,24 +28,20 @@ const DEFAULT_SYSTEM_DATA = {
     logoSchool: "assets/skrg.jpeg"
   },
 
-  // KREDIT PEMBANGUN SISTEM (SEDERHANA & EKSEKUTIF UNTUK PAPARAN AWAM)
+  // KREDIT PEMBANGUN SISTEM (RASMI & RINGKAS)
   developer: {
     name: "Mohammad Fikrey",
     role: "Pentadbir Sistem & Pengurusan ICT",
     unit: "Unit Pengurusan Pentadbiran SK Ranggu"
   },
 
-  // KONFIGURASI GOOGLE SHEETS
-  googleSheets: {
-    sheetId: "19BgxY06KSHSizUsnreZXnXNoUbf-ivhaVj9YVQ8hVdU",
-    gid: "2057996103",
-    fullUrl: "https://docs.google.com/spreadsheets/d/19BgxY06KSHSizUsnreZXnXNoUbf-ivhaVj9YVQ8hVdU/edit?gid=2057996103#gid=2057996103"
-  },
-
-  // STATISTIK SEKOLAH
+  // STATISTIK RASMI SK RANGGU
   stats: {
-    totalTeachers: 49,
-    totalStaff: 6,
+    totalTeachers: 54,        // 19 Lelaki, 35 Perempuan
+    totalStaff: 6,            // AKP (6 Perempuan)
+    totalAllStaff: 60,        // Jumlah Staf Keseluruhan
+    morningSession: 30,       // Sesi Pagi (13 L, 17 P)
+    afternoonSession: 24,     // Sesi Petang (6 L, 18 P)
     totalStudents: 586,
     totalClasses: 18,
     preschoolClasses: 2,
@@ -63,7 +59,7 @@ const DEFAULT_SYSTEM_DATA = {
       date: "2025-10-06",
       priority: "Tinggi",
       category: "Kurikulum",
-      author: "PK Pentadbiran (Hjh. Rahmatiah)",
+      author: "PK Pentadbiran (Puan Rahmatiah)",
       content: "Semua guru diminta melengkapkan dan menghantar e-RPH sebelum jam 5.00 petang hari Jumaat melalui pautan rasmi DELIMa."
     },
     {
@@ -72,32 +68,32 @@ const DEFAULT_SYSTEM_DATA = {
       date: "2025-10-12",
       priority: "Penting",
       category: "Mesyuarat",
-      author: "Setiausaha Kurikulum (Ani binti Patola)",
+      author: "Setiausaha Kurikulum (Puan Ani binti Patola)",
       content: "Mesyuarat Kurikulum Bil 3 akan diadakan di Bilik Mesyuarat pada jam 1.30 petang. Kehadiran semua Ketua Panitia adalah diwajibkan."
     },
     {
       id: "ann-3",
-      title: "Pengisian Tahap Penguasaan Pentaksiran Bilik Darjah (PBD)",
+      title: "Perekodan Tahap Penguasaan Pentaksiran Bilik Darjah (PBD)",
       date: "2025-10-20",
       priority: "Sederhana",
       category: "PBD",
-      author: "Unit Pentadbiran",
-      content: "Perekodan PBD dalam sistem idMe dibuka. Sila lengkapkan penilaian murid berpandukan DSKP mengikut tarikh yang ditetapkan."
+      author: "Unit Kurikulum",
+      content: "Modul pengisian PBD dalam portal idMe dibuka. Sila kemas kini penilaian murid berpandukan rubrik DSKP."
     }
   ],
 
-  // SENARAI BAHAN / DOKUMEN KURIKULUM (BOLEH DIMUAT NAIK OLEH ADMIN)
+  // DOKUMEN & BAHAN KURIKULUM (BOLEH DIMUAT NAIK OLEH ADMIN)
   documents: [
     {
       id: "doc-1",
-      title: "Takwim Persekolahan & Jadual Aktiviti Kurikulum 2025/2026",
+      title: "Takwim Persekolahan & Jadual Aktiviti Kurikulum Sesi 2025/2026",
       category: "Takwim & Jadual",
       panitia: "Pentadbiran",
       date: "2025-01-15",
       type: "PDF",
       fileUrl: "#",
       size: "1.2 MB",
-      uploader: "Hjh. Rahmatiah binti Mohd Juda"
+      uploader: "Rahmatiah binti Mohd Juda (PK1)"
     },
     {
       id: "doc-2",
@@ -108,518 +104,149 @@ const DEFAULT_SYSTEM_DATA = {
       type: "PDF",
       fileUrl: "#",
       size: "2.5 MB",
-      uploader: "Ani binti Patola"
+      uploader: "Ani binti Patola (SU Kurikulum)"
     },
     {
       id: "doc-3",
-      title: "DSKP KSSR Semakan Bahasa Melayu Tahun 1 hingga Tahun 6",
+      title: "DSKP KSSR Semakan Bahasa Melayu Tahun 1 hingga 6",
       category: "DSKP & RPT",
       panitia: "Bahasa Melayu",
       date: "2025-03-01",
       type: "ZIP",
       fileUrl: "#",
       size: "4.8 MB",
-      uploader: "Sabriah @ Habibah Abdul Sabar"
+      uploader: "Sabriah @ Habibah (KP BM)"
     },
     {
       id: "doc-4",
-      title: "Format & Rubrik Pentaksiran Bilik Darjah (PBD) SK Ranggu",
-      category: "PBD / Penilaian",
-      panitia: "Kurikulum",
+      title: "Jadual Waktu Induk & Agihan Waktu Mengajar Sesi 2025/2026",
+      category: "Takwim & Jadual",
+      panitia: "Pentadbiran",
       date: "2025-03-15",
       type: "PDF",
       fileUrl: "#",
-      size: "850 KB",
-      uploader: "Ani binti Patola"
-    },
-    {
-      id: "doc-5",
-      title: "Jadual Waktu Induk & Agihan Tugas Guru Sesi 2025/2026",
-      category: "Takwim & Jadual",
-      panitia: "Pentadbiran",
-      date: "2025-03-20",
-      type: "PDF",
-      fileUrl: "#",
-      size: "1.5 MB",
-      uploader: "Hjh. Rahmatiah binti Mohd Juda"
+      size: "1.8 MB",
+      uploader: "Rahmatiah binti Mohd Juda"
     }
   ],
 
-  // CARTA ORGANISASI RASMI SK RANGGU (100% TEPAT & SAHIH)
-  organizationChart: [
-    // TIER 1: GURU BESAR
-    {
-      id: "org-1",
-      tier: 1,
-      role: "Guru Besar (Pengerusi)",
-      name: "Yunus bin Patarai",
-      grade: "DG48",
-      category: "Pengurusan Tertinggi",
-      phone: "089-925493",
-      email: "gb.xba3037@moe.edu.my",
-      avatarBg: "from-amber-500 to-amber-700",
-      duties: "Peneraju Kepimpinan Instruksional & Pengurusan Strategik Sekolah"
-    },
-    
-    // TIER 2: BARISAN PENOLONG KANAN
-    {
-      id: "org-2",
-      tier: 2,
-      role: "Penolong Kanan Pentadbiran & Kurikulum",
-      name: "Hjh. Rahmatiah binti Mohd Juda",
-      grade: "DG44",
-      category: "Pentadbiran & Kurikulum",
-      phone: "089-925493",
-      email: "pk1.xba3037@moe.edu.my",
-      avatarBg: "from-blue-600 to-indigo-800",
-      duties: "Pengurusan Kurikulum, Jadual Waktu, Pencerapan PdPc, Penilaian & MMI"
-    },
-    {
-      id: "org-3",
-      tier: 2,
-      role: "Penolong Kanan Hal Ehwal Murid (PK HEM)",
-      name: "Komala binti Joseph",
-      grade: "DG44",
-      category: "Hal Ehwal Murid",
-      phone: "089-925493",
-      email: "pkhem.xba3037@moe.edu.my",
-      avatarBg: "from-emerald-600 to-teal-800",
-      duties: "Pengurusan Disiplin Murid, Kebajikan, SPBT, Bantuan & APDM"
-    },
-    {
-      id: "org-4",
-      tier: 2,
-      role: "Penolong Kanan Kokurikulum (PK KOKU)",
-      name: "Warnah binti Sira",
-      grade: "DG44",
-      category: "Kokurikulum",
-      phone: "089-925493",
-      email: "pkkoku.xba3037@moe.edu.my",
-      avatarBg: "from-rose-600 to-red-800",
-      duties: "Pengurusan Aktiviti Sukan, Unit Beruniform, Kelab/Persatuan & PAJSK"
-    },
-    {
-      id: "org-5",
-      tier: 2,
-      role: "Penolong Kanan Petang (PK Petang)",
-      name: "Emran bin Hj. Selamat",
-      grade: "DG44",
-      category: "Pengurusan Petang",
-      phone: "089-925493",
-      email: "pkpetang.xba3037@moe.edu.my",
-      avatarBg: "from-purple-600 to-indigo-900",
-      duties: "Penyeliaan Sesi Petang (Tahap 1), Kawalan Murid & Guru Bertugas"
-    },
+  // SENARAI PENUH 60 STAF SK RANGGU (54 PPP + 6 AKP)
+  staffList: [
+    // 1. PENTADBIRAN TERTINGGI (PENGURUSAN SEKOLAH)
+    { id: 1, name: "YUNUS BIN PATARAI", ic: "721005-12-5911", role: "Guru Besar (Pengerusi)", grade: "DG10", type: "PPP", session: "Pagi", category: "Pengurusan Tertinggi", tier: 1 },
+    { id: 2, name: "RAHMATIAH BINTI MOHD JUDA", ic: "751212-12-5962", role: "Penolong Kanan Pentadbiran & Kurikulum (PK 1)", grade: "DG10", type: "PPP", session: "Pagi", category: "Pentadbiran & Kurikulum", tier: 2 },
+    { id: 3, name: "KOMALA BINTI JOSEPH", ic: "730914-12-5884", role: "Penolong Kanan Hal Ehwal Murid (PK HEM)", grade: "DG12", type: "PPP", session: "Pagi", category: "Hal Ehwal Murid", tier: 2 },
+    { id: 4, name: "WARNAH BINTI SIRA", ic: "700207-12-5618", role: "Penolong Kanan Kokurikulum (PK KOKU)", grade: "DG10", type: "PPP", session: "Pagi", category: "Kokurikulum", tier: 2 },
+    { id: 5, name: "EMRAN BIN HJ SELAMAT", ic: "691017-12-5279", role: "Penolong Kanan Petang (PK Petang)", grade: "DG10", type: "PPP", session: "Petang", category: "Pengurusan Petang", tier: 2 },
 
-    // TIER 3: PEGAWAI KHAS PENTADBIRAN & KURIKULUM
-    {
-      id: "org-6",
-      tier: 3,
-      role: "Setiausaha Kurikulum",
-      name: "Ani binti Patola",
-      grade: "DG44",
-      category: "Jawatankuasa Kurikulum",
-      email: "ani.patola@moe-dl.edu.my",
-      duties: "Dokumentasi Minit Mesyuarat Kurikulum, Takwim & Penyelarasan Panitia"
-    },
-    {
-      id: "org-7",
-      tier: 3,
-      role: "Setiausaha Hal Ehwal Murid",
-      name: "Norlina binti Bagwas",
-      grade: "DG44",
-      category: "Hal Ehwal Murid",
-      email: "norlina.bagwas@moe-dl.edu.my",
-      duties: "Pengurusan Dokumentasi Unit Hal Ehwal Murid & Kebajikan"
-    },
-    {
-      id: "org-8",
-      tier: 3,
-      role: "Setiausaha Kokurikulum",
-      name: "Evalorena binti Laminsin",
-      grade: "DG41",
-      category: "Kokurikulum",
-      email: "evalorena@moe-dl.edu.my",
-      duties: "Pengurusan Perekodan PAJSK & Aktiviti Kokurikulum Mingguan"
-    },
-    {
-      id: "org-9",
-      tier: 3,
-      role: "Guru Data Sekolah",
-      name: "Al Faizal bin Daud",
-      grade: "DG41",
-      category: "ICT & Pengurusan Data",
-      email: "alfaizal.daud@moe-dl.edu.my",
-      duties: "Pengurusan EMIS, APDM, e-Operasi & Data Rasmi Sekolah"
-    },
-    {
-      id: "org-10",
-      tier: 3,
-      role: "Guru Perpustakaan & Media (GPM)",
-      name: "Rosminah binti Sapar",
-      grade: "DG44",
-      category: "Pusat Sumber Sekolah",
-      email: "rosminah.sapar@moe-dl.edu.my",
-      duties: "Pusat Sumber Sekolah, Program NILAM & Bahan Bantu Mengajar"
-    },
-    {
-      id: "org-11",
-      tier: 3,
-      role: "Guru Bimbingan & Kaunseling",
-      name: "Siti Naurin Fadzillah binti Abdul Jalal",
-      grade: "DG44",
-      category: "Bimbingan & Kaunseling",
-      email: "naurin.jalal@moe-dl.edu.my",
-      duties: "Perkhidmatan Kaunseling, Psikometrik & Pembangunan Sahsiah Murid"
-    },
-    {
-      id: "org-12",
-      tier: 3,
-      role: "Guru Bimbingan & Kaunseling",
-      name: "Darmawati binti Lokkong",
-      grade: "DG44",
-      category: "Bimbingan & Kaunseling",
-      email: "darmawati.lokkong@moe-dl.edu.my",
-      duties: "Bimbingan Kerjaya Murid & Program Motivasi Akademik"
-    },
-    {
-      id: "org-13",
-      tier: 3,
-      role: "Guru Pemulihan Khas",
-      name: "Muhamadian bin Suaibu",
-      grade: "DG44",
-      category: "Program Khas",
-      email: "muhamadian@moe-dl.edu.my",
-      duties: "Program Literasi & Numerasi Pemulihan Khas Tahap 1"
-    },
-    {
-      id: "org-14",
-      tier: 3,
-      role: "Guru Prasekolah",
-      name: "Yusni binti Wahjudin",
-      grade: "DG44",
-      category: "Program Khas",
-      email: "yusni.pra@moe-dl.edu.my",
-      duties: "Pengurusan Kurikulum Standard Prasekolah Kebangsaan (KSPK)"
-    },
+    // 2. SETIAUSAHA & PEGAWAI KHAS
+    { id: 9, name: "ANI BINTI PATOLA", ic: "840229-12-5496", role: "Setiausaha Kurikulum", grade: "DG10", type: "PPP", session: "Pagi", category: "Jawatankuasa Kurikulum", tier: 3 },
+    { id: 32, name: "NORLINA BINTI BAGWAS", ic: "730926-12-5494", role: "Setiausaha Hal Ehwal Murid", grade: "DG10", type: "PPP", session: "Pagi", category: "Hal Ehwal Murid", tier: 3 },
+    { id: 13, name: "EVALORENNA BINTI LAMINSIN", ic: "900201-12-5306", role: "Setiausaha Kokurikulum", grade: "DG10", type: "PPP", session: "Pagi", category: "Kokurikulum", tier: 3 },
+    { id: 26, name: "MOHD ALFAIZAL BIN DAUD", ic: "820403-12-6243", role: "Guru Data Sekolah", grade: "DG12", type: "PPP", session: "Pagi", category: "ICT & Pengurusan Data", tier: 3 },
+    { id: 41, name: "ROSMINAH BINTI SAPAR", ic: "701026-12-5760", role: "Guru Perpustakaan & Media (GPM)", grade: "DG10", type: "PPP", session: "Pagi", category: "Pusat Sumber Sekolah", tier: 3 },
+    { id: 47, name: "SITI NAURIN FADZILAH BINTI JALAL", ic: "790718-01-5164", role: "Guru Bimbingan & Kaunseling", grade: "DG12", type: "PPP", session: "Pagi", category: "Bimbingan & Kaunseling", tier: 3 },
+    { id: 12, name: "DARMAWATI BTE LOKKONG", ic: "850603-12-6042", role: "Guru Bimbingan & Kaunseling", grade: "DG10", type: "PPP", session: "Pagi", category: "Bimbingan & Kaunseling", tier: 3 },
+    { id: 28, name: "MUHAMADIAN BIN SUAIBU", ic: "790313-12-5859", role: "Guru Pemulihan Khas", grade: "DG10", type: "PPP", session: "Pagi", category: "Program Khas", tier: 3 },
+    { id: 53, name: "YUSNI BINTI WAHJUDIN", ic: "800624-12-5676", role: "Guru Prasekolah", grade: "DG10", type: "PPP", session: "Pagi", category: "Program Khas", tier: 3 },
 
-    // TIER 4: KETUA-KETUA PANITIA MATA PELAJARAN
-    {
-      id: "org-15",
-      tier: 4,
-      role: "Ketua Panitia Bahasa Melayu",
-      name: "Sabriah @ Habibah Abdul Sabar",
-      grade: "DG44",
-      category: "Ketua Panitia",
-      email: "sabriah.bm@moe-dl.edu.my",
-      duties: "Penyelarasan DSKP, Rancangan Pengajaran Tahunan & MBMMBI"
-    },
-    {
-      id: "org-16",
-      tier: 4,
-      role: "Ketua Panitia Bahasa Inggeris",
-      name: "Hamsiah binti Hamid",
-      grade: "DG44",
-      category: "Ketua Panitia",
-      email: "hamsiah.bi@moe-dl.edu.my",
-      duties: "Penyelarasan CEFR, Program HIP (Highly Immersive Programme)"
-    },
-    {
-      id: "org-17",
-      tier: 4,
-      role: "Ketua Panitia Matematik",
-      name: "Masturah binti Tuda",
-      grade: "DG44",
-      category: "Ketua Panitia",
-      email: "masturah.math@moe-dl.edu.my",
-      duties: "Penyelarasan Kurikulum Matematik & Penguasaan Fakta Asas"
-    },
-    {
-      id: "org-18",
-      tier: 4,
-      role: "Ketua Panitia Sains",
-      name: "Junaid bin Nurdin",
-      grade: "DG44",
-      category: "Ketua Panitia",
-      email: "junaid.sains@moe-dl.edu.my",
-      duties: "Penyelarasan Pengajaran Sains, Bilik Sains & Program STEM"
-    },
-    {
-      id: "org-19",
-      tier: 4,
-      role: "Ketua Panitia Pendidikan Islam",
-      name: "Hasnan bin Mat Zin",
-      grade: "DG44",
-      category: "Ketua Panitia",
-      email: "hasnan.pai@moe-dl.edu.my",
-      duties: "Penyelarasan Pendidikan Islam, Program j-QAF & Dakwah Sekolah"
-    },
-    {
-      id: "org-20",
-      tier: 4,
-      role: "Ketua Panitia Bahasa Arab",
-      name: "Sunarti binti Tappa",
-      grade: "DG41",
-      category: "Ketua Panitia",
-      email: "sunarti.ba@moe-dl.edu.my",
-      duties: "Penyelarasan Kurikulum Bahasa Arab & Kem Bestari Solat"
-    },
-    {
-      id: "org-21",
-      tier: 4,
-      role: "Ketua Panitia Sejarah",
-      name: "Rini binti Daud",
-      grade: "DG44",
-      category: "Ketua Panitia",
-      email: "rini.sej@moe-dl.edu.my",
-      duties: "Penyelarasan Kurikulum Sejarah & Bulan Kebangsaan"
-    },
-    {
-      id: "org-22",
-      tier: 4,
-      role: "Ketua Panitia Pendidikan Jasmani & Kesihatan",
-      name: "Wafa Farhana binti Abd Kadir",
-      grade: "DG41",
-      category: "Ketua Panitia",
-      email: "wafafarhana.pjpk@moe-dl.edu.my",
-      duties: "Penyelarasan PJPK, Ujian SEGAK & Kesihatan Murid"
-    },
-    {
-      id: "org-23",
-      tier: 4,
-      role: "Ketua Panitia Reka Bentuk & Teknologi",
-      name: "Roni bin Bacho",
-      grade: "DG44",
-      category: "Ketua Panitia",
-      email: "roni.rbt@moe-dl.edu.my",
-      duties: "Penyelarasan Modul RBT & Pengurusan Bengkel RBT"
-    },
-    {
-      id: "org-24",
-      tier: 4,
-      role: "Ketua Panitia Pendidikan Seni Visual",
-      name: "Siti Jawara binti Lukman",
-      grade: "DG41",
-      category: "Ketua Panitia",
-      email: "sitijawara.psv@moe-dl.edu.my",
-      duties: "Penyelarasan Pendidikan Seni Visual & Bakat Kreatif Murid"
-    },
-    {
-      id: "org-25",
-      tier: 4,
-      role: "Ketua Panitia Pendidikan Moral",
-      name: "Faridah binti Sunu",
-      grade: "DG44",
-      category: "Ketua Panitia",
-      email: "faridah.moral@moe-dl.edu.my",
-      duties: "Penyelarasan Kurikulum Pendidikan Moral"
-    },
+    // 3. KETUA-KETUA PANITIA MATA PELAJARAN
+    { id: 44, name: "SABRIAH @ HABIBAH BINTI ABDUL SABAR", ic: "691228-12-5594", role: "Ketua Panitia Bahasa Melayu", grade: "DG12", type: "PPP", session: "Pagi", category: "Ketua Panitia", tier: 4 },
+    { id: 16, name: "HAMSIAH BINTI HAMID", ic: "831119-12-5538", role: "Ketua Panitia Bahasa Inggeris", grade: "DG10", type: "PPP", session: "Pagi", category: "Ketua Panitia", tier: 4 },
+    { id: 23, name: "MASTURAH BINTI TUDA", ic: "750803-12-5900", role: "Ketua Panitia Matematik", grade: "DG12", type: "PPP", session: "Pagi", category: "Ketua Panitia", tier: 4 },
+    { id: 20, name: "JUNAID BIN NURDIN", ic: "750625-12-5755", role: "Ketua Panitia Sains", grade: "DG12", type: "PPP", session: "Pagi", category: "Ketua Panitia", tier: 4 },
+    { id: 37, name: "RINI BINTI DAUD", ic: "740707-12-5282", role: "Ketua Panitia Sejarah", grade: "DG12", type: "PPP", session: "Pagi", category: "Ketua Panitia", tier: 4 },
+    { id: 17, name: "HASNAN BIN MAT ZIN", ic: "750209-03-5259", role: "Ketua Panitia Pendidikan Islam", grade: "DG12", type: "PPP", session: "Pagi", category: "Ketua Panitia", tier: 4 },
+    { id: 49, name: "SUNARTI BINTI TAPPA", ic: "841008-12-5470", role: "Ketua Panitia Bahasa Arab", grade: "DG10", type: "PPP", session: "Pagi", category: "Ketua Panitia", tier: 4 },
+    { id: 51, name: "WAFA FARHANA BINTI ABD KADIR", ic: "931108-12-5530", role: "Ketua Panitia PJPK", grade: "DG10", type: "PPP", session: "Pagi", category: "Ketua Panitia", tier: 4 },
+    { id: 39, name: "RONI BIN BACHO", ic: "840509-12-6215", role: "Ketua Panitia RBT", grade: "DG12", type: "PPP", session: "Pagi", category: "Ketua Panitia", tier: 4 },
+    { id: 46, name: "SITI JAWARA BINTI LUKMAN", ic: "730126-12-5584", role: "Ketua Panitia Seni Visual", grade: "DG10", type: "PPP", session: "Pagi", category: "Ketua Panitia", tier: 4 },
+    { id: 14, name: "FARIDAH BINTI SUNU", ic: "741020-12-6072", role: "Ketua Panitia Pendidikan Moral", grade: "DG10", type: "PPP", session: "Pagi", category: "Ketua Panitia", tier: 4 },
 
-    // GURU AKADEMIK BIASA (TERMASUK MOHAMMAD FIKREY)
-    {
-      id: "org-26",
-      tier: 4,
-      role: "Guru Akademik Biasa / Pentadbir Sistem",
-      name: "Mohammad Fikrey bin Abdul Gapar",
-      grade: "DG41",
-      category: "Guru Akademik",
-      email: "fikrey.gapar@moe-dl.edu.my",
-      duties: "Guru Akademik & Penyelarasan Pembangunan Sistem Digital Sekolah"
-    }
+    // 4. GURU AKADEMIK BIASA (SESI PAGI & PETANG)
+    { id: 24, name: "MOHAMMAD FIKREY BIN ABDUL GAPAR", ic: "910528-12-5411", role: "Guru Akademik / Pentadbir Sistem", grade: "DG10", type: "PPP", session: "Pagi", category: "Guru Akademik", tier: 4 },
+    { id: 6, name: "AG KU KEMAINDDRA BIN PG MOHD TAIB", ic: "711026-12-5153", role: "Guru Akademik", grade: "DG10", type: "PPP", session: "Pagi", category: "Guru Akademik", tier: 4 },
+    { id: 7, name: "AHAD BIN JAAFAR", ic: "660717-12-5251", role: "Guru Akademik", grade: "DG7", type: "PPP", session: "Pagi", category: "Guru Akademik", tier: 4 },
+    { id: 8, name: "AINATUN NADHIRAH BINTI DHARMAWI", ic: "971008-12-5118", role: "Guru Akademik", grade: "DG9", type: "PPP", session: "Petang", category: "Guru Akademik", tier: 4 },
+    { id: 10, name: "ASMADI BIN LAJJAKASI", ic: "830602-12-6093", role: "Guru Akademik", grade: "DG10", type: "PPP", session: "Pagi", category: "Guru Akademik", tier: 4 },
+    { id: 11, name: "BAJAM BINTI LADUNG", ic: "820324-12-5314", role: "Guru Akademik", grade: "DG12", type: "PPP", session: "Pagi", category: "Guru Akademik", tier: 4 },
+    { id: 15, name: "HALIM BIN BIDI", ic: "690322-08-6291", role: "Guru Akademik", grade: "DG12", type: "PPP", session: "Petang", category: "Guru Akademik", tier: 4 },
+    { id: 18, name: "JAIBY BIN JULIAN", ic: "660707-12-5901", role: "Guru Akademik", grade: "DG7", type: "PPP", session: "Petang", category: "Guru Akademik", tier: 4 },
+    { id: 19, name: "JAINAH BINTI SULAIMAN", ic: "720515-12-5554", role: "Guru Akademik", grade: "DG10", type: "PPP", session: "Petang", category: "Guru Akademik", tier: 4 },
+    { id: 21, name: "MARIANA BINTI KASSIM", ic: "730807-12-5766", role: "Guru Akademik", grade: "DG12", type: "PPP", session: "Petang", category: "Guru Akademik", tier: 4 },
+    { id: 22, name: "MARINI BINTI LADI", ic: "810914-12-5278", role: "Guru Akademik", grade: "DG10", type: "PPP", session: "Petang", category: "Guru Akademik", tier: 4 },
+    { id: 25, name: "MOHAMMAD IKHWAN BIN ABDURAIS", ic: "940502-12-5701", role: "Guru Akademik", grade: "DG9", type: "PPP", session: "Petang", category: "Guru Akademik", tier: 4 },
+    { id: 27, name: "MOHD MUEMIN BIN MOHD AMIN JAPAR", ic: "870131-49-5381", role: "Guru Akademik", grade: "DG9", type: "PPP", session: "Petang", category: "Guru Akademik", tier: 4 },
+    { id: 29, name: "NECHI BINTI SERUNAI", ic: "681103-12-5540", role: "Guru Akademik", grade: "DG12", type: "PPP", session: "Petang", category: "Guru Akademik", tier: 4 },
+    { id: 30, name: "NOOR SYAFIQAH NADHIRAH BINTI JAMALUDDIN", ic: "980221-03-6426", role: "Guru Akademik", grade: "DG9", type: "PPP", session: "Petang", category: "Guru Akademik", tier: 4 },
+    { id: 31, name: "NORIMAH BINTI JOYO REJO", ic: "740526-12-5080", role: "Guru Akademik", grade: "DG10", type: "PPP", session: "Petang", category: "Guru Akademik", tier: 4 },
+    { id: 33, name: "NOZE BINTI TUKIJAN", ic: "761202-12-5810", role: "Guru Akademik", grade: "DG9", type: "PPP", session: "Petang", category: "Guru Akademik", tier: 4 },
+    { id: 34, name: "NUR FAEZAH BINTI BANTALANI", ic: "931220-12-6058", role: "Guru Akademik", grade: "DG10", type: "PPP", session: "Petang", category: "Guru Akademik", tier: 4 },
+    { id: 35, name: "NURUL ANISA BINTI SAPARUDIN", ic: "920918-12-5918", role: "Guru Akademik", grade: "DG10", type: "PPP", session: "Petang", category: "Guru Akademik", tier: 4 },
+    { id: 36, name: "RASMAWATI BINTI TAUSE", ic: "811217-12-5250", role: "Guru Akademik", grade: "DG10", type: "PPP", session: "Petang", category: "Guru Akademik", tier: 4 },
+    { id: 38, name: "ROBIATUL AIDAWYAH", ic: "981115-02-5736", role: "Guru Akademik", grade: "DG9", type: "PPP", session: "Petang", category: "Guru Akademik", tier: 4 },
+    { id: 40, name: "ROSIDIAN BIN IDRIS", ic: "670415-12-5343", role: "Guru Akademik", grade: "DG7", type: "PPP", session: "Petang", category: "Guru Akademik", tier: 4 },
+    { id: 42, name: "RUHAYA BINTI AHMAD", ic: "690623-12-5434", role: "Guru Akademik", grade: "DG10", type: "PPP", session: "Petang", category: "Guru Akademik", tier: 4 },
+    { id: 43, name: "S.LILI BINTI LADI", ic: "700605-12-5592", role: "Guru Akademik", grade: "DG7", type: "PPP", session: "Petang", category: "Guru Akademik", tier: 4 },
+    { id: 45, name: "SALSABILA BINTI SHAHRUDDIN", ic: "981025-02-6452", role: "Guru Akademik", grade: "DG9", type: "PPP", session: "Petang", category: "Guru Akademik", tier: 4 },
+    { id: 48, name: "SITI RABIA BIN IBRAHIM", ic: "710908-12-5812", role: "Guru Akademik", grade: "DG10", type: "PPP", session: "Petang", category: "Guru Akademik", tier: 4 },
+    { id: 50, name: "TANJANG BIN TURE", ic: "720403-12-5699", role: "Guru Akademik", grade: "DG10", type: "PPP", session: "Pagi", category: "Guru Akademik", tier: 4 },
+    { id: 52, name: "WAN MUHAMAD YUSUF BIN WAN ABDUL AZIZ", ic: "870519-08-6373", role: "Guru Akademik", grade: "DG10", type: "PPP", session: "Pagi", category: "Guru Akademik", tier: 4 },
+    { id: 54, name: "ZAMRIE BIN OMAR ALI", ic: "780807-12-5809", role: "Guru Akademik", grade: "DG6", type: "PPP", session: "Petang", category: "Guru Akademik", tier: 4 },
+
+    // 5. ANGGOTA KUMPULAN PELAKSANA (AKP - 6 ORANG)
+    { id: 101, name: "HANISAH BINTI MANSOR", ic: "750614-12-5450", role: "Pembantu Tadbir (Perkeranian/Operasi)", grade: "N2", type: "AKP", session: "Pagi", category: "Kumpulan Pelaksana (AKP)", tier: 4 },
+    { id: 102, name: "NURAIDA BINTI KAIMUDIN", ic: "890626-12-5508", role: "Pembantu Tadbir (Kewangan)", grade: "N1", type: "AKP", session: "Pagi", category: "Kumpulan Pelaksana (AKP)", tier: 4 },
+    { id: 103, name: "MULYANTI BINTI MIKIL @ MOHAMED ISHAK", ic: "840815-12-5704", role: "Pembantu Operasi (PKA)", grade: "H1", type: "AKP", session: "Pagi", category: "Kumpulan Pelaksana (AKP)", tier: 4 },
+    { id: 104, name: "RAPIDAH BINTI KARIM", ic: "831002-12-5788", role: "Pembantu Pengurusan Murid (PPM Prasekolah)", grade: "N2", type: "AKP", session: "Pagi", category: "Kumpulan Pelaksana (AKP)", tier: 4 },
+    { id: 105, name: "YENNY BINTI SANAUDI", ic: "801027-12-6026", role: "Pembantu Pengurusan Murid (PPM Prasekolah)", grade: "N2", type: "AKP", session: "Pagi", category: "Kumpulan Pelaksana (AKP)", tier: 4 },
+    { id: 106, name: "FARIDAH BINTI ACHO", ic: "950807-12-5832", role: "Pembantu Pengurusan Murid (PPM)", grade: "N1 (COS)", type: "AKP", session: "Pagi", category: "Kumpulan Pelaksana (AKP)", tier: 4 }
   ],
 
   // DATA JAWATANKUASA KURIKULUM & PANITIA
   committees: [
-    {
-      id: "pan-bm",
-      name: "Panitia Bahasa Melayu",
-      head: "Sabriah @ Habibah Abdul Sabar",
-      secretary: "Guru Panitia BM",
-      membersCount: 8,
-      status: "Aktif",
-      kpi: "96% Murid Menguasai TP3-TP6",
-      dskpStatus: "Lengkap (Tahun 1-6)"
-    },
-    {
-      id: "pan-bi",
-      name: "Panitia Bahasa Inggeris",
-      head: "Hamsiah binti Hamid",
-      secretary: "Guru Panitia BI",
-      membersCount: 7,
-      status: "Aktif",
-      kpi: "CEFR Alignment & HIP Programme",
-      dskpStatus: "Lengkap (Tahun 1-6)"
-    },
-    {
-      id: "pan-mat",
-      name: "Panitia Matematik",
-      head: "Masturah binti Tuda",
-      secretary: "Guru Panitia Matematik",
-      membersCount: 7,
-      status: "Aktif",
-      kpi: "Penguasaan Fakta Asas 95%",
-      dskpStatus: "Lengkap (Tahun 1-6)"
-    },
-    {
-      id: "pan-sn",
-      name: "Panitia Sains",
-      head: "Junaid bin Nurdin",
-      secretary: "Guru Panitia Sains",
-      membersCount: 6,
-      status: "Aktif",
-      kpi: "Amali Berfokus STEM 100%",
-      dskpStatus: "Lengkap (Tahun 1-6)"
-    },
-    {
-      id: "pan-pai",
-      name: "Panitia Pendidikan Islam",
-      head: "Hasnan bin Mat Zin",
-      secretary: "Guru Panitia Pend Islam",
-      membersCount: 9,
-      status: "Aktif",
-      kpi: "Khatam Al-Quran & Kem Solat",
-      dskpStatus: "Lengkap (Tahun 1-6)"
-    },
-    {
-      id: "pan-ba",
-      name: "Panitia Bahasa Arab",
-      head: "Sunarti binti Tappa",
-      secretary: "Guru Panitia B. Arab",
-      membersCount: 3,
-      status: "Aktif",
-      kpi: "Kemahiran Berkomunikasi Asas",
-      dskpStatus: "Lengkap (Tahun 1-6)"
-    },
-    {
-      id: "pan-sej",
-      name: "Panitia Sejarah",
-      head: "Rini binti Daud",
-      secretary: "Guru Panitia Sejarah",
-      membersCount: 4,
-      status: "Aktif",
-      kpi: "Kajian Kes Sejarah 100%",
-      dskpStatus: "Lengkap (Tahun 4-6)"
-    },
-    {
-      id: "pan-pjpk",
-      name: "Panitia PJPK",
-      head: "Wafa Farhana binti Abd Kadir",
-      secretary: "Guru Panitia PJPK",
-      membersCount: 6,
-      status: "Aktif",
-      kpi: "Ujian SEGAK 100% Selesai",
-      dskpStatus: "Lengkap (Tahun 1-6)"
-    },
-    {
-      id: "pan-rbt",
-      name: "Panitia RBT",
-      head: "Roni bin Bacho",
-      secretary: "Guru Panitia RBT",
-      membersCount: 4,
-      status: "Aktif",
-      kpi: "Projek Reka Cipta Berasaskan Modul",
-      dskpStatus: "Lengkap (Tahun 4-6)"
-    },
-    {
-      id: "pan-psv",
-      name: "Panitia Seni Visual",
-      head: "Siti Jawara binti Lukman",
-      secretary: "Guru Panitia PSV",
-      membersCount: 5,
-      status: "Aktif",
-      kpi: "Portfolio Seni Visual Lengkap",
-      dskpStatus: "Lengkap (Tahun 1-6)"
-    },
-    {
-      id: "pan-moral",
-      name: "Panitia Pendidikan Moral",
-      head: "Faridah binti Sunu",
-      secretary: "Guru Panitia Moral",
-      membersCount: 3,
-      status: "Aktif",
-      kpi: "Amalan Nilai Murni Berterusan",
-      dskpStatus: "Lengkap (Tahun 1-6)"
-    },
-    {
-      id: "pan-khas",
-      name: "Unit Pemulihan Khas & Prasekolah",
-      head: "Muhamadian bin Suaibu & Yusni binti Wahjudin",
-      secretary: "Guru Unit Khas",
-      membersCount: 4,
-      status: "Aktif",
-      kpi: "Sifar Buta Huruf Tahap 1",
-      dskpStatus: "Lengkap"
-    }
+    { id: "pan-bm", name: "Panitia Bahasa Melayu", head: "SABRIAH @ HABIBAH BINTI ABDUL SABAR", membersCount: 8, status: "Aktif", kpi: "96% Murid Menguasai TP3-TP6", dskpStatus: "Lengkap (Tahun 1-6)" },
+    { id: "pan-bi", name: "Panitia Bahasa Inggeris", head: "HAMSIAH BINTI HAMID", membersCount: 7, status: "Aktif", kpi: "CEFR Alignment & HIP Programme", dskpStatus: "Lengkap (Tahun 1-6)" },
+    { id: "pan-mat", name: "Panitia Matematik", head: "MASTURAH BINTI TUDA", membersCount: 7, status: "Aktif", kpi: "Penguasaan Fakta Asas 95%", dskpStatus: "Lengkap (Tahun 1-6)" },
+    { id: "pan-sn", name: "Panitia Sains", head: "JUNAID BIN NURDIN", membersCount: 6, status: "Aktif", kpi: "Amali Berfokus STEM 100%", dskpStatus: "Lengkap (Tahun 1-6)" },
+    { id: "pan-pai", name: "Panitia Pendidikan Islam", head: "HASNAN BIN MAT ZIN", membersCount: 9, status: "Aktif", kpi: "Khatam Al-Quran & Kem Solat", dskpStatus: "Lengkap (Tahun 1-6)" },
+    { id: "pan-ba", name: "Panitia Bahasa Arab", head: "SUNARTI BINTI TAPPA", membersCount: 3, status: "Aktif", kpi: "Kemahiran Berkomunikasi Asas", dskpStatus: "Lengkap (Tahun 1-6)" },
+    { id: "pan-sej", name: "Panitia Sejarah", head: "RINI BINTI DAUD", membersCount: 4, status: "Aktif", kpi: "Kajian Kes Sejarah 100%", dskpStatus: "Lengkap (Tahun 4-6)" },
+    { id: "pan-pjpk", name: "Panitia PJPK", head: "WAFA FARHANA BINTI ABD KADIR", membersCount: 6, status: "Aktif", kpi: "Ujian SEGAK 100% Selesai", dskpStatus: "Lengkap (Tahun 1-6)" },
+    { id: "pan-rbt", name: "Panitia RBT", head: "RONI BIN BACHO", membersCount: 4, status: "Aktif", kpi: "Projek Reka Cipta Berasaskan Modul", dskpStatus: "Lengkap (Tahun 4-6)" },
+    { id: "pan-psv", name: "Panitia Seni Visual", head: "SITI JAWARA BINTI LUKMAN", membersCount: 5, status: "Aktif", kpi: "Portfolio Seni Visual Lengkap", dskpStatus: "Lengkap (Tahun 1-6)" },
+    { id: "pan-moral", name: "Panitia Pendidikan Moral", head: "FARIDAH BINTI SUNU", membersCount: 3, status: "Aktif", kpi: "Amalan Nilai Murni Berterusan", dskpStatus: "Lengkap (Tahun 1-6)" },
+    { id: "pan-khas", name: "Unit Pemulihan Khas & Prasekolah", head: "MUHAMADIAN BIN SUAIBU & YUSNI BINTI WAHJUDIN", membersCount: 4, status: "Aktif", kpi: "Sifar Buta Huruf Tahap 1", dskpStatus: "Lengkap" }
   ],
 
-  // DATA TAKWIM & PERISTIWA KURIKULUM
+  // DATA TAKWIM KURIKULUM
   takwimEvents: [
-    {
-      id: "tak-1",
-      title: "Mesyuarat Pengurusan Kurikulum Bil 3/2025",
-      date: "2025-10-15",
-      time: "01:30 PM",
-      venue: "Bilik Mesyuarat",
-      inCharge: "Ani binti Patola (SU Kurikulum)",
-      status: "Akan Datang"
-    },
-    {
-      id: "tak-2",
-      title: "Verifikasi PBD & UASA Pertengahan Sesi",
-      date: "2025-10-22",
-      time: "Sepanjang Hari",
-      venue: "Bilik Data",
-      inCharge: "PK Pentadbiran & Penyelaras PBD",
-      status: "Akan Datang"
-    },
-    {
-      id: "tak-3",
-      title: "Dialog Prestasi Akademik Bersama Ibu Bapa",
-      date: "2025-11-05",
-      time: "08:00 AM - 12:00 PM",
-      venue: "Dewan Terbuka SK Ranggu",
-      inCharge: "Semua Guru Kelas",
-      status: "Dalam Perancangan"
-    },
-    {
-      id: "tak-4",
-      title: "Ujian SEGAK Fasa 2 (Tahun 4, 5, 6)",
-      date: "2025-11-12",
-      time: "Waktu PJPK",
-      venue: "Padang Sekolah",
-      inCharge: "Panitia PJPK",
-      status: "Dalam Perancangan"
-    },
-    {
-      id: "tak-5",
-      title: "Ujian Akhir Sesi Akademik (UASA) 2025/2026",
-      date: "2025-12-08",
-      time: "07:30 AM - 01:00 PM",
-      venue: "Kelas Tahun 4, 5 & 6",
-      inCharge: "Jawatankuasa Peperiksaan",
-      status: "Dalam Perancangan"
-    }
+    { id: "tak-1", title: "Mesyuarat Pengurusan Kurikulum Bil 3/2025", date: "2025-10-15", time: "01:30 PM", venue: "Bilik Mesyuarat", inCharge: "ANI BINTI PATOLA (SU Kurikulum)", status: "Akan Datang" },
+    { id: "tak-2", title: "Verifikasi PBD & UASA Pertengahan Sesi", date: "2025-10-22", time: "Sepanjang Hari", venue: "Bilik Data", inCharge: "RAHMATIAH BINTI MOHD JUDA (PK1)", status: "Akan Datang" },
+    { id: "tak-3", title: "Dialog Prestasi Akademik Bersama Ibu Bapa", date: "2025-11-05", time: "08:00 AM - 12:00 PM", venue: "Dewan Terbuka SK Ranggu", inCharge: "Semua Guru Kelas", status: "Dalam Perancangan" },
+    { id: "tak-4", title: "Ujian SEGAK Fasa 2 (Tahun 4, 5, 6)", date: "2025-11-12", time: "Waktu PJPK", venue: "Padang Sekolah", inCharge: "Panitia PJPK", status: "Dalam Perancangan" },
+    { id: "tak-5", title: "Ujian Akhir Sesi Akademik (UASA) 2025/2026", date: "2025-12-08", time: "07:30 AM - 01:00 PM", venue: "Kelas Tahun 4, 5 & 6", inCharge: "Jawatankuasa Peperiksaan", status: "Dalam Perancangan" }
   ],
 
-  // DATA JADUAL GURU BERTUGAS MINGGUAN
+  // DATA GURU BERTUGAS MINGGUAN
   weeklyDutyTeachers: [
     {
       weekNumber: 28,
       dateRange: "06 Okt 2025 - 10 Okt 2025",
       theme: "Kebersihan Diri & Adab Menghormati Guru",
-      leader: "Sabriah @ Habibah Abdul Sabar",
+      leader: "SABRIAH @ HABIBAH BINTI ABDUL SABAR",
       members: [
-        "Hamsiah binti Hamid",
-        "Masturah binti Tuda",
-        "Junaid bin Nurdin",
-        "Mohammad Fikrey bin Abdul Gapar"
+        "HAMSIAH BINTI HAMID",
+        "MASTURAH BINTI TUDA",
+        "JUNAID BIN NURDIN",
+        "MOHAMMAD FIKREY BIN ABDUL GAPAR"
       ],
-      venueGates: "Pintu Masuk Utama A (Pengawasan 06:40 - 07:15 Pagi)",
+      venueGates: "Pintu Masuk Utama A (Pengawasan Kehadiran 06:40 - 07:15 Pagi)",
       venueCanteen: "Kantin Sekolah (Rehat Tahap 1 & Tahap 2)"
     }
   ],
 
-  // DATA STATISTIK PBD
+  // DATA ANALISIS PBD
   pbdSummary: {
     labels: ["TP1", "TP2", "TP3", "TP4", "TP5", "TP6"],
     data: [2, 18, 142, 210, 154, 60],
@@ -642,13 +269,20 @@ const DEFAULT_SYSTEM_DATA = {
     { name: "e-Operasi", desc: "Pengurusan Guru & Staf Sokongan", url: "https://eoperasi.moe.gov.my", badge: "Guru" },
     { name: "SPLKPM", desc: "Latihan & Pembangunan Profesionalisme", url: "https://splkpm.moe.gov.my", badge: "Latihan" },
     { name: "SSDM", desc: "Sistem Sahsiah Diri Murid & Amalan Baik", url: "https://ssdm.moe.gov.my", badge: "Disiplin" }
-  ]
+  ],
+
+  // GOOGLE SHEETS
+  googleSheets: {
+    sheetId: "19BgxY06KSHSizUsnreZXnXNoUbf-ivhaVj9YVQ8hVdU",
+    gid: "2057996103",
+    fullUrl: "https://docs.google.com/spreadsheets/d/19BgxY06KSHSizUsnreZXnXNoUbf-ivhaVj9YVQ8hVdU/edit?gid=2057996103#gid=2057996103"
+  }
 };
 
 // SIMPAN ATAU AMBIL DATA DARI LOCAL STORAGE
 function getStoredData() {
   try {
-    const stored = localStorage.getItem("SK_RANGGU_DASHBOARD_DATA_V2");
+    const stored = localStorage.getItem("SK_RANGGU_DASHBOARD_DATA_V3");
     if (stored) {
       return JSON.parse(stored);
     }
@@ -660,7 +294,7 @@ function getStoredData() {
 
 function saveStoredData(data) {
   try {
-    localStorage.setItem("SK_RANGGU_DASHBOARD_DATA_V2", JSON.stringify(data));
+    localStorage.setItem("SK_RANGGU_DASHBOARD_DATA_V3", JSON.stringify(data));
     return true;
   } catch (err) {
     console.error("Gagal simpan LocalStorage:", err);
@@ -669,7 +303,7 @@ function saveStoredData(data) {
 }
 
 function resetToDefaultData() {
-  localStorage.removeItem("SK_RANGGU_DASHBOARD_DATA_V2");
+  localStorage.removeItem("SK_RANGGU_DASHBOARD_DATA_V3");
   return DEFAULT_SYSTEM_DATA;
 }
 

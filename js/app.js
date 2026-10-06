@@ -205,17 +205,26 @@ function renderOrganizationChart(filterCategory = "Semua", searchQuery = "") {
   const container = document.getElementById("orgChartContainer");
   if (!container) return;
 
-  let members = window.SKR_DATA.organizationChart || [];
+  let members = window.SKR_DATA.staffList || [];
 
   if (filterCategory !== "Semua") {
-    members = members.filter(m => m.category === filterCategory || (filterCategory === "Pengurusan Tertinggi" && m.tier <= 2));
+    if (filterCategory === "AKP") {
+      members = members.filter(m => m.type === "AKP");
+    } else if (filterCategory === "Pagi") {
+      members = members.filter(m => m.session === "Pagi");
+    } else if (filterCategory === "Petang") {
+      members = members.filter(m => m.session === "Petang");
+    } else {
+      members = members.filter(m => m.category === filterCategory || (filterCategory === "Pengurusan Tertinggi" && m.tier <= 2));
+    }
   }
 
   if (searchQuery.trim() !== "") {
     const q = searchQuery.toLowerCase();
     members = members.filter(m => 
       m.name.toLowerCase().includes(q) || 
-      m.role.toLowerCase().includes(q)
+      m.role.toLowerCase().includes(q) ||
+      (m.grade && m.grade.toLowerCase().includes(q))
     );
   }
 
@@ -225,13 +234,16 @@ function renderOrganizationChart(filterCategory = "Semua", searchQuery = "") {
     if (members.length === 0) {
       container.innerHTML = `
         <div class="text-center py-12 bg-white rounded-2xl border border-slate-200">
-          <p class="text-slate-500 font-medium">Tiada padanan nama atau jawatan ditemui.</p>
+          <p class="text-slate-500 font-medium">Tiada padanan nama atau jawatan staf ditemui.</p>
         </div>
       `;
       return;
     }
 
     container.innerHTML = `
+      <div class="mb-4 text-xs font-semibold text-slate-500">
+        Menunjukkan ${members.length} orang staf mengikut tapisan
+      </div>
       <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
         ${members.map(m => createMemberCard(m)).join("")}
       </div>
@@ -243,7 +255,8 @@ function renderOrganizationChart(filterCategory = "Semua", searchQuery = "") {
   const tier1 = members.filter(m => m.tier === 1); // Guru Besar
   const tier2 = members.filter(m => m.tier === 2); // Barisan PK
   const tier3 = members.filter(m => m.tier === 3); // Setiausaha & Pegawai Khas
-  const tier4 = members.filter(m => m.tier === 4); // Ketua Panitia & Guru
+  const tier4 = members.filter(m => m.tier === 4 && m.category === "Ketua Panitia"); // Ketua Panitia
+  const akpStaff = members.filter(m => m.type === "AKP"); // Kumpulan Pelaksana
 
   container.innerHTML = `
     <!-- TIER 1: GURU BESAR -->
@@ -260,7 +273,7 @@ function renderOrganizationChart(filterCategory = "Semua", searchQuery = "") {
     <div class="mb-10">
       <div class="text-center mb-4">
         <span class="text-xs font-bold tracking-widest uppercase text-blue-800 bg-blue-100/90 px-4 py-1 rounded-full border border-blue-300">
-          Barisan Penolong Kanan Pentadbiran
+          Barisan Penolong Kanan Pentadbiran (PK1, HEM, KOKU & Petang)
         </span>
       </div>
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 max-w-6xl mx-auto">
@@ -272,7 +285,7 @@ function renderOrganizationChart(filterCategory = "Semua", searchQuery = "") {
     <div class="mb-10">
       <div class="text-center mb-4">
         <span class="text-xs font-bold tracking-widest uppercase text-emerald-800 bg-emerald-100/90 px-4 py-1 rounded-full border border-emerald-300">
-          Setiausaha Kurikulum, Hal Ehwal Murid & Kokurikulum
+          Setiausaha Kurikulum, HEM, Kokurikulum, Guru Kaunseling & Pegawai Khas
         </span>
       </div>
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 max-w-6xl mx-auto">
@@ -281,14 +294,26 @@ function renderOrganizationChart(filterCategory = "Semua", searchQuery = "") {
     </div>
 
     <!-- TIER 4: KETUA-KETUA PANITIA -->
-    <div>
+    <div class="mb-10">
       <div class="text-center mb-4">
         <span class="text-xs font-bold tracking-widest uppercase text-indigo-800 bg-indigo-100/90 px-4 py-1 rounded-full border border-indigo-300">
-          Ketua-Ketua Panitia Mata Pelajaran & Akademik
+          Ketua-Ketua Panitia Mata Pelajaran & Kurikulum
         </span>
       </div>
       <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
         ${tier4.map(m => createMemberCard(m)).join("")}
+      </div>
+    </div>
+
+    <!-- TIER 5: ANGGOTA KUMPULAN PELAKSANA (AKP) -->
+    <div>
+      <div class="text-center mb-4">
+        <span class="text-xs font-bold tracking-widest uppercase text-slate-800 bg-slate-200/90 px-4 py-1 rounded-full border border-slate-300">
+          Anggota Kumpulan Pelaksana (AKP) • 6 Orang
+        </span>
+      </div>
+      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 max-w-5xl mx-auto">
+        ${akpStaff.map(m => createMemberCard(m)).join("")}
       </div>
     </div>
   `;
@@ -358,7 +383,7 @@ function createMemberCard(member, isPrincipal = false) {
 }
 
 window.showMemberModal = function(id) {
-  const member = window.SKR_DATA.organizationChart.find(m => m.id === id);
+  const member = (window.SKR_DATA.staffList || []).find(m => String(m.id) === String(id));
   if (!member) return;
 
   const modal = document.getElementById("genericDetailModal");
