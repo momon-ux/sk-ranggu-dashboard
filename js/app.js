@@ -31,6 +31,7 @@ function initSystem() {
   // Render Induk Besar & Prototaip
   renderHemHierarchy();
   renderKokoHierarchy();
+  renderSportsyncSection();
   renderPetangHierarchy();
   renderPortalAndSocial();
 
@@ -1156,6 +1157,7 @@ function renderKokoHierarchy() {
     const colorMap = {
       blue: "border-blue-300 bg-blue-50/50 text-blue-900",
       red: "border-rose-300 bg-rose-50/50 text-rose-900",
+      purple: "border-purple-300 bg-purple-50/50 text-purple-900",
       amber: "border-amber-300 bg-amber-50/50 text-amber-900",
       emerald: "border-emerald-300 bg-emerald-50/50 text-emerald-900"
     };
@@ -1168,14 +1170,199 @@ function renderKokoHierarchy() {
           </div>
           <p class="text-[11px] text-slate-600 italic">“${h.motto}”</p>
         </div>
-        <div class="mt-2.5 pt-2 border-t border-black/10 text-xs">
-          <span class="text-[10px] text-slate-500 block font-medium">Ketua Rumah:</span>
-          <strong class="font-bold text-xs">${h.head}</strong>
+        <div class="mt-2.5 pt-2 border-t border-black/10 text-xs flex items-center justify-between">
+          <div>
+            <span class="text-[10px] text-slate-500 block font-medium">Ketua Rumah:</span>
+            <strong class="font-bold text-xs">${h.head}</strong>
+          </div>
+          <div class="text-right">
+            <span class="text-[10px] text-slate-500 block font-medium">Kedudukan:</span>
+            <span class="font-bold text-xs text-amber-700">#${h.standing || '—'}</span>
+          </div>
         </div>
       </div>
     `).join("");
   }
 }
+
+/* ==========================================================================
+   RENDER SEKSYEN SK RANGGU SPORTSYNC • KEJOHANAN OLAHRAGA TAHUNAN 2026 (KOT 26)
+   Rujukan Rasmi: fikreyxcode.github.io/kejohanan-olahraga-skrg
+   ========================================================================== */
+function renderSportsyncSection() {
+  const kot = window.SKR_DATA.sportsyncKOT26;
+  if (!kot) return;
+
+  // 1. Kad Kedudukan 4 Rumah Sukan
+  const medalsGrid = document.getElementById("kotMedalsGridContainer");
+  if (medalsGrid && kot.houses) {
+    const borderStyles = {
+      Merah: "border-rose-300 bg-gradient-to-br from-white via-white to-rose-50/70 text-slate-800",
+      Ungu: "border-purple-300 bg-gradient-to-br from-white via-white to-purple-50/70 text-slate-800",
+      Biru: "border-blue-300 bg-gradient-to-br from-white via-white to-blue-50/70 text-slate-800",
+      Kuning: "border-amber-300 bg-gradient-to-br from-white via-white to-amber-50/70 text-slate-800"
+    };
+    const badgeColors = {
+      Merah: "bg-rose-100 text-rose-800 border-rose-300",
+      Ungu: "bg-purple-100 text-purple-800 border-purple-300",
+      Biru: "bg-blue-100 text-blue-800 border-blue-300",
+      Kuning: "bg-amber-100 text-amber-800 border-amber-300"
+    };
+    const pillGradients = {
+      Merah: "from-rose-600 to-red-700",
+      Ungu: "from-purple-600 to-indigo-700",
+      Biru: "from-blue-600 to-cyan-700",
+      Kuning: "from-amber-500 to-yellow-600"
+    };
+
+    medalsGrid.innerHTML = kot.houses.map(h => {
+      const bColor = badgeColors[h.id] || "bg-slate-100 text-slate-700 border-slate-200";
+      const bStyle = borderStyles[h.id] || "border-slate-200 bg-white";
+      const grad = pillGradients[h.id] || "from-slate-700 to-slate-900";
+
+      return `
+        <div class="p-5 rounded-2xl border-2 ${bStyle} shadow-sm hover:shadow-md transition flex flex-col justify-between executive-card">
+          <div>
+            <div class="flex items-center justify-between mb-3">
+              <span class="text-xs font-black px-2.5 py-0.5 rounded-full ${bColor} border">
+                KEDUDUKAN #${h.standing}
+              </span>
+              <span class="text-xs font-bold text-slate-600">${h.status}</span>
+            </div>
+
+            <div class="flex items-center gap-2.5">
+              <div class="w-10 h-10 rounded-xl bg-gradient-to-br ${grad} text-white flex items-center justify-center font-bold text-sm shadow">
+                ${h.name.replace("Rumah ", "").substring(0, 1)}
+              </div>
+              <div>
+                <h4 class="font-extrabold text-base text-slate-900">${h.name}</h4>
+                <p class="text-[11px] text-slate-500 italic">“${h.motto}”</p>
+              </div>
+            </div>
+
+            <div class="mt-4 p-3 rounded-xl bg-white/90 border border-slate-200/80 shadow-2xs">
+              <div class="flex items-center justify-between text-xs mb-2">
+                <span class="text-slate-500 font-medium">Jumlah Mata:</span>
+                <span class="text-lg font-extrabold text-slate-900 font-mono">${h.points} mata</span>
+              </div>
+              <div class="grid grid-cols-4 gap-1 text-center text-[10px] pt-2 border-t border-slate-100">
+                <div class="p-1 rounded bg-amber-50 text-amber-800 font-bold">🥇 ${h.gold}</div>
+                <div class="p-1 rounded bg-slate-100 text-slate-700 font-bold">🥈 ${h.silver}</div>
+                <div class="p-1 rounded bg-amber-100 text-amber-900 font-bold">🥉 ${h.bronze}</div>
+                <div class="p-1 rounded bg-slate-50 text-slate-500 font-medium">4️⃣ ${h.fourth}</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="mt-4 pt-2.5 border-t border-black/10 text-xs">
+            <span class="text-[10px] text-slate-500 block font-medium">Ketua Guru:</span>
+            <strong class="text-slate-900 font-bold text-xs truncate block">${h.leadTeacher}</strong>
+            <span class="text-[10px] text-slate-500 mt-0.5 block">${h.teachers ? h.teachers.length : 10} Guru Pembimbing</span>
+          </div>
+        </div>
+      `;
+    }).join("");
+  }
+
+  // 2. Jadual Pungutan Pingat Lengkap
+  const tableBody = document.getElementById("kotMedalTableBody");
+  if (tableBody && kot.houses) {
+    tableBody.innerHTML = kot.houses.map(h => {
+      const totalMedals = (h.gold || 0) + (h.silver || 0) + (h.bronze || 0);
+      const isJuara = h.standing === 1;
+
+      return `
+        <tr class="hover:bg-slate-50 transition ${isJuara ? 'bg-amber-50/50 font-semibold' : ''}">
+          <td class="py-3 px-4 text-center font-bold">
+            ${isJuara ? '👑 1' : h.standing}
+          </td>
+          <td class="py-3 px-4">
+            <div class="flex items-center gap-2">
+              <span class="w-3 h-3 rounded-full" style="background-color: ${h.color};"></span>
+              <strong class="text-slate-900">${h.name}</strong>
+            </div>
+          </td>
+          <td class="py-3 px-4 text-slate-700 text-xs">${h.leadTeacher}</td>
+          <td class="py-3 px-4 text-center font-bold text-amber-600 bg-amber-50/40">${h.gold}</td>
+          <td class="py-3 px-4 text-center font-bold text-slate-600 bg-slate-100/50">${h.silver}</td>
+          <td class="py-3 px-4 text-center font-bold text-amber-800 bg-amber-100/40">${h.bronze}</td>
+          <td class="py-3 px-4 text-center text-slate-500">${h.fourth}</td>
+          <td class="py-3 px-4 text-center font-mono font-bold text-slate-800">${totalMedals}</td>
+          <td class="py-3 px-4 text-right font-mono font-extrabold text-blue-900 text-sm">${h.points}</td>
+          <td class="py-3 px-4 text-center">
+            <span class="px-2 py-0.5 rounded text-[10px] font-bold ${isJuara ? 'bg-amber-400 text-slate-950 shadow-sm' : 'bg-slate-100 text-slate-600'}">
+              ${h.status}
+            </span>
+          </td>
+        </tr>
+      `;
+    }).join("");
+  }
+
+  // 3. Anugerah Olahragawan & Olahragawati
+  const awardsContainer = document.getElementById("kotAwardsContainer");
+  if (awardsContainer && kot.awards) {
+    awardsContainer.innerHTML = kot.awards.map(a => `
+      <div class="p-4 rounded-xl bg-white/10 backdrop-blur-sm border border-white/15 flex flex-col justify-between hover:bg-white/15 transition">
+        <div>
+          <div class="flex items-center justify-between mb-2">
+            <span class="text-2xl">${a.icon}</span>
+            <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-amber-500/30 text-amber-300 border border-amber-400/30">
+              ${a.points} Mata
+            </span>
+          </div>
+          <span class="text-[10px] uppercase font-bold tracking-wider text-amber-300 block">${a.category}</span>
+          <h4 class="font-extrabold text-sm text-white mt-0.5 leading-snug">${a.athlete}</h4>
+          <p class="text-xs text-slate-300 mt-1">${a.cohort}</p>
+          <div class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded text-[11px] font-bold mt-2 text-white shadow-2xs" style="background-color: ${a.houseColor};">
+            <span>🚩</span> ${a.house}
+          </div>
+        </div>
+        <div class="mt-3 pt-2.5 border-t border-white/10 text-xs text-slate-300 font-medium">
+          ${a.achievements}
+        </div>
+      </div>
+    `).join("");
+  }
+
+  // 4. Struktur Acara Balapan & Padang
+  const eventsContainer = document.getElementById("kotEventsGridContainer");
+  if (eventsContainer && kot.categories) {
+    eventsContainer.innerHTML = kot.categories.map(c => `
+      <div class="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-2.5 executive-card">
+        <div class="flex items-center justify-between border-b border-slate-200/80 pb-2">
+          <div>
+            <span class="text-[10px] font-extrabold uppercase text-slate-500 tracking-wider">${c.code} • ${c.stage}</span>
+            <h5 class="font-bold text-sm text-royal-900">${c.cohort}</h5>
+          </div>
+          <span class="text-xs font-mono font-bold text-blue-700 bg-blue-100 px-2 py-0.5 rounded">
+            ${c.events.length} Acara
+          </span>
+        </div>
+        <div class="flex flex-wrap gap-1.5 pt-1">
+          ${c.events.map(ev => `
+            <span class="text-[11px] px-2 py-1 rounded bg-white border border-slate-200 text-slate-700 font-medium shadow-2xs">
+              🏃 ${ev}
+            </span>
+          `).join("")}
+        </div>
+      </div>
+    `).join("");
+  }
+}
+
+function openKotPreviewModal() {
+  const modal = document.getElementById("kotPreviewModal");
+  if (modal) modal.classList.remove("hidden");
+}
+
+function closeKotPreviewModal() {
+  const modal = document.getElementById("kotPreviewModal");
+  if (modal) modal.classList.add("hidden");
+}
+
+window.openKotPreviewModal = openKotPreviewModal;
+window.closeKotPreviewModal = closeKotPreviewModal;
 
 /* ==========================================================================
    RENDER INDUK BESAR SIDANG PETANG 2026 (JADUAL & PENYELARAS)

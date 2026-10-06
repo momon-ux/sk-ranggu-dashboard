@@ -10,7 +10,7 @@
 const DEFAULT_SYSTEM_DATA = {
   // PROFIL SEKOLAH
   school: {
-    name: "Sekolah Kebangsaan Ranggu",
+    name: "PAPAN INDUK UTAMA SEKOLAH KEBANGSAAN RANGGU",
     shortName: "SK Ranggu",
     code: "XBA3037",
     gred: "Sekolah Kebangsaan Gred A",
@@ -303,15 +303,152 @@ const DEFAULT_SYSTEM_DATA = {
       { name: "Kelab Olahraga & Balapan", head: "ROSIDIAN BIN IDRIS", icon: "🏃", field: "Balapan", badge: "1M1S" }
     ],
     sportHouses: [
-      { name: "Rumah Satria (Biru)", color: "blue", head: "HASNAN BIN MAT ZIN", motto: "Kecemerlangan Tanpa Batas" },
-      { name: "Rumah Waja (Merah)", color: "red", head: "JUNAID BIN NURDIN", motto: "Semangat Membara Waja" },
-      { name: "Rumah Suria (Kuning)", color: "amber", head: "ASMADI BIN LAJJAKASI", motto: "Menyinari Arena Sukan" },
-      { name: "Rumah Perdana (Hijau)", color: "emerald", head: "RONI BIN BACHO", motto: "Gagah Menuju Juara" }
+      { name: "Rumah Merah", color: "red", hex: "#df3f47", head: "HJH. MASTURAH BINTI TUDA (K)", motto: "Semangat Juang Membara", teachersCount: 10, standing: 1, points: 178 },
+      { name: "Rumah Ungu", color: "purple", hex: "#6d36d8", head: "HALIM BIN BIDI (K)", motto: "Keazaman Menjana Kejuaraan", teachersCount: 11, standing: 2, points: 162 },
+      { name: "Rumah Biru", color: "blue", hex: "#246bfd", head: "MUHAMADIAN BIN SUAIBU (K)", motto: "Gagah Perkasa Di Gelanggang", teachersCount: 11, standing: 3, points: 156 },
+      { name: "Rumah Kuning", color: "amber", hex: "#e5ad00", head: "NORLINA BINTI BAGWAS (K)", motto: "Menyinari Arena Kejayaan", teachersCount: 11, standing: 4, points: 139 }
     ],
     achievements: [
       { title: "Kejohanan TASCAR 3.0 Peringkat Kebangsaan", badge: "Kebangsaan 🥇", level: "Kebangsaan", date: "2026", desc: "Penyampaian pingat dan sijil pencapaian cemerlang peringkat kebangsaan, dibimbing dan dilatih oleh Cikgu Mohammad Fikrey bin Abdul Gapar." },
       { title: "White Bridge Unichamp", badge: "Daerah / Negeri 🥈", level: "Daerah / Negeri", date: "2026", desc: "Pengiktirafan dan penganugerahan kepada barisan murid dan guru pembimbing peserta kejohanan White Bridge Unichamp." },
       { title: "Minggu Kokurikulum Unit Beruniform (Pengakap)", badge: "Peringkat Sekolah", level: "Sekolah", date: "September 2026", desc: "Aktiviti kemahiran ikatan, perkhemahan, dan disiplin baris yang dikendalikan oleh Persekutuan Pengakap Kanak-Kanak SK Ranggu." }
+    ]
+  },
+
+  // =========================================================================
+  // SK RANGGU SPORTSYNC • KEJOHANAN OLAHRAGA TAHUNAN 2026 (KOT 26)
+  // Rujukan Rasmi: fikreyxcode.github.io/kejohanan-olahraga-skrg/index.html?tahun=2026
+  // =========================================================================
+  sportsyncKOT26: {
+    title: "SK RANGGU SPORTSYNC (KOT 26)",
+    subtitle: "Sistem Pengurusan Kejohanan Olahraga Tahunan Sekolah",
+    tagline: "Sukan Wadah Perpaduan & Kecemerlangan",
+    year: "2026",
+    referenceUrl: "https://fikreyxcode.github.io/kejohanan-olahraga-skrg/index.html?tahun=2026",
+    scoringRules: "Emas (1): 7 mata • Perak (2): 5 mata • Gangsa (3): 3 mata • Ke-4: 1 mata",
+    leadership: {
+      penaung: "YUNUS BIN PATARAI (Guru Besar)",
+      pengerusi: "WARNAH BINTI SIRA (PK Kokurikulum)",
+      timbPengerusi1: "RAHMATIAH BINTI MOHD JUDA (PK Pentadbiran)",
+      timbPengerusi2: "KOMALA BINTI JOSEPH (PK HEM)",
+      timbPengerusi3: "EMRAN BIN HJ SELAMAT (PK Petang)",
+      setiausahaSukan: "ROSIDIAN BIN IDRIS",
+      penolongSetiausahaSukan: "MOHAMMAD IKHWAN BIN ABDURAIS"
+    },
+    houses: [
+      {
+        id: "Merah",
+        name: "Rumah Merah",
+        color: "#df3f47",
+        badgeColor: "rose",
+        motto: "Semangat Juang Membara",
+        leadTeacher: "HJH. MASTURAH BINTI TUDA (K)",
+        teachers: ["Hjh. Masturah binti Tuda (K)", "Tanjang Ture", "Zamrie bin Omar Ali", "Hj. Wan Muhamad Yusuf", "Sabriah @ Habibah binti Abdul Sabar", "Rini Daud", "Darmawati binti Lokkong", "S. Lili binti Ladi", "Nur Faezah binti Bantalani", "Rabiatul Aidawiyah binti Abdullah"],
+        gold: 14,
+        silver: 10,
+        bronze: 8,
+        fourth: 6,
+        points: 178,
+        standing: 1,
+        status: "JUARA KESELURUHAN 🏆"
+      },
+      {
+        id: "Ungu",
+        name: "Rumah Ungu",
+        color: "#6d36d8",
+        badgeColor: "purple",
+        motto: "Keazaman Menjana Kejuaraan",
+        leadTeacher: "HALIM BIN BIDI (K)",
+        teachers: ["Halim bin Bidi (K)", "Ag. Ku Kemaindra Pg. Mohd. Taib", "Mohammad Fikrey bin Abdul Gapar", "Jainah binti Sulaiman", "Siti Naurin Fadzilah binti Jalal", "Ani binti Patola", "Mariana binti Kassim", "Rosminah bte Sapar", "Marini binti Ladi", "Ainatun Nadhirah bt. Dharmawi", "Salsabilah binti Shahruddin"],
+        gold: 11,
+        silver: 12,
+        bronze: 9,
+        fourth: 8,
+        points: 162,
+        standing: 2,
+        status: "NAIB JUARA 🥈"
+      },
+      {
+        id: "Biru",
+        name: "Rumah Biru",
+        color: "#246bfd",
+        badgeColor: "blue",
+        motto: "Gagah Perkasa Di Gelanggang",
+        leadTeacher: "MUHAMADIAN BIN SUAIBU (K)",
+        teachers: ["Muhamadian bin Suaibu (K)", "Hj. Junaid bin Nurdin", "Roni bin Bacho", "Asmadi bin Lajjakasi", "Noze binti Tukijan", "Bajam binti Ladung", "Siti Rabia binti Ibrahim", "Nurul Anisa binti Saparudin", "Siti Jawara binti Lukman", "Faridah binti Sunu", "Rasmawati binti Tause"],
+        gold: 10,
+        silver: 11,
+        bronze: 12,
+        fourth: 7,
+        points: 156,
+        standing: 3,
+        status: "TEMPAT KETIGA 🥉"
+      },
+      {
+        id: "Kuning",
+        name: "Rumah Kuning",
+        color: "#e5ad00",
+        badgeColor: "amber",
+        motto: "Menyinari Arena Kejayaan",
+        leadTeacher: "NORLINA BINTI BAGWAS (K)",
+        teachers: ["Norlina binti Bagwas (K)", "Mohd. Ikhwan bin Abdurais", "Hasnan bin Mat Zin", "Hamsiah binti Hamid", "Wafa Farhana binti Abd. Kadir", "Evalorenna binti Laminsin", "Noor Syafiqah Nadhirah binti", "Ruhaya binti Ahmad", "Nechi binti Serunai", "Yusni binti Wahjudin", "Sunarti binti Tappa"],
+        gold: 8,
+        silver: 9,
+        bronze: 11,
+        fourth: 9,
+        points: 139,
+        standing: 4,
+        status: "TEMPAT KEEMPAT"
+      }
+    ],
+    awards: [
+      {
+        category: "Olahragawan Terbaik",
+        athlete: "Muhammad Danish Rayyan bin Azman",
+        cohort: "Tahun 6 Jayyid • Kategori L12",
+        house: "Rumah Merah",
+        houseColor: "#df3f47",
+        achievements: "3 Emas (100m, 200m, 4×100m) • Rekod Kejohanan 100m (12.4s)",
+        points: 21,
+        icon: "👑"
+      },
+      {
+        category: "Olahragawati Terbaik",
+        athlete: "Nur Syamimi Batrisya binti Hamdan",
+        cohort: "Tahun 6 Mumtaz • Kategori P12",
+        house: "Rumah Biru",
+        houseColor: "#246bfd",
+        achievements: "3 Emas (100m, Lompat Jauh, 4×100m) • Lompat Jauh 3.92m",
+        points: 21,
+        icon: "👸"
+      },
+      {
+        category: "Olahragawan Harapan",
+        athlete: "Mohd Farhan bin Rosli",
+        cohort: "Tahun 5 Jayyid • Kategori L10",
+        house: "Rumah Ungu",
+        houseColor: "#6d36d8",
+        achievements: "2 Emas (80m Berpagar, 200m), 1 Perak (Lompat Jauh)",
+        points: 19,
+        icon: "🌟"
+      },
+      {
+        category: "Olahragawati Harapan",
+        athlete: "Siti Aisyah binti Ridzwan",
+        cohort: "Tahun 5 Mumtaz • Kategori P10",
+        house: "Rumah Kuning",
+        houseColor: "#e5ad00",
+        achievements: "2 Emas (100m, Lompat Tinggi), 1 Gangsa (4×100m)",
+        points: 17,
+        icon: "⭐"
+      }
+    ],
+    categories: [
+      { stage: "Prasekolah", code: "PRA", cohort: "Prasekolah", events: ["50 meter (L/P)", "4 × 50 meter (L/P)"] },
+      { stage: "Tahap 1", code: "T1-A", cohort: "Tahun 1 Sahaja", events: ["50 meter (L/P)", "80 meter (L/P)", "4 × 50 meter (L/P)", "4 × 80 meter (L/P)"] },
+      { stage: "Tahap 1", code: "T1-B", cohort: "Tahun 2 & Tahun 3", events: ["50 meter (L/P)", "80 meter (L/P)", "4 × 50 meter (L/P)", "4 × 80 meter (L/P)"] },
+      { stage: "Tahap 2", code: "T2-A", cohort: "Tahun 4 & Tahun 5", events: ["100 meter", "200 meter", "4 × 100 meter", "4 × 200 meter", "Lompat Jauh", "Lompat Tinggi", "Lontar Peluru"] },
+      { stage: "Tahap 2", code: "T2-B", cohort: "Tahun 6 Sahaja", events: ["100 meter", "200 meter", "80 meter Lari Berpagar", "4 × 100 meter", "4 × 200 meter", "Lompat Jauh", "Lompat Tinggi", "Lontar Peluru"] }
     ]
   },
 
@@ -671,7 +808,7 @@ const DEFAULT_SYSTEM_DATA = {
 
 function getStoredData() {
   try {
-    const stored = localStorage.getItem("SK_RANGGU_DASHBOARD_DATA_V7");
+    const stored = localStorage.getItem("SK_RANGGU_DASHBOARD_DATA_V8");
     if (stored) return JSON.parse(stored);
   } catch (err) {
     console.warn("Gagal membaca LocalStorage:", err);
@@ -681,7 +818,7 @@ function getStoredData() {
 
 function saveStoredData(data) {
   try {
-    localStorage.setItem("SK_RANGGU_DASHBOARD_DATA_V7", JSON.stringify(data));
+    localStorage.setItem("SK_RANGGU_DASHBOARD_DATA_V8", JSON.stringify(data));
     return true;
   } catch (err) {
     console.error("Gagal simpan LocalStorage:", err);
@@ -690,7 +827,7 @@ function saveStoredData(data) {
 }
 
 function resetToDefaultData() {
-  localStorage.removeItem("SK_RANGGU_DASHBOARD_DATA_V7");
+  localStorage.removeItem("SK_RANGGU_DASHBOARD_DATA_V8");
   return DEFAULT_SYSTEM_DATA;
 }
 
