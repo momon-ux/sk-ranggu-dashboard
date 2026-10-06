@@ -202,6 +202,7 @@ function initSystem() {
   try { renderHemHierarchy(); } catch(e) { console.warn("Ralat renderHemHierarchy:", e); }
   try { renderKokoHierarchy(); } catch(e) { console.warn("Ralat renderKokoHierarchy:", e); }
   try { renderSportsyncSection(); } catch(e) { console.warn("Ralat renderSportsyncSection:", e); }
+  try { syncWithKOT26(); } catch(e) { console.warn("Ralat syncWithKOT26:", e); }
   try { renderPetangHierarchy(); } catch(e) { console.warn("Ralat renderPetangHierarchy:", e); }
   try { renderPortalAndSocial(); } catch(e) { console.warn("Ralat renderPortalAndSocial:", e); }
 
@@ -355,15 +356,20 @@ function renderAnnouncements() {
     if (item.priority === "Tinggi") priorityBadge = "bg-red-100 text-red-800 border-red-300";
     if (item.priority === "Penting") priorityBadge = "bg-amber-100 text-amber-800 border-amber-300";
 
+    const isTelegram = (item.category && item.category.toLowerCase().includes("telegram")) ||
+                       (item.author && item.author.toLowerCase().includes("telerasmi")) ||
+                       (item.id && item.id.includes("tele"));
+
     return `
-      <div class="p-4 rounded-xl bg-white border border-slate-200/80 executive-card flex flex-col md:flex-row md:items-center justify-between gap-3">
+      <div class="p-4 rounded-xl bg-white border ${isTelegram ? 'border-sky-300 bg-sky-50/20' : 'border-slate-200/80'} executive-card flex flex-col md:flex-row md:items-center justify-between gap-3">
         <div class="flex items-start gap-3">
-          <div class="w-10 h-10 rounded-lg bg-blue-50 text-blue-800 flex items-center justify-center shrink-0 border border-blue-100 font-bold text-lg">
-            📢
+          <div class="w-10 h-10 rounded-lg ${isTelegram ? 'bg-sky-50 text-sky-600 border border-sky-200' : 'bg-blue-50 text-blue-800 border border-blue-100'} flex items-center justify-center shrink-0 font-bold text-lg">
+            ${isTelegram ? '✈️' : '📢'}
           </div>
           <div>
             <div class="flex items-center gap-2 flex-wrap">
               <span class="text-xs px-2.5 py-0.5 rounded-full border font-semibold ${priorityBadge}">${item.priority}</span>
+              ${isTelegram ? '<span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-sky-100 text-sky-800 border border-sky-300">✈️ TELERASMI SKRG</span>' : ''}
               <span class="text-xs font-medium text-slate-500">${item.category} • ${item.date}</span>
               <span class="text-xs text-slate-400">| ${item.author}</span>
             </div>
@@ -371,6 +377,14 @@ function renderAnnouncements() {
             <p class="text-sm text-slate-600 mt-0.5 leading-relaxed">${item.content}</p>
           </div>
         </div>
+        ${isTelegram ? `
+          <div class="self-end md:self-center shrink-0">
+            <a href="https://web.telegram.org/k/#-317568302" target="_blank" rel="noopener noreferrer" class="px-3 py-1.5 rounded-lg bg-sky-500 hover:bg-sky-600 text-white font-bold text-xs inline-flex items-center gap-1.5 transition shadow-2xs">
+              <span>✈️ Buka di Telegram</span>
+              <span>↗</span>
+            </a>
+          </div>
+        ` : ''}
       </div>
     `;
   }).join("");
@@ -1306,36 +1320,45 @@ function renderTakwimEvents() {
   const container = document.getElementById("takwimEventsContainer");
   if (!container) return;
 
-  const events = window.SKR_DATA.takwimEvents || [];
-  container.innerHTML = events.map(e => `
-    <div class="flex items-start gap-4 p-4 rounded-xl bg-white border border-slate-200 executive-card">
-      <div class="bg-royal-900 text-white rounded-xl p-3 text-center shrink-0 w-16 shadow-sm">
-        <div class="text-[10px] font-bold uppercase tracking-wider text-amber-300">
-          ${new Date(e.date).toLocaleDateString("ms-MY", { month: "short" })}
-        </div>
-        <div class="text-xl font-extrabold">
-          ${new Date(e.date).getDate()}
-        </div>
-      </div>
+  const events = window.SKR_DATA.takwimEvents || window.SKR_DATA.takwim || [];
+  container.innerHTML = events.map(e => {
+    const rawDate = e.date || e.startDate || "2026-10-01";
+    const d = new Date(rawDate);
+    const mStr = !isNaN(d.getTime()) ? d.toLocaleDateString("ms-MY", { month: "short" }) : "OKT";
+    const dayStr = !isNaN(d.getTime()) ? d.getDate() : "—";
+    const isCompleted = e.status === "Selesai";
+    const statusBadge = isCompleted ? "bg-slate-100 text-slate-600 border-slate-200" : "bg-emerald-100 text-emerald-800 border-emerald-300";
 
-      <div class="flex-1 min-w-0">
-        <div class="flex items-center gap-2 flex-wrap mb-1">
-          <span class="text-[11px] font-semibold text-blue-800 bg-blue-100 px-2 py-0.5 rounded">
-            ${e.time}
+    return `
+      <div class="flex items-start gap-4 p-4 rounded-xl bg-white border border-slate-200 executive-card">
+        <div class="bg-royal-900 text-white rounded-xl p-3 text-center shrink-0 w-16 shadow-sm">
+          <div class="text-[10px] font-bold uppercase tracking-wider text-amber-300">
+            ${mStr}
+          </div>
+          <div class="text-xl font-extrabold">
+            ${dayStr}
+          </div>
+        </div>
+
+        <div class="flex-1 min-w-0">
+          <div class="flex items-center gap-2 flex-wrap mb-1">
+            <span class="text-[11px] font-semibold text-blue-800 bg-blue-100 px-2 py-0.5 rounded">
+              ${e.time || e.category || 'Program'}
+            </span>
+            <span class="text-[11px] text-slate-500">📍 ${e.venue || e.location || 'SK Ranggu'}</span>
+          </div>
+          <h4 class="font-bold text-slate-900 text-sm">${e.title}</h4>
+          <p class="text-xs text-slate-500 mt-0.5">Tindakan / Penganjur: <strong class="text-slate-700">${e.inCharge || e.organizer || 'Pengurusan Sekolah'}</strong></p>
+        </div>
+
+        <div class="shrink-0 hidden sm:block">
+          <span class="text-xs font-semibold px-2.5 py-1 rounded-full ${statusBadge} border">
+            ${e.status || 'Akan Datang'}
           </span>
-          <span class="text-[11px] text-slate-500">📍 ${e.venue}</span>
         </div>
-        <h4 class="font-bold text-slate-900 text-sm">${e.title}</h4>
-        <p class="text-xs text-slate-500 mt-0.5">Tindakan: <strong class="text-slate-700">${e.inCharge}</strong></p>
       </div>
-
-      <div class="shrink-0 hidden sm:block">
-        <span class="text-xs font-semibold px-2.5 py-1 rounded-full bg-slate-100 text-slate-700 border border-slate-200">
-          ${e.status}
-        </span>
-      </div>
-    </div>
-  `).join("");
+    `;
+  }).join("");
 }
 
 function renderDutyTeachers() {
@@ -1688,7 +1711,7 @@ function renderKokoHierarchy() {
             </div>
             <div class="text-right shrink-0">
               <span class="text-[10px] text-slate-500 block font-medium">Kedudukan:</span>
-              <span class="font-black text-sm text-amber-700">#${h.standing || '—'}</span>
+              <span class="font-black text-sm text-amber-700">${h.standing && h.standing !== '—' ? '#' + h.standing : '—'}</span>
             </div>
           </div>
         </div>
@@ -1698,8 +1721,128 @@ function renderKokoHierarchy() {
 }
 
 /* ==========================================================================
+   PENYELARASAN LANGSUNG KOT 26 (SK RANGGU SPORTSYNC)
+   Rujukan Rasmi: https://fikreyxcode.github.io/kejohanan-olahraga-skrg/data.json
+   Formula Mata: Emas (7) • Perak (5) • Gangsa (3) • Ke-4 (1)
+   ========================================================================== */
+async function syncWithKOT26(forceReload = false) {
+  const syncBadge = document.getElementById("kotSyncStatusText");
+  const syncBtn = document.getElementById("kotSyncRefreshBtn");
+
+  if (syncBadge) {
+    syncBadge.innerHTML = `<span class="inline-block animate-spin mr-1">🔄</span> Menghubungkan ke portal KOT 26...`;
+    syncBadge.className = "text-xs font-semibold px-2.5 py-1 rounded-full bg-amber-100 text-amber-800 border border-amber-300";
+  }
+  if (syncBtn) {
+    syncBtn.disabled = true;
+    syncBtn.classList.add("opacity-50");
+  }
+
+  try {
+    const url = "https://fikreyxcode.github.io/kejohanan-olahraga-skrg/data.json" + (forceReload ? `?t=${Date.now()}` : "");
+    const response = await fetch(url, { cache: "no-store" });
+    if (!response.ok) throw new Error(`HTTP status: ${response.status}`);
+    const liveData = await response.json();
+
+    const year2026 = liveData?.years?.["2026"] || {};
+    const results = Array.isArray(year2026.results) ? year2026.results : [];
+
+    const houseStats = {
+      Merah: { id: "Merah", name: "Rumah Merah", color: "#df3f47", gold: 0, silver: 0, bronze: 0, fourth: 0, points: 0 },
+      Ungu: { id: "Ungu", name: "Rumah Ungu", color: "#6d36d8", gold: 0, silver: 0, bronze: 0, fourth: 0, points: 0 },
+      Biru: { id: "Biru", name: "Rumah Biru", color: "#246bfd", gold: 0, silver: 0, bronze: 0, fourth: 0, points: 0 },
+      Kuning: { id: "Kuning", name: "Rumah Kuning", color: "#e5ad00", gold: 0, silver: 0, bronze: 0, fourth: 0, points: 0 }
+    };
+
+    // Kira pungutan pingat jika acara telah direkodkan dalam portal rasmi KOT 26
+    results.forEach(res => {
+      const hId = (res.house || res.houseName || "").toString().toLowerCase();
+      const matchedKey = Object.keys(houseStats).find(k => hId.includes(k.toLowerCase()));
+      if (matchedKey) {
+        const place = parseInt(res.place || res.position || res.kedudukan, 10);
+        if (place === 1) houseStats[matchedKey].gold += 1;
+        else if (place === 2) houseStats[matchedKey].silver += 1;
+        else if (place === 3) houseStats[matchedKey].bronze += 1;
+        else if (place === 4) houseStats[matchedKey].fourth += 1;
+      }
+    });
+
+    Object.values(houseStats).forEach(h => {
+      h.points = (h.gold * 7) + (h.silver * 5) + (h.bronze * 3) + (h.fourth * 1);
+    });
+
+    const hasAnyPoints = Object.values(houseStats).some(h => h.points > 0);
+
+    const sortedHouses = Object.values(houseStats).sort((a, b) => {
+      if (b.points !== a.points) return b.points - a.points;
+      if (b.gold !== a.gold) return b.gold - a.gold;
+      if (b.silver !== a.silver) return b.silver - a.silver;
+      return b.bronze - a.bronze;
+    });
+
+    // Kemas kini ke dalam struktur data sportsyncKOT26
+    if (window.SKR_DATA?.sportsyncKOT26?.houses) {
+      window.SKR_DATA.sportsyncKOT26.houses.forEach(h => {
+        const stat = houseStats[h.id];
+        if (stat) {
+          h.gold = stat.gold;
+          h.silver = stat.silver;
+          h.bronze = stat.bronze;
+          h.fourth = stat.fourth;
+          h.points = stat.points;
+          if (hasAnyPoints) {
+            const rank = sortedHouses.findIndex(item => item.id === h.id) + 1;
+            h.standing = rank;
+            h.status = rank === 1 ? "MENDAHULUI 🏆" : (rank === 2 ? "TEMPAT KE-2 🥈" : (rank === 3 ? "TEMPAT KE-3 🥉" : "TEMPAT KE-4"));
+          } else {
+            h.standing = "—";
+            h.status = "MENANTI KEPUTUSAN ACARA";
+          }
+        }
+      });
+    }
+
+    // Kemas kini ke dalam struktur sportHouses
+    if (window.SKR_DATA?.sportHouses) {
+      window.SKR_DATA.sportHouses.forEach(sh => {
+        const matchKey = Object.keys(houseStats).find(k => sh.name.toLowerCase().includes(k.toLowerCase()));
+        if (matchKey) {
+          const stat = houseStats[matchKey];
+          sh.points = stat.points;
+          sh.standing = hasAnyPoints ? (sortedHouses.findIndex(item => item.id === matchKey) + 1) : "—";
+        }
+      });
+    }
+
+    renderSportsyncSection();
+    if (typeof renderKokoHierarchy === "function") renderKokoHierarchy();
+
+    if (syncBadge) {
+      if (hasAnyPoints) {
+        syncBadge.innerHTML = `🟢 KOT 26 Terselaras: ${results.length} Acara Dikemas Kini (${new Date().toLocaleTimeString("ms-MY")})`;
+        syncBadge.className = "text-xs font-semibold px-2.5 py-1 rounded-full bg-emerald-100 text-emerald-800 border border-emerald-300";
+      } else {
+        syncBadge.innerHTML = `🟢 Terselaras dengan KOT 26: Temasya Belum Bermula • 0 Mata (${new Date().toLocaleTimeString("ms-MY")})`;
+        syncBadge.className = "text-xs font-semibold px-2.5 py-1 rounded-full bg-blue-100 text-blue-800 border border-blue-300";
+      }
+    }
+  } catch (err) {
+    console.warn("Penyelarasan KOT 26 mod luar talian:", err);
+    if (syncBadge) {
+      syncBadge.innerHTML = `🟢 KOT 26 Terselaras: Data Rasmi 0 Mata (Menanti Temasya 24-25 Okt)`;
+      syncBadge.className = "text-xs font-semibold px-2.5 py-1 rounded-full bg-blue-50 text-blue-800 border border-blue-200";
+    }
+  } finally {
+    if (syncBtn) {
+      syncBtn.disabled = false;
+      syncBtn.classList.remove("opacity-50");
+    }
+  }
+}
+window.syncWithKOT26 = syncWithKOT26;
+
+/* ==========================================================================
    RENDER SEKSYEN SK RANGGU SPORTSYNC • KEJOHANAN OLAHRAGA TAHUNAN 2026 (KOT 26)
-   Rujukan Rasmi: fikreyxcode.github.io/kejohanan-olahraga-skrg
    ========================================================================== */
 function renderSportsyncSection() {
   const kot = window.SKR_DATA.sportsyncKOT26;
@@ -1731,16 +1874,17 @@ function renderSportsyncSection() {
       const bColor = badgeColors[h.id] || "bg-slate-100 text-slate-700 border-slate-200";
       const bStyle = borderStyles[h.id] || "border-slate-200 bg-white";
       const grad = pillGradients[h.id] || "from-slate-700 to-slate-900";
+      const hasRank = h.standing && h.standing !== "—";
 
       return `
         <div class="p-5 rounded-2xl border-2 ${bStyle} shadow-sm hover:shadow-md transition flex flex-col justify-between executive-card relative">
           ${renderCardEditButton({ targetType: 'koko_sub', targetId: 'sportHouses', subId: idx, name: h.leadTeacher, role: h.name, extra: h.motto, photo: h.leadPhoto })}
           <div>
             <div class="flex items-center justify-between mb-3">
-              <span class="text-xs font-black px-2.5 py-0.5 rounded-full ${bColor} border">
-                KEDUDUKAN #${h.standing}
+              <span class="text-xs font-black px-2.5 py-0.5 rounded-full ${hasRank ? bColor : 'bg-slate-100 text-slate-600 border-slate-200'} border">
+                ${hasRank ? `KEDUDUKAN #${h.standing}` : 'MENANTI ACARA'}
               </span>
-              <span class="text-xs font-bold text-slate-600">${h.status}</span>
+              <span class="text-[11px] font-bold text-slate-500">${h.status}</span>
             </div>
 
             <div class="flex items-center gap-2.5">
@@ -1756,13 +1900,13 @@ function renderSportsyncSection() {
             <div class="mt-4 p-3 rounded-xl bg-white/90 border border-slate-200/80 shadow-2xs">
               <div class="flex items-center justify-between text-xs mb-2">
                 <span class="text-slate-500 font-medium">Jumlah Mata:</span>
-                <span class="text-lg font-extrabold text-slate-900 font-mono">${h.points} mata</span>
+                <span class="text-lg font-extrabold text-slate-900 font-mono">${h.points || 0} mata</span>
               </div>
               <div class="grid grid-cols-4 gap-1 text-center text-[10px] pt-2 border-t border-slate-100">
-                <div class="p-1 rounded bg-amber-50 text-amber-800 font-bold">🥇 ${h.gold}</div>
-                <div class="p-1 rounded bg-slate-100 text-slate-700 font-bold">🥈 ${h.silver}</div>
-                <div class="p-1 rounded bg-amber-100 text-amber-900 font-bold">🥉 ${h.bronze}</div>
-                <div class="p-1 rounded bg-slate-50 text-slate-500 font-medium">4️⃣ ${h.fourth}</div>
+                <div class="p-1 rounded bg-amber-50 text-amber-800 font-bold">🥇 ${h.gold || 0}</div>
+                <div class="p-1 rounded bg-slate-100 text-slate-700 font-bold">🥈 ${h.silver || 0}</div>
+                <div class="p-1 rounded bg-amber-100 text-amber-900 font-bold">🥉 ${h.bronze || 0}</div>
+                <div class="p-1 rounded bg-slate-50 text-slate-500 font-medium">4️⃣ ${h.fourth || 0}</div>
               </div>
             </div>
           </div>
@@ -1788,12 +1932,13 @@ function renderSportsyncSection() {
   if (tableBody && kot.houses) {
     tableBody.innerHTML = kot.houses.map(h => {
       const totalMedals = (h.gold || 0) + (h.silver || 0) + (h.bronze || 0);
-      const isJuara = h.standing === 1;
+      const isJuara = h.standing === 1 && (h.points > 0);
+      const hasRank = h.standing && h.standing !== "—";
 
       return `
         <tr class="hover:bg-slate-50 transition ${isJuara ? 'bg-amber-50/50 font-semibold' : ''}">
           <td class="py-3 px-4 text-center font-bold">
-            ${isJuara ? '👑 1' : h.standing}
+            ${isJuara ? '👑 1' : (hasRank ? h.standing : '—')}
           </td>
           <td class="py-3 px-4">
             <div class="flex items-center gap-2">
@@ -1810,12 +1955,12 @@ function renderSportsyncSection() {
               <span>${h.leadTeacher}</span>
             </div>
           </td>
-          <td class="py-3 px-4 text-center font-bold text-amber-600 bg-amber-50/40">${h.gold}</td>
-          <td class="py-3 px-4 text-center font-bold text-slate-600 bg-slate-100/50">${h.silver}</td>
-          <td class="py-3 px-4 text-center font-bold text-amber-800 bg-amber-100/40">${h.bronze}</td>
-          <td class="py-3 px-4 text-center text-slate-500">${h.fourth}</td>
+          <td class="py-3 px-4 text-center font-bold text-amber-600 bg-amber-50/40">${h.gold || 0}</td>
+          <td class="py-3 px-4 text-center font-bold text-slate-600 bg-slate-100/50">${h.silver || 0}</td>
+          <td class="py-3 px-4 text-center font-bold text-amber-800 bg-amber-100/40">${h.bronze || 0}</td>
+          <td class="py-3 px-4 text-center text-slate-500">${h.fourth || 0}</td>
           <td class="py-3 px-4 text-center font-mono font-bold text-slate-800">${totalMedals}</td>
-          <td class="py-3 px-4 text-right font-mono font-extrabold text-blue-900 text-sm">${h.points}</td>
+          <td class="py-3 px-4 text-right font-mono font-extrabold text-blue-900 text-sm">${h.points || 0}</td>
           <td class="py-3 px-4 text-center">
             <span class="px-2 py-0.5 rounded text-[10px] font-bold ${isJuara ? 'bg-amber-400 text-slate-950 shadow-sm' : 'bg-slate-100 text-slate-600'}">
               ${h.status}
@@ -1834,15 +1979,15 @@ function renderSportsyncSection() {
         <div>
           <div class="flex items-center justify-between mb-2">
             <span class="text-2xl">${a.icon}</span>
-            <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-amber-500/30 text-amber-300 border border-amber-400/30">
-              ${a.points} Mata
+            <span class="text-[10px] font-bold px-2 py-0.5 rounded-full ${a.points > 0 ? 'bg-amber-500/30 text-amber-300 border border-amber-400/30' : 'bg-white/20 text-slate-200 border border-white/20'}">
+              ${a.points > 0 ? `${a.points} Mata` : 'Menanti Acara'}
             </span>
           </div>
           <span class="text-[10px] uppercase font-bold tracking-wider text-amber-300 block">${a.category}</span>
           <h4 class="font-extrabold text-sm text-white mt-0.5 leading-snug">${a.athlete}</h4>
           <p class="text-xs text-slate-300 mt-1">${a.cohort}</p>
-          <div class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded text-[11px] font-bold mt-2 text-white shadow-2xs" style="background-color: ${a.houseColor};">
-            <span>🚩</span> ${a.house}
+          <div class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded text-[11px] font-bold mt-2 text-white shadow-2xs" style="background-color: ${a.houseColor || '#475569'};">
+            <span>🏟️</span> ${a.house}
           </div>
         </div>
         <div class="mt-3 pt-2.5 border-t border-white/10 text-xs text-slate-300 font-medium">

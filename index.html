@@ -461,13 +461,40 @@
       <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
         
         <div class="lg:col-span-2 space-y-4">
-          <div class="flex items-center justify-between">
-            <h3 class="text-base sm:text-lg font-bold text-royal-900 flex items-center gap-2">
-              <span class="w-2.5 h-2.5 rounded-full bg-blue-700"></span>
-              Pemberitahuan Pentadbiran & Taklimat Semasa
-            </h3>
-            <span class="text-xs text-slate-500">Kemas kini langsung</span>
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+            <div>
+              <h3 class="text-base sm:text-lg font-bold text-royal-900 flex items-center gap-2">
+                <span class="w-2.5 h-2.5 rounded-full bg-blue-700"></span>
+                Pemberitahuan Pentadbiran & Taklimat Semasa
+              </h3>
+              <p class="text-xs text-slate-500 mt-0.5">Diselaraskan dengan saluran Telegram rasmi & taklimat semasa pentadbiran sekolah.</p>
+            </div>
+            <div class="flex items-center gap-2">
+              <a href="https://web.telegram.org/k/#-317568302" target="_blank" rel="noopener noreferrer" class="px-3 py-1.5 rounded-xl bg-sky-500 hover:bg-sky-600 text-white font-bold text-xs flex items-center gap-1.5 transition shadow-sm">
+                <span>✈️</span>
+                <span>Telerasmi SKRG (64 Ahli)</span>
+                <span>↗</span>
+              </a>
+            </div>
           </div>
+
+          <!-- BANNER PENYELARASAN TELEGRAM TELERASMI -->
+          <div class="p-3.5 rounded-2xl bg-gradient-to-r from-sky-50 via-blue-50 to-indigo-50 border border-sky-200 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs">
+            <div class="flex items-center gap-3">
+              <div class="w-9 h-9 rounded-xl bg-sky-500 text-white flex items-center justify-center font-bold text-base shadow-sm shrink-0">
+                ✈️
+              </div>
+              <div>
+                <strong class="text-sky-950 font-bold block">Saluran Rasmi: Telerasmi SKRG</strong>
+                <span class="text-slate-600 text-[11px]">Memaparkan makluman rasmi pentadbiran, e-RPH, e-JKM, taklimat PBPPP & persediaan KOT 26 secara berterusan.</span>
+              </div>
+            </div>
+            <span class="px-2.5 py-1 rounded-full bg-emerald-100 text-emerald-800 font-bold text-[10px] border border-emerald-300 self-start sm:self-auto shrink-0 flex items-center gap-1">
+              <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-ping"></span>
+              TERKINI
+            </span>
+          </div>
+
           <div id="announcementsContainer" class="space-y-3"></div>
         </div>
 
@@ -1122,7 +1149,7 @@
 
         <!-- PAPAN MARKAH & KEDUDUKAN PINGAT 4 RUMAH SUKAN -->
         <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-4">
-          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-100 pb-3">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-100 pb-3">
             <div>
               <span class="text-[10px] font-extrabold uppercase tracking-widest text-blue-700 bg-blue-50 px-2 py-0.5 rounded border border-blue-200">
                 PAPAN MARKAH & PINGAT SEMASA
@@ -1131,8 +1158,23 @@
                 <span>🏆</span> Kedudukan Keseluruhan 4 Rumah Sukan (KOT 26)
               </h3>
             </div>
-            <div class="text-xs text-slate-500 font-medium">
-              Sistem Mata: <span class="text-slate-800 font-bold">Emas (7) • Perak (5) • Gangsa (3) • Ke-4 (1)</span>
+            <div class="flex flex-wrap items-center gap-2">
+              <span id="kotSyncStatusText" class="text-xs font-semibold px-2.5 py-1 rounded-full bg-blue-100 text-blue-800 border border-blue-300">
+                🟢 Terselaras dengan KOT 26: Temasya Belum Bermula • 0 Mata
+              </span>
+              <button id="kotSyncRefreshBtn" onclick="syncWithKOT26(true)" class="px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 text-xs font-bold border border-slate-300 flex items-center gap-1.5 transition shadow-2xs">
+                <span>🔄</span>
+                <span>Segarkan Data KOT 26</span>
+              </button>
+            </div>
+          </div>
+
+          <div class="flex flex-wrap items-center justify-between gap-2 text-xs text-slate-600 bg-slate-50 p-2.5 rounded-xl border border-slate-200/80">
+            <div>
+              Sistem Mata Rasmi: <span class="text-slate-900 font-bold">Emas (7) • Perak (5) • Gangsa (3) • Ke-4 (1)</span>
+            </div>
+            <div class="text-[11px] text-slate-500">
+              *Data terselaras secara langsung dari sistem rasmi KOT 26. Sebarang mata yang dimasukkan ke portal KOT 26 akan tertera di sini secara automatik.
             </div>
           </div>
 

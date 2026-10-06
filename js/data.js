@@ -564,10 +564,10 @@ const DEFAULT_SYSTEM_DATA = {
       { name: "Kelab Olahraga & Balapan", head: "ROSIDIAN BIN IDRIS", icon: "🏃", field: "Balapan", badge: "1M1S", photo: "assets/photos/rosidian-bin-idris.jpg" }
     ],
     sportHouses: [
-      { name: "Rumah Merah", color: "red", hex: "#df3f47", head: "HJH. MASTURAH BINTI TUDA (K)", photo: "assets/photos/masturah-binti-tuda.jpg", motto: "Semangat Juang Membara", teachersCount: 10, standing: 1, points: 178 },
-      { name: "Rumah Ungu", color: "purple", hex: "#6d36d8", head: "HALIM BIN BIDI (K)", photo: "assets/photos/halim-bin-bidi.jpg", motto: "Keazaman Menjana Kejuaraan", teachersCount: 11, standing: 2, points: 162 },
-      { name: "Rumah Biru", color: "blue", hex: "#246bfd", head: "MUHAMADIAN BIN SUAIBU (K)", photo: "assets/photos/muhamadian-bin-suaibu.jpg", motto: "Gagah Perkasa Di Gelanggang", teachersCount: 11, standing: 3, points: 156 },
-      { name: "Rumah Kuning", color: "amber", hex: "#e5ad00", head: "NORLINA BINTI BAGWAS (K)", photo: "assets/photos/norlina-binti-bagwas.jpg", motto: "Menyinari Arena Kejayaan", teachersCount: 11, standing: 4, points: 139 }
+      { name: "Rumah Merah", color: "red", hex: "#df3f47", head: "HJH. MASTURAH BINTI TUDA (K)", photo: "assets/photos/masturah-binti-tuda.jpg", motto: "Semangat Juang Membara", teachersCount: 10, standing: "—", points: 0 },
+      { name: "Rumah Ungu", color: "purple", hex: "#6d36d8", head: "HALIM BIN BIDI (K)", photo: "assets/photos/halim-bin-bidi.jpg", motto: "Keazaman Menjana Kejuaraan", teachersCount: 11, standing: "—", points: 0 },
+      { name: "Rumah Biru", color: "blue", hex: "#246bfd", head: "MUHAMADIAN BIN SUAIBU (K)", photo: "assets/photos/muhamadian-bin-suaibu.jpg", motto: "Gagah Perkasa Di Gelanggang", teachersCount: 11, standing: "—", points: 0 },
+      { name: "Rumah Kuning", color: "amber", hex: "#e5ad00", head: "NORLINA BINTI BAGWAS (K)", photo: "assets/photos/norlina-binti-bagwas.jpg", motto: "Menyinari Arena Kejayaan", teachersCount: 11, standing: "—", points: 0 }
     ],
     achievements: [
       { title: "Kejohanan TASCAR 3.0 Peringkat Kebangsaan", badge: "Kebangsaan 🥇", level: "Kebangsaan", date: "2026", desc: "Penyampaian pingat dan sijil pencapaian cemerlang peringkat kebangsaan, dibimbing dan dilatih oleh MOHAMMAD FIKREY BIN ABDUL GAPAR." },
@@ -605,13 +605,13 @@ const DEFAULT_SYSTEM_DATA = {
         leadTeacher: "HJH. MASTURAH BINTI TUDA (K)",
         leadPhoto: "assets/photos/masturah-binti-tuda.jpg",
         teachers: ["Hjh. Masturah binti Tuda (K)", "Tanjang bin Ture", "Zamrie bin Omar Ali", "Hj. Wan Muhamad Yusuf", "Sabriah @ Habibah binti Abdul Sabar", "Rini binti Daud", "Darmawati binti Lokkong", "S. Lili binti Ladi", "Nur Faezah binti Bantalani", "Robiatul Aidawyah"],
-        gold: 14,
-        silver: 10,
-        bronze: 8,
-        fourth: 6,
-        points: 178,
-        standing: 1,
-        status: "JUARA KESELURUHAN 🏆"
+        gold: 0,
+        silver: 0,
+        bronze: 0,
+        fourth: 0,
+        points: 0,
+        standing: "—",
+        status: "MENANTI KEPUTUSAN ACARA"
       },
       {
         id: "Ungu",
@@ -622,13 +622,13 @@ const DEFAULT_SYSTEM_DATA = {
         leadTeacher: "HALIM BIN BIDI (K)",
         leadPhoto: "assets/photos/halim-bin-bidi.jpg",
         teachers: ["Halim bin Bidi (K)", "Ag Ku Kemainddra bin Pg Mohd Taib", "MOHAMMAD FIKREY BIN ABDUL GAPAR", "Jainah binti Sulaiman", "Siti Naurin Fadzilah binti Jalal", "Ani binti Patola", "Mariana binti Kassim", "Rosminah binti Sapar", "Marini binti Ladi", "Ainatun Nadhirah binti Dharmawi", "Salsabila binti Shahruddin"],
-        gold: 11,
-        silver: 12,
-        bronze: 9,
-        fourth: 8,
-        points: 162,
-        standing: 2,
-        status: "NAIB JUARA 🥈"
+        gold: 0,
+        silver: 0,
+        bronze: 0,
+        fourth: 0,
+        points: 0,
+        standing: "—",
+        status: "MENANTI KEPUTUSAN ACARA"
       },
       {
         id: "Biru",
@@ -639,13 +639,13 @@ const DEFAULT_SYSTEM_DATA = {
         leadTeacher: "MUHAMADIAN BIN SUAIBU (K)",
         leadPhoto: "assets/photos/muhamadian-bin-suaibu.jpg",
         teachers: ["Muhamadian bin Suaibu (K)", "Hj. Junaid bin Nurdin", "Roni bin Bacho", "Asmadi bin Lajjakasi", "Noze binti Tukijan", "Bajam binti Ladung", "Siti Rabia binti Ibrahim", "Nurul Anisa binti Saparudin", "Siti Jawara binti Lukman", "Faridah binti Sunu", "Rasmawati binti Tause"],
-        gold: 10,
-        silver: 11,
-        bronze: 12,
-        fourth: 7,
-        points: 156,
-        standing: 3,
-        status: "TEMPAT KETIGA 🥉"
+        gold: 0,
+        silver: 0,
+        bronze: 0,
+        fourth: 0,
+        points: 0,
+        standing: "—",
+        status: "MENANTI KEPUTUSAN ACARA"
       },
       {
         id: "Kuning",
@@ -656,54 +656,54 @@ const DEFAULT_SYSTEM_DATA = {
         leadTeacher: "NORLINA BINTI BAGWAS (K)",
         leadPhoto: "assets/photos/norlina-binti-bagwas.jpg",
         teachers: ["Norlina binti Bagwas (K)", "Mohd. Ikhwan bin Abdurais", "Hasnan bin Mat Zin", "Hamsiah binti Hamid", "Wafa Farhana binti Abd. Kadir", "Evalorenna binti Laminsin", "Noor Syafiqah Nadhirah binti Jamaluddin", "Ruhaya binti Ahmad", "Nechi binti Serunai", "Yusni binti Wahjudin", "Sunarti binti Tappa"],
-        gold: 8,
-        silver: 9,
-        bronze: 11,
-        fourth: 9,
-        points: 139,
-        standing: 4,
-        status: "TEMPAT KEEMPAT"
+        gold: 0,
+        silver: 0,
+        bronze: 0,
+        fourth: 0,
+        points: 0,
+        standing: "—",
+        status: "MENANTI KEPUTUSAN ACARA"
       }
     ],
     awards: [
       {
         category: "Olahragawan Terbaik",
-        athlete: "Muhammad Danish Rayyan bin Azman",
-        cohort: "Tahun 6 Jayyid • Kategori L12",
-        house: "Rumah Merah",
-        houseColor: "#df3f47",
-        achievements: "3 Emas (100m, 200m, 4×100m) • Rekod Kejohanan 100m (12.4s)",
-        points: 21,
+        athlete: "Menanti Keputusan Rasmi",
+        cohort: "Kategori L12 • Sesi 2026",
+        house: "Semua Rumah Sukan",
+        houseColor: "#64748b",
+        achievements: "Kejohanan KOT 26 dijadualkan berlangsung pada 24 - 25 Okt 2026",
+        points: 0,
         icon: "👑"
       },
       {
         category: "Olahragawati Terbaik",
-        athlete: "Nur Syamimi Batrisya binti Hamdan",
-        cohort: "Tahun 6 Mumtaz • Kategori P12",
-        house: "Rumah Biru",
-        houseColor: "#246bfd",
-        achievements: "3 Emas (100m, Lompat Jauh, 4×100m) • Lompat Jauh 3.92m",
-        points: 21,
+        athlete: "Menanti Keputusan Rasmi",
+        cohort: "Kategori P12 • Sesi 2026",
+        house: "Semua Rumah Sukan",
+        houseColor: "#64748b",
+        achievements: "Kejohanan KOT 26 dijadualkan berlangsung pada 24 - 25 Okt 2026",
+        points: 0,
         icon: "👸"
       },
       {
         category: "Olahragawan Harapan",
-        athlete: "Mohd Farhan bin Rosli",
-        cohort: "Tahun 5 Jayyid • Kategori L10",
-        house: "Rumah Ungu",
-        houseColor: "#6d36d8",
-        achievements: "2 Emas (80m Berpagar, 200m), 1 Perak (Lompat Jauh)",
-        points: 19,
+        athlete: "Menanti Keputusan Rasmi",
+        cohort: "Kategori L10 • Sesi 2026",
+        house: "Semua Rumah Sukan",
+        houseColor: "#64748b",
+        achievements: "Kejohanan KOT 26 dijadualkan berlangsung pada 24 - 25 Okt 2026",
+        points: 0,
         icon: "🌟"
       },
       {
         category: "Olahragawati Harapan",
-        athlete: "Siti Aisyah binti Ridzwan",
-        cohort: "Tahun 5 Mumtaz • Kategori P10",
-        house: "Rumah Kuning",
-        houseColor: "#e5ad00",
-        achievements: "2 Emas (100m, Lompat Tinggi), 1 Gangsa (4×100m)",
-        points: 17,
+        athlete: "Menanti Keputusan Rasmi",
+        cohort: "Kategori P10 • Sesi 2026",
+        house: "Semua Rumah Sukan",
+        houseColor: "#64748b",
+        achievements: "Kejohanan KOT 26 dijadualkan berlangsung pada 24 - 25 Okt 2026",
+        points: 0,
         icon: "⭐"
       }
     ],
@@ -859,34 +859,52 @@ const DEFAULT_SYSTEM_DATA = {
     }
   ],
 
-  // PENGUMUMAN PENTADBIRAN
+  // PENGUMUMAN PENTADBIRAN (TERSELARAS DARI TELARASMI SKRG)
   announcements: [
     {
-      id: "ann-1",
-      title: "Penghantaran Rekod Pengajaran Harian (e-RPH) Minggu Ke-28",
+      id: "ann-tele-1",
+      title: "Penugasan Pegawai Teknikal Kejohanan Merentas Desa 2026 (PEG.TEKNIKAL M.DESA '26)",
       date: "2026-10-06",
       priority: "Tinggi",
-      category: "Kurikulum",
-      author: "PK Pentadbiran (Puan Rahmatiah)",
-      content: "Semua guru diminta melengkapkan dan menghantar e-RPH sebelum jam 5.00 petang hari Jumaat melalui portal DELIMa."
+      category: "Kokurikulum • Telegram",
+      author: "PK Kokurikulum (Puan Warnah binti Sira) • Telerasmi SKRG",
+      content: "Senarai penuh penugasan Pegawai Teknikal, Marsyal Laluan, Pencatat Masa dan Hakim Penamat bagi Kejohanan Merentas Desa SK Ranggu 2026 telah diselaraskan. Sila semak fail PDF hebahan dalam saluran Telerasmi SKRG."
     },
     {
-      id: "ann-2",
-      title: "Mesyuarat Pengurusan Kurikulum & Panitia Bil 3/2026",
-      date: "2026-10-12",
+      id: "ann-tele-2",
+      title: "Taklimat Penilaian Prestasi Kerja Guru & AKP Sesi 2026 (6.Prestasi kerja.pptx)",
+      date: "2026-10-06",
       priority: "Penting",
-      category: "Mesyuarat",
-      author: "Setiausaha Pentadbiran (Puan Bajam binti Ladung)",
-      content: "Mesyuarat Kurikulum Bil 3 akan diadakan di Bilik Mesyuarat pada jam 1.30 petang. Kehadiran semua Ketua Panitia adalah diwajibkan."
+      category: "Pentadbiran • Telegram",
+      author: "Guru Besar (Encik Yunus bin Patarai) • Telerasmi SKRG",
+      content: "Slaid taklimat PBPPP Pegawai Perkhidmatan Pendidikan & Penilaian Prestasi AKP 2026 telah diedarkan dalam Telegram rasmi. Semua warga pendidik dan AKP diminta meneliti garis panduan penetapan keberhasilan."
     },
     {
-      id: "ann-3",
-      title: "Pemeriksaan Kesihatan & Pergigian Murid Tahap 1 & 2",
-      date: "2026-10-15",
+      id: "ann-tele-3",
+      title: "Pengesahan Enrolmen Rasmi APDM bertarikh 5 Oktober 2026 (890 Murid, 27 Kelas)",
+      date: "2026-10-05",
+      priority: "Penting",
+      category: "APDM & HEM",
+      author: "Penyelaras APDM (Encik Mohammad Fikrey bin Abdul Gapar)",
+      content: "Pengesahan data enrolmen murid terkini: 890 murid (449 Lelaki, 441 Perempuan) dalam 27 kelas (24 Perdana, 3 Prasekolah). Sidang petang merangkumi 12 kelas dengan 412 murid."
+    },
+    {
+      id: "ann-tele-4",
+      title: "Jadual Latihan Rumah Sukan & Saringan Acara Balapan & Padang (KOT 26)",
+      date: "2026-10-05",
       priority: "Biasa",
-      category: "HEM",
-      author: "Penyelaras 3K (Puan Norimah binti Joyo Rejo)",
-      content: "Pasukan Pergigian Bergerak Pejabat Kesihatan Daerah akan mengadakan saringan pemeriksaan gigi di Bilik Rawatan SK Ranggu."
+      category: "Sukan • KOT 26",
+      author: "Setiausaha Sukan (Encik Rosidian bin Idris)",
+      content: "Latihan intensif 4 Rumah Sukan (Merah, Ungu, Biru, Kuning) dan saringan pemilihan peserta sedang berjalan lancar mengikut jadual giliran padang menjelang temasya 24-25 Oktober 2026."
+    },
+    {
+      id: "ann-tele-5",
+      title: "Perekodan e-JKM Kehadiran Murid (HEM SmartTrack) & Penghantaran e-RPH Minggu 28",
+      date: "2026-10-06",
+      priority: "Tinggi",
+      category: "Kurikulum & HEM",
+      author: "PK Pentadbiran & PK HEM",
+      content: "Guru kelas sesi pagi & petang diingatkan mengemas kini rekod kehadiran sebelum jam 9.00 pagi / 2.30 petang melalui HEM SmartTrack, dan menghantar e-RPH Minggu ke-28 sebelum Jumaat."
     }
   ],
 
@@ -2052,46 +2070,90 @@ const DEFAULT_SYSTEM_DATA = {
     }
   ],
 
-  // TAKWIM AKTIVITI
+  // TAKWIM AKTIVITI SESI 2026 (TERSELARAS DARI TELARASMI SKRG)
   takwim: [
     {
       id: "tak-1",
-      title: "Ujian Akhir Sesi Akademik (UASA) 2026",
-      startDate: "2026-11-10",
-      endDate: "2026-11-14",
-      category: "Kurikulum",
-      location: "Bilik Darjah SK Ranggu",
-      organizer: "Unit Peperiksaan & PBD",
+      title: "Kejohanan Merentas Desa SK Ranggu 2026",
+      startDate: "2026-10-17",
+      endDate: "2026-10-17",
+      date: "2026-10-17",
+      time: "07:00 Pagi",
+      category: "Kokurikulum • Sukan",
+      location: "Padang & Laluan Sekitar SK Ranggu",
+      venue: "Padang SK Ranggu",
+      organizer: "Unit Kokurikulum (Puan Warnah binti Sira)",
+      inCharge: "Pegawai Teknikal Merentas Desa",
       status: "Akan Datang"
     },
     {
       id: "tak-2",
-      title: "Hari Bicara Akademik & Penyerahan Pelaporan PBD",
-      startDate: "2026-11-28",
-      endDate: "2026-11-28",
-      category: "Kurikulum",
-      location: "Dewan Terbuka SK Ranggu",
-      organizer: "Jawatankuasa PBD",
+      title: "Kejohanan Olahraga Tahunan SK Ranggu (KOT 26)",
+      startDate: "2026-10-24",
+      endDate: "2026-10-25",
+      date: "2026-10-24",
+      time: "07:30 Pagi",
+      category: "Kokurikulum • Sukan",
+      location: "Padang SK Ranggu",
+      venue: "Padang SK Ranggu",
+      organizer: "Unit Kokurikulum & Sukan",
+      inCharge: "Rosidian bin Idris (S/U Sukan)",
       status: "Akan Datang"
     },
     {
       id: "tak-3",
-      title: "Kejohanan Olahraga Tahunan SK Ranggu (KOT 26)",
-      startDate: "2026-10-24",
-      endDate: "2026-10-25",
-      category: "Sukan",
-      location: "Padang SK Ranggu",
-      organizer: "Unit Kokurikulum & Sukan",
-      status: "Selesai"
+      title: "Taklimat Penilaian Prestasi Kerja Guru & AKP 2026",
+      startDate: "2026-10-28",
+      endDate: "2026-10-28",
+      date: "2026-10-28",
+      time: "01:30 Petang",
+      category: "Pentadbiran",
+      location: "Bilik Gerakan SK Ranggu",
+      venue: "Bilik Gerakan SK Ranggu",
+      organizer: "Pengurusan Pentadbiran",
+      inCharge: "Yunus bin Patarai (Guru Besar)",
+      status: "Akan Datang"
     },
     {
       id: "tak-4",
+      title: "Ujian Akhir Sesi Akademik (UASA) 2026",
+      startDate: "2026-11-10",
+      endDate: "2026-11-14",
+      date: "2026-11-10",
+      time: "Sepanjang Hari",
+      category: "Kurikulum",
+      location: "Bilik Darjah SK Ranggu",
+      venue: "Bilik Darjah SK Ranggu",
+      organizer: "Unit Peperiksaan & PBD",
+      inCharge: "Penyelaras Peperiksaan",
+      status: "Akan Datang"
+    },
+    {
+      id: "tak-5",
+      title: "Hari Bicara Akademik & Penyerahan Pelaporan PBD",
+      startDate: "2026-11-28",
+      endDate: "2026-11-28",
+      date: "2026-11-28",
+      time: "08:00 Pagi",
+      category: "Kurikulum",
+      location: "Dewan Terbuka SK Ranggu",
+      venue: "Dewan Terbuka SK Ranggu",
+      organizer: "Jawatankuasa PBD",
+      inCharge: "Guru Kelas & Panitia",
+      status: "Akan Datang"
+    },
+    {
+      id: "tak-6",
       title: "Majlis Apresiasi Kecemerlangan Murid 2026",
       startDate: "2026-12-15",
       endDate: "2026-12-15",
-      category: "Hal Ehwal Murid",
+      date: "2026-12-15",
+      time: "08:00 Pagi",
+      category: "Hal Ehwal Murid & Kurikulum",
       location: "Dewan Masyarakat Tawau",
+      venue: "Dewan Masyarakat Tawau",
       organizer: "Jawatankuasa HEM & Kurikulum",
+      inCharge: "PK HEM & PK Pentadbiran",
       status: "Akan Datang"
     }
   ],
@@ -2333,12 +2395,17 @@ window.getStaffPhoto = function(name) {
 // ==========================================================================
 // PENYIMPANAN LOCALSTORAGE & PEMBERSIHAN CACHE VERSI LAMA
 // ==========================================================================
-const CURRENT_STORAGE_KEY = "SK_RANGGU_DASHBOARD_DATA_V18";
+// ==========================================================================
+// PENYIMPANAN LOCALSTORAGE & PEMBERSIHAN CACHE VERSI LAMA
+// ==========================================================================
+DEFAULT_SYSTEM_DATA.takwimEvents = DEFAULT_SYSTEM_DATA.takwim;
+
+const CURRENT_STORAGE_KEY = "SK_RANGGU_DASHBOARD_DATA_V19";
 
 function getStoredData() {
   try {
-    // Purge semua cache versi lapuk (V1 sehingga V17)
-    for (let i = 1; i <= 17; i++) {
+    // Purge semua cache versi lapuk (V1 sehingga V18)
+    for (let i = 1; i <= 18; i++) {
       try { localStorage.removeItem(`SK_RANGGU_DASHBOARD_DATA_V${i}`); } catch(e){}
     }
     try { localStorage.removeItem("SK_RANGGU_DASHBOARD_DATA"); } catch(e){}
@@ -2355,8 +2422,12 @@ function getStoredData() {
         parsed.school.logoSchool = DEFAULT_SYSTEM_DATA.school.logoSchool;
         parsed.school.logoKpm = DEFAULT_SYSTEM_DATA.school.logoKpm;
       }
-      if (parsed && !parsed.gateways) {
-        parsed.gateways = DEFAULT_SYSTEM_DATA.gateways;
+      if (parsed) {
+        if (!parsed.gateways) parsed.gateways = DEFAULT_SYSTEM_DATA.gateways;
+        if (!parsed.takwimEvents) parsed.takwimEvents = DEFAULT_SYSTEM_DATA.takwim;
+        if (!parsed.sportsyncKOT26 || !parsed.sportsyncKOT26.houses) {
+          parsed.sportsyncKOT26 = DEFAULT_SYSTEM_DATA.sportsyncKOT26;
+        }
       }
       return parsed;
     }
