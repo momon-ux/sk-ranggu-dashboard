@@ -34,8 +34,8 @@ const DEFAULT_SYSTEM_DATA = {
     role: "Lead System Architect & Senior Developer",
     unit: "Unit Pengurusan Pentadbiran & ICT SK Ranggu",
     badge: "Pembangun Rasmi Sistem",
-    githubUser: "momon",
-    githubRepo: "https://github.com/momon/sk-ranggu-dashboard",
+    githubUser: "momon-ux",
+    githubRepo: "https://github.com/momon-ux/sk-ranggu-dashboard",
     systemVersion: "v2.5.0 Prestige Edition",
     buildDate: "2025/2026",
     creditStatement: "Sistem ini direka bentuk dan dibangunkan oleh Mohammad Fikrey bin Abdul Gapar (Momon) khas untuk Bahagian Unit Pengurusan Pentadbiran & Kurikulum SK Ranggu bagi membolehkan pemantauan berpusat yang responsif, dinamik dan berprestij tinggi pada semua peranti awam dan warga pendidik."

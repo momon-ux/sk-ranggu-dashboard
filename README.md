@@ -81,7 +81,7 @@ Untuk membolehkan sistem ini dibuka oleh guru-guru, ibu bapa, pegawai PPD, atau 
 
 3. Sambungkan dan tolak kod ke GitHub:
    ```bash
-   git remote add origin https://github.com/<username-github-anda>/sk-ranggu-dashboard.git
+   git remote add origin https://github.com/momon-ux/sk-ranggu-dashboard.git
    git branch -M main
    git push -u origin main
    ```
@@ -92,7 +92,7 @@ Untuk membolehkan sistem ini dibuka oleh guru-guru, ibu bapa, pegawai PPD, atau 
    - Pilih Branch: `main` dan folder `/ (root)`, kemudian klik **Save**.
 
 5. Dalam masa 1 minit, pautan rasmi awam anda akan siap:
-   🌐 `https://<username-github-anda>.github.io/sk-ranggu-dashboard/`
+   🌐 `https://momon-ux.github.io/sk-ranggu-dashboard/`
 
 Pautan ini boleh dikongsi terus melalui WhatsApp atau QR Code, dan boleh dibuka dengan lancar pada iPhone, Android, iPad, dan komputer sesiapa sahaja!
 
