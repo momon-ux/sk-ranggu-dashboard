@@ -99,12 +99,15 @@ function renderSchoolHeader() {
   if (!s.name || !s.name.includes("PAPAN INDUK UTAMA")) {
     s.name = "PAPAN INDUK UTAMA SEKOLAH KEBANGSAAN RANGGU";
   }
+  if (!s.motto || s.motto.includes("Cita") || s.motto.includes("Jaya")) {
+    s.motto = "Berusaha, Berilmu, Berbakti";
+  }
   document.title = "PAPAN INDUK UTAMA SEKOLAH KEBANGSAAN RANGGU PETI SURAT 842, 91008 TAWAU SABAH";
 
   document.querySelectorAll(".school-name-text").forEach(el => el.textContent = s.name);
   document.querySelectorAll(".school-code-text").forEach(el => el.textContent = s.code);
   document.querySelectorAll(".school-address-text").forEach(el => el.textContent = `${s.address} • Tel: ${s.phone}`);
-  document.querySelectorAll(".school-motto-text").forEach(el => el.textContent = `"${s.motto}"`);
+  document.querySelectorAll(".school-motto-text").forEach(el => el.textContent = `"${s.motto.toUpperCase()}"`);
   document.querySelectorAll(".school-session-text").forEach(el => el.textContent = s.academicSession);
 
   if (s.logoUrl) {

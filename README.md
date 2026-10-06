@@ -1,7 +1,7 @@
 # 🏛️ PAPAN INDUK UTAMA SEKOLAH KEBANGSAAN RANGGU
 ### PETI SURAT 842, 91008 TAWAU, SABAH (KOD SEKOLAH: XBA3037)
 **Alamat Rasmi:** Peti Surat 842, 91008 Tawau, Sabah  
-**Moto Sekolah:** *"Cita • Usaha • Jaya"*  
+**Moto Sekolah:** *"Berusaha • Berilmu • Berbakti"*  
 **Pembangun & Pentadbir Sistem:** **MOHAMMAD FIKREY BIN ABDUL GAPAR** (*Lead System Architect, Pentadbir Sistem & Guru Kelas 6 Jayyid*)
 
 ---
@@ -18,7 +18,7 @@ Sistem ini memusatkan pengurusan pentadbiran sekolah serta unit kurikulum, membo
 
 1. **Susun Atur Logo Rasmi Bertaraf Eksekutif:**
    - **Kiri:** Logo Rasmi Kementerian Pendidikan Malaysia (KPM) & Jata Negara dengan pengenalan JPN Sabah dan PPD Tawau.
-   - **Tengah:** Pengepala Rasmi Unit Pengurusan Pentadbiran & Kurikulum, Nama Sekolah, Alamat Peti Surat 842, 91008 Tawau, Sabah, Kod Sekolah XBA3037, serta Moto *"Cita, Usaha, Jaya"*.
+   - **Tengah:** Pengepala Rasmi Unit Pengurusan Pentadbiran & Kurikulum, Nama Sekolah, Alamat Peti Surat 842, 91008 Tawau, Sabah, Kod Sekolah XBA3037, serta Moto *"Berusaha, Berilmu, Berbakti"*.
    - **Kanan:** Lencana Vektor Rasmi Sekolah Kebangsaan Ranggu dengan Obor Ilmu, Buku Terbuka, Roda Kemajuan dan Laurel Kehormat.
 
 2. **Ringkasan Eksekutif & Statistik Semasa:**

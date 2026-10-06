@@ -20,7 +20,7 @@ const DEFAULT_SYSTEM_DATA = {
     state: "Sabah",
     phone: "089-925493",
     email: "xba3037@moe.edu.my",
-    motto: "Cita, Usaha, Jaya",
+    motto: "Berusaha, Berilmu, Berbakti",
     vision: "Kecemerlangan Dalam Semua Aspek Pendidikan",
     mission: "Melestarikan Sistem Pendidikan Yang Berkualiti Untuk Membangunkan Potensi Individu Bagi Memenuhi Aspirasi Negara",
     establishedYear: 1973,
@@ -1041,12 +1041,12 @@ const DEFAULT_SYSTEM_DATA = {
   }
 };
 
-const CURRENT_STORAGE_KEY = "SK_RANGGU_DASHBOARD_DATA_V10";
+const CURRENT_STORAGE_KEY = "SK_RANGGU_DASHBOARD_DATA_V11";
 
 function getStoredData() {
   try {
     // Purge legacy caches
-    ["SK_RANGGU_DASHBOARD_DATA", "SK_RANGGU_DASHBOARD_DATA_V2", "SK_RANGGU_DASHBOARD_DATA_V9"].forEach(k => {
+    ["SK_RANGGU_DASHBOARD_DATA", "SK_RANGGU_DASHBOARD_DATA_V2", "SK_RANGGU_DASHBOARD_DATA_V9", "SK_RANGGU_DASHBOARD_DATA_V10"].forEach(k => {
       try { localStorage.removeItem(k); } catch(e){}
     });
     const stored = localStorage.getItem(CURRENT_STORAGE_KEY);
@@ -1055,6 +1055,7 @@ function getStoredData() {
       if (parsed && parsed.school) {
         parsed.school.name = DEFAULT_SYSTEM_DATA.school.name;
         parsed.school.address = DEFAULT_SYSTEM_DATA.school.address;
+        parsed.school.motto = DEFAULT_SYSTEM_DATA.school.motto;
         parsed.school.infografikEnrolmen = DEFAULT_SYSTEM_DATA.school.infografikEnrolmen;
       }
       return parsed;
