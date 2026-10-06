@@ -26,7 +26,7 @@ const DEFAULT_SYSTEM_DATA = {
     establishedYear: 1973,
     academicSession: "Sesi Persekolahan 2025 / 2026",
     logoKpm: "assets/kpm.png",
-    logoSchool: "assets/skrg.jpeg",
+    logoSchool: "assets/skrg.png",
     posterCarta: "assets/carta-organisasi-2026.png"
   },
 
