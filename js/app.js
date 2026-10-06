@@ -403,6 +403,16 @@ function renderOrganizationChart(filterCategory = "Semua", searchQuery = "") {
       filtered = filtered.filter(m => m.session === "Pagi");
     } else if (actualFilter === "Petang") {
       filtered = filtered.filter(m => m.session === "Petang");
+    } else if (actualFilter === "Pengurusan Tertinggi") {
+      filtered = filtered.filter(m => m.tier <= 2 || m.category === "Pengurusan Tertinggi");
+    } else if (actualFilter === "Guru Kelas") {
+      filtered = filtered.filter(m => Boolean(m.classAssigned) || (m.role && m.role.toLowerCase().includes("guru kelas")));
+    } else if (actualFilter === "Ketua Panitia") {
+      filtered = filtered.filter(m => (m.role && m.role.toLowerCase().includes("ketua panitia")) || m.category === "Ketua Panitia");
+    } else if (actualFilter === "HEM") {
+      filtered = filtered.filter(m => (m.category && m.category.includes("Hal Ehwal Murid")) || (m.category && m.category.includes("Bimbingan")) || (m.role && (m.role.includes("HEM") || m.role.includes("Disiplin") || m.role.includes("Kaunseling") || m.role.includes("SPBT") || m.role.includes("RMT") || m.role.includes("Kesihatan"))));
+    } else if (actualFilter === "Kokurikulum") {
+      filtered = filtered.filter(m => (m.category && (m.category.includes("Kokurikulum") || m.category.includes("Sukan"))) || (m.role && (m.role.includes("Kokurikulum") || m.role.includes("Sukan") || m.role.includes("Rumah") || m.role.includes("Merentas Desa") || m.role.includes("SEGAK") || m.role.includes("PAJSK"))));
     } else if (actualFilter !== "Semua") {
       filtered = filtered.filter(m => m.category === actualFilter || (actualFilter === "Pengurusan Tertinggi" && m.tier <= 2));
     }
@@ -410,9 +420,13 @@ function renderOrganizationChart(filterCategory = "Semua", searchQuery = "") {
     if (actualQuery.trim() !== "") {
       const q = actualQuery.toLowerCase();
       filtered = filtered.filter(m => 
-        m.name.toLowerCase().includes(q) || 
-        m.role.toLowerCase().includes(q) ||
-        (m.grade && m.grade.toLowerCase().includes(q))
+        (m.name && m.name.toLowerCase().includes(q)) || 
+        (m.role && m.role.toLowerCase().includes(q)) ||
+        (m.grade && m.grade.toLowerCase().includes(q)) ||
+        (m.ic && m.ic.toLowerCase().includes(q)) ||
+        (m.classAssigned && m.classAssigned.toLowerCase().includes(q)) ||
+        (m.category && m.category.toLowerCase().includes(q)) ||
+        (m.duties && m.duties.toLowerCase().includes(q))
       );
     }
 
@@ -428,7 +442,7 @@ function renderOrganizationChart(filterCategory = "Semua", searchQuery = "") {
 
       ${filtered.length === 0 ? `
         <div class="text-center py-12 bg-white rounded-2xl border border-slate-200">
-          <p class="text-slate-500 font-medium">Tiada padanan staf dijumpai.</p>
+          <p class="text-slate-500 font-medium">Tiada padanan staf dijumpai bagi tapisan/carian tersebut.</p>
         </div>
       ` : `
         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
@@ -823,19 +837,29 @@ function createMemberCard(member, isPrincipal = false) {
           `}
 
           <div class="min-w-0 flex-1">
-            <span class="inline-block text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-md ${badgeClass} mb-1">
-              ${member.grade || 'DG41'}
-            </span>
-            <h4 class="font-bold text-slate-900 text-sm leading-snug group-hover:text-blue-900 transition-colors">
+            <div class="flex items-center gap-1.5 flex-wrap mb-1">
+              <span class="inline-block text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-md ${badgeClass}">
+                ${member.grade || 'DG41'}
+              </span>
+              <span class="inline-block text-[9px] font-bold px-1.5 py-0.5 rounded ${member.session === 'Petang' ? 'bg-amber-100 text-amber-800 border border-amber-200' : 'bg-sky-50 text-sky-700 border border-sky-200'}">
+                Sesi ${member.session || 'Pagi'}
+              </span>
+              ${member.classAssigned ? `
+                <span class="inline-block text-[9px] font-bold px-1.5 py-0.5 rounded bg-emerald-50 text-emerald-700 border border-emerald-200 truncate max-w-[140px]" title="Guru Kelas ${member.classAssigned}">
+                  🏫 ${member.classAssigned}
+                </span>
+              ` : ''}
+            </div>
+            <h4 class="font-extrabold text-slate-900 text-sm leading-snug group-hover:text-blue-900 transition-colors">
               ${member.name}
             </h4>
-            <p class="text-xs font-semibold text-blue-700 mt-0.5 line-clamp-2">
+            <p class="text-xs font-bold text-blue-800 mt-1 leading-snug line-clamp-2">
               ${member.role}
             </p>
           </div>
         </div>
 
-        <div class="mt-3 pt-2.5 border-t border-slate-100 text-xs text-slate-500 leading-relaxed">
+        <div class="mt-3 pt-2.5 border-t border-slate-100 text-xs text-slate-600 leading-relaxed">
           <p class="line-clamp-2">${member.duties || 'Pengurusan pentadbiran dan pengajaran pembelajaran.'}</p>
         </div>
       </div>
@@ -844,8 +868,8 @@ function createMemberCard(member, isPrincipal = false) {
         <span class="truncate font-mono text-[10px] text-slate-600">
           ✉️ ${member.email || 'xba3037@moe.edu.my'}
         </span>
-        <button onclick="showMemberModal('${member.id}')" class="text-blue-600 hover:text-blue-800 font-semibold shrink-0 ml-1 hover:underline">
-          Profil
+        <button onclick="showMemberModal('${member.id}')" class="px-2.5 py-1 bg-blue-50 hover:bg-blue-100 text-blue-700 font-bold rounded-lg border border-blue-200 shrink-0 ml-1 transition hover:underline">
+          Profil Lengkap
         </button>
       </div>
     </div>
@@ -860,49 +884,83 @@ window.showMemberModal = function(id) {
   const modalContent = document.getElementById("genericDetailModalContent");
   if (!modal || !modalContent) return;
 
+  const initials = member.name
+    .split(" ")
+    .filter(n => !["bin", "binti", "hjh.", "haji", "encik", "puan", "cik"].includes(n.toLowerCase()))
+    .slice(0, 2)
+    .map(n => n[0])
+    .join("")
+    .toUpperCase() || "SK";
+
   modalContent.innerHTML = `
     <div class="p-6">
       <div class="flex items-center justify-between border-b pb-4 mb-4">
-        <h3 class="font-bold text-lg text-slate-900">Maklumat Pegawai & Guru</h3>
-        <button onclick="closeGenericModal()" class="text-slate-400 hover:text-slate-700 text-xl font-bold">&times;</button>
+        <div>
+          <h3 class="font-bold text-lg text-slate-900">Maklumat Pegawai & Guru SK Ranggu</h3>
+          <p class="text-xs text-slate-500">Pangkalan Data Rasmi Berdasarkan Dokumen 2026 & Carta Pengurusan</p>
+        </div>
+        <button onclick="closeGenericModal()" class="text-slate-400 hover:text-slate-700 text-2xl font-bold leading-none">&times;</button>
       </div>
       <div class="space-y-4">
-        <div class="p-4 bg-slate-50 rounded-xl border border-slate-200 flex items-center gap-4">
+        <div class="p-4 bg-slate-50 rounded-2xl border border-slate-200 flex items-center gap-4">
           ${member.photo && member.photo.trim() !== "" ? `
             <div class="w-16 h-16 rounded-2xl overflow-hidden shrink-0 shadow border border-white">
               <img src="${member.photo}" alt="${member.name}" class="w-full h-full object-cover">
             </div>
           ` : `
-            <div class="w-16 h-16 rounded-2xl bg-gradient-to-tr from-blue-700 to-indigo-900 text-white flex items-center justify-center font-bold text-2xl shadow shrink-0">
-              ${member.name[0]}
+            <div class="w-16 h-16 rounded-2xl bg-gradient-to-tr from-blue-700 to-indigo-900 text-white flex items-center justify-center font-bold text-xl shadow shrink-0">
+              ${initials}
             </div>
           `}
-          <div>
-            <h4 class="font-bold text-slate-900 text-base">${member.name}</h4>
-            <p class="text-sm font-semibold text-blue-700">${member.role}</p>
-            <span class="text-xs bg-blue-100 text-blue-800 px-2 py-0.5 rounded font-mono font-medium">${member.grade} • ${member.category}</span>
+          <div class="min-w-0">
+            <h4 class="font-extrabold text-slate-900 text-base leading-tight">${member.name}</h4>
+            <p class="text-xs font-bold text-blue-700 mt-1 leading-snug">${member.role}</p>
+            <div class="flex items-center gap-1.5 flex-wrap mt-2">
+              <span class="text-[11px] bg-blue-100 text-blue-800 px-2 py-0.5 rounded font-mono font-bold">${member.grade}</span>
+              <span class="text-[11px] bg-slate-200 text-slate-700 px-2 py-0.5 rounded font-medium">${member.type || 'PPP'} • Sesi ${member.session}</span>
+              <span class="text-[11px] bg-amber-100 text-amber-800 px-2 py-0.5 rounded font-medium">${member.category}</span>
+              ${member.classAssigned ? `<span class="text-[11px] bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded font-bold">🏫 Guru Kelas: ${member.classAssigned}</span>` : ''}
+            </div>
           </div>
         </div>
 
-        <div class="space-y-2 text-sm text-slate-700">
-          <div class="flex justify-between py-1.5 border-b border-slate-100">
-            <span class="text-slate-500 font-medium">Emel DELIMa / Rasmi:</span>
+        <div class="space-y-2 text-xs text-slate-700">
+          <div class="flex justify-between py-2 border-b border-slate-100">
+            <span class="text-slate-500 font-semibold">No. Kad Pengenalan:</span>
+            <span class="font-mono font-bold text-slate-800">${member.ic || '-'}</span>
+          </div>
+          <div class="flex justify-between py-2 border-b border-slate-100">
+            <span class="text-slate-500 font-semibold">Gred Perkhidmatan:</span>
+            <span class="font-bold text-blue-900">${member.grade} (${member.type === 'AKP' ? 'Anggota Kumpulan Pelaksana' : 'Pegawai Perkhidmatan Pendidikan'})</span>
+          </div>
+          <div class="flex justify-between py-2 border-b border-slate-100">
+            <span class="text-slate-500 font-semibold">Sesi Persekolahan:</span>
+            <span class="font-bold text-slate-800">Sesi ${member.session}</span>
+          </div>
+          ${member.classAssigned ? `
+            <div class="flex justify-between py-2 border-b border-slate-100">
+              <span class="text-slate-500 font-semibold">Tanggungjawab Guru Kelas:</span>
+              <span class="font-bold text-emerald-700">Kelas ${member.classAssigned} (APDM Rasmi)</span>
+            </div>
+          ` : ''}
+          <div class="flex justify-between py-2 border-b border-slate-100">
+            <span class="text-slate-500 font-semibold">Emel DELIMa / Rasmi:</span>
             <span class="font-mono text-blue-700">${member.email || 'xba3037@moe.edu.my'}</span>
           </div>
-          <div class="flex justify-between py-1.5 border-b border-slate-100">
-            <span class="text-slate-500 font-medium">Telefon Pejabat:</span>
+          <div class="flex justify-between py-2 border-b border-slate-100">
+            <span class="text-slate-500 font-semibold">Telefon Pejabat:</span>
             <span class="font-medium">${member.phone || '089-925493'}</span>
           </div>
           <div class="pt-2">
-            <span class="text-slate-500 font-medium block mb-1">Bidang Tugas:</span>
-            <p class="p-3 bg-white border border-slate-200 rounded-lg text-slate-600 text-xs leading-relaxed">
-              ${member.duties || 'Menjalankan amanah pengurusan instruksional dan pentadbiran sekolah.'}
+            <span class="text-slate-500 font-bold block mb-1">Bidang Tugas & Tanggungjawab Rasmi:</span>
+            <p class="p-3 bg-white border border-slate-200 rounded-xl text-slate-700 text-xs leading-relaxed font-medium">
+              ${member.duties || 'Menjalankan amanah pengurusan instruksional, pentadbiran dan kebajikan murid sekolah.'}
             </p>
           </div>
         </div>
       </div>
       <div class="mt-6 flex justify-end">
-        <button onclick="closeGenericModal()" class="px-5 py-2 bg-slate-800 hover:bg-slate-900 text-white font-semibold rounded-xl text-sm transition">
+        <button onclick="closeGenericModal()" class="px-5 py-2 bg-slate-800 hover:bg-slate-900 text-white font-bold rounded-xl text-xs transition">
           Tutup
         </button>
       </div>

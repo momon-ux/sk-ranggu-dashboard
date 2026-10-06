@@ -90,6 +90,7 @@ class AdminManager {
       ic: staffData.ic || "-",
       type: staffData.type || "PPP",
       duties: staffData.duties || "Menjalankan tugas pengajaran dan pembelajaran serta pengurusan sekolah.",
+      classAssigned: staffData.classAssigned || null,
       photo: staffData.photo || null
     };
 
