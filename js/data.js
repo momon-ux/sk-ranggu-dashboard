@@ -37,20 +37,85 @@ const DEFAULT_SYSTEM_DATA = {
     unit: "Unit Pengurusan Pentadbiran SK Ranggu"
   },
 
-  // STATISTIK RASMI
+  // STATISTIK RASMI KESELURUHAN (DATA APDM / MOEIS 2026)
   stats: {
     totalTeachers: 54,
     totalStaff: 6,
     totalAllStaff: 60,
     morningSession: 30,
     afternoonSession: 24,
-    totalStudents: 586,
-    totalClasses: 18,
-    preschoolClasses: 2,
+    totalStudents: 890,
+    maleStudents: 466,
+    femaleStudents: 424,
+    totalClasses: 27,
+    perdanaClasses: 24,
+    preschoolClasses: 3,
     totalCommittees: 12,
+    okuStudents: 3,
+    yatimStudents: 15,
     pbdMasteryPercent: 96.6,
     activeWeek: 28,
     currentTerm: "Penggal 2"
+  },
+
+  // DATA DEMOGRAFI & 27 KELAS RASMI SK RANGGU 2026 (APDM / MOEIS)
+  studentDemographics: {
+    totalStudents: 890,
+    maleStudents: 466,
+    femaleStudents: 424,
+    totalClasses: 27,
+    praClasses: 3,
+    perdanaClasses: 24,
+    okuStudents: 3,
+    yatimStudents: 15,
+    yearSummary: {
+      "PRASEKOLAH": { total: 74, lelaki: 43, perempuan: 31 },
+      "TAHUN SATU": { total: 126, lelaki: 61, perempuan: 65 },
+      "TAHUN DUA": { total: 134, lelaki: 67, perempuan: 67 },
+      "TAHUN TIGA": { total: 135, lelaki: 68, perempuan: 67 },
+      "TAHUN EMPAT": { total: 139, lelaki: 79, perempuan: 60 },
+      "TAHUN LIMA": { total: 143, lelaki: 76, perempuan: 67 },
+      "TAHUN ENAM": { total: 139, lelaki: 72, perempuan: 67 }
+    },
+    classList: [
+      { tahun: "PRASEKOLAH", kelas: "MUTIARA HATI", guru: "YUSNI BINTI WAHJUDIN", total: 25, lelaki: 15, perempuan: 10 },
+      { tahun: "PRASEKOLAH", kelas: "MUTIARA KASIH", guru: "RAHMATIA BINTI MOHAMAD", total: 24, lelaki: 13, perempuan: 11 },
+      { tahun: "PRASEKOLAH", kelas: "PERMATA HATI", guru: "MARIANA BINTI KASSIM", total: 25, lelaki: 15, perempuan: 10 },
+      { tahun: "TAHUN SATU", kelas: "ILTIZAM", guru: "NOOR SYAFIQAH NADHIRAH BINTI JAMALUDDIN", total: 32, lelaki: 17, perempuan: 15 },
+      { tahun: "TAHUN SATU", kelas: "JAYYID", guru: "NORLINA BINTI BAGWAS", total: 31, lelaki: 14, perempuan: 17 },
+      { tahun: "TAHUN SATU", kelas: "KHOIR", guru: "FARIDAH BINTI SUNU", total: 32, lelaki: 16, perempuan: 16 },
+      { tahun: "TAHUN SATU", kelas: "MUMTAZ", guru: "RASMAWATI BINTI TAUSE", total: 31, lelaki: 14, perempuan: 17 },
+      { tahun: "TAHUN DUA", kelas: "ILTIZAM", guru: "MOHAMMAD IKHWAN BIN ABDURAIS", total: 35, lelaki: 19, perempuan: 16 },
+      { tahun: "TAHUN DUA", kelas: "JAYYID", guru: "MARINI BINTI LADI", total: 35, lelaki: 18, perempuan: 17 },
+      { tahun: "TAHUN DUA", kelas: "KHOIR", guru: "S LILI BINTI LADI", total: 32, lelaki: 17, perempuan: 15 },
+      { tahun: "TAHUN DUA", kelas: "MUMTAZ", guru: "SITI JAWARA BINTI LUKMAN", total: 32, lelaki: 13, perempuan: 19 },
+      { tahun: "TAHUN TIGA", kelas: "ILTIZAM", guru: "JAINAH BINTI SULAIMAN", total: 33, lelaki: 17, perempuan: 16 },
+      { tahun: "TAHUN TIGA", kelas: "JAYYID", guru: "AINATUN NADHIRAH BINTI DHARMAWI", total: 34, lelaki: 17, perempuan: 17 },
+      { tahun: "TAHUN TIGA", kelas: "KHOIR", guru: "RUHAYA BINTI AHMAD", total: 34, lelaki: 16, perempuan: 18 },
+      { tahun: "TAHUN TIGA", kelas: "MUMTAZ", guru: "NUR FAEZAH BINTI BANTALANI", total: 34, lelaki: 18, perempuan: 16 },
+      { tahun: "TAHUN EMPAT", kelas: "ILTIZAM", guru: "ROSIDIAN BIN IDRIS", total: 34, lelaki: 19, perempuan: 15 },
+      { tahun: "TAHUN EMPAT", kelas: "JAYYID", guru: "NOZE BINTI TUKIJAN", total: 35, lelaki: 20, perempuan: 15 },
+      { tahun: "TAHUN EMPAT", kelas: "KHOIR", guru: "MASTURAH BINTI TUDA", total: 35, lelaki: 21, perempuan: 14 },
+      { tahun: "TAHUN EMPAT", kelas: "MUMTAZ", guru: "NURUL ANISA BINTI SAPARUDIN", total: 35, lelaki: 19, perempuan: 16 },
+      { tahun: "TAHUN LIMA", kelas: "ILTIZAM", guru: "WAN MUHAMAD YUSUF BIN WAN ABDUL AZIZ", total: 36, lelaki: 19, perempuan: 17 },
+      { tahun: "TAHUN LIMA", kelas: "JAYYID", guru: "RINI BINTI DAUD", total: 36, lelaki: 20, perempuan: 16 },
+      { tahun: "TAHUN LIMA", kelas: "KHOIR", guru: "TANJANG BIN TURE", total: 36, lelaki: 17, perempuan: 19 },
+      { tahun: "TAHUN LIMA", kelas: "MUMTAZ", guru: "HAMSIAH BINTI HAMID", total: 35, lelaki: 20, perempuan: 15 },
+      { tahun: "TAHUN ENAM", kelas: "ILTIZAM", guru: "AGKU KEMAINDDRA BIN PG MOHD TAIB", total: 35, lelaki: 18, perempuan: 17 },
+      { tahun: "TAHUN ENAM", kelas: "JAYYID", guru: "MOHAMMAD FIKREY BIN ABDUL GAPAR", total: 35, lelaki: 18, perempuan: 17 },
+      { tahun: "TAHUN ENAM", kelas: "KHOIR", guru: "MOHD ALFAIZAL BIN DAUD", total: 34, lelaki: 17, perempuan: 17 },
+      { tahun: "TAHUN ENAM", kelas: "MUMTAZ", guru: "BAJAM BINTI LADUNG", total: 35, lelaki: 19, perempuan: 16 }
+    ],
+    topRaces: [
+      { kaum: "Bugis", count: 369 },
+      { kaum: "Bajau", count: 135 },
+      { kaum: "Melayu", count: 87 },
+      { kaum: "Suluk", count: 48 },
+      { kaum: "Tidung", count: 32 },
+      { kaum: "Banjar", count: 25 },
+      { kaum: "Jawa", count: 20 },
+      { kaum: "Iban", count: 18 }
+    ]
   },
 
   // CARTA ORGANISASI PENGURUSAN PENTADBIRAN 2026 (SEPADAN 100% POSTER RASMI)
@@ -200,6 +265,28 @@ const DEFAULT_SYSTEM_DATA = {
 
   // DOKUMEN & BAHAN KURIKULUM (BOLEH DIMUAT NAIK OLEH ADMIN)
   documents: [
+    {
+      id: "doc-murid-xlsx",
+      title: "Data Rasmi Enrolmen & Maklumat 890 Murid SK Ranggu 2026 (APDM/MOEIS)",
+      category: "Data Murid",
+      panitia: "Pengurusan Data & idMe",
+      date: "2026-06-08",
+      type: "XLSX",
+      fileUrl: "assets/senarai-murid-2026.xlsx",
+      size: "185 KB",
+      uploader: "Penyelaras Data / idMe (Mohd Alfaizal)"
+    },
+    {
+      id: "doc-murid-csv",
+      title: "Senarai Keseluruhan Murid SK Ranggu 2026 (Format CSV)",
+      category: "Data Murid",
+      panitia: "Pengurusan Data & idMe",
+      date: "2026-06-08",
+      type: "CSV",
+      fileUrl: "assets/senarai-murid-2026.csv",
+      size: "235 KB",
+      uploader: "Penyelaras Data / idMe (Mohd Alfaizal)"
+    },
     {
       id: "doc-kurikulum",
       title: "Poster Rasmi Carta Organisasi Kurikulum SK Ranggu 2026",
@@ -399,7 +486,7 @@ const DEFAULT_SYSTEM_DATA = {
 
 function getStoredData() {
   try {
-    const stored = localStorage.getItem("SK_RANGGU_DASHBOARD_DATA_V5");
+    const stored = localStorage.getItem("SK_RANGGU_DASHBOARD_DATA_V6");
     if (stored) return JSON.parse(stored);
   } catch (err) {
     console.warn("Gagal membaca LocalStorage:", err);
@@ -409,7 +496,7 @@ function getStoredData() {
 
 function saveStoredData(data) {
   try {
-    localStorage.setItem("SK_RANGGU_DASHBOARD_DATA_V5", JSON.stringify(data));
+    localStorage.setItem("SK_RANGGU_DASHBOARD_DATA_V6", JSON.stringify(data));
     return true;
   } catch (err) {
     console.error("Gagal simpan LocalStorage:", err);
@@ -418,7 +505,7 @@ function saveStoredData(data) {
 }
 
 function resetToDefaultData() {
-  localStorage.removeItem("SK_RANGGU_DASHBOARD_DATA_V5");
+  localStorage.removeItem("SK_RANGGU_DASHBOARD_DATA_V6");
   return DEFAULT_SYSTEM_DATA;
 }
 

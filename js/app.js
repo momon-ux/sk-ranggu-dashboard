@@ -20,6 +20,7 @@ function initSystem() {
   renderExecutiveStats();
   renderAnnouncements();
   renderOrganizationChart();
+  renderStudentDemographics();
   renderCommittees();
   renderTakwimEvents();
   renderDutyTeachers();
@@ -94,10 +95,10 @@ function renderExecutiveStats() {
   const elPbd = document.getElementById("statPbdPercent");
   const elWeek = document.getElementById("statActiveWeek");
 
-  if (elTeachers) elTeachers.textContent = stats.totalTeachers;
-  if (elStudents) elStudents.textContent = stats.totalStudents;
-  if (elClasses) elClasses.textContent = `${stats.totalClasses} (+${stats.preschoolClasses} Pra)`;
-  if (elCommittees) elCommittees.textContent = stats.totalCommittees;
+  if (elTeachers) elTeachers.textContent = stats.totalAllStaff || 60;
+  if (elStudents) elStudents.textContent = stats.totalStudents || 890;
+  if (elClasses) elClasses.textContent = `${stats.totalClasses || 27} Kelas`;
+  if (elCommittees) elCommittees.textContent = stats.totalCommittees || 12;
   if (elPbd) elPbd.textContent = `${stats.pbdMasteryPercent}%`;
   if (elWeek) elWeek.textContent = `Minggu ${stats.activeWeek}`;
 }
@@ -197,6 +198,109 @@ function renderDocumentsList() {
     `;
   }).join("");
 }
+
+/* ==========================================================================
+   RENDER ENROLMEN & DEMOGRAFI 890 MURID & 27 KELAS
+   ========================================================================== */
+function renderStudentDemographics() {
+  const d = window.SKR_DATA.studentDemographics;
+  if (!d) return;
+
+  // 1. Render Taburan 7 Cohort (Prasekolah hingga Tahun 6)
+  const cohortContainer = document.getElementById("cohortBreakdownContainer");
+  if (cohortContainer && d.yearSummary) {
+    const years = [
+      { key: "PRASEKOLAH", label: "Pra", icon: "🧸" },
+      { key: "TAHUN SATU", label: "Thn 1", icon: "🌱" },
+      { key: "TAHUN DUA", label: "Thn 2", icon: "🌿" },
+      { key: "TAHUN TIGA", label: "Thn 3", icon: "🌳" },
+      { key: "TAHUN EMPAT", label: "Thn 4", icon: "⭐" },
+      { key: "TAHUN LIMA", label: "Thn 5", icon: "🌟" },
+      { key: "TAHUN ENAM", label: "Thn 6", icon: "🎓" }
+    ];
+
+    cohortContainer.innerHTML = years.map(y => {
+      const data = d.yearSummary[y.key] || { total: 0, lelaki: 0, perempuan: 0 };
+      const lPercent = data.total > 0 ? Math.round((data.lelaki / data.total) * 100) : 50;
+      return `
+        <div class="bg-slate-50 p-3.5 rounded-xl border border-slate-200 text-center executive-card">
+          <div class="text-xs font-bold text-slate-700 uppercase flex items-center justify-center gap-1">
+            <span>${y.icon}</span> <span>${y.label}</span>
+          </div>
+          <div class="text-xl font-extrabold text-royal-900 mt-1">${data.total} <span class="text-[10px] font-normal text-slate-500">murid</span></div>
+          <div class="w-full bg-rose-200 h-1.5 rounded-full overflow-hidden my-2 flex">
+            <div class="bg-blue-600 h-full" style="width: ${lPercent}%"></div>
+          </div>
+          <div class="text-[10px] text-slate-600 font-medium flex justify-between">
+            <span class="text-blue-700 font-bold">L: ${data.lelaki}</span>
+            <span class="text-rose-700 font-bold">P: ${data.perempuan}</span>
+          </div>
+        </div>
+      `;
+    }).join("");
+  }
+
+  // 2. Render 27 Buah Kelas
+  renderClassListGrid();
+}
+
+function renderClassListGrid(cohortFilter = "Semua") {
+  const gridContainer = document.getElementById("classListGridContainer");
+  if (!gridContainer) return;
+
+  const d = window.SKR_DATA.studentDemographics;
+  if (!d || !d.classList) return;
+
+  let filtered = d.classList;
+  if (cohortFilter !== "Semua") {
+    filtered = filtered.filter(c => c.tahun === cohortFilter);
+  }
+
+  gridContainer.innerHTML = filtered.map(c => {
+    const isUserClass = c.guru && c.guru.includes("FIKREY");
+    const isPrasekolah = c.tahun === "PRASEKOLAH";
+
+    return `
+      <div class="bg-white rounded-2xl p-4 border ${isUserClass ? 'border-amber-400 ring-2 ring-amber-300 shadow-md' : 'border-slate-200 shadow-sm'} executive-card flex flex-col justify-between">
+        <div>
+          <div class="flex items-center justify-between mb-2">
+            <span class="text-[10px] font-extrabold uppercase tracking-wider px-2.5 py-0.5 rounded-full ${isPrasekolah ? 'bg-amber-100 text-amber-800' : 'bg-blue-100 text-blue-800'}">
+              ${c.tahun}
+            </span>
+            ${isUserClass ? '<span class="text-[9px] font-bold bg-amber-400 text-slate-900 px-2 py-0.5 rounded-full">Kelas Anda</span>' : ''}
+          </div>
+
+          <h4 class="font-extrabold text-slate-900 text-base leading-tight">
+            ${c.kelas}
+          </h4>
+
+          <div class="mt-2.5 pt-2 border-t border-slate-100 text-xs">
+            <span class="text-[11px] text-slate-400 block font-medium">Guru Kelas:</span>
+            <strong class="text-slate-800 font-semibold text-xs leading-snug block mt-0.5">
+              ${c.guru}
+            </strong>
+          </div>
+        </div>
+
+        <div class="mt-4 pt-2.5 border-t border-slate-100 flex items-center justify-between text-xs">
+          <div class="font-extrabold text-royal-900 text-sm">
+            ${c.total} <span class="text-[10px] font-normal text-slate-500">Orang</span>
+          </div>
+          <div class="text-[11px] font-medium space-x-1.5">
+            <span class="text-blue-700 bg-blue-50 px-2 py-0.5 rounded-md border border-blue-200">👦 ${c.lelaki}</span>
+            <span class="text-rose-700 bg-rose-50 px-2 py-0.5 rounded-md border border-rose-200">👧 ${c.perempuan}</span>
+          </div>
+        </div>
+      </div>
+    `;
+  }).join("");
+}
+
+window.filterClassCards = function() {
+  const sel = document.getElementById("filterClassCohort");
+  const val = sel ? sel.value : "Semua";
+  renderClassListGrid(val);
+};
 
 /* ==========================================================================
    RENDER CARTA ORGANISASI RASMI SK RANGGU 2026 (KURIKULUM & PENTADBIRAN)
@@ -1086,6 +1190,8 @@ function setupNavigation() {
       tabSections.forEach(sec => {
         if (sec.id === targetId) {
           sec.classList.remove("hidden");
+          if (targetId === "tab-murid") renderStudentDemographics();
+          if (targetId === "tab-carta") renderOrganizationChart();
         } else {
           sec.classList.add("hidden");
         }

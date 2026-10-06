@@ -153,6 +153,9 @@
         <button data-tab-target="tab-carta" class="px-4 py-2 rounded-xl text-xs font-medium text-slate-600 hover:bg-slate-100 transition flex items-center gap-2">
           <span>👥</span> Carta Organisasi
         </button>
+        <button data-tab-target="tab-murid" class="px-4 py-2 rounded-xl text-xs font-medium text-slate-600 hover:bg-slate-100 transition flex items-center gap-2">
+          <span>🎒</span> Enrolmen & 27 Kelas (890 Murid)
+        </button>
         <button data-tab-target="tab-kurikulum" class="px-4 py-2 rounded-xl text-xs font-medium text-slate-600 hover:bg-slate-100 transition flex items-center gap-2">
           <span>📚</span> Pengurusan Kurikulum
         </button>
@@ -197,6 +200,9 @@
       <button data-tab-target="tab-carta" class="w-full text-left px-3 py-2 rounded-lg text-xs font-medium text-slate-700 hover:bg-slate-100 flex items-center gap-2">
         <span>👥</span> Carta Organisasi Pentadbiran
       </button>
+      <button data-tab-target="tab-murid" class="w-full text-left px-3 py-2 rounded-lg text-xs font-medium text-slate-700 hover:bg-slate-100 flex items-center gap-2">
+        <span>🎒</span> Enrolmen & 27 Kelas (890 Murid)
+      </button>
       <button data-tab-target="tab-kurikulum" class="w-full text-left px-3 py-2 rounded-lg text-xs font-medium text-slate-700 hover:bg-slate-100 flex items-center gap-2">
         <span>📚</span> Pengurusan Kurikulum & Panitia
       </button>
@@ -228,11 +234,11 @@
         
         <div class="bg-white p-4 rounded-2xl border border-slate-200/80 executive-card">
           <div class="flex items-center justify-between text-slate-400 mb-2">
-            <span class="text-[11px] font-bold uppercase tracking-wider text-slate-500">Jumlah Guru</span>
+            <span class="text-[11px] font-bold uppercase tracking-wider text-slate-500">Warga Sekolah</span>
             <span class="text-base">👨‍🏫</span>
           </div>
-          <div class="text-2xl sm:text-3xl font-extrabold text-royal-900" id="statTotalTeachers">49</div>
-          <div class="text-[11px] text-emerald-600 font-semibold mt-1">Staf Terlatih</div>
+          <div class="text-2xl sm:text-3xl font-extrabold text-royal-900" id="statTotalTeachers">60</div>
+          <div class="text-[11px] text-emerald-600 font-semibold mt-1">54 Guru + 6 AKP</div>
         </div>
 
         <div class="bg-white p-4 rounded-2xl border border-slate-200/80 executive-card">
@@ -240,8 +246,8 @@
             <span class="text-[11px] font-bold uppercase tracking-wider text-slate-500">Enrolmen Murid</span>
             <span class="text-base">🎒</span>
           </div>
-          <div class="text-2xl sm:text-3xl font-extrabold text-blue-700" id="statTotalStudents">586</div>
-          <div class="text-[11px] text-slate-500 font-medium mt-1">Tahap 1, 2 & Pra</div>
+          <div class="text-2xl sm:text-3xl font-extrabold text-blue-700" id="statTotalStudents">890</div>
+          <div class="text-[11px] text-slate-500 font-medium mt-1">L: 466 • P: 424 (APDM)</div>
         </div>
 
         <div class="bg-white p-4 rounded-2xl border border-slate-200/80 executive-card">
@@ -249,8 +255,8 @@
             <span class="text-[11px] font-bold uppercase tracking-wider text-slate-500">Bil. Kelas</span>
             <span class="text-base">🏫</span>
           </div>
-          <div class="text-lg sm:text-xl font-extrabold text-indigo-900" id="statTotalClasses">18 (+2 Pra)</div>
-          <div class="text-[11px] text-slate-500 font-medium mt-1">Sesi Pagi & Petang</div>
+          <div class="text-lg sm:text-xl font-extrabold text-indigo-900" id="statTotalClasses">27 Kelas</div>
+          <div class="text-[11px] text-slate-500 font-medium mt-1">24 Perdana + 3 Pra</div>
         </div>
 
         <div class="bg-white p-4 rounded-2xl border border-slate-200/80 executive-card">
@@ -378,7 +384,109 @@
 
     </section>
 
-    <!-- TAB 3: PENGURUSAN KURIKULUM -->
+    <!-- TAB 3: ENROLMEN & 27 KELAS (DATA APDM / MOEIS 2026) -->
+    <section id="tab-murid" class="tab-content-section hidden space-y-6">
+      
+      <!-- HEADER TAB ENROLMEN -->
+      <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div>
+          <span class="text-xs font-bold uppercase tracking-wider text-blue-700 bg-blue-50 px-2.5 py-1 rounded-md border border-blue-200">
+            Pangkalan Data Murid & APDM / MOEIS
+          </span>
+          <h2 class="text-xl font-extrabold text-royal-900 mt-2">Enrolmen & Profil Demografi Murid SK Ranggu</h2>
+          <p class="text-xs text-slate-500 mt-0.5">Statistik rasmi 890 orang murid merangkumi 27 buah kelas (Prasekolah, Tahap 1 & Tahap 2).</p>
+        </div>
+        <div class="flex items-center gap-2 flex-wrap">
+          <a href="assets/senarai-murid-2026.xlsx" download class="px-3.5 py-2 bg-emerald-700 hover:bg-emerald-800 text-white rounded-xl text-xs font-bold shadow-sm transition flex items-center gap-1.5">
+            <span>📗</span> Muat Turun Data (.xlsx)
+          </a>
+          <a href="assets/senarai-murid-2026.csv" download class="px-3.5 py-2 bg-slate-800 hover:bg-slate-900 text-white rounded-xl text-xs font-bold shadow-sm transition flex items-center gap-1.5">
+            <span>📄</span> CSV
+          </a>
+        </div>
+      </div>
+
+      <!-- KAD RINGKASAN METRIK ENROLMEN -->
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+        <div class="bg-gradient-to-br from-blue-900 to-indigo-900 text-white p-5 rounded-2xl shadow-sm border border-blue-800">
+          <span class="text-xs text-blue-200 font-semibold block">Jumlah Enrolmen</span>
+          <div class="text-3xl font-extrabold mt-1">890 <span class="text-xs font-normal text-blue-300">Murid</span></div>
+          <div class="text-[11px] text-blue-200 mt-2 flex items-center justify-between border-t border-white/10 pt-1.5">
+            <span>👦 L: <strong>466 (52.4%)</strong></span>
+            <span>👧 P: <strong>424 (47.6%)</strong></span>
+          </div>
+        </div>
+
+        <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm executive-card">
+          <span class="text-xs text-slate-500 font-semibold block">Jumlah Kelas Beroperasi</span>
+          <div class="text-3xl font-extrabold text-royal-900 mt-1">27 <span class="text-xs font-normal text-slate-500">Kelas</span></div>
+          <div class="text-[11px] text-slate-500 mt-2 flex items-center justify-between border-t border-slate-100 pt-1.5">
+            <span>🏫 24 Perdana</span>
+            <span>🧸 3 Prasekolah</span>
+          </div>
+        </div>
+
+        <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm executive-card">
+          <span class="text-xs text-slate-500 font-semibold block">Warganegara / Status</span>
+          <div class="text-2xl font-extrabold text-emerald-700 mt-1">873 <span class="text-xs font-normal text-slate-500">Warganegara</span></div>
+          <div class="text-[11px] text-slate-500 mt-2 flex items-center justify-between border-t border-slate-100 pt-1.5">
+            <span>🇲🇾 Warga: 873</span>
+            <span>🌐 Bukan: 17</span>
+          </div>
+        </div>
+
+        <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm executive-card">
+          <span class="text-xs text-slate-500 font-semibold block">Kebajikan & Khas</span>
+          <div class="text-2xl font-extrabold text-amber-600 mt-1">18 <span class="text-xs font-normal text-slate-500">Murid</span></div>
+          <div class="text-[11px] text-slate-500 mt-2 flex items-center justify-between border-t border-slate-100 pt-1.5">
+            <span>🤍 Yatim: <strong>15</strong></span>
+            <span>♿ OKU (MBPK): <strong>3</strong></span>
+          </div>
+        </div>
+      </div>
+
+      <!-- TABURAN ENROLMEN MENGIKUT ALIRAN / TAHUN -->
+      <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-4">
+        <div class="flex items-center justify-between border-b pb-3">
+          <h4 class="font-bold text-slate-900 text-sm sm:text-base flex items-center gap-2">
+            <span>📊</span> Taburan Murid Mengikut Tahun & Nisbah Jantina
+          </h4>
+          <span class="text-xs text-slate-500">7 Cohort (Prasekolah hingga Tahun 6)</span>
+        </div>
+        <div id="cohortBreakdownContainer" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-7 gap-3"></div>
+      </div>
+
+      <!-- SENARAI 27 BUAH KELAS & GURU KELAS -->
+      <div class="space-y-4">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+          <div>
+            <h3 class="text-base sm:text-lg font-bold text-royal-900 flex items-center gap-2">
+              <span class="w-2.5 h-2.5 rounded-full bg-blue-700"></span>
+              Direktori 27 Buah Kelas & Guru Kelas 2026
+            </h3>
+            <p class="text-xs text-slate-500">Pecahan bilangan murid lelaki dan perempuan bagi setiap bilik darjah.</p>
+          </div>
+          
+          <div class="flex items-center gap-2">
+            <select id="filterClassCohort" onchange="filterClassCards()" class="text-xs py-2 px-3 border border-slate-300 rounded-xl bg-white font-medium focus:ring-2 focus:ring-blue-600 focus:outline-none">
+              <option value="Semua">Semua Aliran (27 Kelas)</option>
+              <option value="PRASEKOLAH">Prasekolah (3 Kelas)</option>
+              <option value="TAHUN SATU">Tahun 1 (4 Kelas)</option>
+              <option value="TAHUN DUA">Tahun 2 (4 Kelas)</option>
+              <option value="TAHUN TIGA">Tahun 3 (4 Kelas)</option>
+              <option value="TAHUN EMPAT">Tahun 4 (4 Kelas)</option>
+              <option value="TAHUN LIMA">Tahun 5 (4 Kelas)</option>
+              <option value="TAHUN ENAM">Tahun 6 (4 Kelas)</option>
+            </select>
+          </div>
+        </div>
+
+        <div id="classListGridContainer" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4"></div>
+      </div>
+
+    </section>
+
+    <!-- TAB 4: PENGURUSAN KURIKULUM -->
     <section id="tab-kurikulum" class="tab-content-section hidden space-y-6">
       
       <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-3">
