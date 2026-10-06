@@ -199,30 +199,70 @@ function renderDocumentsList() {
 }
 
 /* ==========================================================================
-   RENDER CARTA ORGANISASI RASMI SK RANGGU 2026 (SEPADAN POSTER)
+   RENDER CARTA ORGANISASI RASMI SK RANGGU 2026 (KURIKULUM & PENTADBIRAN)
    ========================================================================== */
+window.activeChartType = "kurikulum"; // 'kurikulum' | 'pentadbiran' | 'direktori'
+window.activeChartMode = "digital";   // 'digital' | 'poster'
+
+window.setChartType = function(type) {
+  window.activeChartType = type;
+  window.activeChartMode = "digital";
+  renderOrganizationChart();
+};
+
+window.toggleChartMode = function(mode) {
+  window.activeChartMode = mode;
+  renderOrganizationChart();
+};
+
+function renderChartTypeTabs() {
+  const isKurikulum = window.activeChartType === "kurikulum";
+  const isPentadbiran = window.activeChartType === "pentadbiran";
+  const isDirektori = window.activeChartType === "direktori";
+
+  return `
+    <div class="flex items-center justify-center gap-2 sm:gap-3 mb-6 flex-wrap no-print">
+      <button onclick="setChartType('kurikulum')" class="px-4 sm:px-5 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition flex items-center gap-2 ${isKurikulum ? 'bg-royal-900 text-white shadow-md ring-2 ring-blue-500' : 'bg-white text-slate-700 border border-slate-300 hover:bg-slate-100'}">
+        <span>📚</span> Carta Kurikulum 2026
+      </button>
+      <button onclick="setChartType('pentadbiran')" class="px-4 sm:px-5 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition flex items-center gap-2 ${isPentadbiran ? 'bg-royal-900 text-white shadow-md ring-2 ring-red-500' : 'bg-white text-slate-700 border border-slate-300 hover:bg-slate-100'}">
+        <span>🏛️</span> Carta Pentadbiran 2026
+      </button>
+      <button onclick="setChartType('direktori')" class="px-4 sm:px-5 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition flex items-center gap-2 ${isDirektori ? 'bg-royal-900 text-white shadow-md ring-2 ring-emerald-500' : 'bg-white text-slate-700 border border-slate-300 hover:bg-slate-100'}">
+        <span>👥</span> Direktori Warga Sekolah (60 Staf)
+      </button>
+    </div>
+  `;
+}
+
 function renderOrganizationChart(filterCategory = "Semua", searchQuery = "") {
   const container = document.getElementById("orgChartContainer");
   if (!container) return;
 
-  const h = window.SKR_DATA.adminHierarchy2026;
   const staff = window.SKR_DATA.staffList || [];
+  const currH = window.SKR_DATA.curriculumHierarchy2026;
+  const adminH = window.SKR_DATA.adminHierarchy2026;
 
-  // Jika pengguna membuat carian atau menapis unit khusus
-  if (filterCategory !== "Semua" || searchQuery.trim() !== "") {
+  const searchInput = document.getElementById("orgSearchInput");
+  const actualQuery = searchQuery || (searchInput ? searchInput.value : "");
+  const filterSelect = document.getElementById("orgFilterSelect");
+  const actualFilter = filterCategory !== "Semua" ? filterCategory : (filterSelect ? filterSelect.value : "Semua");
+
+  // Jika pengguna menaip carian atau menapis unit khusus
+  if (window.activeChartType === "direktori" || actualQuery.trim() !== "" || actualFilter !== "Semua") {
     let filtered = staff;
-    if (filterCategory === "AKP") {
+    if (actualFilter === "AKP") {
       filtered = filtered.filter(m => m.type === "AKP");
-    } else if (filterCategory === "Pagi") {
+    } else if (actualFilter === "Pagi") {
       filtered = filtered.filter(m => m.session === "Pagi");
-    } else if (filterCategory === "Petang") {
+    } else if (actualFilter === "Petang") {
       filtered = filtered.filter(m => m.session === "Petang");
-    } else if (filterCategory !== "Semua") {
-      filtered = filtered.filter(m => m.category === filterCategory || (filterCategory === "Pengurusan Tertinggi" && m.tier <= 2));
+    } else if (actualFilter !== "Semua") {
+      filtered = filtered.filter(m => m.category === actualFilter || (actualFilter === "Pengurusan Tertinggi" && m.tier <= 2));
     }
 
-    if (searchQuery.trim() !== "") {
-      const q = searchQuery.toLowerCase();
+    if (actualQuery.trim() !== "") {
+      const q = actualQuery.toLowerCase();
       filtered = filtered.filter(m => 
         m.name.toLowerCase().includes(q) || 
         m.role.toLowerCase().includes(q) ||
@@ -230,54 +270,261 @@ function renderOrganizationChart(filterCategory = "Semua", searchQuery = "") {
       );
     }
 
-    if (filtered.length === 0) {
-      container.innerHTML = `
+    container.innerHTML = `
+      ${renderChartTypeTabs()}
+
+      <div class="mb-4 text-xs font-semibold text-slate-500 flex items-center justify-between">
+        <span>Menunjukkan ${filtered.length} orang staf mengikut carian/tapisan:</span>
+        <button onclick="if(document.getElementById('orgSearchInput')) document.getElementById('orgSearchInput').value=''; if(document.getElementById('orgFilterSelect')) document.getElementById('orgFilterSelect').value='Semua'; window.activeChartType='kurikulum'; renderOrganizationChart();" class="text-blue-600 hover:underline">
+          Kembali ke Carta Organisasi
+        </button>
+      </div>
+
+      ${filtered.length === 0 ? `
         <div class="text-center py-12 bg-white rounded-2xl border border-slate-200">
           <p class="text-slate-500 font-medium">Tiada padanan staf dijumpai.</p>
         </div>
-      `;
-      return;
-    }
-
-    container.innerHTML = `
-      <div class="mb-4 text-xs font-semibold text-slate-500 flex items-center justify-between">
-        <span>Menunjukkan ${filtered.length} orang staf mengikut carian/tapisan:</span>
-        <button onclick="document.getElementById('orgSearchInput').value=''; document.getElementById('orgFilterSelect').value='Semua'; renderOrganizationChart();" class="text-blue-600 hover:underline">
-          Papar Semula Carta Penuh
-        </button>
-      </div>
-      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-        ${filtered.map(m => createMemberCard(m)).join("")}
-      </div>
+      ` : `
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+          ${filtered.map(m => createMemberCard(m)).join("")}
+        </div>
+      `}
     `;
     return;
   }
 
-  // PAPARAN HIERARKI POSTER RASMI SK RANGGU 2026
-  container.innerHTML = `
-    <!-- PILIHAN PAPARAN (TAB POSTER VS DIGITAL) -->
-    <div class="flex items-center justify-center gap-3 mb-6 no-print">
-      <button onclick="toggleChartMode('digital')" id="btnModeDigital" class="px-5 py-2 rounded-xl text-xs font-bold transition bg-blue-900 text-white shadow-sm flex items-center gap-2">
-        <span>👥</span> Carta Hierarki Digital 2026
-      </button>
-      <button onclick="toggleChartMode('poster')" id="btnModePoster" class="px-5 py-2 rounded-xl text-xs font-medium text-slate-600 hover:bg-slate-100 transition flex items-center gap-2 border border-slate-300">
-        <span>🖼️</span> Poster Asal Sekolah (HD)
-      </button>
-    </div>
+  // JIKA MEMILIH CARTA KURIKULUM 2026 (DEFAULT)
+  if (window.activeChartType === "kurikulum") {
+    container.innerHTML = `
+      ${renderChartTypeTabs()}
 
-    <!-- PAPARAN POSTER ASAL HD (SEKIRANYA DIPILIH) -->
-    <div id="posterImageViewWrapper" class="hidden text-center bg-white p-4 rounded-3xl border border-slate-200 shadow-md max-w-2xl mx-auto">
-      <div class="flex justify-between items-center pb-3 border-b mb-4">
-        <h4 class="font-bold text-slate-900 text-sm">Poster Rasmi Pengurusan Pentadbiran SK Ranggu 2026</h4>
-        <a href="assets/carta-organisasi-2026.png" target="_blank" download class="px-3 py-1 bg-blue-700 text-white text-xs font-semibold rounded-lg hover:bg-blue-800 transition">
-          📥 Muat Turun Poster
-        </a>
+      <!-- SUIS MOD DIGITAL / POSTER -->
+      <div class="flex items-center justify-center gap-3 mb-6 no-print">
+        <button onclick="toggleChartMode('digital')" class="px-5 py-2 rounded-xl text-xs font-bold transition flex items-center gap-2 ${window.activeChartMode === 'digital' ? 'bg-blue-900 text-white shadow-sm' : 'text-slate-600 bg-white border border-slate-300 hover:bg-slate-50'}">
+          <span>📊</span> Paparan Carta Digital
+        </button>
+        <button onclick="toggleChartMode('poster')" class="px-5 py-2 rounded-xl text-xs font-bold transition flex items-center gap-2 ${window.activeChartMode === 'poster' ? 'bg-blue-900 text-white shadow-sm' : 'text-slate-600 bg-white border border-slate-300 hover:bg-slate-50'}">
+          <span>🖼️</span> Poster Asal Kurikulum 2026 (HD)
+        </button>
       </div>
-      <img src="assets/carta-organisasi-2026.png" alt="Carta Organisasi Pentadbiran SK Ranggu 2026" class="w-full h-auto rounded-2xl shadow-lg border border-slate-100 mx-auto">
-    </div>
 
-    <!-- PAPARAN STRUKTUR DIGITAL SEPADAN POSTER -->
-    <div id="digitalChartViewWrapper" class="space-y-6 max-w-5xl mx-auto">
+      ${window.activeChartMode === 'poster' ? `
+        <div class="text-center bg-white p-5 rounded-3xl border border-slate-200 shadow-md max-w-2xl mx-auto">
+          <div class="flex justify-between items-center pb-3 border-b mb-4">
+            <div>
+              <h4 class="font-bold text-slate-900 text-sm">Poster Rasmi Kurikulum SK Ranggu 2026</h4>
+              <p class="text-[11px] text-slate-500">Kementerian Pendidikan Malaysia • SK Ranggu Tawau</p>
+            </div>
+            <a href="assets/carta-organisasi-kurikulum-2026.png" target="_blank" download class="px-3.5 py-1.5 bg-blue-700 text-white text-xs font-semibold rounded-lg hover:bg-blue-800 transition">
+              📥 Muat Turun Poster HD
+            </a>
+          </div>
+          <img src="assets/carta-organisasi-kurikulum-2026.png" alt="Carta Organisasi Kurikulum SK Ranggu 2026" class="w-full h-auto rounded-2xl shadow-lg border border-slate-100 mx-auto">
+        </div>
+      ` : renderDigitalCurriculumChart(currH)}
+    `;
+    return;
+  }
+
+  // JIKA MEMILIH CARTA PENTADBIRAN 2026
+  if (window.activeChartType === "pentadbiran") {
+    container.innerHTML = `
+      ${renderChartTypeTabs()}
+
+      <!-- SUIS MOD DIGITAL / POSTER -->
+      <div class="flex items-center justify-center gap-3 mb-6 no-print">
+        <button onclick="toggleChartMode('digital')" class="px-5 py-2 rounded-xl text-xs font-bold transition flex items-center gap-2 ${window.activeChartMode === 'digital' ? 'bg-rose-900 text-white shadow-sm' : 'text-slate-600 bg-white border border-slate-300 hover:bg-slate-50'}">
+          <span>🏛️</span> Paparan Carta Digital
+        </button>
+        <button onclick="toggleChartMode('poster')" class="px-5 py-2 rounded-xl text-xs font-bold transition flex items-center gap-2 ${window.activeChartMode === 'poster' ? 'bg-rose-900 text-white shadow-sm' : 'text-slate-600 bg-white border border-slate-300 hover:bg-slate-50'}">
+          <span>🖼️</span> Poster Asal Pentadbiran 2026 (HD)
+        </button>
+      </div>
+
+      ${window.activeChartMode === 'poster' ? `
+        <div class="text-center bg-white p-5 rounded-3xl border border-slate-200 shadow-md max-w-2xl mx-auto">
+          <div class="flex justify-between items-center pb-3 border-b mb-4">
+            <div>
+              <h4 class="font-bold text-slate-900 text-sm">Poster Rasmi Pentadbiran SK Ranggu 2026</h4>
+              <p class="text-[11px] text-slate-500">Unit Pengurusan Pentadbiran SK Ranggu Tawau</p>
+            </div>
+            <a href="assets/carta-organisasi-2026.png" target="_blank" download class="px-3.5 py-1.5 bg-rose-700 text-white text-xs font-semibold rounded-lg hover:bg-rose-800 transition">
+              📥 Muat Turun Poster HD
+            </a>
+          </div>
+          <img src="assets/carta-organisasi-2026.png" alt="Carta Organisasi Pentadbiran SK Ranggu 2026" class="w-full h-auto rounded-2xl shadow-lg border border-slate-100 mx-auto">
+        </div>
+      ` : renderDigitalAdminChart(adminH)}
+    `;
+    return;
+  }
+}
+
+// 1. PAPARAN CARTA KURIKULUM 2026 (SEPADAN 100% POSTER RASMI)
+function renderDigitalCurriculumChart(c) {
+  if (!c) return '<div class="text-center text-slate-400 py-6">Data kurikulum tiada.</div>';
+
+  return `
+    <div class="space-y-6 max-w-6xl mx-auto">
+      
+      <!-- TAJUK UTAMA POSTER -->
+      <div class="text-center bg-gradient-to-r from-blue-900 via-indigo-900 to-sky-900 text-white p-4 rounded-2xl shadow-md border border-white/20">
+        <span class="text-[10px] font-bold tracking-widest uppercase bg-white/20 px-3 py-0.5 rounded-full text-amber-300">KEMENTERIAN PENDIDIKAN</span>
+        <h3 class="text-base sm:text-xl font-extrabold mt-1 tracking-wide">${c.title}</h3>
+      </div>
+
+      <!-- 1. GURU BESAR -->
+      <div class="flex flex-col items-center">
+        <div class="w-full max-w-sm bg-white rounded-2xl border-2 border-blue-600 shadow-md overflow-hidden text-center executive-card">
+          <div class="bg-gradient-to-r from-blue-700 to-indigo-800 text-white py-1.5 px-4 text-xs font-extrabold tracking-wider uppercase">
+            ${c.leader.role}
+          </div>
+          <div class="p-3">
+            <h4 class="font-extrabold text-slate-900 text-base tracking-wide">${c.leader.name}</h4>
+            <span class="text-[11px] font-semibold text-blue-800 bg-blue-50 px-2.5 py-0.5 rounded-full border border-blue-200 inline-block mt-1">
+              ${c.leader.badge}
+            </span>
+          </div>
+        </div>
+        <div class="w-0.5 h-5 bg-blue-300"></div>
+      </div>
+
+      <!-- 2. PENOLONG KANAN PENTADBIRAN -->
+      <div class="flex flex-col items-center">
+        <div class="w-full max-w-sm bg-white rounded-2xl border-2 border-blue-600 shadow-md overflow-hidden text-center executive-card">
+          <div class="bg-gradient-to-r from-blue-700 to-indigo-800 text-white py-1.5 px-4 text-xs font-extrabold tracking-wider uppercase">
+            ${c.deputyAdmin.role}
+          </div>
+          <div class="p-3">
+            <h4 class="font-extrabold text-slate-900 text-base tracking-wide">${c.deputyAdmin.name}</h4>
+            <span class="text-[11px] font-semibold text-indigo-700 bg-indigo-50 px-2.5 py-0.5 rounded-full border border-indigo-200 inline-block mt-1">
+              ${c.deputyAdmin.badge}
+            </span>
+          </div>
+        </div>
+        <div class="w-0.5 h-5 bg-blue-300"></div>
+      </div>
+
+      <!-- 3. PENOLONG KANAN PETANG -->
+      <div class="flex flex-col items-center">
+        <div class="w-full max-w-sm bg-white rounded-2xl border-2 border-blue-600 shadow-md overflow-hidden text-center executive-card">
+          <div class="bg-gradient-to-r from-blue-700 to-indigo-800 text-white py-1.5 px-4 text-xs font-extrabold tracking-wider uppercase">
+            ${c.deputyPetang.role}
+          </div>
+          <div class="p-3">
+            <h4 class="font-extrabold text-slate-900 text-base tracking-wide">${c.deputyPetang.name}</h4>
+            <span class="text-[11px] font-semibold text-cyan-700 bg-cyan-50 px-2.5 py-0.5 rounded-full border border-cyan-200 inline-block mt-1">
+              ${c.deputyPetang.badge}
+            </span>
+          </div>
+        </div>
+        <div class="w-0.5 h-5 bg-blue-300"></div>
+      </div>
+
+      <!-- 4. SETIAUSAHA -->
+      <div class="flex flex-col items-center">
+        <div class="w-full max-w-sm bg-white rounded-2xl border-2 border-blue-600 shadow-md overflow-hidden text-center executive-card">
+          <div class="bg-gradient-to-r from-blue-700 to-indigo-800 text-white py-1.5 px-4 text-xs font-extrabold tracking-wider uppercase">
+            ${c.secretary.role}
+          </div>
+          <div class="p-3">
+            <h4 class="font-extrabold text-slate-900 text-base tracking-wide">${c.secretary.name}</h4>
+            <span class="text-[11px] font-semibold text-emerald-700 bg-emerald-50 px-2.5 py-0.5 rounded-full border border-emerald-200 inline-block mt-1">
+              ${c.secretary.badge}
+            </span>
+          </div>
+        </div>
+        <div class="w-0.5 h-8 bg-blue-400"></div>
+      </div>
+
+      <!-- 5. TIGA LAJUR BESAR SEPERTI DALAM POSTER RASMI (PANITIA | PENYELARAS | UNIT KURIKULUM) -->
+      <div class="relative pt-2">
+        <div class="hidden md:block absolute top-0 left-16 right-16 h-0.5 bg-blue-300"></div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 pt-4">
+          
+          <!-- LAJUR 1: PANITIA (12 PANITIA) -->
+          <div class="space-y-3">
+            <div class="bg-gradient-to-r from-sky-600 to-blue-700 text-white py-2.5 px-4 rounded-xl font-extrabold text-xs uppercase tracking-wider text-center shadow flex items-center justify-between">
+              <span>📖 PANITIA</span>
+              <span class="text-[10px] bg-white/20 px-2 py-0.5 rounded-full font-mono">${c.panitia.length} Panitia</span>
+            </div>
+            <div class="space-y-2">
+              ${c.panitia.map(p => `
+                <div class="bg-white rounded-xl border border-sky-300/80 shadow-sm overflow-hidden executive-card">
+                  <div class="bg-sky-600 text-white py-1 px-3 text-[10px] font-extrabold tracking-wider uppercase flex items-center justify-between">
+                    <span>${p.subject}</span>
+                    <span>${p.icon || '📘'}</span>
+                  </div>
+                  <div class="p-2.5 text-center">
+                    <h5 class="font-extrabold text-slate-900 text-xs sm:text-sm tracking-wide leading-tight">
+                      ${p.head}
+                    </h5>
+                  </div>
+                </div>
+              `).join("")}
+            </div>
+          </div>
+
+          <!-- LAJUR 2: PENYELARAS (4 PORTFOLIO) -->
+          <div class="space-y-3">
+            <div class="bg-gradient-to-r from-cyan-600 to-sky-700 text-white py-2.5 px-4 rounded-xl font-extrabold text-xs uppercase tracking-wider text-center shadow flex items-center justify-between">
+              <span>🎯 PENYELARAS</span>
+              <span class="text-[10px] bg-white/20 px-2 py-0.5 rounded-full font-mono">${c.penyelaras.length} Portfolio</span>
+            </div>
+            <div class="space-y-2">
+              ${c.penyelaras.map(py => `
+                <div class="bg-white rounded-xl border border-cyan-300/80 shadow-sm overflow-hidden executive-card">
+                  <div class="bg-cyan-600 text-white py-1 px-3 text-[10px] font-extrabold tracking-wider uppercase flex items-center justify-between">
+                    <span>${py.portfolio}</span>
+                    <span>${py.icon || '📌'}</span>
+                  </div>
+                  <div class="p-2.5 text-center">
+                    <h5 class="font-extrabold text-slate-900 text-xs sm:text-sm tracking-wide leading-tight">
+                      ${py.officer}
+                    </h5>
+                  </div>
+                </div>
+              `).join("")}
+            </div>
+          </div>
+
+          <!-- LAJUR 3: UNIT KURIKULUM (11 UNIT) -->
+          <div class="space-y-3">
+            <div class="bg-gradient-to-r from-blue-800 to-indigo-900 text-white py-2.5 px-4 rounded-xl font-extrabold text-xs uppercase tracking-wider text-center shadow flex items-center justify-between">
+              <span>📑 UNIT KURIKULUM</span>
+              <span class="text-[10px] bg-white/20 px-2 py-0.5 rounded-full font-mono">${c.unitKurikulum.length} Unit</span>
+            </div>
+            <div class="space-y-2">
+              ${c.unitKurikulum.map(uk => `
+                <div class="bg-white rounded-xl border border-indigo-300/80 shadow-sm overflow-hidden executive-card">
+                  <div class="bg-indigo-700 text-white py-1 px-3 text-[10px] font-extrabold tracking-wider uppercase flex items-center justify-between">
+                    <span>${uk.unit}</span>
+                    <span>${uk.icon || '📋'}</span>
+                  </div>
+                  <div class="p-2.5 text-center">
+                    <h5 class="font-extrabold text-slate-900 text-xs sm:text-sm tracking-wide leading-tight">
+                      ${uk.officer}
+                    </h5>
+                  </div>
+                </div>
+              `).join("")}
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  `;
+}
+
+// 2. PAPARAN CARTA PENTADBIRAN 2026 (SEPADAN POSTER PENTADBIRAN)
+function renderDigitalAdminChart(h) {
+  if (!h) return '<div class="text-center text-slate-400 py-6">Data pentadbiran tiada.</div>';
+
+  return `
+    <div class="space-y-6 max-w-5xl mx-auto">
       
       <!-- 1. GURU BESAR -->
       <div class="flex flex-col items-center">
@@ -337,7 +584,6 @@ function renderOrganizationChart(filterCategory = "Semua", searchQuery = "") {
 
       <!-- 5. DUA SAYAP BESAR (KIRI & KANAN) SEPERTI DALAM POSTER -->
       <div class="relative pt-2">
-        <!-- Garisan mendatar penghubung dua sayap -->
         <div class="hidden md:block absolute top-0 left-1/4 right-1/4 h-0.5 bg-slate-300"></div>
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6 pt-4">
@@ -367,7 +613,7 @@ function renderOrganizationChart(filterCategory = "Semua", searchQuery = "") {
   `;
 }
 
-// Kad Gaya Poster Rasmi SK Ranggu
+// Kad Gaya Poster Rasmi Pentadbiran SK Ranggu
 function createPosterStyleCard(item) {
   const isUser = item.officer && item.officer.includes("FIKREY");
 
@@ -390,29 +636,6 @@ function createPosterStyleCard(item) {
     </div>
   `;
 }
-
-window.toggleChartMode = function(mode) {
-  const posterView = document.getElementById("posterImageViewWrapper");
-  const digitalView = document.getElementById("digitalChartViewWrapper");
-  const btnDigital = document.getElementById("btnModeDigital");
-  const btnPoster = document.getElementById("btnModePoster");
-
-  if (mode === "poster") {
-    posterView.classList.remove("hidden");
-    digitalView.classList.add("hidden");
-    btnPoster.classList.add("bg-blue-900", "text-white", "font-bold");
-    btnPoster.classList.remove("text-slate-600");
-    btnDigital.classList.remove("bg-blue-900", "text-white", "font-bold");
-    btnDigital.classList.add("text-slate-600");
-  } else {
-    posterView.classList.add("hidden");
-    digitalView.classList.remove("hidden");
-    btnDigital.classList.add("bg-blue-900", "text-white", "font-bold");
-    btnDigital.classList.remove("text-slate-600");
-    btnPoster.classList.remove("bg-blue-900", "text-white", "font-bold");
-    btnPoster.classList.add("text-slate-600");
-  }
-};
 
 function createMemberCard(member, isPrincipal = false) {
   let badgeClass = "badge-tier-4";

@@ -104,6 +104,69 @@ const DEFAULT_SYSTEM_DATA = {
     ]
   },
 
+  // CARTA ORGANISASI KURIKULUM 2026 (SEPADAN 100% POSTER RASMI KURIKULUM)
+  curriculumHierarchy2026: {
+    title: "CARTA ORGANISASI KURIKULUM SK RANGGU TAWAU TAHUN 2026",
+    year: "2026",
+    posterImage: "assets/carta-organisasi-kurikulum-2026.png",
+    leader: {
+      role: "GURU BESAR",
+      name: "YUNUS BIN PATARAI",
+      badge: "Peneraju Sekolah"
+    },
+    deputyAdmin: {
+      role: "PENOLONG KANAN PENTADBIRAN",
+      name: "RAHMATIAH BT MOHD JUDA",
+      badge: "PK 1 Pentadbiran & Kurikulum"
+    },
+    deputyPetang: {
+      role: "PENOLONG KANAN PETANG",
+      name: "EMRAN BIN SELAMAT",
+      badge: "PK Petang"
+    },
+    secretary: {
+      role: "SETIAUSAHA",
+      name: "ANI BT PATOLA",
+      badge: "Setiausaha Kurikulum"
+    },
+    // LAJUR 1: PANITIA (12 PANITIA)
+    panitia: [
+      { subject: "BAHASA MELAYU", head: "SABRIAH BT ABDUL SABAR", icon: "📖" },
+      { subject: "BAHASA INGGERIS", head: "HAMSIAH BT HAMID", icon: "🔤" },
+      { subject: "MATEMATIK", head: "MASTURAH BT TUDA", icon: "📐" },
+      { subject: "SAINS", head: "JUNAID BIN NURDIN", icon: "🔬" },
+      { subject: "SEJARAH", head: "RINI BT DAUD", icon: "🏛️" },
+      { subject: "PENDIDIKAN ISLAM", head: "HASNAN BIN MAT ZIN", icon: "🕌" },
+      { subject: "PENDIDIKAN MORAL", head: "FARIDAH BT SUNU", icon: "⚖️" },
+      { subject: "BAHASA ARAB", head: "SUNARTI BT TAPAH", icon: "🌙" },
+      { subject: "REKA BENTUK TEKNOLOGI", head: "RONI BIN BACHO", icon: "⚙️" },
+      { subject: "PENDIDIKAN JASMANI & KESIHATAN", head: "WAFA FARHANA BT ABD KADIR", icon: "🏃" },
+      { subject: "PENDIDIKAN SENI VISUAL", head: "SITI JAWARA BINTI", icon: "🎨" },
+      { subject: "PENDIDIKAN MUZIK", head: "TANJANG BIN TURE", icon: "🎵" }
+    ],
+    // LAJUR 2: PENYELARAS (4 PORTFOLIO)
+    penyelaras: [
+      { portfolio: "PENYELARAS TAHAP 1", officer: "RASMAWATI BT TAUSE", icon: "🧒" },
+      { portfolio: "PENYELARAS TAHAP 2", officer: "HASNAN BIN MAT ZAIN", icon: "🧑" },
+      { portfolio: "JADUAL WAKTU PAGI", officer: "NURUL ANISA BT SAPARUDIN", icon: "🌅" },
+      { portfolio: "JADUAL WAKTU PETANG", officer: "AINATUN NADHIRAH BT DHARMAWI", icon: "🌇" }
+    ],
+    // LAJUR 3: UNIT KURIKULUM (11 UNIT)
+    unitKurikulum: [
+      { unit: "PEPERIKSAAN DALAMAN", officer: "ASMADI BIN LAJJAKASI", icon: "📝" },
+      { unit: "PENTAKSIRAN BILIK DARJAH", officer: "BAJAM BT LADUNG", icon: "📊" },
+      { unit: "PUSAT SUMBER", officer: "ROSMINAH BT SAPAR", icon: "📚" },
+      { unit: "PRASEKOLAH", officer: "MARIANA BT KASSIM", icon: "🧸" },
+      { unit: "PEMULIHAN KHAS", officer: "MOHAMMADIAN BIN SUAIBU", icon: "🎯" },
+      { unit: "INTERVENSI", officer: "S.LILI BT LADI", icon: "💡" },
+      { unit: "BMI", officer: "RASMAWATI TAUSE", icon: "⚖️" },
+      { unit: "SEGAK", officer: "ROSIDIAN BIN IDRIS", icon: "🏅" },
+      { unit: "PLC", officer: "MARINI BT LADI", icon: "🤝" },
+      { unit: "HIP", officer: "JAINAH BT SULAIMAN", icon: "🗣️" },
+      { unit: "DELIMA", officer: "RONI BIN BACHO", icon: "💻" }
+    ]
+  },
+
   // PENGUMUMAN PENTADBIRAN
   announcements: [
     {
@@ -137,6 +200,17 @@ const DEFAULT_SYSTEM_DATA = {
 
   // DOKUMEN & BAHAN KURIKULUM (BOLEH DIMUAT NAIK OLEH ADMIN)
   documents: [
+    {
+      id: "doc-kurikulum",
+      title: "Poster Rasmi Carta Organisasi Kurikulum SK Ranggu 2026",
+      category: "Carta Organisasi",
+      panitia: "Kurikulum",
+      date: "2026-06-08",
+      type: "PNG",
+      fileUrl: "assets/carta-organisasi-kurikulum-2026.png",
+      size: "397 KB",
+      uploader: "Unit Kurikulum (Mohammad Fikrey)"
+    },
     {
       id: "doc-1",
       title: "Poster Rasmi Carta Organisasi Pentadbiran SK Ranggu 2026",
@@ -261,7 +335,7 @@ const DEFAULT_SYSTEM_DATA = {
     { id: "pan-rbt", name: "Panitia RBT", head: "RONI BIN BACHO", membersCount: 4, status: "Aktif", kpi: "Projek Reka Cipta Berasaskan Modul", dskpStatus: "Lengkap" },
     { id: "pan-psv", name: "Panitia Seni Visual", head: "SITI JAWARA BINTI LUKMAN", membersCount: 5, status: "Aktif", kpi: "Portfolio Seni Visual Lengkap", dskpStatus: "Lengkap" },
     { id: "pan-moral", name: "Panitia Pendidikan Moral", head: "FARIDAH BINTI SUNU", membersCount: 3, status: "Aktif", kpi: "Amalan Nilai Murni Berterusan", dskpStatus: "Lengkap" },
-    { id: "pan-khas", name: "Unit Pemulihan Khas & Prasekolah", head: "MUHAMADIAN BIN SUAIBU & YUSNI BINTI WAHJUDIN", membersCount: 4, status: "Aktif", kpi: "Sifar Buta Huruf Tahap 1", dskpStatus: "Lengkap" }
+    { id: "pan-muzik", name: "Panitia Pendidikan Muzik", head: "TANJANG BIN TURE", membersCount: 3, status: "Aktif", kpi: "Apresiasi Muzik & Seni Suara", dskpStatus: "Lengkap" }
   ],
 
   // DATA TAKWIM KURIKULUM
@@ -325,7 +399,7 @@ const DEFAULT_SYSTEM_DATA = {
 
 function getStoredData() {
   try {
-    const stored = localStorage.getItem("SK_RANGGU_DASHBOARD_DATA_V4");
+    const stored = localStorage.getItem("SK_RANGGU_DASHBOARD_DATA_V5");
     if (stored) return JSON.parse(stored);
   } catch (err) {
     console.warn("Gagal membaca LocalStorage:", err);
@@ -335,7 +409,7 @@ function getStoredData() {
 
 function saveStoredData(data) {
   try {
-    localStorage.setItem("SK_RANGGU_DASHBOARD_DATA_V4", JSON.stringify(data));
+    localStorage.setItem("SK_RANGGU_DASHBOARD_DATA_V5", JSON.stringify(data));
     return true;
   } catch (err) {
     console.error("Gagal simpan LocalStorage:", err);
@@ -344,7 +418,7 @@ function saveStoredData(data) {
 }
 
 function resetToDefaultData() {
-  localStorage.removeItem("SK_RANGGU_DASHBOARD_DATA_V4");
+  localStorage.removeItem("SK_RANGGU_DASHBOARD_DATA_V5");
   return DEFAULT_SYSTEM_DATA;
 }
 
