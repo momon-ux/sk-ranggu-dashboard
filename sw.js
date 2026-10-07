@@ -1,12 +1,15 @@
 // Service Worker Rasmi SK Ranggu PWA
-// Versi: 20261007_v26_portal_return
-const CACHE_NAME = 'sk-ranggu-pwa-v26-portal-return';
+// Versi: 20261007_v27_cutout_logos
+const CACHE_NAME = 'sk-ranggu-pwa-v27-cutout-logos';
 
 const ASSETS_TO_CACHE = [
   './',
   './index.html',
   './manifest.json',
   './favicon.ico',
+  './assets/logo-kpm-cutout.png',
+  './assets/logo-skrg-cutout.png',
+  './assets/logo-pwa.png',
   './assets/pwa/icon-192.png',
   './assets/pwa/icon-512.png',
   './assets/pwa/maskable-192.png',
@@ -14,8 +17,6 @@ const ASSETS_TO_CACHE = [
   './assets/pwa/apple-touch-icon.png',
   './assets/pwa/favicon-32.png',
   './assets/pwa/favicon-64.png',
-  './assets/logo-pwa.png',
-  './assets/logo-pwa.jpg',
   './js/data.js',
   './js/sheets.js',
   './js/admin.js',

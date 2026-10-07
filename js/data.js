@@ -30,8 +30,8 @@ const DEFAULT_SYSTEM_DATA = {
     mission: "Melestarikan Sistem Pendidikan Yang Berkualiti Untuk Membangunkan Potensi Individu Bagi Memenuhi Aspirasi Negara",
     establishedYear: 1973,
     academicSession: "Sesi Persekolahan 2026",
-    logoKpm: "assets/logo-kpm.svg?v=20261006_v16",
-    logoSchool: "assets/skrg.png?v=20261006_v16",
+    logoKpm: "assets/logo-kpm-cutout.png?v=20261007_v27",
+    logoSchool: "assets/logo-skrg-cutout.png?v=20261007_v27",
     posterCarta: "assets/carta-organisasi-2026.png",
     posterKurikulum: "assets/carta-organisasi-kurikulum-2026.png",
     infografikEnrolmen: "assets/infografik-enrolmen-5okt2026.png"
@@ -2440,12 +2440,12 @@ window.getStaffPhoto = function(name) {
 // ==========================================================================
 DEFAULT_SYSTEM_DATA.takwimEvents = DEFAULT_SYSTEM_DATA.takwim;
 
-const CURRENT_STORAGE_KEY = "SK_RANGGU_DASHBOARD_DATA_V26";
+const CURRENT_STORAGE_KEY = "SK_RANGGU_DASHBOARD_DATA_V27";
 
 function getStoredData() {
   try {
-    // Purge semua cache versi lapuk (V1 sehingga V25)
-    for (let i = 1; i <= 25; i++) {
+    // Purge semua cache versi lapuk (V1 sehingga V26)
+    for (let i = 1; i <= 26; i++) {
       try { localStorage.removeItem(`SK_RANGGU_DASHBOARD_DATA_V${i}`); } catch(e){}
     }
     try { localStorage.removeItem("SK_RANGGU_DASHBOARD_DATA"); } catch(e){}

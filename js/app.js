@@ -283,15 +283,15 @@ function renderSchoolHeader() {
   document.querySelectorAll(".school-motto-text").forEach(el => el.textContent = `"${s.motto.toUpperCase()}"`);
   document.querySelectorAll(".school-session-text").forEach(el => el.textContent = s.academicSession);
 
-  if (s.logoUrl) {
+  if (s.logoUrl && !s.logoUrl.includes("skrg.png") && !s.logoUrl.includes("skrg.jpeg")) {
     document.querySelectorAll(".school-logo-img").forEach(el => el.src = s.logoUrl);
   } else {
-    document.querySelectorAll(".school-logo-img").forEach(el => el.src = "assets/skrg.png?v=20261006_v25");
+    document.querySelectorAll(".school-logo-img").forEach(el => el.src = "assets/logo-skrg-cutout.png?v=20261007_v27");
   }
-  if (s.kpmLogoUrl) {
+  if (s.kpmLogoUrl && !s.kpmLogoUrl.includes("logo-kpm.svg")) {
     document.querySelectorAll(".kpm-logo-img").forEach(el => el.src = s.kpmLogoUrl);
   } else {
-    document.querySelectorAll(".kpm-logo-img").forEach(el => el.src = "assets/logo-kpm.svg?v=20261006_v25");
+    document.querySelectorAll(".kpm-logo-img").forEach(el => el.src = "assets/logo-kpm-cutout.png?v=20261007_v27");
   }
 
   // Refresh favicon untuk Safari dan Chrome
@@ -299,7 +299,7 @@ function renderSchoolHeader() {
 }
 
 function refreshFavicon() {
-  const v = "20261006_v25";
+  const v = "20261007_v27";
   const iconUrls = [
     { rel: "icon", type: "image/png", sizes: "64x64", href: `assets/pwa/favicon-64.png?v=${v}` },
     { rel: "icon", type: "image/png", sizes: "32x32", href: `assets/pwa/favicon-32.png?v=${v}` },
