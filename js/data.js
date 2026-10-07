@@ -855,6 +855,16 @@ const DEFAULT_SYSTEM_DATA = {
       desc: "Sistem e-JKM Kehadiran Murid, Keberadaan Guru & AKP, Guru Bertugas Harian, SmartDisiplin dan RMT Bersepadu." 
     },
     { 
+      id: "soc-smartdisiplin", 
+      platform: "Sistem Disiplin", 
+      name: "HEM SMARTDISIPLIN", 
+      url: "https://fikreyxcode.github.io/sistemkehadiranskrg/#guru-bertugas", 
+      icon: "⚖️", 
+      badge: "HEM DISIPLIN", 
+      color: "amber", 
+      desc: "Sistem pengurusan rekod sahsiah, salah laku disiplin murid, SSDM dan kawalan disiplin sekolah." 
+    },
+    { 
       id: "soc-sites", 
       platform: "Google Sites", 
       name: "Prototaip Portal Pengurusan SK Ranggu", 
@@ -2288,6 +2298,17 @@ const DEFAULT_SYSTEM_DATA = {
       cat: "Sistem Sekolah"
     },
     {
+      id: "portal-smartdisiplin",
+      name: "HEM SMARTDISIPLIN",
+      description: "Sistem rekod sahsiah murid, guru bertugas disiplin harian dan SSDM di bawah pengurusan HEM SK Ranggu.",
+      badge: "DISIPLIN",
+      badgeColor: "bg-amber-500/20 text-amber-300 border-amber-400/30",
+      icon: "⚖️",
+      url: "https://fikreyxcode.github.io/sistemkehadiranskrg/#guru-bertugas",
+      type: "Sekolah (Rasmi)",
+      cat: "Sistem Sekolah"
+    },
+    {
       id: "portal-sites",
       name: "Prototaip Portal SK Ranggu",
       description: "Prototaip portal pengurusan maklumat sekolah berasaskan Google Sites sebagai arkib dokumentasi.",
@@ -2332,11 +2353,20 @@ const DEFAULT_SYSTEM_DATA = {
     {
       id: "pl-hemsmarttrack",
       name: "HEM SMARTTRACK",
-      desc: "Sistem e-JKM kehadiran murid, guru bertugas & SmartDisiplin.",
+      desc: "Sistem e-JKM kehadiran murid, keberadaan guru & modul pengurusan HEM.",
       badge: "HEM RASMI",
       cat: "Sekolah",
       icon: "🛡️",
       url: "https://fikreyxcode.github.io/sistemkehadiranskrg/"
+    },
+    {
+      id: "pl-smartdisiplin",
+      name: "HEM SMARTDISIPLIN",
+      desc: "Sistem pengurusan disiplin, rekod tindakan murid & pemantauan sahsiah.",
+      badge: "DISIPLIN",
+      cat: "Sekolah",
+      icon: "⚖️",
+      url: "https://fikreyxcode.github.io/sistemkehadiranskrg/#guru-bertugas"
     },
     {
       id: "pl-sportsync",
@@ -2410,12 +2440,12 @@ window.getStaffPhoto = function(name) {
 // ==========================================================================
 DEFAULT_SYSTEM_DATA.takwimEvents = DEFAULT_SYSTEM_DATA.takwim;
 
-const CURRENT_STORAGE_KEY = "SK_RANGGU_DASHBOARD_DATA_V25";
+const CURRENT_STORAGE_KEY = "SK_RANGGU_DASHBOARD_DATA_V26";
 
 function getStoredData() {
   try {
-    // Purge semua cache versi lapuk (V1 sehingga V24)
-    for (let i = 1; i <= 24; i++) {
+    // Purge semua cache versi lapuk (V1 sehingga V25)
+    for (let i = 1; i <= 25; i++) {
       try { localStorage.removeItem(`SK_RANGGU_DASHBOARD_DATA_V${i}`); } catch(e){}
     }
     try { localStorage.removeItem("SK_RANGGU_DASHBOARD_DATA"); } catch(e){}

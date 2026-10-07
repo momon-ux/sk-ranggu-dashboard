@@ -149,14 +149,20 @@ function renderGateways() {
             <span>→</span>
           </button>
           ${k === 'hem' ? `
-            <button type="button" onclick="event.stopPropagation(); window.openHemSmartTrackModal()" class="w-full py-2 px-3 rounded-xl bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border border-emerald-300 font-extrabold text-xs flex items-center justify-center gap-1.5 transition">
-              <span>🛡️</span>
-              <span>Buka HEM SmartTrack ↗</span>
-            </button>
+            <div class="grid grid-cols-2 gap-2">
+              <button type="button" onclick="event.stopPropagation(); window.openHemSmartTrackModal('attendance')" class="w-full py-2 px-2 rounded-xl bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border border-emerald-300 font-extrabold text-[11px] sm:text-xs flex items-center justify-center gap-1 transition cursor-pointer" title="Buka e-JKM Kehadiran Murid">
+                <span>🛡️</span>
+                <span>HEM SmartTrack</span>
+              </button>
+              <button type="button" onclick="event.stopPropagation(); window.openSmartDisiplinModal()" class="w-full py-2 px-2 rounded-xl bg-amber-50 hover:bg-amber-100 text-amber-900 border border-amber-300 font-extrabold text-[11px] sm:text-xs flex items-center justify-center gap-1 transition cursor-pointer" title="Buka HEM SmartDisiplin">
+                <span>⚖️</span>
+                <span>SmartDisiplin</span>
+              </button>
+            </div>
           ` : k === 'koko' ? `
-            <button type="button" onclick="event.stopPropagation(); window.openKotPreviewModal()" class="w-full py-2 px-3 rounded-xl bg-rose-50 hover:bg-rose-100 text-rose-800 border border-rose-300 font-extrabold text-xs flex items-center justify-center gap-1.5 transition">
+            <button type="button" onclick="event.stopPropagation(); window.openKotPreviewModal('dashboard')" class="w-full py-2 px-3 rounded-xl bg-indigo-50 hover:bg-indigo-100 text-indigo-900 border border-indigo-300 font-extrabold text-xs flex items-center justify-center gap-1.5 transition cursor-pointer" title="Buka Portal Sportsync KOT 26">
               <span>🏆</span>
-              <span>Pratonton KOT 26 ↗</span>
+              <span>Portal Sportsync KOT 26</span>
             </button>
           ` : ''}
         </div>
@@ -1443,13 +1449,41 @@ function renderPortalLinks() {
 
   const links = window.SKR_DATA.portalLinks || window.SKR_DATA.externalPortals || [];
   container.innerHTML = links.map(l => {
-    const isHem = (l.id && l.id.includes("hemsmarttrack")) || (l.url && l.url.includes("sistemkehadiranskrg")) || (l.name && l.name.includes("HEM SMARTTRACK"));
+    const isHem = (l.id && l.id.includes("hemsmarttrack")) || (l.url && l.url.includes("sistemkehadiranskrg") && !l.url.includes("guru-bertugas")) || (l.name && l.name.includes("HEM SMARTTRACK"));
+    const isDisiplin = (l.id && l.id.includes("smartdisiplin")) || (l.url && l.url.includes("guru-bertugas")) || (l.name && l.name.includes("SMARTDISIPLIN"));
+    const isKot = (l.id && (l.id.includes("sportsync") || l.id.includes("kot"))) || (l.url && l.url.includes("kejohanan-olahraga-skrg")) || (l.name && l.name.includes("KOT"));
+
+    let clickHandler = '';
+    let badgeColor = 'bg-blue-100 text-blue-800';
+    let borderColor = 'border-slate-200';
+    let modalActionText = '';
+
+    if (isHem) {
+      clickHandler = 'onclick="if(!event.ctrlKey&&!event.metaKey){event.preventDefault();window.openHemSmartTrackModal(\'attendance\');}"';
+      badgeColor = 'bg-emerald-100 text-emerald-800';
+      borderColor = 'border-emerald-400 ring-2 ring-emerald-500/20';
+      modalActionText = '<span class="text-[10px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-300">Papan Induk</span>';
+    } else if (isDisiplin) {
+      clickHandler = 'onclick="if(!event.ctrlKey&&!event.metaKey){event.preventDefault();window.openSmartDisiplinModal();}"';
+      badgeColor = 'bg-amber-100 text-amber-900';
+      borderColor = 'border-amber-400 ring-2 ring-amber-500/20';
+      modalActionText = '<span class="text-[10px] font-bold text-amber-700 bg-amber-50 px-2 py-0.5 rounded border border-amber-300">Papan Induk</span>';
+    } else if (isKot) {
+      clickHandler = 'onclick="if(!event.ctrlKey&&!event.metaKey){event.preventDefault();window.openKotPreviewModal(\'dashboard\');}"';
+      badgeColor = 'bg-indigo-100 text-indigo-800';
+      borderColor = 'border-indigo-400 ring-2 ring-indigo-500/20';
+      modalActionText = '<span class="text-[10px] font-bold text-indigo-700 bg-indigo-50 px-2 py-0.5 rounded border border-indigo-300">Papan Induk</span>';
+    } else {
+      clickHandler = `onclick="window.notifyExternalTabOpen('${(l.name || 'Portal').replace(/'/g, "\\'")}')"`;
+    }
+
     return `
-      <a href="${l.url}" ${isHem ? 'onclick="if(!event.ctrlKey&&!event.metaKey){event.preventDefault();window.openHemSmartTrackModal();}"' : ''} target="_blank" rel="noopener noreferrer" class="p-4 bg-white rounded-xl border ${isHem ? 'border-emerald-400 ring-2 ring-emerald-500/20' : 'border-slate-200'} executive-card flex items-start justify-between group hover:border-blue-400 transition">
+      <a href="${l.url}" ${clickHandler} target="_blank" rel="noopener noreferrer" class="p-4 bg-white rounded-xl border ${borderColor} executive-card flex items-start justify-between group hover:border-blue-400 transition cursor-pointer">
         <div>
-          <div class="flex items-center gap-2 mb-1">
-            <span class="text-[10px] font-bold px-2 py-0.5 rounded ${isHem ? 'bg-emerald-100 text-emerald-800' : 'bg-blue-100 text-blue-800'}">${l.badge || 'Portal'}</span>
+          <div class="flex items-center gap-2 mb-1 flex-wrap">
+            <span class="text-[10px] font-bold px-2 py-0.5 rounded ${badgeColor}">${l.badge || 'Portal'}</span>
             <h4 class="font-bold text-slate-900 group-hover:text-blue-700 transition">${l.name}</h4>
+            ${modalActionText}
           </div>
           <p class="text-xs text-slate-500 leading-snug">${l.desc || l.description || ''}</p>
         </div>
@@ -2065,37 +2099,73 @@ function renderSportsyncSection() {
   }
 }
 
-function openKotPreviewModal() {
-  const modal = document.getElementById("kotPreviewModal");
-  if (modal) {
-    modal.classList.remove("hidden");
-    modal.style.display = "flex";
-    document.body.classList.add("overflow-hidden");
+/* ==========================================================================
+   MODAL SUPER-VIEWER & PUSAT NAVIGASI PORTAL LUARAN DENGAN JAMINAN KEMBALI
+   (HEM SMARTTRACK, HEM SMARTDISIPLIN, KOT 26 SPORTSYNC)
+   ========================================================================== */
+
+function switchHemModalTab(view = 'attendance') {
+  const iframe = document.getElementById("hemSmartTrackIframe");
+  if (!iframe) return;
+
+  const btnEjkm = document.getElementById("hemTabEjkm");
+  const btnDisiplin = document.getElementById("hemTabDisiplin");
+  const btnStaff = document.getElementById("hemTabStaff");
+  const btnHome = document.getElementById("hemTabHome");
+
+  const normalClass = "px-2.5 sm:px-3 py-1.5 rounded-lg text-[11px] sm:text-xs font-bold transition bg-white/10 hover:bg-white/20 text-slate-200 flex items-center gap-1 whitespace-nowrap cursor-pointer";
+  const activeEjkmClass = "px-2.5 sm:px-3 py-1.5 rounded-lg text-[11px] sm:text-xs font-bold transition bg-emerald-600 text-white shadow-sm flex items-center gap-1 whitespace-nowrap cursor-pointer ring-2 ring-emerald-400/50";
+  const activeDisiplinClass = "px-2.5 sm:px-3 py-1.5 rounded-lg text-[11px] sm:text-xs font-bold transition bg-amber-500 text-slate-950 shadow-sm flex items-center gap-1 whitespace-nowrap cursor-pointer ring-2 ring-amber-300/80 font-black";
+
+  [btnEjkm, btnDisiplin, btnStaff, btnHome].forEach(b => {
+    if (b) b.className = normalClass;
+  });
+
+  let targetUrl = "https://fikreyxcode.github.io/sistemkehadiranskrg/#e-jkm";
+
+  if (view === "duty" || view === "disiplin" || view === "smartdisiplin") {
+    targetUrl = "https://fikreyxcode.github.io/sistemkehadiranskrg/#guru-bertugas";
+    if (btnDisiplin) btnDisiplin.className = activeDisiplinClass;
+  } else if (view === "staff" || view === "keberadaan") {
+    targetUrl = "https://fikreyxcode.github.io/sistemkehadiranskrg/#keberadaan-guru-akp";
+    if (btnStaff) btnStaff.className = activeEjkmClass;
+  } else if (view === "home" || view === "utama") {
+    targetUrl = "https://fikreyxcode.github.io/sistemkehadiranskrg/#utama";
+    if (btnHome) btnHome.className = activeEjkmClass;
+  } else {
+    targetUrl = "https://fikreyxcode.github.io/sistemkehadiranskrg/#e-jkm";
+    if (btnEjkm) btnEjkm.className = activeEjkmClass;
+  }
+
+  if (iframe.src !== targetUrl) {
+    iframe.src = targetUrl;
   }
 }
 
-function closeKotPreviewModal() {
-  const modal = document.getElementById("kotPreviewModal");
-  if (modal) {
-    modal.classList.add("hidden");
-    modal.style.display = "none";
-    document.body.classList.remove("overflow-hidden");
+function reloadHemIframe() {
+  const iframe = document.getElementById("hemSmartTrackIframe");
+  if (iframe) {
+    const cur = iframe.src || "https://fikreyxcode.github.io/sistemkehadiranskrg/";
+    iframe.src = "about:blank";
+    setTimeout(() => { iframe.src = cur; }, 120);
+    if (window.showToastNotification) {
+      window.showToastNotification("Memuat semula paparan HEM SmartTrack...", "info");
+    }
   }
 }
 
-window.openKotPreviewModal = openKotPreviewModal;
-window.closeKotPreviewModal = closeKotPreviewModal;
-
-function openHemSmartTrackModal() {
+function openHemSmartTrackModal(view = 'attendance') {
   const modal = document.getElementById("hemSmartTrackModal");
   if (modal) {
     modal.classList.remove("hidden");
     modal.style.display = "flex";
     document.body.classList.add("overflow-hidden");
-    const iframe = document.getElementById("hemSmartTrackIframe");
-    if (iframe && (!iframe.src || iframe.src === "about:blank")) {
-      iframe.src = "https://fikreyxcode.github.io/sistemkehadiranskrg/";
-    }
+
+    switchHemModalTab(view);
+
+    try {
+      history.pushState({ modalOpen: 'hemSmartTrackModal' }, '', view === 'duty' ? '#portal-smartdisiplin' : '#portal-hemsmarttrack');
+    } catch(e) {}
   }
 }
 
@@ -2105,11 +2175,149 @@ function closeHemSmartTrackModal() {
     modal.classList.add("hidden");
     modal.style.display = "none";
     document.body.classList.remove("overflow-hidden");
+
+    if (window.location.hash.includes('portal-')) {
+      try {
+        history.replaceState(null, '', window.location.pathname + window.location.search);
+      } catch(e) {}
+    }
+
+    if (window.showToastNotification) {
+      window.showToastNotification("← Anda kembali ke Papan Induk Utama SK Ranggu", "success");
+    }
   }
 }
 
+function openSmartDisiplinModal() {
+  openHemSmartTrackModal('duty');
+}
+
+function switchKotModalTab(view = 'dashboard') {
+  const iframe = document.getElementById("kotPreviewIframe");
+  if (!iframe) return;
+
+  const btnDash = document.getElementById("kotTabDashboard");
+  const btnPingat = document.getElementById("kotTabPingat");
+  const btnSaringan = document.getElementById("kotTabSaringan");
+  const btnRumah = document.getElementById("kotTabRumah");
+
+  const normalClass = "px-2.5 sm:px-3 py-1.5 rounded-lg text-[11px] sm:text-xs font-bold transition bg-white/10 hover:bg-white/20 text-slate-200 flex items-center gap-1 whitespace-nowrap cursor-pointer";
+  const activeClass = "px-2.5 sm:px-3 py-1.5 rounded-lg text-[11px] sm:text-xs font-bold transition bg-indigo-600 text-white shadow-sm flex items-center gap-1 whitespace-nowrap cursor-pointer ring-2 ring-indigo-400/50 font-black";
+
+  [btnDash, btnPingat, btnSaringan, btnRumah].forEach(b => {
+    if (b) b.className = normalClass;
+  });
+
+  let targetUrl = "https://fikreyxcode.github.io/kejohanan-olahraga-skrg/index.html?tahun=2026";
+
+  if (view === "pingat" || view === "medals") {
+    targetUrl = "https://fikreyxcode.github.io/kejohanan-olahraga-skrg/pingat.html?tahun=2026";
+    if (btnPingat) btnPingat.className = activeClass;
+  } else if (view === "saringan" || view === "carta") {
+    targetUrl = "https://fikreyxcode.github.io/kejohanan-olahraga-skrg/saringan.html?tahun=2026";
+    if (btnSaringan) btnSaringan.className = activeClass;
+  } else if (view === "rumah" || view === "houses") {
+    targetUrl = "https://fikreyxcode.github.io/kejohanan-olahraga-skrg/rumah-sukan.html?tahun=2026";
+    if (btnRumah) btnRumah.className = activeClass;
+  } else {
+    targetUrl = "https://fikreyxcode.github.io/kejohanan-olahraga-skrg/index.html?tahun=2026";
+    if (btnDash) btnDash.className = activeClass;
+  }
+
+  if (iframe.src !== targetUrl) {
+    iframe.src = targetUrl;
+  }
+}
+
+function reloadKotIframe() {
+  const iframe = document.getElementById("kotPreviewIframe");
+  if (iframe) {
+    const cur = iframe.src || "https://fikreyxcode.github.io/kejohanan-olahraga-skrg/index.html?tahun=2026";
+    iframe.src = "about:blank";
+    setTimeout(() => { iframe.src = cur; }, 120);
+    if (window.showToastNotification) {
+      window.showToastNotification("Memuat semula portal KOT 26...", "info");
+    }
+  }
+}
+
+function openKotPreviewModal(view = 'dashboard') {
+  const modal = document.getElementById("kotPreviewModal");
+  if (modal) {
+    modal.classList.remove("hidden");
+    modal.style.display = "flex";
+    document.body.classList.add("overflow-hidden");
+
+    switchKotModalTab(view);
+
+    try {
+      history.pushState({ modalOpen: 'kotPreviewModal' }, '', '#portal-kot26');
+    } catch(e) {}
+  }
+}
+
+function closeKotPreviewModal() {
+  const modal = document.getElementById("kotPreviewModal");
+  if (modal) {
+    modal.classList.add("hidden");
+    modal.style.display = "none";
+    document.body.classList.remove("overflow-hidden");
+
+    if (window.location.hash.includes('portal-')) {
+      try {
+        history.replaceState(null, '', window.location.pathname + window.location.search);
+      } catch(e) {}
+    }
+
+    if (window.showToastNotification) {
+      window.showToastNotification("← Anda kembali ke Papan Induk Utama SK Ranggu", "success");
+    }
+  }
+}
+
+function notifyExternalTabOpen(portalName) {
+  let toast = document.getElementById("externalTabNoticeToast");
+  if (!toast) {
+    toast = document.createElement("div");
+    toast.id = "externalTabNoticeToast";
+    toast.className = "fixed bottom-5 left-1/2 transform -translate-x-1/2 z-[100] max-w-xl w-[94%] bg-slate-950/95 text-white p-4 rounded-2xl border-2 border-amber-400 shadow-2xl backdrop-blur-md flex items-start gap-3 animate-fadeIn";
+    document.body.appendChild(toast);
+  }
+  toast.innerHTML = `
+    <div class="w-10 h-10 rounded-xl bg-amber-400/20 border border-amber-400/40 flex items-center justify-center text-xl shrink-0">
+      <span>ℹ️</span>
+    </div>
+    <div class="flex-1 text-xs">
+      <div class="flex items-center gap-2">
+        <h4 class="font-extrabold text-amber-300 text-sm">Portal ${portalName || 'Luaran'} Dibuka di Tab Baharu</h4>
+        <span class="px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 text-[10px] font-bold">Papan Induk Kekal Aktif</span>
+      </div>
+      <p class="text-slate-300 mt-1 leading-relaxed">
+        Anda sedang melihat portal luaran. Tab Papan Induk Utama SK Ranggu (<strong class="text-amber-200 font-mono">momon-ux.github.io/sk-ranggu-dashboard</strong>) sentiasa aktif dalam tab penyemak imbas ini untuk anda kembali pada bila-bila masa.
+      </p>
+      <div class="mt-2.5 flex items-center gap-2">
+        <button type="button" onclick="this.closest('#externalTabNoticeToast').remove()" class="px-3 py-1 rounded-lg bg-amber-400 text-slate-950 font-bold text-xs hover:bg-amber-300 transition cursor-pointer">
+          Faham & Teruskan
+        </button>
+      </div>
+    </div>
+    <button type="button" onclick="this.closest('#externalTabNoticeToast').remove()" class="text-slate-400 hover:text-white p-1 text-base cursor-pointer">✕</button>
+  `;
+  setTimeout(() => {
+    if (toast && toast.parentElement) toast.remove();
+  }, 9000);
+}
+
+window.switchHemModalTab = switchHemModalTab;
+window.reloadHemIframe = reloadHemIframe;
 window.openHemSmartTrackModal = openHemSmartTrackModal;
 window.closeHemSmartTrackModal = closeHemSmartTrackModal;
+window.openSmartDisiplinModal = openSmartDisiplinModal;
+window.switchKotModalTab = switchKotModalTab;
+window.reloadKotIframe = reloadKotIframe;
+window.openKotPreviewModal = openKotPreviewModal;
+window.closeKotPreviewModal = closeKotPreviewModal;
+window.notifyExternalTabOpen = notifyExternalTabOpen;
 
 /* ==========================================================================
    RENDER INDUK BESAR SIDANG PETANG 2026 (JADUAL & PENYELARAS)
@@ -2181,24 +2389,48 @@ function renderPortalAndSocial() {
     const portals = window.SKR_DATA.externalPortals || window.SKR_DATA.portalLinks || [];
     portalsContainer.innerHTML = portals.map(p => {
       const isHem = (p.id && (p.id.includes("kehadiran") || p.id.includes("hemsmarttrack"))) || (p.name && p.name.includes("HEM SMARTTRACK"));
+      const isDisiplin = (p.id && p.id.includes("smartdisiplin")) || (p.name && p.name.includes("SMARTDISIPLIN"));
+      const isKot = (p.id && (p.id.includes("sportsync") || p.id.includes("kot"))) || (p.name && p.name.includes("KOT"));
+
+      let borderStyle = 'border-slate-200 bg-slate-50';
+      let badgeStyle = 'bg-blue-100 text-blue-800';
+      if (isHem) {
+        borderStyle = 'border-emerald-400 ring-2 ring-emerald-500/20 bg-emerald-50/30';
+        badgeStyle = 'bg-emerald-100 text-emerald-800 border border-emerald-300';
+      } else if (isDisiplin) {
+        borderStyle = 'border-amber-400 ring-2 ring-amber-500/20 bg-amber-50/30';
+        badgeStyle = 'bg-amber-100 text-amber-900 border border-amber-300';
+      } else if (isKot) {
+        borderStyle = 'border-indigo-400 ring-2 ring-indigo-500/20 bg-indigo-50/30';
+        badgeStyle = 'bg-indigo-100 text-indigo-900 border border-indigo-300';
+      }
+
       return `
-        <div class="p-4 bg-slate-50 hover:bg-blue-50/50 rounded-2xl border ${isHem ? 'border-emerald-400 ring-2 ring-emerald-500/20 bg-emerald-50/30' : 'border-slate-200'} hover:border-blue-300 transition shadow-sm executive-card flex flex-col justify-between group">
+        <div class="p-4 rounded-2xl border ${borderStyle} hover:border-blue-300 transition shadow-sm executive-card flex flex-col justify-between group">
           <div>
             <div class="flex items-center justify-between mb-2">
-              <span class="text-[10px] font-extrabold uppercase px-2 py-0.5 rounded ${isHem ? 'bg-emerald-100 text-emerald-800 border border-emerald-300' : 'bg-blue-100 text-blue-800'}">${p.badge || p.cat || 'Portal'}</span>
+              <span class="text-[10px] font-extrabold uppercase px-2 py-0.5 rounded ${badgeStyle}">${p.badge || p.cat || 'Portal'}</span>
               <span class="text-xl">${p.icon || '🌐'}</span>
             </div>
             <h4 class="font-extrabold text-slate-900 group-hover:text-blue-700 transition text-sm">${p.name}</h4>
             <p class="text-xs text-slate-500 mt-1 leading-snug">${p.desc || p.description || ''}</p>
           </div>
-          <div class="mt-3 pt-2 border-t border-slate-200/80 flex items-center justify-between gap-2">
-            <a href="${p.url}" target="_blank" rel="noopener noreferrer" class="text-xs ${isHem ? 'text-emerald-700 font-extrabold' : 'text-blue-700 font-semibold'} hover:underline flex items-center gap-1">
-              <span>Buka Portal</span>
+          <div class="mt-3 pt-2 border-t border-slate-200/80 flex items-center justify-between gap-2 flex-wrap">
+            <a href="${p.url}" target="_blank" rel="noopener noreferrer" onclick="window.notifyExternalTabOpen('${(p.name || 'Portal').replace(/'/g, "\\'")}')" class="text-xs text-blue-700 font-bold hover:underline flex items-center gap-1">
+              <span>Buka Tab Asing</span>
               <span class="text-sm">↗</span>
             </a>
             ${isHem ? `
-              <button type="button" onclick="window.openHemSmartTrackModal()" class="px-2.5 py-1 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-[11px] shadow-sm transition">
-                Pratonton
+              <button type="button" onclick="window.openHemSmartTrackModal('attendance')" class="px-2.5 py-1 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-[11px] shadow-sm transition cursor-pointer">
+                Papan Induk
+              </button>
+            ` : isDisiplin ? `
+              <button type="button" onclick="window.openSmartDisiplinModal()" class="px-2.5 py-1 rounded-lg bg-amber-500 hover:bg-amber-600 text-slate-950 font-black text-[11px] shadow-sm transition cursor-pointer">
+                Papan Induk
+              </button>
+            ` : isKot ? `
+              <button type="button" onclick="window.openKotPreviewModal('dashboard')" class="px-2.5 py-1 rounded-lg bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-[11px] shadow-sm transition cursor-pointer">
+                Papan Induk
               </button>
             ` : ''}
           </div>
@@ -2212,28 +2444,57 @@ function renderPortalAndSocial() {
     const socials = window.SKR_DATA.socialLinks || [];
     socialContainer.innerHTML = socials.map(s => {
       const isHem = s.id && (s.id.includes("kehadiran") || s.id.includes("hemsmarttrack"));
+      const isDisiplin = s.id && s.id.includes("smartdisiplin");
+      const isKot = s.id && (s.id.includes("sportsync") || s.id.includes("kot"));
+
+      let borderStyle = 'border-slate-200 bg-slate-50';
+      let iconBg = s.color === 'blue' ? 'bg-blue-600 text-white' : 'bg-slate-900 text-white';
+      let badgeStyle = 'bg-slate-200 text-slate-700';
+
+      if (isHem) {
+        borderStyle = 'border-emerald-400 bg-emerald-50/40';
+        iconBg = 'bg-emerald-600 text-white';
+        badgeStyle = 'bg-emerald-100 text-emerald-800';
+      } else if (isDisiplin) {
+        borderStyle = 'border-amber-400 bg-amber-50/40';
+        iconBg = 'bg-amber-500 text-slate-950 font-bold';
+        badgeStyle = 'bg-amber-100 text-amber-900';
+      } else if (isKot) {
+        borderStyle = 'border-indigo-400 bg-indigo-50/40';
+        iconBg = 'bg-indigo-700 text-white';
+        badgeStyle = 'bg-indigo-100 text-indigo-800';
+      }
+
       return `
-        <div class="p-5 rounded-2xl border ${isHem ? 'border-emerald-400 bg-emerald-50/40' : 'border-slate-200 bg-slate-50'} hover:border-blue-400 hover:bg-white transition shadow-sm executive-card flex items-start gap-4 group">
-          <div class="w-12 h-12 rounded-2xl ${isHem ? 'bg-emerald-600 text-white' : s.color === 'blue' ? 'bg-blue-600 text-white' : 'bg-slate-900 text-white'} flex items-center justify-center text-2xl shrink-0 shadow-md">
+        <div class="p-5 rounded-2xl border ${borderStyle} hover:border-blue-400 hover:bg-white transition shadow-sm executive-card flex items-start gap-4 group">
+          <div class="w-12 h-12 rounded-2xl ${iconBg} flex items-center justify-center text-2xl shrink-0 shadow-md">
             ${s.icon}
           </div>
           <div class="flex-1 min-w-0">
-            <div class="flex items-center gap-2 mb-1">
-              <span class="text-[10px] font-bold px-2 py-0.5 rounded ${isHem ? 'bg-emerald-100 text-emerald-800' : 'bg-slate-200 text-slate-700'} uppercase">${s.badge}</span>
+            <div class="flex items-center gap-2 mb-1 flex-wrap">
+              <span class="text-[10px] font-bold px-2 py-0.5 rounded ${badgeStyle} uppercase">${s.badge}</span>
               <span class="text-xs text-slate-400 font-medium">${s.platform}</span>
             </div>
             <h4 class="font-extrabold text-slate-900 group-hover:text-blue-700 transition text-base">${s.name}</h4>
             <p class="text-xs text-slate-500 mt-1 leading-relaxed">${s.desc}</p>
-            <div class="mt-3 flex items-center gap-3">
-              <a href="${s.url}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1.5 text-xs font-bold ${isHem ? 'text-emerald-700' : 'text-blue-600'} hover:underline">
-                <span>Layari Saluran</span>
-                <span>↗</span>
-              </a>
+            <div class="mt-3 flex items-center gap-3 flex-wrap">
               ${isHem ? `
-                <button type="button" onclick="window.openHemSmartTrackModal()" class="px-2.5 py-1 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs shadow-sm transition">
-                  Pratonton Sistem
+                <button type="button" onclick="window.openHemSmartTrackModal('attendance')" class="px-3 py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs shadow-sm transition cursor-pointer">
+                  Buka Dalam Papan Induk
+                </button>
+              ` : isDisiplin ? `
+                <button type="button" onclick="window.openSmartDisiplinModal()" class="px-3 py-1.5 rounded-xl bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold text-xs shadow-sm transition cursor-pointer">
+                  Buka Dalam Papan Induk
+                </button>
+              ` : isKot ? `
+                <button type="button" onclick="window.openKotPreviewModal('dashboard')" class="px-3 py-1.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs shadow-sm transition cursor-pointer">
+                  Buka Dalam Papan Induk
                 </button>
               ` : ''}
+              <a href="${s.url}" target="_blank" rel="noopener noreferrer" onclick="window.notifyExternalTabOpen('${(s.name || 'Saluran').replace(/'/g, "\\'")}')" class="inline-flex items-center gap-1.5 text-xs font-bold text-slate-600 hover:text-blue-600 hover:underline">
+                <span>Tab Asing</span>
+                <span>↗</span>
+              </a>
             </div>
           </div>
         </div>
@@ -2470,6 +2731,45 @@ function setupNavigation() {
   if (printBtn) {
     printBtn.addEventListener("click", () => window.print());
   }
+
+  // Pendengar Modal HEM SmartTrack & KOT 26 (Tutup bila klik backdrop)
+  const hemModal = document.getElementById("hemSmartTrackModal");
+  if (hemModal) {
+    hemModal.addEventListener("click", (e) => {
+      if (e.target === hemModal) closeHemSmartTrackModal();
+    });
+  }
+
+  const kotModal = document.getElementById("kotPreviewModal");
+  if (kotModal) {
+    kotModal.addEventListener("click", (e) => {
+      if (e.target === kotModal) closeKotPreviewModal();
+    });
+  }
+
+  // Pendengar butang 'Back' telefon bimbit / penyemak imbas (popstate)
+  window.addEventListener("popstate", () => {
+    if (hemModal && !hemModal.classList.contains("hidden") && hemModal.style.display !== "none") {
+      closeHemSmartTrackModal();
+      return;
+    }
+    if (kotModal && !kotModal.classList.contains("hidden") && kotModal.style.display !== "none") {
+      closeKotPreviewModal();
+      return;
+    }
+  });
+
+  // Pendengar kekunci Escape
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") {
+      if (hemModal && !hemModal.classList.contains("hidden") && hemModal.style.display !== "none") {
+        closeHemSmartTrackModal();
+      }
+      if (kotModal && !kotModal.classList.contains("hidden") && kotModal.style.display !== "none") {
+        closeKotPreviewModal();
+      }
+    }
+  });
 }
 
 function setupSearchAndFilters() {

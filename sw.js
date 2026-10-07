@@ -1,6 +1,6 @@
 // Service Worker Rasmi SK Ranggu PWA
-// Versi: 20261006_v25_kot26
-const CACHE_NAME = 'sk-ranggu-pwa-v25-kot26';
+// Versi: 20261007_v26_portal_return
+const CACHE_NAME = 'sk-ranggu-pwa-v26-portal-return';
 
 const ASSETS_TO_CACHE = [
   './',
