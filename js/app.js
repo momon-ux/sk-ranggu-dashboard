@@ -280,12 +280,12 @@ function renderSchoolHeader() {
   if (s.logoUrl) {
     document.querySelectorAll(".school-logo-img").forEach(el => el.src = s.logoUrl);
   } else {
-    document.querySelectorAll(".school-logo-img").forEach(el => el.src = "assets/skrg.png?v=20261006_v18");
+    document.querySelectorAll(".school-logo-img").forEach(el => el.src = "assets/skrg.png?v=20261006_v25");
   }
   if (s.kpmLogoUrl) {
     document.querySelectorAll(".kpm-logo-img").forEach(el => el.src = s.kpmLogoUrl);
   } else {
-    document.querySelectorAll(".kpm-logo-img").forEach(el => el.src = "assets/logo-kpm.svg?v=20261006_v18");
+    document.querySelectorAll(".kpm-logo-img").forEach(el => el.src = "assets/logo-kpm.svg?v=20261006_v25");
   }
 
   // Refresh favicon untuk Safari dan Chrome
@@ -293,7 +293,7 @@ function renderSchoolHeader() {
 }
 
 function refreshFavicon() {
-  const v = "20261006_v18";
+  const v = "20261006_v25";
   const iconUrls = [
     { rel: "icon", type: "image/png", sizes: "64x64", href: `assets/pwa/favicon-64.png?v=${v}` },
     { rel: "icon", type: "image/png", sizes: "32x32", href: `assets/pwa/favicon-32.png?v=${v}` },

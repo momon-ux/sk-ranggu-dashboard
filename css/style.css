@@ -17,8 +17,12 @@
   --card-border: #e2e8f0;
 }
 
-/* Jaminan Keselamatan: Elemen hidden tidak boleh sesekali menghalang klik */
-.hidden {
+/* Jaminan Keselamatan: Modal/Dialog yang ditutup tidak boleh menghalang klik pengguna */
+[id$="Modal"].hidden,
+[id$="Dialog"].hidden,
+dialog.hidden,
+.modal-backdrop.hidden,
+.modal-overlay.hidden {
   display: none !important;
 }
 
