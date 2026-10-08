@@ -1,6 +1,6 @@
 // Service Worker Rasmi SK Ranggu PWA
-// Versi: 20261008_v29_logo_suis
-const CACHE_NAME = 'sk-ranggu-pwa-v29-logo-suis';
+// Versi: 20261008_v30_pwa_logo_3d
+const CACHE_NAME = 'sk-ranggu-pwa-v30-logo-3d';
 
 const ASSETS_TO_CACHE = [
   './',
@@ -20,6 +20,8 @@ const ASSETS_TO_CACHE = [
   './assets/pwa/apple-touch-icon.png',
   './assets/pwa/favicon-32.png',
   './assets/pwa/favicon-64.png',
+  './assets/pwa/logo-pwa-square.png',
+  './assets/pwa/logo-pwa-safe.png',
   './assets/suis/icon-192.png',
   './assets/suis/icon-512.png',
   './assets/suis/maskable-192.png',

@@ -30,8 +30,8 @@ const DEFAULT_SYSTEM_DATA = {
     mission: "Melestarikan Sistem Pendidikan Yang Berkualiti Untuk Membangunkan Potensi Individu Bagi Memenuhi Aspirasi Negara",
     establishedYear: 1973,
     academicSession: "Sesi Persekolahan 2026",
-    logoKpm: "assets/logo-kpm-cutout.png?v=20261007_v27",
-    logoSchool: "assets/logo-skrg-cutout.png?v=20261007_v27",
+    logoKpm: "assets/logo-kpm-cutout.png?v=20261008_v30",
+    logoSchool: "assets/logo-skrg-cutout.png?v=20261008_v30",
     posterCarta: "assets/carta-organisasi-2026.png",
     posterKurikulum: "assets/carta-organisasi-kurikulum-2026.png",
     infografikEnrolmen: "assets/infografik-enrolmen-5okt2026.png"
