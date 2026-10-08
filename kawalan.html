@@ -11,10 +11,15 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="Suis SK Ranggu">
 
-  <!-- Favicon & Touch Icon -->
-  <link rel="icon" type="image/png" sizes="64x64" href="assets/pwa/favicon-64.png?v=20261007_v27">
-  <link rel="apple-touch-icon" sizes="180x180" href="assets/pwa/apple-touch-icon.png?v=20261007_v27">
-  <link rel="shortcut icon" href="favicon.ico?v=20261007_v27">
+  <!-- Favicon & PWA Touch Icon (Lambang Rasmi Pusat Kawalan Suis) -->
+  <link rel="icon" type="image/x-icon" href="assets/suis/favicon.ico?v=20261008_v29">
+  <link rel="shortcut icon" type="image/x-icon" href="assets/suis/favicon.ico?v=20261008_v29">
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/suis/favicon-32.png?v=20261008_v29">
+  <link rel="icon" type="image/png" sizes="64x64" href="assets/suis/favicon-64.png?v=20261008_v29">
+  <link rel="icon" type="image/png" sizes="192x192" href="assets/suis/icon-192.png?v=20261008_v29">
+  <link rel="icon" type="image/png" sizes="512x512" href="assets/suis/icon-512.png?v=20261008_v29">
+  <link rel="apple-touch-icon" sizes="180x180" href="assets/suis/apple-touch-icon.png?v=20261008_v29">
+  <link rel="manifest" href="manifest-suis.json?v=20261008_v29">
 
   <!-- Fon Google -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -65,7 +70,7 @@
   <header class="bg-royal-900/90 backdrop-blur-md border-b border-white/10 sticky top-0 z-30 px-4 py-3">
     <div class="max-w-md mx-auto flex items-center justify-between gap-3">
       <div class="flex items-center gap-2.5">
-        <img src="assets/logo-skrg-cutout.png?v=20261007_v27" alt="Logo SK Ranggu" class="w-9 h-9 object-contain drop-shadow">
+        <img src="assets/logo-suis.png?v=20261008_v29" alt="Logo Pusat Kawalan Suis" class="w-10 h-10 object-contain rounded-xl shadow-md border border-amber-400/40 shrink-0">
         <div>
           <h1 class="text-xs font-black uppercase tracking-wider text-amber-300">Pusat Kawalan Suis</h1>
           <p class="text-[10px] text-slate-300 font-medium">SK Ranggu Tawau (XBA3037)</p>
@@ -90,11 +95,12 @@
          BAHAGIAN 1: PENGESAHAN KOD KESELAMATAN (JIKA BELUM DISAHKAN)
          ========================================================================= -->
     <div id="authOverlay" class="bg-royal-900/95 border-2 border-amber-400/60 rounded-3xl p-6 sm:p-7 shadow-2xl text-center space-y-4">
-      <div class="w-16 h-16 rounded-2xl bg-amber-400/20 text-amber-300 border border-amber-400/40 flex items-center justify-center text-3xl mx-auto shadow-inner">
-        🔐
+      <div class="w-24 h-24 sm:w-28 sm:h-28 mx-auto flex items-center justify-center relative">
+        <div class="absolute inset-0 bg-amber-400/20 rounded-2xl blur-xl animate-pulse"></div>
+        <img src="assets/logo-suis.png?v=20261008_v29" alt="Lambang Rasmi Pusat Kawalan Suis SK Ranggu" class="w-full h-full object-contain rounded-2xl shadow-2xl border-2 border-amber-400/80 relative z-10 p-1 bg-black/60">
       </div>
       <div>
-        <h2 class="text-base sm:text-lg font-black text-white">Kawalan Suis Eksklusif Pentadbir</h2>
+        <h2 class="text-base sm:text-lg font-black text-white">Pusat Kawalan Suis Pentadbir</h2>
         <p class="text-xs text-slate-300 mt-1 leading-relaxed">
           Masukkan Kod Keselamatan Pentadbir untuk mengakses suis kawalan jarak jauh portal sekolah.
         </p>
@@ -134,9 +140,12 @@
           </div>
 
           <!-- IKON & TAJUK UTAMA -->
-          <div class="space-y-1">
-            <div id="statusBigIcon" class="text-5xl sm:text-6xl my-2 transform transition-transform duration-300">
-              🟢
+          <div class="space-y-2">
+            <div class="relative w-28 h-28 mx-auto my-2 group">
+              <img src="assets/logo-suis.png?v=20261008_v29" alt="Lambang Suis SK Ranggu" id="statusLogoImg" class="w-28 h-28 rounded-2xl shadow-2xl object-cover border-2 border-emerald-400/80 p-1 bg-black/50 transition-all duration-300">
+              <div id="statusDotBadge" class="absolute -bottom-1 -right-1 w-8 h-8 rounded-full bg-emerald-500 border-2 border-slate-900 flex items-center justify-center text-sm shadow-lg shadow-emerald-500/50 animate-pulse">
+                🟢
+              </div>
             </div>
             <h2 id="statusTitle" class="text-xl sm:text-2xl font-black text-white tracking-tight">
               PORTAL SK RANGGU AKTIF
@@ -244,17 +253,17 @@
         </a>
       </div>
 
-      <!-- KAD PANDUAN SIMPAN BUTANG PANTAS DI TELEFON -->
-      <div class="bg-gradient-to-r from-blue-950/60 to-royal-900/60 border border-sky-400/30 rounded-3xl p-4 sm:p-5 space-y-3 text-xs">
-        <div class="flex items-center gap-2">
-          <span class="text-xl">📱</span>
+      <!-- KAD PANDUAN SIMPAN BUTANG PANTAS DI TELEFON (PWA SUIS) -->
+      <div class="bg-gradient-to-r from-blue-950/70 to-royal-900/70 border border-sky-400/40 rounded-3xl p-4 sm:p-5 space-y-3 text-xs shadow-xl">
+        <div class="flex items-center gap-3">
+          <img src="assets/suis/icon-192.png?v=20261008_v29" alt="Ikon PWA Suis SKRG" class="w-12 h-12 rounded-xl border border-amber-400/50 shadow-md object-cover shrink-0">
           <div>
             <h4 class="font-bold text-sky-300 text-xs">Simpan Butang Ini di Skrin Telefon Anda</h4>
-            <p class="text-[10px] text-slate-300">Jadikan ikon aplikasi kendiri di skrin utama (Home Screen) telefon.</p>
+            <p class="text-[10px] text-slate-300">Jadikan ikon aplikasi kendiri di skrin utama (Home Screen) telefon dengan lambang rasmi suis 3D.</p>
           </div>
         </div>
 
-        <div class="space-y-1.5 text-[11px] text-slate-300 bg-black/30 p-3 rounded-xl border border-white/5">
+        <div class="space-y-1.5 text-[11px] text-slate-300 bg-black/40 p-3 rounded-xl border border-white/5">
           <p><strong>🍎 Di iPhone (Safari):</strong> Tekan butang <strong>Kongsi (Share / ⎙)</strong> ➔ Pilih <strong>"Tambah ke Skrin Utama" (Add to Home Screen)</strong>.</p>
           <p><strong>🤖 Di Android (Chrome):</strong> Tekan menu tiga titik <strong>(⋮)</strong> ➔ Pilih <strong>"Pasang Aplikasi"</strong> atau <strong>"Tambah ke Skrin Utama"</strong>.</p>
           <p><strong>💻 Di Laptop (Chrome/Edge):</strong> Klik ikon <strong>Pasang (⊕)</strong> di bar alamat URL atau bookmark halaman ini.</p>
@@ -501,7 +510,8 @@
       const statusBadge = document.getElementById("statusBadge");
       const statusDot = document.getElementById("statusDot");
       const statusBadgeText = document.getElementById("statusBadgeText");
-      const statusBigIcon = document.getElementById("statusBigIcon");
+      const statusLogoImg = document.getElementById("statusLogoImg");
+      const statusDotBadge = document.getElementById("statusDotBadge");
       const statusTitle = document.getElementById("statusTitle");
       const statusSubtitle = document.getElementById("statusSubtitle");
       const btnMaster = document.getElementById("btnMasterToggle");
@@ -526,7 +536,11 @@
         statusBadge.className = "inline-flex items-center gap-2 px-3.5 py-1 rounded-full text-xs font-black uppercase tracking-wider bg-emerald-500/20 text-emerald-300 border border-emerald-400/40 shadow-xs";
         statusDot.className = "w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse";
         statusBadgeText.textContent = "SISTEM ONLINE (AKTIF)";
-        statusBigIcon.textContent = "🟢";
+        if (statusLogoImg) statusLogoImg.className = "w-28 h-28 rounded-2xl shadow-2xl object-cover border-2 border-emerald-400/80 p-1 bg-black/50 transition-all duration-300 ring-4 ring-emerald-500/20";
+        if (statusDotBadge) {
+          statusDotBadge.textContent = "🟢";
+          statusDotBadge.className = "absolute -bottom-1 -right-1 w-8 h-8 rounded-full bg-emerald-500 border-2 border-slate-900 flex items-center justify-center text-sm shadow-lg shadow-emerald-500/50 animate-pulse";
+        }
         statusTitle.textContent = "PORTAL SK RANGGU AKTIF";
         statusSubtitle.textContent = "Laman web dibuka sepenuhnya dan boleh diakses oleh semua warga sekolah & pelawat awam.";
 
@@ -540,7 +554,11 @@
         statusBadge.className = "inline-flex items-center gap-2 px-3.5 py-1 rounded-full text-xs font-black uppercase tracking-wider bg-amber-500/20 text-amber-300 border border-amber-400/40 shadow-xs";
         statusDot.className = "w-2.5 h-2.5 rounded-full bg-amber-400 animate-pulse";
         statusBadgeText.textContent = "PENYELENGGARAAN (MAINTENANCE)";
-        statusBigIcon.textContent = "🟡";
+        if (statusLogoImg) statusLogoImg.className = "w-28 h-28 rounded-2xl shadow-2xl object-cover border-2 border-amber-400/80 p-1 bg-black/50 transition-all duration-300 ring-4 ring-amber-500/20";
+        if (statusDotBadge) {
+          statusDotBadge.textContent = "🟡";
+          statusDotBadge.className = "absolute -bottom-1 -right-1 w-8 h-8 rounded-full bg-amber-500 border-2 border-slate-900 flex items-center justify-center text-sm shadow-lg shadow-amber-500/50 animate-pulse";
+        }
         statusTitle.textContent = "PORTAL SEDANG DISENGGARA";
         statusSubtitle.textContent = "Akses awam disekat sementara. Pengunjung dipaparkan notis rasmi penyelenggaraan.";
 
@@ -554,7 +572,11 @@
         statusBadge.className = "inline-flex items-center gap-2 px-3.5 py-1 rounded-full text-xs font-black uppercase tracking-wider bg-rose-500/20 text-rose-300 border border-rose-400/40 shadow-xs";
         statusDot.className = "w-2.5 h-2.5 rounded-full bg-rose-400 animate-pulse";
         statusBadgeText.textContent = "SISTEM DITUTUP (OFFLINE)";
-        statusBigIcon.textContent = "🔴";
+        if (statusLogoImg) statusLogoImg.className = "w-28 h-28 rounded-2xl shadow-2xl object-cover border-2 border-rose-400/80 p-1 bg-black/50 transition-all duration-300 ring-4 ring-rose-500/20";
+        if (statusDotBadge) {
+          statusDotBadge.textContent = "🔴";
+          statusDotBadge.className = "absolute -bottom-1 -right-1 w-8 h-8 rounded-full bg-rose-500 border-2 border-slate-900 flex items-center justify-center text-sm shadow-lg shadow-rose-500/50 animate-pulse";
+        }
         statusTitle.textContent = "PORTAL DIKUNCI SEPENUHNYA";
         statusSubtitle.textContent = "Laman web ditutup sepenuhnya daripada semua pengguna. Tiada data boleh dilihat.";
 

@@ -1,16 +1,18 @@
 // Service Worker Rasmi SK Ranggu PWA
-// Versi: 20261008_v28_remote_switch
-const CACHE_NAME = 'sk-ranggu-pwa-v28-remote-switch';
+// Versi: 20261008_v29_logo_suis
+const CACHE_NAME = 'sk-ranggu-pwa-v29-logo-suis';
 
 const ASSETS_TO_CACHE = [
   './',
   './index.html',
   './kawalan.html',
   './manifest.json',
+  './manifest-suis.json',
   './favicon.ico',
   './assets/logo-kpm-cutout.png',
   './assets/logo-skrg-cutout.png',
   './assets/logo-pwa.png',
+  './assets/logo-suis.png',
   './assets/pwa/icon-192.png',
   './assets/pwa/icon-512.png',
   './assets/pwa/maskable-192.png',
@@ -18,6 +20,14 @@ const ASSETS_TO_CACHE = [
   './assets/pwa/apple-touch-icon.png',
   './assets/pwa/favicon-32.png',
   './assets/pwa/favicon-64.png',
+  './assets/suis/icon-192.png',
+  './assets/suis/icon-512.png',
+  './assets/suis/maskable-192.png',
+  './assets/suis/maskable-512.png',
+  './assets/suis/apple-touch-icon.png',
+  './assets/suis/favicon-32.png',
+  './assets/suis/favicon-64.png',
+  './assets/suis/favicon.ico',
   './js/data.js',
   './js/sheets.js',
   './js/admin.js',
