@@ -7,10 +7,19 @@
 // =========================================================================
 // SISTEM KAWALAN SUIS JARAK JAUH & MOD PENYELENGGARAAN (REMOTE KILL-SWITCH)
 // Kawalan Eksklusif: kawalan.html & Kod Pentadbir Ts.FIKREY37
+// Dikuasakan oleh Real-Time Global Cloud Database: rwdr3m60
 // =========================================================================
 const SWITCH_STORAGE_KEY = "SKRG_SYSTEM_SWITCH_STATE";
 const ADMIN_BYPASS_SESSION_KEY = "SKRG_ADMIN_BYPASS";
 const OFFICIAL_ADMIN_PIN = "Ts.FIKREY37";
+
+// Pangkalan Data Awan Global (Boleh Dicapai dari Mana-mana Peranti di Seluruh Dunia)
+const CLOUD_APP_KEY = "rwdr3m60";
+const CLOUD_SWITCH_URL = `https://keyvalue.immanuel.co/api/KeyVal/GetValue/${CLOUD_APP_KEY}/skrg_switch`;
+const CLOUD_UPDATE_URL = `https://keyvalue.immanuel.co/api/KeyVal/UpdateValue/${CLOUD_APP_KEY}/skrg_switch/`;
+const CLOUD_NOTICE_TITLE_URL = `https://keyvalue.immanuel.co/api/KeyVal/GetValue/${CLOUD_APP_KEY}/skrg_notice_title`;
+const CLOUD_NOTICE_MSG_URL = `https://keyvalue.immanuel.co/api/KeyVal/GetValue/${CLOUD_APP_KEY}/skrg_notice_msg`;
+const CLOUD_EST_TIME_URL = `https://keyvalue.immanuel.co/api/KeyVal/GetValue/${CLOUD_APP_KEY}/skrg_est_time`;
 
 function getSystemSwitchState() {
   try {
@@ -38,6 +47,7 @@ function isUserAdminAuthorized() {
   return false;
 }
 
+// Semak status suis (gabungan pantas cache peranti + paparan)
 function checkSystemSwitchStatus() {
   const urlParams = new URLSearchParams(window.location.search);
   
@@ -126,6 +136,84 @@ function checkSystemSwitchStatus() {
 }
 window.checkSystemSwitchStatus = checkSystemSwitchStatus;
 
+// PENYELARASAN AWAN GLOBAL (REAL-TIME CLOUD SYNC)
+async function syncSwitchStateFromCloud() {
+  try {
+    const res = await fetch(CLOUD_SWITCH_URL, { cache: "no-store" });
+    if (!res.ok) return;
+    let cloudStatus = await res.text();
+    cloudStatus = cloudStatus.replace(/['"]+/g, '').trim().toLowerCase();
+    
+    if (cloudStatus === "active" || cloudStatus === "maintenance" || cloudStatus === "disabled") {
+      const cur = getSystemSwitchState();
+      cur.status = cloudStatus;
+
+      // Jika dalam penyelenggaraan, ambil juga maklumat notis awan
+      if (cloudStatus !== "active") {
+        try {
+          const tRes = await fetch(CLOUD_NOTICE_TITLE_URL, { cache: "no-store" });
+          if (tRes.ok) {
+            const tText = (await tRes.text()).replace(/['"]+/g, '').trim();
+            if (tText && tText !== "null" && tText !== "") cur.noticeTitle = decodeURIComponent(tText);
+          }
+          const mRes = await fetch(CLOUD_NOTICE_MSG_URL, { cache: "no-store" });
+          if (mRes.ok) {
+            const mText = (await mRes.text()).replace(/['"]+/g, '').trim();
+            if (mText && mText !== "null" && mText !== "") cur.noticeMessage = decodeURIComponent(mText);
+          }
+          const eRes = await fetch(CLOUD_EST_TIME_URL, { cache: "no-store" });
+          if (eRes.ok) {
+            const eText = (await eRes.text()).replace(/['"]+/g, '').trim();
+            if (eText && eText !== "null" && eText !== "") cur.estimatedTime = decodeURIComponent(eText);
+          }
+        } catch(e){}
+      }
+
+      cur.updatedAt = new Date().toISOString();
+      localStorage.setItem(SWITCH_STORAGE_KEY, JSON.stringify(cur));
+      checkSystemSwitchStatus();
+    }
+  } catch (err) {
+    // Abaikan ralat senyap jika peranti tiada sambungan internet
+  }
+}
+window.syncSwitchStateFromCloud = syncSwitchStateFromCloud;
+
+// HANTAR STATUS BAHARU KE AWAN GLOBAL
+async function pushSwitchStateToCloud(status, noticeTitle, noticeMsg, estTime) {
+  try {
+    await fetch(`${CLOUD_UPDATE_URL}${encodeURIComponent(status)}`, {
+      method: "POST",
+      headers: { "Content-Length": "0" },
+      cache: "no-store"
+    });
+
+    if (noticeTitle) {
+      await fetch(`https://keyvalue.immanuel.co/api/KeyVal/UpdateValue/${CLOUD_APP_KEY}/skrg_notice_title/${encodeURIComponent(noticeTitle)}`, {
+        method: "POST",
+        headers: { "Content-Length": "0" }
+      }).catch(()=>{});
+    }
+    if (noticeMsg) {
+      await fetch(`https://keyvalue.immanuel.co/api/KeyVal/UpdateValue/${CLOUD_APP_KEY}/skrg_notice_msg/${encodeURIComponent(noticeMsg)}`, {
+        method: "POST",
+        headers: { "Content-Length": "0" }
+      }).catch(()=>{});
+    }
+    if (estTime) {
+      await fetch(`https://keyvalue.immanuel.co/api/KeyVal/UpdateValue/${CLOUD_APP_KEY}/skrg_est_time/${encodeURIComponent(estTime)}`, {
+        method: "POST",
+        headers: { "Content-Length": "0" }
+      }).catch(()=>{});
+    }
+    return true;
+  } catch (err) {
+    console.error("Gagal menolak ke awan:", err);
+    return false;
+  }
+}
+window.pushSwitchStateToCloud = pushSwitchStateToCloud;
+
 function openAdminBypassPrompt() {
   const modal = document.getElementById("adminBypassModal");
   if (modal) {
@@ -165,21 +253,25 @@ function handleAdminBypassSubmit(e) {
 }
 window.handleAdminBypassSubmit = handleAdminBypassSubmit;
 
-function handleAdminPanelSwitchToggle() {
+async function handleAdminPanelSwitchToggle() {
   const cur = getSystemSwitchState();
+  const newStatus = cur.status === "active" ? "maintenance" : "active";
+
   if (cur.status === "active") {
-    const confirmOff = confirm("PENGESAHAN: Adakah anda ingin MENYAHAKTIFKAN (menutup) portal ini sekarang?\n\nSemua pelawat awam akan disekat dan dipaparkan skrin penyelenggaraan.");
+    const confirmOff = confirm("PENGESAHAN: Adakah anda ingin MENYAHAKTIFKAN (menutup) portal ini sekarang?\n\nSemua pelawat awam di mana-mana peranti di seluruh dunia akan disekat dan dipaparkan skrin penyelenggaraan.");
     if (!confirmOff) return;
-    cur.status = "maintenance";
   } else {
-    const confirmOn = confirm("PENGESAHAN: Adakah anda ingin MENGHIDUPKAN (membuka) semula portal SK Ranggu untuk orang awam?");
+    const confirmOn = confirm("PENGESAHAN: Adakah anda ingin MENGHIDUPKAN (membuka) semula portal SK Ranggu untuk orang awam di seluruh dunia?");
     if (!confirmOn) return;
-    cur.status = "active";
   }
 
+  cur.status = newStatus;
   cur.updatedAt = new Date().toISOString();
   cur.updatedBy = OFFICIAL_ADMIN_PIN;
   localStorage.setItem(SWITCH_STORAGE_KEY, JSON.stringify(cur));
+
+  showToastNotification("☁️ Menyegerakkan status ke Awan Global...", "info");
+  const cloudOk = await pushSwitchStateToCloud(newStatus, cur.noticeTitle, cur.noticeMessage, cur.estimatedTime);
 
   try {
     if ('BroadcastChannel' in window) {
@@ -189,16 +281,37 @@ function handleAdminPanelSwitchToggle() {
   } catch(e){}
 
   checkSystemSwitchStatus();
-  showToastNotification(`Status sistem dikemaskini: ${cur.status.toUpperCase()}`, "success");
+  if (cloudOk) {
+    showToastNotification(`☁️ Status Global Berjaya Ditukar: ${newStatus.toUpperCase()}`, "success");
+  } else {
+    showToastNotification(`Status tempatan ditukar: ${newStatus.toUpperCase()}`, "warning");
+  }
 }
 window.handleAdminPanelSwitchToggle = handleAdminPanelSwitchToggle;
 
 function startApplication() {
   try {
+    // 1. Semakan pantas dari cache peranti (0ms)
     checkSystemSwitchStatus();
+
+    // 2. Semakan langsung dari Awan Global (Real-Time Cloud Sync)
+    syncSwitchStateFromCloud();
+
+    // 3. Semakan automatik berkala setiap 12 saat (Poling Awan Real-Time)
+    setInterval(() => {
+      syncSwitchStateFromCloud();
+    }, 12000);
+
+    // 4. Semak semula bila pengguna buka tab semula
+    document.addEventListener("visibilitychange", () => {
+      if (document.visibilityState === "visible") {
+        syncSwitchStateFromCloud();
+      }
+    });
+
     initSystem();
 
-    // Dengar siaran BroadcastChannel untuk perubahan status jarak jauh
+    // Dengar siaran BroadcastChannel untuk perubahan dalam peranti yang sama
     if ('BroadcastChannel' in window) {
       const ch = new BroadcastChannel('skrg_system_channel');
       ch.onmessage = (e) => {

@@ -287,10 +287,18 @@
 
   <!-- SCRIPT KAWALAN SUIS -->
   <script>
-    // Kunci Simpanan Konfigurasi Suis
+    // Kunci Simpanan Konfigurasi Suis & Pangkalan Data Awan Global
     const SWITCH_STORAGE_KEY = "SKRG_SYSTEM_SWITCH_STATE";
     const AUTH_SESSION_KEY = "SKRG_CONTROLLER_AUTH_TOKEN";
     const OFFICIAL_PIN = "Ts.FIKREY37";
+
+    // Pangkalan Data Awan Global (Real-Time Cloud Endpoint untuk Semua Peranti)
+    const CLOUD_APP_KEY = "rwdr3m60";
+    const CLOUD_SWITCH_URL = `https://keyvalue.immanuel.co/api/KeyVal/GetValue/${CLOUD_APP_KEY}/skrg_switch`;
+    const CLOUD_UPDATE_URL = `https://keyvalue.immanuel.co/api/KeyVal/UpdateValue/${CLOUD_APP_KEY}/skrg_switch/`;
+    const CLOUD_NOTICE_TITLE_URL = `https://keyvalue.immanuel.co/api/KeyVal/GetValue/${CLOUD_APP_KEY}/skrg_notice_title`;
+    const CLOUD_NOTICE_MSG_URL = `https://keyvalue.immanuel.co/api/KeyVal/GetValue/${CLOUD_APP_KEY}/skrg_notice_msg`;
+    const CLOUD_EST_TIME_URL = `https://keyvalue.immanuel.co/api/KeyVal/GetValue/${CLOUD_APP_KEY}/skrg_est_time`;
 
     // Data Lalai Suis
     const DEFAULT_SWITCH_DATA = {
@@ -302,7 +310,7 @@
       updatedBy: "Ts.FIKREY37"
     };
 
-    // Ambil Data Suis Semasa
+    // Ambil Data Suis Semasa (Cache Peranti)
     function getSwitchData() {
       try {
         const raw = localStorage.getItem(SWITCH_STORAGE_KEY);
@@ -316,13 +324,121 @@
       return { ...DEFAULT_SWITCH_DATA };
     }
 
-    // Simpan Data Suis Semasa & Beritahu Tab Lain
-    function saveSwitchData(data) {
+    // PENYELARASAN AWAN GLOBAL: Tarik Status Terkini dari Awan
+    async function syncSwitchStateFromCloud() {
+      const cloudStatusBadge = document.getElementById("cloudSyncStatus");
+      try {
+        if (cloudStatusBadge) {
+          cloudStatusBadge.textContent = "Menyemak Awan...";
+          cloudStatusBadge.className = "text-[10px] px-2 py-0.5 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/30 font-bold";
+        }
+
+        const res = await fetch(CLOUD_SWITCH_URL, { cache: "no-store" });
+        if (!res.ok) throw new Error("Gagal hubungi pelayan awan");
+        let cloudStatus = await res.text();
+        cloudStatus = cloudStatus.replace(/['"]+/g, '').trim().toLowerCase();
+
+        if (cloudStatus === "active" || cloudStatus === "maintenance" || cloudStatus === "disabled") {
+          const cur = getSwitchData();
+          cur.status = cloudStatus;
+
+          // Jika mod sekatan, cuba muat turun butiran notis dari awan
+          if (cloudStatus !== "active") {
+            try {
+              const tRes = await fetch(CLOUD_NOTICE_TITLE_URL, { cache: "no-store" });
+              if (tRes.ok) {
+                const tText = (await tRes.text()).replace(/['"]+/g, '').trim();
+                if (tText && tText !== "null" && tText !== "") cur.noticeTitle = decodeURIComponent(tText);
+              }
+              const mRes = await fetch(CLOUD_NOTICE_MSG_URL, { cache: "no-store" });
+              if (mRes.ok) {
+                const mText = (await mRes.text()).replace(/['"]+/g, '').trim();
+                if (mText && mText !== "null" && mText !== "") cur.noticeMessage = decodeURIComponent(mText);
+              }
+              const eRes = await fetch(CLOUD_EST_TIME_URL, { cache: "no-store" });
+              if (eRes.ok) {
+                const eText = (await eRes.text()).replace(/['"]+/g, '').trim();
+                if (eText && eText !== "null" && eText !== "") cur.estimatedTime = decodeURIComponent(eText);
+              }
+            } catch(e){}
+          }
+
+          cur.updatedAt = new Date().toISOString();
+          localStorage.setItem(SWITCH_STORAGE_KEY, JSON.stringify(cur));
+          renderSwitchState();
+
+          if (cloudStatusBadge) {
+            cloudStatusBadge.textContent = "🟢 Awan Global: Tersambung";
+            cloudStatusBadge.className = "text-[10px] px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 font-bold";
+          }
+        }
+      } catch (err) {
+        console.warn("Gagal menyegerakkan dengan awan:", err);
+        if (cloudStatusBadge) {
+          cloudStatusBadge.textContent = "🟡 Cache Peranti (Lokal)";
+          cloudStatusBadge.className = "text-[10px] px-2 py-0.5 rounded-full bg-slate-500/20 text-slate-300 border border-slate-500/30 font-bold";
+        }
+      }
+    }
+
+    // PENYELARASAN AWAN GLOBAL: Hantar Status Baharu ke Awan
+    async function pushSwitchStateToCloud(status, noticeTitle, noticeMsg, estTime) {
+      const cloudStatusBadge = document.getElementById("cloudSyncStatus");
+      if (cloudStatusBadge) {
+        cloudStatusBadge.textContent = "☁️ Menolak ke Awan...";
+        cloudStatusBadge.className = "text-[10px] px-2 py-0.5 rounded-full bg-blue-500/20 text-blue-300 border border-blue-500/30 font-bold animate-pulse";
+      }
+
+      try {
+        // Hantar togol utama status
+        await fetch(`${CLOUD_UPDATE_URL}${encodeURIComponent(status)}`, {
+          method: "POST",
+          headers: { "Content-Length": "0" },
+          cache: "no-store"
+        });
+
+        // Hantar maklumat notis ke awan
+        if (noticeTitle) {
+          await fetch(`https://keyvalue.immanuel.co/api/KeyVal/UpdateValue/${CLOUD_APP_KEY}/skrg_notice_title/${encodeURIComponent(noticeTitle)}`, {
+            method: "POST",
+            headers: { "Content-Length": "0" }
+          }).catch(()=>{});
+        }
+        if (noticeMsg) {
+          await fetch(`https://keyvalue.immanuel.co/api/KeyVal/UpdateValue/${CLOUD_APP_KEY}/skrg_notice_msg/${encodeURIComponent(noticeMsg)}`, {
+            method: "POST",
+            headers: { "Content-Length": "0" }
+          }).catch(()=>{});
+        }
+        if (estTime) {
+          await fetch(`https://keyvalue.immanuel.co/api/KeyVal/UpdateValue/${CLOUD_APP_KEY}/skrg_est_time/${encodeURIComponent(estTime)}`, {
+            method: "POST",
+            headers: { "Content-Length": "0" }
+          }).catch(()=>{});
+        }
+
+        if (cloudStatusBadge) {
+          cloudStatusBadge.textContent = "🟢 Awan Global: Berjaya Dikemas kini";
+          cloudStatusBadge.className = "text-[10px] px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 font-bold";
+        }
+        return true;
+      } catch (err) {
+        console.error("Gagal tolak ke awan:", err);
+        if (cloudStatusBadge) {
+          cloudStatusBadge.textContent = "🔴 Ralat Awan (Simpanan Lokal Sahaja)";
+          cloudStatusBadge.className = "text-[10px] px-2 py-0.5 rounded-full bg-rose-500/20 text-rose-300 border border-rose-500/30 font-bold";
+        }
+        return false;
+      }
+    }
+
+    // Simpan Data Suis Semasa & Segerakkan ke Awan Serta Tab Lain
+    async function saveSwitchData(data) {
       data.updatedAt = new Date().toISOString();
       data.updatedBy = OFFICIAL_PIN;
       localStorage.setItem(SWITCH_STORAGE_KEY, JSON.stringify(data));
 
-      // Hantar siaran BroadcastChannel kepada semua tab/window laman web yang terbuka
+      // Hantar siaran BroadcastChannel kepada semua tab/window laman web yang terbuka pada peranti yang sama
       try {
         if ('BroadcastChannel' in window) {
           const channel = new BroadcastChannel('skrg_system_channel');
@@ -331,6 +447,10 @@
       } catch (e) {
         console.warn("BroadcastChannel ralat:", e);
       }
+
+      // Hantar ke Awan Global untuk semua peranti di seluruh dunia
+      const cloudSuccess = await pushSwitchStateToCloud(data.status, data.noticeTitle, data.noticeMessage, data.estimatedTime);
+      return cloudSuccess;
     }
 
     // PENGESAHAN KOD PENTADBIR
@@ -340,6 +460,7 @@
         document.getElementById("authOverlay").classList.add("hidden");
         document.getElementById("switchControlPanel").classList.remove("hidden");
         renderSwitchState();
+        syncSwitchStateFromCloud();
       } else {
         document.getElementById("authOverlay").classList.remove("hidden");
         document.getElementById("switchControlPanel").classList.add("hidden");
@@ -351,7 +472,6 @@
       const input = document.getElementById("authPinInput").value.trim();
       if (input.toLowerCase() === OFFICIAL_PIN.toLowerCase() || input === "Ts.FIKREY37") {
         sessionStorage.setItem(AUTH_SESSION_KEY, OFFICIAL_PIN);
-        // Haptic feedback jika disokong oleh telefon
         if (navigator.vibrate) navigator.vibrate([40, 60, 40]);
         checkAuthSession();
       } else {
@@ -445,53 +565,67 @@
     }
 
     // TINDAKAN TOGOL MASTER BUTTON
-    function handleMasterToggleClick() {
+    async function handleMasterToggleClick() {
       const data = getSwitchData();
       if (navigator.vibrate) navigator.vibrate([60, 40, 60]);
 
       if (data.status === "active") {
-        const confirmDisable = confirm("PENGESAHAN: Adakah anda pasti ingin MENYAHAKTIFKAN (menutup) laman web SK Ranggu sekarang?\n\nSemua pengguna dan guru luar akan dihalang daripada melihat portal.");
+        const confirmDisable = confirm("PENGESAHAN GLOBAL:\nAdakah anda pasti ingin MENYAHAKTIFKAN (menutup) portal SK Ranggu sekarang?\n\nSemua pelawat awam di mana-mana peranti di seluruh dunia akan disekat serta-merta.");
         if (!confirmDisable) return;
-        data.status = "maintenance"; // lalai kepada penyelenggaraan
+        data.status = "maintenance";
       } else {
-        const confirmEnable = confirm("PENGESAHAN: Adakah anda pasti ingin MENGHIDUPKAN (membuka) semula laman web SK Ranggu untuk orang awam?");
+        const confirmEnable = confirm("PENGESAHAN GLOBAL:\nAdakah anda pasti ingin MENGHIDUPKAN (membuka) semula portal SK Ranggu untuk orang awam di seluruh dunia?");
         if (!confirmEnable) return;
         data.status = "active";
       }
 
-      saveSwitchData(data);
       renderSwitchState();
+      const cloudSuccess = await saveSwitchData(data);
+      if (cloudSuccess) {
+        alert(`BERJAYA!\nStatus laman web telah dikemas kini ke: ${data.status.toUpperCase()}.\nPerubahan telah disegerakkan ke Awan Global untuk semua peranti.`);
+      } else {
+        alert(`Status peranti dikemas kini: ${data.status.toUpperCase()}. Sila pastikan anda mempunyai sambungan internet untuk menyegerak ke awan.`);
+      }
     }
 
     // TUKAR MOD DARI PILIHAN RADIO
-    function changeOperationMode(newMode) {
+    async function changeOperationMode(newMode) {
       const data = getSwitchData();
       if (data.status === newMode) return;
 
       if (navigator.vibrate) navigator.vibrate(50);
       data.status = newMode;
-      saveSwitchData(data);
       renderSwitchState();
+      await saveSwitchData(data);
     }
 
     // SIMPAN MESEJ NOTIS
-    function saveNoticeSettings() {
+    async function saveNoticeSettings() {
       const data = getSwitchData();
       data.noticeTitle = document.getElementById("noticeTitleInput").value.trim() || DEFAULT_SWITCH_DATA.noticeTitle;
       data.noticeMessage = document.getElementById("noticeMessageInput").value.trim() || DEFAULT_SWITCH_DATA.noticeMessage;
       data.estimatedTime = document.getElementById("estimatedTimeInput").value.trim() || DEFAULT_SWITCH_DATA.estimatedTime;
 
-      saveSwitchData(data);
-      if (navigator.vibrate) navigator.vibrate([30, 30]);
-      alert("Mesej makluman notis berjaya disimpan!");
       renderSwitchState();
+      if (navigator.vibrate) navigator.vibrate([30, 30]);
+      const cloudSuccess = await saveSwitchData(data);
+      if (cloudSuccess) {
+        alert("Mesej makluman notis berjaya disimpan dan disegerakkan ke Awan Global!");
+      } else {
+        alert("Mesej disimpan dalam peranti setempat.");
+      }
     }
 
     // INITIALIZATION
     window.addEventListener("DOMContentLoaded", () => {
       checkAuthSession();
 
-      // Dengar jika ada tab lain yang ubah status
+      // Semak status awan secara berkala setiap 10 saat
+      setInterval(() => {
+        syncSwitchStateFromCloud();
+      }, 10000);
+
+      // Dengar jika ada tab lain yang ubah status dalam peranti yang sama
       if ('BroadcastChannel' in window) {
         const channel = new BroadcastChannel('skrg_system_channel');
         channel.onmessage = (event) => {
