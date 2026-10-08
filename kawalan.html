@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="ms" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Suis Kawalan Portal SK Ranggu | Executive Remote Switch</title>
+  
+  <meta name="description" content="Pusat Kawalan Suis Jarak Jauh (Remote Switch) untuk mengaktifkan atau menyahaktifkan Papan Induk Utama SK Ranggu Tawau.">
+  <meta name="theme-color" content="#040d1a">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Suis SK Ranggu">
+
+  <!-- Favicon & Touch Icon -->
+  <link rel="icon" type="image/png" sizes="64x64" href="assets/pwa/favicon-64.png?v=20261007_v27">
+  <link rel="apple-touch-icon" sizes="180x180" href="assets/pwa/apple-touch-icon.png?v=20261007_v27">
+  <link rel="shortcut icon" href="favicon.ico?v=20261007_v27">
+
+  <!-- Fon Google -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;600;800&display=swap" rel="stylesheet">
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+            mono: ['"JetBrains Mono"', 'monospace'],
+          },
+          colors: {
+            royal: {
+              950: '#020617',
+              900: '#040d1a',
+              850: '#07162c',
+              800: '#0c2344',
+              700: '#14386b',
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    /* Glow Animations */
+    @keyframes pulseGlowGreen {
+      0%, 100% { box-shadow: 0 0 25px rgba(34, 197, 94, 0.45), 0 0 50px rgba(34, 197, 94, 0.2); }
+      50% { box-shadow: 0 0 45px rgba(34, 197, 94, 0.8), 0 0 80px rgba(34, 197, 94, 0.35); }
+    }
+    @keyframes pulseGlowRed {
+      0%, 100% { box-shadow: 0 0 25px rgba(239, 68, 68, 0.5), 0 0 50px rgba(239, 68, 68, 0.25); }
+      50% { box-shadow: 0 0 45px rgba(239, 68, 68, 0.85), 0 0 80px rgba(239, 68, 68, 0.4); }
+    }
+    .glow-green { animation: pulseGlowGreen 2.5s infinite ease-in-out; }
+    .glow-red { animation: pulseGlowRed 2.5s infinite ease-in-out; }
+  </style>
+</head>
+<body class="bg-royal-950 text-slate-100 min-h-screen flex flex-col font-sans selection:bg-amber-400 selection:text-slate-950">
+
+  <!-- HEADER BAR KAWALAN -->
+  <header class="bg-royal-900/90 backdrop-blur-md border-b border-white/10 sticky top-0 z-30 px-4 py-3">
+    <div class="max-w-md mx-auto flex items-center justify-between gap-3">
+      <div class="flex items-center gap-2.5">
+        <img src="assets/logo-skrg-cutout.png?v=20261007_v27" alt="Logo SK Ranggu" class="w-9 h-9 object-contain drop-shadow">
+        <div>
+          <h1 class="text-xs font-black uppercase tracking-wider text-amber-300">Pusat Kawalan Suis</h1>
+          <p class="text-[10px] text-slate-300 font-medium">SK Ranggu Tawau (XBA3037)</p>
+        </div>
+      </div>
+      
+      <div class="flex items-center gap-1.5">
+        <button id="btnPinLock" onclick="handleLockController()" title="Kunci Semula Panel" class="px-2.5 py-1 rounded-xl bg-white/10 hover:bg-white/20 text-slate-200 text-xs font-bold transition flex items-center gap-1">
+          <span>🔒</span> <span class="hidden sm:inline">Kunci</span>
+        </button>
+        <a href="index.html" class="px-2.5 py-1 rounded-xl bg-amber-400/20 hover:bg-amber-400/30 text-amber-300 text-xs font-bold border border-amber-400/30 transition flex items-center gap-1">
+          <span>🏠</span> <span class="hidden sm:inline">Portal</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- KANDUNGAN UTAMA KAWALAN -->
+  <main class="flex-1 max-w-md w-full mx-auto p-4 sm:p-5 space-y-4">
+
+    <!-- =========================================================================
+         BAHAGIAN 1: PENGESAHAN KOD KESELAMATAN (JIKA BELUM DISAHKAN)
+         ========================================================================= -->
+    <div id="authOverlay" class="bg-royal-900/95 border-2 border-amber-400/60 rounded-3xl p-6 sm:p-7 shadow-2xl text-center space-y-4">
+      <div class="w-16 h-16 rounded-2xl bg-amber-400/20 text-amber-300 border border-amber-400/40 flex items-center justify-center text-3xl mx-auto shadow-inner">
+        🔐
+      </div>
+      <div>
+        <h2 class="text-base sm:text-lg font-black text-white">Kawalan Suis Eksklusif Pentadbir</h2>
+        <p class="text-xs text-slate-300 mt-1 leading-relaxed">
+          Masukkan Kod Keselamatan Pentadbir untuk mengakses suis kawalan jarak jauh portal sekolah.
+        </p>
+      </div>
+
+      <form id="authForm" onsubmit="handleAuthSubmit(event)" class="space-y-3">
+        <div class="relative">
+          <input type="password" id="authPinInput" placeholder="Masukkan Kod Pentadbir" autocomplete="current-password" class="w-full text-center py-3.5 px-4 rounded-2xl bg-slate-900 border-2 border-slate-700 text-white font-mono text-base tracking-widest focus:border-amber-400 focus:outline-none transition" required autofocus>
+          <button type="button" onclick="togglePinVisibility()" class="text-[11px] text-slate-400 hover:text-amber-300 mt-1 font-semibold">
+            👁️ Papar / Sembunyi Kod
+          </button>
+        </div>
+
+        <button type="submit" class="w-full py-3.5 px-4 rounded-2xl bg-gradient-to-r from-amber-400 via-amber-500 to-yellow-500 hover:from-amber-300 hover:to-yellow-400 text-slate-950 font-black text-xs sm:text-sm shadow-xl transition flex items-center justify-center gap-2">
+          <span>🔓</span> Buka Suis Kawalan
+        </button>
+
+        <p class="text-[10px] text-slate-400">
+          Petunjuk: Gunakan kod rasmi <span class="font-mono text-amber-300 font-bold">Ts.FIKREY37</span>.
+        </p>
+      </form>
+    </div>
+
+    <!-- =========================================================================
+         BAHAGIAN 2: PANEL KAWALAN SUIS (DIPAPARKAN SELEPAS LOG MASUK)
+         ========================================================================= -->
+    <div id="switchControlPanel" class="space-y-4 hidden">
+      
+      <!-- KAD STATUS INDIKATOR BESAR -->
+      <div id="statusCard" class="rounded-3xl p-6 sm:p-7 text-center border-2 transition-all duration-300 relative overflow-hidden bg-slate-900/90 shadow-2xl">
+        <div id="statusBgEffect" class="absolute inset-0 opacity-15 pointer-events-none"></div>
+
+        <div class="relative z-10 space-y-4">
+          <div class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full text-xs font-black uppercase tracking-wider border shadow-xs" id="statusBadge">
+            <span class="w-2.5 h-2.5 rounded-full" id="statusDot"></span>
+            <span id="statusBadgeText">MEMERIKSA STATUS...</span>
+          </div>
+
+          <!-- IKON & TAJUK UTAMA -->
+          <div class="space-y-1">
+            <div id="statusBigIcon" class="text-5xl sm:text-6xl my-2 transform transition-transform duration-300">
+              🟢
+            </div>
+            <h2 id="statusTitle" class="text-xl sm:text-2xl font-black text-white tracking-tight">
+              PORTAL SK RANGGU AKTIF
+            </h2>
+            <p id="statusSubtitle" class="text-xs text-slate-300 leading-relaxed max-w-xs mx-auto">
+              Laman web dibuka sepenuhnya dan boleh diakses oleh semua warga sekolah & pelawat awam.
+            </p>
+          </div>
+
+          <!-- SUIS TOGOL BESAR UTAMA (MASTER SWITCH BUTTON) -->
+          <div class="pt-2">
+            <button id="btnMasterToggle" onclick="handleMasterToggleClick()" class="w-full py-4 px-6 rounded-2xl font-black text-sm sm:text-base transition-all duration-300 shadow-2xl flex items-center justify-center gap-3 cursor-pointer">
+              <span id="btnMasterIcon" class="text-xl">🔴</span>
+              <span id="btnMasterLabel">MATIKAN LAMAN WEB (DISABLE)</span>
+            </button>
+            <p class="text-[10px] text-slate-400 mt-2">
+              Sentuh butang di atas untuk menukar status operasi laman web secara serta-merta.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- KAD PILIHAN MOD OPERASI -->
+      <div class="bg-royal-900/80 border border-white/10 rounded-3xl p-4 sm:p-5 space-y-3">
+        <h3 class="text-xs font-bold text-amber-300 uppercase tracking-wider flex items-center gap-1.5">
+          <span>⚙️</span> Mod Pengoperasian
+        </h3>
+
+        <div class="grid grid-cols-1 gap-2 text-xs">
+          <!-- Mod 1: Normal -->
+          <label class="flex items-center justify-between p-3 rounded-2xl bg-white/5 border border-white/10 hover:bg-white/10 cursor-pointer transition">
+            <div class="flex items-center gap-2.5">
+              <input type="radio" name="operationMode" value="active" onchange="changeOperationMode('active')" class="w-4 h-4 text-emerald-500 focus:ring-emerald-400 bg-slate-800 border-slate-600">
+              <div>
+                <strong class="text-white block font-bold">🟢 Mod 1: Aktif Sepenuhnya (Online)</strong>
+                <span class="text-[10px] text-slate-300">Portal dibuka secara normal kepada semua pengunjung.</span>
+              </div>
+            </div>
+          </label>
+
+          <!-- Mod 2: Penyelenggaraan (Maintenance) -->
+          <label class="flex items-center justify-between p-3 rounded-2xl bg-white/5 border border-white/10 hover:bg-white/10 cursor-pointer transition">
+            <div class="flex items-center gap-2.5">
+              <input type="radio" name="operationMode" value="maintenance" onchange="changeOperationMode('maintenance')" class="w-4 h-4 text-amber-500 focus:ring-amber-400 bg-slate-800 border-slate-600">
+              <div>
+                <strong class="text-amber-300 block font-bold">🟡 Mod 2: Penyelenggaraan Sementara</strong>
+                <span class="text-[10px] text-slate-300">Paparkan notis kerja naik taraf rasmi & sekat akses awam.</span>
+              </div>
+            </div>
+          </label>
+
+          <!-- Mod 3: Kunci Penuh (Lockdown) -->
+          <label class="flex items-center justify-between p-3 rounded-2xl bg-white/5 border border-white/10 hover:bg-white/10 cursor-pointer transition">
+            <div class="flex items-center gap-2.5">
+              <input type="radio" name="operationMode" value="disabled" onchange="changeOperationMode('disabled')" class="w-4 h-4 text-rose-500 focus:ring-rose-400 bg-slate-800 border-slate-600">
+              <div>
+                <strong class="text-rose-300 block font-bold">🔴 Mod 3: Kunci Sepenuhnya (Disabled)</strong>
+                <span class="text-[10px] text-slate-300">Tutup portal secara kecemasan dari semua akses awam.</span>
+              </div>
+            </div>
+          </label>
+        </div>
+      </div>
+
+      <!-- KAD MAKLUMAT NOTIS PENYELENGGARAAN -->
+      <div class="bg-royal-900/80 border border-white/10 rounded-3xl p-4 sm:p-5 space-y-3 text-xs">
+        <h3 class="text-xs font-bold text-amber-300 uppercase tracking-wider flex items-center gap-1.5">
+          <span>📢</span> Mesej Makluman untuk Pelawat
+        </h3>
+        
+        <div class="space-y-2">
+          <div>
+            <label class="block text-slate-300 font-semibold mb-1 text-[11px]">Tajuk Notis:</label>
+            <input type="text" id="noticeTitleInput" placeholder="Contoh: PORTAL INDUK SK RANGGU DITUTUP SEMENTARA" class="w-full p-2.5 rounded-xl bg-slate-900 border border-slate-700 text-white text-xs focus:border-amber-400 focus:outline-none">
+          </div>
+
+          <div>
+            <label class="block text-slate-300 font-semibold mb-1 text-[11px]">Mesej Penerangan Penyelenggaraan:</label>
+            <textarea id="noticeMessageInput" rows="3" placeholder="Contoh: Sistem sedang diselenggara atau dikemas kini oleh Pentadbir Sistem. Sila cuba sebentar lagi..." class="w-full p-2.5 rounded-xl bg-slate-900 border border-slate-700 text-white text-xs focus:border-amber-400 focus:outline-none"></textarea>
+          </div>
+
+          <div>
+            <label class="block text-slate-300 font-semibold mb-1 text-[11px]">Jangkaan Dibuka Semula (Pilihan):</label>
+            <input type="text" id="estimatedTimeInput" placeholder="Contoh: Jam 2:00 Petang / Esok Pagi" class="w-full p-2.5 rounded-xl bg-slate-900 border border-slate-700 text-white text-xs focus:border-amber-400 focus:outline-none">
+          </div>
+
+          <button type="button" onclick="saveNoticeSettings()" class="w-full py-2.5 px-3 rounded-xl bg-white/10 hover:bg-white/20 text-white font-bold transition flex items-center justify-center gap-1.5 border border-white/10">
+            <span>💾</span> Simpan Mesej Makluman
+          </button>
+        </div>
+      </div>
+
+      <!-- BUTANG TINDAKAN PANTAS & PRATONTON -->
+      <div class="grid grid-cols-2 gap-2 text-xs">
+        <a href="index.html?preview_lock=1" target="_blank" class="p-3 rounded-2xl bg-white/5 hover:bg-white/10 border border-white/10 text-center text-slate-200 font-bold transition flex flex-col items-center gap-1">
+          <span class="text-lg">👁️</span>
+          <span>Pratonton Sekatan</span>
+          <span class="text-[9px] text-slate-400 font-normal">Lihat apa pelawat nampak</span>
+        </a>
+
+        <a href="index.html?admin_bypass=Ts.FIKREY37" target="_blank" class="p-3 rounded-2xl bg-amber-400/10 hover:bg-amber-400/20 border border-amber-400/30 text-center text-amber-300 font-bold transition flex flex-col items-center gap-1">
+          <span class="text-lg">🚀</span>
+          <span>Buka Portal (Bypass)</span>
+          <span class="text-[9px] text-amber-200/70 font-normal">Masuk tanpa sekatan</span>
+        </a>
+      </div>
+
+      <!-- KAD PANDUAN SIMPAN BUTANG PANTAS DI TELEFON -->
+      <div class="bg-gradient-to-r from-blue-950/60 to-royal-900/60 border border-sky-400/30 rounded-3xl p-4 sm:p-5 space-y-3 text-xs">
+        <div class="flex items-center gap-2">
+          <span class="text-xl">📱</span>
+          <div>
+            <h4 class="font-bold text-sky-300 text-xs">Simpan Butang Ini di Skrin Telefon Anda</h4>
+            <p class="text-[10px] text-slate-300">Jadikan ikon aplikasi kendiri di skrin utama (Home Screen) telefon.</p>
+          </div>
+        </div>
+
+        <div class="space-y-1.5 text-[11px] text-slate-300 bg-black/30 p-3 rounded-xl border border-white/5">
+          <p><strong>🍎 Di iPhone (Safari):</strong> Tekan butang <strong>Kongsi (Share / ⎙)</strong> ➔ Pilih <strong>"Tambah ke Skrin Utama" (Add to Home Screen)</strong>.</p>
+          <p><strong>🤖 Di Android (Chrome):</strong> Tekan menu tiga titik <strong>(⋮)</strong> ➔ Pilih <strong>"Pasang Aplikasi"</strong> atau <strong>"Tambah ke Skrin Utama"</strong>.</p>
+          <p><strong>💻 Di Laptop (Chrome/Edge):</strong> Klik ikon <strong>Pasang (⊕)</strong> di bar alamat URL atau bookmark halaman ini.</p>
+        </div>
+      </div>
+
+      <!-- KAD PENYELARASAN AWAN GOOGLE (CLOUD SYNC INTEGRATION) -->
+      <div class="bg-royal-900/50 border border-white/5 rounded-3xl p-4 text-[11px] text-slate-400 space-y-2">
+        <div class="flex items-center justify-between">
+          <span class="font-semibold text-slate-300 flex items-center gap-1">
+            <span>☁️</span> Status Penyelarasan Awan
+          </span>
+          <span id="cloudSyncStatus" class="text-[10px] px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 font-bold">
+            Aktif (Peranti & Web Storage)
+          </span>
+        </div>
+        <p class="text-[10px] text-slate-400 leading-relaxed">
+          Semua perubahan status disimpan dalam memori penyemak imbas dan diselaraskan secara langsung melalui siaran BroadcastChannel kepada semua tab pelawat yang aktif.
+        </p>
+      </div>
+
+    </div>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="p-4 text-center text-[10px] text-slate-500 border-t border-white/5 max-w-md mx-auto w-full">
+    Papan Induk Utama SK Ranggu Tawau • Dibangunkan oleh Mohammad Fikrey bin Abdul Gapar
+  </footer>
+
+  <!-- SCRIPT KAWALAN SUIS -->
+  <script>
+    // Kunci Simpanan Konfigurasi Suis
+    const SWITCH_STORAGE_KEY = "SKRG_SYSTEM_SWITCH_STATE";
+    const AUTH_SESSION_KEY = "SKRG_CONTROLLER_AUTH_TOKEN";
+    const OFFICIAL_PIN = "Ts.FIKREY37";
+
+    // Data Lalai Suis
+    const DEFAULT_SWITCH_DATA = {
+      status: "active", // "active" | "maintenance" | "disabled"
+      noticeTitle: "PORTAL INDUK SK RANGGU DITUTUP SEMENTARA",
+      noticeMessage: "Papan Induk Utama SK Ranggu sedang menjalani proses penyelenggaraan dan kemas kini berkala oleh Pentadbir Sistem. Segala akses data dan modul disekat buat sementara waktu.",
+      estimatedTime: "Akan dimaklumkan kelak",
+      updatedAt: new Date().toISOString(),
+      updatedBy: "Ts.FIKREY37"
+    };
+
+    // Ambil Data Suis Semasa
+    function getSwitchData() {
+      try {
+        const raw = localStorage.getItem(SWITCH_STORAGE_KEY);
+        if (raw) {
+          const parsed = JSON.parse(raw);
+          return { ...DEFAULT_SWITCH_DATA, ...parsed };
+        }
+      } catch (e) {
+        console.warn("Ralat membaca data suis:", e);
+      }
+      return { ...DEFAULT_SWITCH_DATA };
+    }
+
+    // Simpan Data Suis Semasa & Beritahu Tab Lain
+    function saveSwitchData(data) {
+      data.updatedAt = new Date().toISOString();
+      data.updatedBy = OFFICIAL_PIN;
+      localStorage.setItem(SWITCH_STORAGE_KEY, JSON.stringify(data));
+
+      // Hantar siaran BroadcastChannel kepada semua tab/window laman web yang terbuka
+      try {
+        if ('BroadcastChannel' in window) {
+          const channel = new BroadcastChannel('skrg_system_channel');
+          channel.postMessage({ type: 'STATUS_UPDATE', data: data });
+        }
+      } catch (e) {
+        console.warn("BroadcastChannel ralat:", e);
+      }
+    }
+
+    // PENGESAHAN KOD PENTADBIR
+    function checkAuthSession() {
+      const token = sessionStorage.getItem(AUTH_SESSION_KEY);
+      if (token === OFFICIAL_PIN) {
+        document.getElementById("authOverlay").classList.add("hidden");
+        document.getElementById("switchControlPanel").classList.remove("hidden");
+        renderSwitchState();
+      } else {
+        document.getElementById("authOverlay").classList.remove("hidden");
+        document.getElementById("switchControlPanel").classList.add("hidden");
+      }
+    }
+
+    function handleAuthSubmit(e) {
+      e.preventDefault();
+      const input = document.getElementById("authPinInput").value.trim();
+      if (input.toLowerCase() === OFFICIAL_PIN.toLowerCase() || input === "Ts.FIKREY37") {
+        sessionStorage.setItem(AUTH_SESSION_KEY, OFFICIAL_PIN);
+        // Haptic feedback jika disokong oleh telefon
+        if (navigator.vibrate) navigator.vibrate([40, 60, 40]);
+        checkAuthSession();
+      } else {
+        if (navigator.vibrate) navigator.vibrate([100, 50, 100]);
+        alert("Kod keselamatan tidak sah! Sila masukkan 'Ts.FIKREY37'.");
+        document.getElementById("authPinInput").value = "";
+        document.getElementById("authPinInput").focus();
+      }
+    }
+
+    function handleLockController() {
+      sessionStorage.removeItem(AUTH_SESSION_KEY);
+      checkAuthSession();
+    }
+
+    function togglePinVisibility() {
+      const el = document.getElementById("authPinInput");
+      el.type = el.type === "password" ? "text" : "password";
+    }
+
+    // PAPARKAN STATUS PADA ANTARAMUKA
+    function renderSwitchState() {
+      const data = getSwitchData();
+      const status = data.status || "active";
+
+      const statusCard = document.getElementById("statusCard");
+      const statusBadge = document.getElementById("statusBadge");
+      const statusDot = document.getElementById("statusDot");
+      const statusBadgeText = document.getElementById("statusBadgeText");
+      const statusBigIcon = document.getElementById("statusBigIcon");
+      const statusTitle = document.getElementById("statusTitle");
+      const statusSubtitle = document.getElementById("statusSubtitle");
+      const btnMaster = document.getElementById("btnMasterToggle");
+      const btnMasterIcon = document.getElementById("btnMasterIcon");
+      const btnMasterLabel = document.getElementById("btnMasterLabel");
+
+      // Isi nilai borang notis
+      document.getElementById("noticeTitleInput").value = data.noticeTitle || "";
+      document.getElementById("noticeMessageInput").value = data.noticeMessage || "";
+      document.getElementById("estimatedTimeInput").value = data.estimatedTime || "";
+
+      // Tandakan radio button mod operasi
+      const radio = document.querySelector(`input[name="operationMode"][value="${status}"]`);
+      if (radio) radio.checked = true;
+
+      // Bersihkan kelas lama
+      statusCard.classList.remove("glow-green", "glow-red", "border-emerald-500/80", "border-amber-500/80", "border-rose-500/80");
+
+      if (status === "active") {
+        // AKTIF / ONLINE
+        statusCard.classList.add("glow-green", "border-emerald-500/80");
+        statusBadge.className = "inline-flex items-center gap-2 px-3.5 py-1 rounded-full text-xs font-black uppercase tracking-wider bg-emerald-500/20 text-emerald-300 border border-emerald-400/40 shadow-xs";
+        statusDot.className = "w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse";
+        statusBadgeText.textContent = "SISTEM ONLINE (AKTIF)";
+        statusBigIcon.textContent = "🟢";
+        statusTitle.textContent = "PORTAL SK RANGGU AKTIF";
+        statusSubtitle.textContent = "Laman web dibuka sepenuhnya dan boleh diakses oleh semua warga sekolah & pelawat awam.";
+
+        btnMaster.className = "w-full py-4 px-6 rounded-2xl font-black text-sm sm:text-base bg-gradient-to-r from-rose-600 via-rose-700 to-red-800 hover:from-rose-500 hover:to-red-700 text-white transition-all duration-300 shadow-xl flex items-center justify-center gap-3 cursor-pointer";
+        btnMasterIcon.textContent = "🔴";
+        btnMasterLabel.textContent = "MATIKAN LAMAN WEB (DISABLE)";
+
+      } else if (status === "maintenance") {
+        // PENYELENGGARAAN (MAINTENANCE)
+        statusCard.classList.add("glow-red", "border-amber-500/80");
+        statusBadge.className = "inline-flex items-center gap-2 px-3.5 py-1 rounded-full text-xs font-black uppercase tracking-wider bg-amber-500/20 text-amber-300 border border-amber-400/40 shadow-xs";
+        statusDot.className = "w-2.5 h-2.5 rounded-full bg-amber-400 animate-pulse";
+        statusBadgeText.textContent = "PENYELENGGARAAN (MAINTENANCE)";
+        statusBigIcon.textContent = "🟡";
+        statusTitle.textContent = "PORTAL SEDANG DISENGGARA";
+        statusSubtitle.textContent = "Akses awam disekat sementara. Pengunjung dipaparkan notis rasmi penyelenggaraan.";
+
+        btnMaster.className = "w-full py-4 px-6 rounded-2xl font-black text-sm sm:text-base bg-gradient-to-r from-emerald-500 via-emerald-600 to-teal-700 hover:from-emerald-400 hover:to-teal-600 text-white transition-all duration-300 shadow-xl flex items-center justify-center gap-3 cursor-pointer";
+        btnMasterIcon.textContent = "🟢";
+        btnMasterLabel.textContent = "HIDUPKAN LAMAN WEB (ENABLE)";
+
+      } else {
+        // DITUTUP (DISABLED / LOCKDOWN)
+        statusCard.classList.add("glow-red", "border-rose-500/80");
+        statusBadge.className = "inline-flex items-center gap-2 px-3.5 py-1 rounded-full text-xs font-black uppercase tracking-wider bg-rose-500/20 text-rose-300 border border-rose-400/40 shadow-xs";
+        statusDot.className = "w-2.5 h-2.5 rounded-full bg-rose-400 animate-pulse";
+        statusBadgeText.textContent = "SISTEM DITUTUP (OFFLINE)";
+        statusBigIcon.textContent = "🔴";
+        statusTitle.textContent = "PORTAL DIKUNCI SEPENUHNYA";
+        statusSubtitle.textContent = "Laman web ditutup sepenuhnya daripada semua pengguna. Tiada data boleh dilihat.";
+
+        btnMaster.className = "w-full py-4 px-6 rounded-2xl font-black text-sm sm:text-base bg-gradient-to-r from-emerald-500 via-emerald-600 to-teal-700 hover:from-emerald-400 hover:to-teal-600 text-white transition-all duration-300 shadow-xl flex items-center justify-center gap-3 cursor-pointer";
+        btnMasterIcon.textContent = "🟢";
+        btnMasterLabel.textContent = "HIDUPKAN LAMAN WEB (ENABLE)";
+      }
+    }
+
+    // TINDAKAN TOGOL MASTER BUTTON
+    function handleMasterToggleClick() {
+      const data = getSwitchData();
+      if (navigator.vibrate) navigator.vibrate([60, 40, 60]);
+
+      if (data.status === "active") {
+        const confirmDisable = confirm("PENGESAHAN: Adakah anda pasti ingin MENYAHAKTIFKAN (menutup) laman web SK Ranggu sekarang?\n\nSemua pengguna dan guru luar akan dihalang daripada melihat portal.");
+        if (!confirmDisable) return;
+        data.status = "maintenance"; // lalai kepada penyelenggaraan
+      } else {
+        const confirmEnable = confirm("PENGESAHAN: Adakah anda pasti ingin MENGHIDUPKAN (membuka) semula laman web SK Ranggu untuk orang awam?");
+        if (!confirmEnable) return;
+        data.status = "active";
+      }
+
+      saveSwitchData(data);
+      renderSwitchState();
+    }
+
+    // TUKAR MOD DARI PILIHAN RADIO
+    function changeOperationMode(newMode) {
+      const data = getSwitchData();
+      if (data.status === newMode) return;
+
+      if (navigator.vibrate) navigator.vibrate(50);
+      data.status = newMode;
+      saveSwitchData(data);
+      renderSwitchState();
+    }
+
+    // SIMPAN MESEJ NOTIS
+    function saveNoticeSettings() {
+      const data = getSwitchData();
+      data.noticeTitle = document.getElementById("noticeTitleInput").value.trim() || DEFAULT_SWITCH_DATA.noticeTitle;
+      data.noticeMessage = document.getElementById("noticeMessageInput").value.trim() || DEFAULT_SWITCH_DATA.noticeMessage;
+      data.estimatedTime = document.getElementById("estimatedTimeInput").value.trim() || DEFAULT_SWITCH_DATA.estimatedTime;
+
+      saveSwitchData(data);
+      if (navigator.vibrate) navigator.vibrate([30, 30]);
+      alert("Mesej makluman notis berjaya disimpan!");
+      renderSwitchState();
+    }
+
+    // INITIALIZATION
+    window.addEventListener("DOMContentLoaded", () => {
+      checkAuthSession();
+
+      // Dengar jika ada tab lain yang ubah status
+      if ('BroadcastChannel' in window) {
+        const channel = new BroadcastChannel('skrg_system_channel');
+        channel.onmessage = (event) => {
+          if (event.data && event.data.type === 'STATUS_UPDATE') {
+            renderSwitchState();
+          }
+        };
+      }
+    });
+  </script>
+</body>
+</html>

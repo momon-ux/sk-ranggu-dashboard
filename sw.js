@@ -1,10 +1,11 @@
 // Service Worker Rasmi SK Ranggu PWA
-// Versi: 20261007_v27_cutout_logos
-const CACHE_NAME = 'sk-ranggu-pwa-v27-cutout-logos';
+// Versi: 20261008_v28_remote_switch
+const CACHE_NAME = 'sk-ranggu-pwa-v28-remote-switch';
 
 const ASSETS_TO_CACHE = [
   './',
   './index.html',
+  './kawalan.html',
   './manifest.json',
   './favicon.ico',
   './assets/logo-kpm-cutout.png',

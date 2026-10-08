@@ -2151,6 +2151,36 @@
             <p class="text-xs text-slate-500 mt-0.5">Tukar kod akses pentadbir dan muat turun fail sandaran pangkalan data sekolah.</p>
           </div>
 
+          <!-- SUIS KAWALAN OPERASI LAMAN WEB (REMOTE KILL-SWITCH) -->
+          <div class="p-4 bg-gradient-to-r from-slate-900 to-royal-950 text-white rounded-2xl border-2 border-amber-400/80 space-y-3 text-xs shadow-lg">
+            <div class="flex items-center justify-between">
+              <h5 class="font-bold text-amber-300 text-xs uppercase tracking-wider flex items-center gap-1.5">
+                <span>🎛️</span> Suis Kawalan Operasi Laman Web (Kill-Switch)
+              </h5>
+              <span id="admSwitchStatusBadge" class="px-2.5 py-0.5 rounded-full text-[10px] font-extrabold uppercase tracking-wide bg-emerald-500/20 text-emerald-300 border border-emerald-400/30">
+                🟢 ONLINE
+              </span>
+            </div>
+            
+            <p class="text-slate-300 text-[11px] leading-relaxed">
+              Kawal status buka / tutup laman web ini pada bila-bila masa. Apabila dimatikan, semua pelawat awam akan disekat dan dipaparkan notis penyelenggaraan rasmi.
+            </p>
+
+            <div class="flex flex-wrap items-center gap-2 pt-1">
+              <button type="button" id="btnAdminQuickToggleSwitch" onclick="window.handleAdminPanelSwitchToggle()" class="px-4 py-2 rounded-xl bg-rose-600 hover:bg-rose-700 text-white font-bold transition flex items-center gap-1.5 shadow">
+                <span>🔴</span> <span id="admQuickToggleLabel">Matikan Laman Web (Disable)</span>
+              </button>
+              
+              <a href="kawalan.html" target="_blank" class="px-3.5 py-2 rounded-xl bg-amber-400 hover:bg-amber-300 text-slate-950 font-black transition flex items-center gap-1.5 shadow">
+                <span>📱</span> Buka Suis Telefon (kawalan.html)
+              </a>
+              
+              <a href="index.html?preview_lock=1" target="_blank" class="px-3 py-2 rounded-xl bg-white/10 hover:bg-white/20 text-slate-200 font-semibold transition flex items-center gap-1 border border-white/15">
+                <span>👁️</span> Uji Paparan Sekatan
+              </a>
+            </div>
+          </div>
+
           <!-- TUKAR KOD AKSES -->
           <div class="p-4 bg-slate-50 rounded-2xl border border-slate-200 space-y-3 text-xs max-w-lg">
             <h5 class="font-bold text-slate-900 text-xs uppercase tracking-wider flex items-center gap-1.5">
@@ -2623,6 +2653,9 @@
       <span class="text-xs font-black text-amber-300">PENTADBIR: <span class="text-white font-mono">Ts.FIKREY37</span></span>
     </div>
     <div class="h-4 w-px bg-white/20 shrink-0"></div>
+    <a href="kawalan.html" target="_blank" class="px-2.5 py-1 rounded-xl text-xs font-bold bg-amber-400/20 hover:bg-amber-400/30 text-amber-300 border border-amber-400/40 transition shrink-0 flex items-center gap-1 shadow">
+      <span>🎛️</span> Suis Web
+    </a>
     <button id="btnToggleEditMode" onclick="window.toggleAdminEditMode()" class="px-3 py-1 rounded-xl text-xs font-bold bg-amber-400 text-slate-950 hover:bg-amber-300 transition shrink-0 flex items-center gap-1 shadow">
       <span id="editModeIcon">✏️</span>
       <span id="editModeLabel">Mod Sunting: AKTIF</span>
@@ -2635,10 +2668,120 @@
     </button>
   </div>
 
-  <script src="js/data.js?v=20261007_v27"></script>
-  <script src="js/sheets.js?v=20261007_v27"></script>
-  <script src="js/admin.js?v=20261007_v27"></script>
-  <script src="js/app.js?v=20261007_v27"></script>
+  <!-- BANNER AMARAN PENTADBIR KETIKA SISTEM DISEKAT / OFFLINE -->
+  <div id="adminMaintNoticeBar" class="fixed top-0 left-0 right-0 z-50 bg-gradient-to-r from-rose-700 via-rose-600 to-red-800 text-white text-xs font-bold px-4 py-2.5 text-center shadow-2xl hidden items-center justify-between gap-3 border-b-2 border-amber-400 animate-fadeIn" style="display: none;">
+    <div class="flex items-center gap-2 mx-auto">
+      <span class="text-sm">⚠️</span>
+      <span>PERHATIAN PENTADBIR: Portal ini sedang <u>DIKUNCI / DITUTUP</u> untuk pelawat awam. Anda melihat paparan ini melalui Bypass Pentadbir (Ts.FIKREY37).</span>
+    </div>
+    <div class="flex items-center gap-2 shrink-0">
+      <a href="kawalan.html" target="_blank" class="px-2.5 py-1 rounded-lg bg-amber-400 hover:bg-amber-300 text-slate-950 font-black text-[11px] shadow transition flex items-center gap-1">
+        <span>🎛️</span> Buka Suis Kawalan
+      </a>
+      <button onclick="document.getElementById('adminMaintNoticeBar').style.display='none'" class="w-6 h-6 rounded-full bg-white/20 hover:bg-white/30 text-white flex items-center justify-center text-xs">
+        ✕
+      </button>
+    </div>
+  </div>
+
+  <!-- =========================================================================
+       SKRIN SEKATAN & PENYELENGGARAAN RASMI (SYSTEM MAINTENANCE & LOCKOUT OVERLAY)
+       Dikawal sepenuhnya melalui Suis Kawalan: kawalan.html / Panel Pentadbir
+       ========================================================================= -->
+  <div id="systemMaintenanceOverlay" class="fixed inset-0 z-[9999] bg-gradient-to-b from-royal-950 via-slate-900 to-royal-950 text-white hidden flex-col items-center justify-center p-4 sm:p-6 overflow-y-auto" style="display: none;">
+    <div class="max-w-xl w-full mx-auto my-auto text-center space-y-6 py-8 px-4 animate-fadeIn">
+      
+      <!-- LOGO RASMI GANDINGAN CUTOUT KPM & SK RANGGU -->
+      <div class="flex items-center justify-center gap-4 sm:gap-6">
+        <div class="w-16 h-16 sm:w-20 sm:h-20 flex items-center justify-center">
+          <img src="assets/logo-kpm-cutout.png?v=20261007_v27" alt="Logo KPM" class="w-full h-full object-contain filter drop-shadow-[0_8px_16px_rgba(0,0,0,0.5)]">
+        </div>
+        <div class="h-10 w-px bg-white/20"></div>
+        <div class="w-16 h-16 sm:w-20 sm:h-20 flex items-center justify-center">
+          <img src="assets/logo-skrg-cutout.png?v=20261007_v27" alt="Lencana SK Ranggu" class="w-full h-full object-contain filter drop-shadow-[0_8px_16px_rgba(0,0,0,0.5)]">
+        </div>
+      </div>
+
+      <!-- LENCANA STATUS BERKELIP -->
+      <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-amber-500/20 text-amber-300 border border-amber-400/40 text-xs sm:text-sm font-extrabold tracking-wide uppercase shadow-lg">
+        <span class="w-2.5 h-2.5 rounded-full bg-amber-400 animate-ping"></span>
+        <span id="maintOverlayBadgeText">MOD PENYELENGGARAAN AKTIF</span>
+      </div>
+
+      <!-- KOTAK NOTIS RASMI PENTADBIRAN -->
+      <div class="bg-royal-900/90 backdrop-blur-md border-2 border-amber-400/70 rounded-3xl p-6 sm:p-8 shadow-2xl space-y-4 text-center relative overflow-hidden">
+        <div class="absolute -right-12 -top-12 w-32 h-32 bg-amber-400/10 rounded-full blur-2xl pointer-events-none"></div>
+
+        <h2 id="maintNoticeTitle" class="text-xl sm:text-2xl font-black text-white tracking-tight leading-snug">
+          PORTAL INDUK SK RANGGU DITUTUP SEMENTARA
+        </h2>
+
+        <div class="w-16 h-1 bg-gradient-to-r from-amber-400 to-yellow-500 mx-auto rounded-full"></div>
+
+        <p id="maintNoticeMessage" class="text-xs sm:text-sm text-slate-200 leading-relaxed max-w-md mx-auto">
+          Papan Induk Utama SK Ranggu sedang menjalani proses penyelenggaraan dan kemas kini data oleh pihak Pentadbir Sistem. Segala paparan direktori dan modul disekat buat sementara waktu.
+        </p>
+
+        <!-- Waktu Jangkaan Dibuka Semula -->
+        <div id="maintEstimatedTimeContainer" class="pt-1">
+          <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-xl bg-white/10 text-slate-200 border border-white/15 text-xs font-semibold">
+            <span>⏱️</span> Jangkaan Siap: <strong id="maintEstimatedTimeText" class="text-amber-300">Akan dimaklumkan kelak</strong>
+          </div>
+        </div>
+
+        <!-- Butang Tindakan Pengunjung -->
+        <div class="pt-4 flex flex-col sm:flex-row items-center justify-center gap-3">
+          <button type="button" onclick="window.location.reload()" class="w-full sm:w-auto px-5 py-2.5 rounded-xl bg-white/10 hover:bg-white/20 text-white font-bold text-xs border border-white/20 transition flex items-center justify-center gap-2 cursor-pointer">
+            <span>🔄</span> Semak Semula (Refresh)
+          </button>
+          
+          <button type="button" onclick="window.openAdminBypassPrompt()" class="w-full sm:w-auto px-5 py-2.5 rounded-xl bg-gradient-to-r from-amber-400 to-yellow-500 hover:from-amber-300 hover:to-yellow-400 text-slate-950 font-black text-xs shadow-md transition flex items-center justify-center gap-1.5 cursor-pointer">
+            <span>🔑</span> Log Masuk Pentadbir
+          </button>
+        </div>
+      </div>
+
+      <!-- MAKLUMAT HUBUNGAN PEJABAT -->
+      <div class="text-center space-y-1 text-slate-400 text-[11px]">
+        <p class="font-semibold text-slate-300">Sekolah Kebangsaan Ranggu, Tawau (XBA3037)</p>
+        <p>Peti Surat 842, 91008 Tawau, Sabah • Pejabat: 089-925493 • Emel: xba3037@moe.edu.my</p>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- MODAL PROMPT BYPASS PENTADBIR DARI SKRIN SEKATAN -->
+  <div id="adminBypassModal" class="fixed inset-0 z-[10000] bg-black/85 backdrop-blur-md hidden items-center justify-center p-4" style="display: none;">
+    <div class="bg-royal-900 border-2 border-amber-400 text-white rounded-3xl max-w-sm w-full p-6 shadow-2xl relative animate-fadeIn text-center space-y-4">
+      <button type="button" onclick="window.closeAdminBypassPrompt()" class="absolute top-4 right-4 w-7 h-7 rounded-full bg-white/10 hover:bg-white/20 text-white font-bold flex items-center justify-center text-xs transition">
+        ✕
+      </button>
+
+      <div class="w-12 h-12 rounded-2xl bg-amber-400/20 text-amber-300 border border-amber-400/40 flex items-center justify-center text-2xl mx-auto shadow-inner">
+        🔑
+      </div>
+
+      <div>
+        <h3 class="text-base font-extrabold text-white">Bypass Pentadbir Sistem</h3>
+        <p class="text-xs text-slate-300 mt-1">
+          Masukkan kod keselamatan untuk membuka dan melihat portal semasa mod sekatan aktif.
+        </p>
+      </div>
+
+      <form onsubmit="window.handleAdminBypassSubmit(event)" class="space-y-3">
+        <input type="password" id="adminBypassPinInput" placeholder="Masukkan Ts.FIKREY37" autocomplete="current-password" class="w-full text-center py-3 px-3 rounded-xl bg-slate-950 border border-slate-700 font-mono text-sm tracking-wider text-white focus:border-amber-400 focus:outline-none" required autofocus>
+        
+        <button type="submit" class="w-full py-2.5 px-4 rounded-xl bg-amber-400 hover:bg-amber-300 text-slate-950 font-black text-xs shadow transition">
+          Buka Akses Pentadbir ➔
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <script src="js/data.js?v=20261008_v28"></script>
+  <script src="js/sheets.js?v=20261008_v28"></script>
+  <script src="js/admin.js?v=20261008_v28"></script>
+  <script src="js/app.js?v=20261008_v28"></script>
 
 </body>
 </html>

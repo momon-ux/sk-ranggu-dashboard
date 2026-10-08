@@ -4,9 +4,209 @@
  * Pembangun: MOHAMMAD FIKREY BIN ABDUL GAPAR (Pentadbir Sistem)
  */
 
+// =========================================================================
+// SISTEM KAWALAN SUIS JARAK JAUH & MOD PENYELENGGARAAN (REMOTE KILL-SWITCH)
+// Kawalan Eksklusif: kawalan.html & Kod Pentadbir Ts.FIKREY37
+// =========================================================================
+const SWITCH_STORAGE_KEY = "SKRG_SYSTEM_SWITCH_STATE";
+const ADMIN_BYPASS_SESSION_KEY = "SKRG_ADMIN_BYPASS";
+const OFFICIAL_ADMIN_PIN = "Ts.FIKREY37";
+
+function getSystemSwitchState() {
+  try {
+    const raw = localStorage.getItem(SWITCH_STORAGE_KEY);
+    if (raw) {
+      return JSON.parse(raw);
+    }
+  } catch (e) {
+    console.warn("Ralat membaca data suis sistem:", e);
+  }
+  return {
+    status: "active",
+    noticeTitle: "PORTAL INDUK SK RANGGU DITUTUP SEMENTARA",
+    noticeMessage: "Papan Induk Utama SK Ranggu sedang menjalani proses penyelenggaraan dan kemas kini berkala oleh Pentadbir Sistem. Segala paparan direktori dan modul disekat buat sementara waktu.",
+    estimatedTime: "Akan dimaklumkan kelak"
+  };
+}
+
+function isUserAdminAuthorized() {
+  const bypass = sessionStorage.getItem(ADMIN_BYPASS_SESSION_KEY);
+  if (bypass === "true") return true;
+  if (typeof window.adminManager !== "undefined" && window.adminManager.isAuthenticated && window.adminManager.isAuthenticated()) {
+    return true;
+  }
+  return false;
+}
+
+function checkSystemSwitchStatus() {
+  const urlParams = new URLSearchParams(window.location.search);
+  
+  // URL Param Bypass: ?admin_bypass=Ts.FIKREY37
+  if (urlParams.get("admin_bypass") && urlParams.get("admin_bypass").toLowerCase() === OFFICIAL_ADMIN_PIN.toLowerCase()) {
+    sessionStorage.setItem(ADMIN_BYPASS_SESSION_KEY, "true");
+  }
+
+  const isForcePreview = urlParams.get("preview_lock") === "1";
+  const switchData = getSystemSwitchState();
+  const status = isForcePreview ? "maintenance" : (switchData.status || "active");
+  const isAuthorized = isUserAdminAuthorized();
+
+  const overlay = document.getElementById("systemMaintenanceOverlay");
+  const noticeBar = document.getElementById("adminMaintNoticeBar");
+  const badgeText = document.getElementById("maintOverlayBadgeText");
+  const noticeTitle = document.getElementById("maintNoticeTitle");
+  const noticeMessage = document.getElementById("maintNoticeMessage");
+  const estTimeText = document.getElementById("maintEstimatedTimeText");
+  const admSwitchBadge = document.getElementById("admSwitchStatusBadge");
+  const admQuickToggleLabel = document.getElementById("admQuickToggleLabel");
+  const btnQuickToggle = document.getElementById("btnAdminQuickToggleSwitch");
+
+  // Kemas kini status teks dalam Panel Pentadbir jika wujud
+  if (admSwitchBadge) {
+    if (status === "active") {
+      admSwitchBadge.className = "px-2.5 py-0.5 rounded-full text-[10px] font-extrabold uppercase tracking-wide bg-emerald-500/20 text-emerald-300 border border-emerald-400/30";
+      admSwitchBadge.textContent = "🟢 ONLINE (AKTIF)";
+      if (admQuickToggleLabel) admQuickToggleLabel.textContent = "Matikan Laman Web (Disable)";
+      if (btnQuickToggle) btnQuickToggle.className = "px-4 py-2 rounded-xl bg-rose-600 hover:bg-rose-700 text-white font-bold transition flex items-center gap-1.5 shadow cursor-pointer";
+    } else if (status === "maintenance") {
+      admSwitchBadge.className = "px-2.5 py-0.5 rounded-full text-[10px] font-extrabold uppercase tracking-wide bg-amber-500/20 text-amber-300 border border-amber-400/30";
+      admSwitchBadge.textContent = "🟡 PENYELENGGARAAN";
+      if (admQuickToggleLabel) admQuickToggleLabel.textContent = "Hidupkan Semula (Enable)";
+      if (btnQuickToggle) btnQuickToggle.className = "px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold transition flex items-center gap-1.5 shadow cursor-pointer";
+    } else {
+      admSwitchBadge.className = "px-2.5 py-0.5 rounded-full text-[10px] font-extrabold uppercase tracking-wide bg-rose-500/20 text-rose-300 border border-rose-400/30";
+      admSwitchBadge.textContent = "🔴 DIKUNCI (OFFLINE)";
+      if (admQuickToggleLabel) admQuickToggleLabel.textContent = "Hidupkan Semula (Enable)";
+      if (btnQuickToggle) btnQuickToggle.className = "px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold transition flex items-center gap-1.5 shadow cursor-pointer";
+    }
+  }
+
+  // Jika status BUKAN AKTIF (disekat / dalam penyelenggaraan)
+  if (status !== "active") {
+    if (isAuthorized && !isForcePreview) {
+      // Pentadbir melihat portal dalam mod bypass
+      if (overlay) {
+        overlay.classList.add("hidden");
+        overlay.style.display = "none";
+      }
+      if (noticeBar) {
+        noticeBar.classList.remove("hidden");
+        noticeBar.style.display = "flex";
+      }
+      document.body.classList.remove("overflow-hidden");
+    } else {
+      // Pengunjung luar disekat sepenuhnya
+      if (noticeTitle) noticeTitle.textContent = switchData.noticeTitle || "PORTAL INDUK SK RANGGU DITUTUP SEMENTARA";
+      if (noticeMessage) noticeMessage.textContent = switchData.noticeMessage || "Papan Induk Utama SK Ranggu sedang menjalani proses penyelenggaraan dan kemas kini berkala oleh Pentadbir Sistem. Segala paparan direktori dan modul disekat buat sementara waktu.";
+      if (estTimeText) estTimeText.textContent = switchData.estimatedTime || "Akan dimaklumkan kelak";
+      if (badgeText) badgeText.textContent = status === "maintenance" ? "MOD PENYELENGGARAAN AKTIF" : "SISTEM DIKUNCI (OFFLINE)";
+
+      if (overlay) {
+        overlay.classList.remove("hidden");
+        overlay.style.display = "flex";
+      }
+      if (noticeBar) {
+        noticeBar.classList.add("hidden");
+        noticeBar.style.display = "none";
+      }
+      document.body.classList.add("overflow-hidden");
+    }
+  } else {
+    // STATUS AKTIF / NORMAL
+    if (overlay) {
+      overlay.classList.add("hidden");
+      overlay.style.display = "none";
+    }
+    if (noticeBar) {
+      noticeBar.classList.add("hidden");
+      noticeBar.style.display = "none";
+    }
+    document.body.classList.remove("overflow-hidden");
+  }
+}
+window.checkSystemSwitchStatus = checkSystemSwitchStatus;
+
+function openAdminBypassPrompt() {
+  const modal = document.getElementById("adminBypassModal");
+  if (modal) {
+    modal.classList.remove("hidden");
+    modal.style.display = "flex";
+    const input = document.getElementById("adminBypassPinInput");
+    if (input) {
+      input.value = "";
+      setTimeout(() => input.focus(), 100);
+    }
+  }
+}
+window.openAdminBypassPrompt = openAdminBypassPrompt;
+
+function closeAdminBypassPrompt() {
+  const modal = document.getElementById("adminBypassModal");
+  if (modal) {
+    modal.classList.add("hidden");
+    modal.style.display = "none";
+  }
+}
+window.closeAdminBypassPrompt = closeAdminBypassPrompt;
+
+function handleAdminBypassSubmit(e) {
+  e.preventDefault();
+  const input = document.getElementById("adminBypassPinInput").value.trim();
+  if (input.toLowerCase() === OFFICIAL_ADMIN_PIN.toLowerCase() || input === "Ts.FIKREY37") {
+    sessionStorage.setItem(ADMIN_BYPASS_SESSION_KEY, "true");
+    closeAdminBypassPrompt();
+    checkSystemSwitchStatus();
+    showToastNotification("🔓 Akses Pentadbir disahkan. Selamat kembali, Ts.FIKREY37!", "success");
+  } else {
+    alert("Kod keselamatan pentadbir salah! Sila masukkan 'Ts.FIKREY37'.");
+    document.getElementById("adminBypassPinInput").value = "";
+    document.getElementById("adminBypassPinInput").focus();
+  }
+}
+window.handleAdminBypassSubmit = handleAdminBypassSubmit;
+
+function handleAdminPanelSwitchToggle() {
+  const cur = getSystemSwitchState();
+  if (cur.status === "active") {
+    const confirmOff = confirm("PENGESAHAN: Adakah anda ingin MENYAHAKTIFKAN (menutup) portal ini sekarang?\n\nSemua pelawat awam akan disekat dan dipaparkan skrin penyelenggaraan.");
+    if (!confirmOff) return;
+    cur.status = "maintenance";
+  } else {
+    const confirmOn = confirm("PENGESAHAN: Adakah anda ingin MENGHIDUPKAN (membuka) semula portal SK Ranggu untuk orang awam?");
+    if (!confirmOn) return;
+    cur.status = "active";
+  }
+
+  cur.updatedAt = new Date().toISOString();
+  cur.updatedBy = OFFICIAL_ADMIN_PIN;
+  localStorage.setItem(SWITCH_STORAGE_KEY, JSON.stringify(cur));
+
+  try {
+    if ('BroadcastChannel' in window) {
+      const ch = new BroadcastChannel('skrg_system_channel');
+      ch.postMessage({ type: 'STATUS_UPDATE', data: cur });
+    }
+  } catch(e){}
+
+  checkSystemSwitchStatus();
+  showToastNotification(`Status sistem dikemaskini: ${cur.status.toUpperCase()}`, "success");
+}
+window.handleAdminPanelSwitchToggle = handleAdminPanelSwitchToggle;
+
 function startApplication() {
   try {
+    checkSystemSwitchStatus();
     initSystem();
+
+    // Dengar siaran BroadcastChannel untuk perubahan status jarak jauh
+    if ('BroadcastChannel' in window) {
+      const ch = new BroadcastChannel('skrg_system_channel');
+      ch.onmessage = (e) => {
+        if (e.data && e.data.type === 'STATUS_UPDATE') {
+          checkSystemSwitchStatus();
+        }
+      };
+    }
   } catch (err) {
     console.error("Ralat memulakan aplikasi:", err);
   }

@@ -2440,12 +2440,12 @@ window.getStaffPhoto = function(name) {
 // ==========================================================================
 DEFAULT_SYSTEM_DATA.takwimEvents = DEFAULT_SYSTEM_DATA.takwim;
 
-const CURRENT_STORAGE_KEY = "SK_RANGGU_DASHBOARD_DATA_V27";
+const CURRENT_STORAGE_KEY = "SK_RANGGU_DASHBOARD_DATA_V28";
 
 function getStoredData() {
   try {
-    // Purge semua cache versi lapuk (V1 sehingga V26)
-    for (let i = 1; i <= 26; i++) {
+    // Purge semua cache versi lapuk (V1 sehingga V27)
+    for (let i = 1; i <= 27; i++) {
       try { localStorage.removeItem(`SK_RANGGU_DASHBOARD_DATA_V${i}`); } catch(e){}
     }
     try { localStorage.removeItem("SK_RANGGU_DASHBOARD_DATA"); } catch(e){}
